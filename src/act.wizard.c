@@ -79,13 +79,13 @@ void do_auth(struct char_data *ch, char *argument, int cmd)
       d->character->generic = NEWBIE_START;
       sprintf(buf2,"%s has just accepted %s into the game.",
 	      ch->player.name,name);
-      log(buf2);
+      log_msg(buf2);
       SEND_TO_Q("You have been accepted.  Press enter\n\r", d);
     } else if (str_cmp(word,"no")==0){
       SEND_TO_Q("You have been denied.  Press enter\n\r", d);
       sprintf(buf2,"%s has just denied %s from the game.",
               ch->player.name,name);
-      log(buf2);
+      log_msg(buf2);
       d->character->generic = NEWBIE_AXE;
     } else {
       SEND_TO_Q(argument, d);
@@ -512,12 +512,12 @@ void do_silence(struct char_data *ch, char *argument, int cmd)
     Silence = 1;
     send_to_char("You have now silenced polyed mobles.\n\r",ch);
     sprintf(buf,"%s has stopped Polymophed characters from shouting.",ch->player.name);
-    log(buf);
+    log_msg(buf);
   } else {
     Silence = 0;
     send_to_char("You have now unsilenced mobles.\n\r",ch);
     sprintf(buf,"%s has allowed Polymophed characters to shout.",ch->player.name);
-    log(buf);
+    log_msg(buf);
   }
 }
 void do_wizlock(struct char_data *ch, char *argument, int cmd)
@@ -564,7 +564,7 @@ void do_wizlock(struct char_data *ch, char *argument, int cmd)
        send_to_char("Its already on!\n\r", ch);
      } else {
        send_to_char("WizLock is now on\n\r",ch);
-       log("WizLock is now on.");
+       log_msg("WizLock is now on.");
        WizLock = TRUE;
      }
 
@@ -574,7 +574,7 @@ void do_wizlock(struct char_data *ch, char *argument, int cmd)
        send_to_char("Its already off!\n\r", ch);
      } else {
        send_to_char("WizLock is now off\n\r",ch);
-       log("WizLock is now off.");
+       log_msg("WizLock is now off.");
        WizLock = FALSE;
      }
 
@@ -599,7 +599,7 @@ void do_wizlock(struct char_data *ch, char *argument, int cmd)
       strcpy(hostlist[numberhosts],buf);
       sprintf(buf,"%s has added host %s to the access denied list.",
 	      GET_NAME(ch),hostlist[numberhosts]);
-      log(buf);
+      log_msg(buf);
       numberhosts++;
       return;
 
@@ -636,7 +636,7 @@ void do_wizlock(struct char_data *ch, char *argument, int cmd)
 	      strcpy(hostlist[b],hostlist[b+1]);
  	    sprintf(buf,"%s has removed host %s from the access denied list.",
 		    GET_NAME(ch),hostlist[numberhosts]);
-	    log(buf);
+	    log_msg(buf);
 	    numberhosts--;
 	    return;
 	 }
@@ -665,11 +665,11 @@ void do_wizlock(struct char_data *ch, char *argument, int cmd)
 #else
   if (WizLock) {
     send_to_char("WizLock is now off\n\r",ch);
-    log("Wizlock is now off.");
+    log_msg("Wizlock is now off.");
     WizLock = FALSE;
   } else {
     send_to_char("WizLock is now on\n\r",ch);
-    log("WizLock is now on.");
+    log_msg("WizLock is now on.");
     WizLock = TRUE;
   }
 #endif
@@ -963,7 +963,7 @@ void do_goto(struct char_data *ch, char *argument, int cmd)
   
   
   if (!real_roomp(location)) {
-    log("Massive error in do_goto. Everyone Off NOW.");
+    log_msg("Massive error in do_goto. Everyone Off NOW.");
     return;
   }
   
@@ -1814,7 +1814,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
 	EasySummon = TRUE;
 	sprintf(buf, "Peaceful rooms and Easy Summon enabled by %s", GET_NAME(ch));
       }
-      log(buf);
+      log_msg(buf);
 
     } else if (!strcmp(field, "mana")) {
       sscanf(parmstr, "%d", &parm);
@@ -1854,12 +1854,12 @@ void do_shutdown(struct char_data *ch, char *argument, int cmd)
   if (!*arg) {
     sprintf(buf, "Shutdown by %s.", GET_NAME(ch) );
     send_to_all(buf);
-    log(buf);
+    log_msg(buf);
     mudshutdown = 1;
   } else if (!str_cmp(arg, "reboot")) {
     sprintf(buf, "Reboot by %s.", GET_NAME(ch));
     send_to_all(buf);
-    log(buf);
+    log_msg(buf);
     mudshutdown = reboot = 1;
   } else
     send_to_char("Go shut down someone your own size.\n\r", ch);
@@ -1902,7 +1902,7 @@ void do_snoop(struct char_data *ch, char *argument, int cmd)
 	char buf[MAX_STRING_LENGTH];
 	sprintf(buf, "caught %s snooping %s who didn't have a descriptor!",
 		ch->player.name, ch->desc->snoop.snooping->player.name);
-	log(buf);
+	log_msg(buf);
 /*
 logically.. this person has returned from being a creature? 
 */

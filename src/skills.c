@@ -571,7 +571,7 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 
 #if 0
    if (top_of_world > MAX_ROOMS) {
-     log("TRACK Is disabled, too many rooms.\n\rContact Loki soon.\n\r");
+     log_msg("TRACK Is disabled, too many rooms.\n\rContact Loki soon.\n\r");
     return -1;
    }
 #endif
@@ -1325,7 +1325,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 		char buf[MAX_INPUT_LENGTH];
 		sprintf(buf,"%s just got %d coins!",
 			GET_NAME(ch),obj_object->obj_flags.value[0]);
-		log(buf);
+		log_msg(buf);
 	      }
 	      extract_obj(obj_object);
 	    }
@@ -1386,7 +1386,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 		      char buf[MAX_INPUT_LENGTH];
 		      sprintf(buf,"%s just got %d coins!",
 			      GET_NAME(ch),obj_object->obj_flags.value[0]);
-		      log(buf);
+		      log_msg(buf);
 		    }
 		    extract_obj(obj_object);
 		  }
@@ -1610,7 +1610,7 @@ void do_makepotion(struct char_data *ch, char *argument, int cmd)
   {
     char buf[80];
     sprintf(buf,"Min brew level is: %d", max);
-    log(buf);
+    log_msg(buf);
   }
 
   extract_obj(potion);

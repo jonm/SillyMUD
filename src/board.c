@@ -139,7 +139,7 @@ void board_write_msg(struct char_data *ch, char *arg, int bnum) {
   extern char *month_name[];
 
   if ( bnum == -1 ) {
-    log("Board special procedure called for non-board object.\r\n");
+    log_msg("Board special procedure called for non-board object.\r\n");
     send_to_char("This board is not in operation at this time.\n\r", ch);
     return;
   }
@@ -233,7 +233,7 @@ int board_remove_msg(struct char_data *ch, char *arg, int bnum) {
   if (!(tmessage = atoi(number))) return(0);
   
   if ( bnum == -1 ) {
-    log("Board special procedure called for non-board object.\r\n");
+    log_msg("Board special procedure called for non-board object.\r\n");
     send_to_char("This board is not in operation at this time.\n\r", ch);
     return 1;
   }
@@ -293,7 +293,7 @@ int board_remove_msg(struct char_data *ch, char *arg, int bnum) {
 
   act(buf, FALSE, ch, 0, 0, TO_ROOM);
   sprintf((buf+strlen(buf)-1)," from board %d.",bnum);
-  log(buf);  /* Message removals now logged. */
+  log_msg(buf);  /* Message removals now logged. */
 
   board_save_board(bnum);
   return(1);
@@ -346,7 +346,7 @@ void board_save_board(bnum) {
   the_file = fopen(save_file[bnum], "w");
 
   if (!the_file) {
-      log("Unable to open/create savefile for bulletin board..\n\r");
+      log_msg("Unable to open/create savefile for bulletin board..\n\r");
       return;
     }
 
@@ -384,14 +384,14 @@ void board_load_board() {
     the_file = fopen(save_file[bnum], "r");
     if (!the_file) {
       sprintf(buf,"Can't open message file for board %d.\n\r",bnum);
-      log(buf,0);
+      log_msg(buf,0);
       continue;
     }
 
     fscanf( the_file, " %d ", &boards[bnum].number);
     if (boards[bnum].number < 0 || boards[bnum].number > MAX_MSGS || 
 	feof(the_file)) {
-      log("Board-message file corrupt, nonexistent, or empty.\n\r");
+      log_msg("Board-message file corrupt, nonexistent, or empty.\n\r");
       boards[bnum].number = -1;
       fclose(the_file);
       continue;
@@ -526,7 +526,7 @@ int board_check_locks (int bnum, struct char_data *ch) {
     }
   if (!found)
     {
-      log("Board: board locked for a user not in game.");
+      log_msg("Board: board locked for a user not in game.");
       board_lock[bnum].lock = 0;
       board_lock[bnum].locked_for = NULL;
       return(0);

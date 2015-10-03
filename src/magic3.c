@@ -2297,7 +2297,7 @@ void spell_portal(byte level, struct char_data *ch,
   if (!(nrp = real_roomp(tmp_ch->in_room))) {
     char str[180];
     sprintf(str, "%s not in any room.", GET_NAME(tmp_ch));
-    log(str);
+    log_msg(str);
     send_to_char("Your magic cannot locate the target.\n\r", ch);
     return;
   }

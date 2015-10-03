@@ -188,7 +188,7 @@ void do_quit(struct char_data *ch, char *argument, int cmd)
   if (GET_POS(ch) < POSITION_STUNNED) {
     send_to_char("You die before your time!\n\r", ch);
     sprintf(buf, "%s dies via quit.", GET_NAME(ch));
-    log(buf);
+    log_msg(buf);
     die(ch);    
     return;
   }
@@ -457,7 +457,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
   if(GetMaxLevel(victim) > 50) {
     send_to_char("Steal from a God?!?  Oh the thought!\n\r", ch);
     sprintf(buf, "BUG NOTE: %s tried to steal from GOD %s", GET_NAME(ch), GET_NAME(victim));
-    log(buf);
+    log_msg(buf);
     return;
   }
   
