@@ -200,7 +200,7 @@ void affect_modify(struct char_data *ch,byte loc, long mod, long bitv,bool add)
       break;
       
     case APPLY_DEX: 
-#ifdef 0
+      /*
       temp = GET_DEX(ch);
             temp2=GET_DEX(ch);
       if(temp2 < ch->abilities.dex)
@@ -209,7 +209,7 @@ void affect_modify(struct char_data *ch,byte loc, long mod, long bitv,bool add)
       if(GET_DEX(ch) > 18) GET_DEX(ch)=18;
       GET_AC(ch) -= dex_app[temp].defensive;
       GET_AC(ch) += dex_app[GET_DEX(ch)].defensive;
-#endif
+      */
       GET_DEX(ch) += mod;
       break;
       
