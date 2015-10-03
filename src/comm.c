@@ -85,7 +85,7 @@ int __main ()
    can die, and try to keep these 'invalid' sockets from getting to select
 */
 
-int close_socket_fd( int desc)
+void close_socket_fd( int desc)
 {
   struct descriptor_data *d;
   extern struct descriptor_data *descriptor_list;
@@ -130,7 +130,7 @@ int main (int argc, char **argv)
     switch (*(argv[pos] + 1))  {
     case 'l':
       lawful = 1;
-      log("Lawful mode selected.");
+      log_msg("Lawful mode selected.");
       break;
     case 'd':
       if (*(argv[pos] + 2))
@@ -138,18 +138,18 @@ int main (int argc, char **argv)
       else if (++pos < argc)
 	dir = argv[pos];
       else   	{
-	log("Directory arg expected after option -d.");
+	log_msg("Directory arg expected after option -d.");
 	assert(0);
       }
       break;
     case 's':
       no_specials = 1;
-      log("Suppressing assignment of special routines.");
+      log_msg("Suppressing assignment of special routines.");
       break;
     default:
       sprintf(buf, "Unknown option -% in argument string.",
 	      *(argv[pos] + 1));
-      log(buf);
+      log_msg(buf);
       break;
     }
     pos++;
@@ -168,7 +168,7 @@ int main (int argc, char **argv)
   Uptime = time(0);
   
   sprintf(buf, "Running game on port %d.", port);
-  log(buf);
+  log_msg(buf);
   
   if (chdir(dir) < 0)	{
     perror("chdir");
@@ -176,21 +176,21 @@ int main (int argc, char **argv)
   }
   
   sprintf(buf, "Using %s as data directory.", dir);
-  log(buf);
+  log_msg(buf);
   
   srandom(time(0));
   WizLock = FALSE;
 
 #if SITELOCK
-  log("Blanking denied hosts.");
+  log_msg("Blanking denied hosts.");
   for(a = 0 ; a<= MAX_BAN_HOSTS ; a++) 
     strcpy(hostlist[a]," \0\0\0\0");
   numberhosts = 0;
 #if LOCKGROVE
-  log("Locking out Host: oak.grove.iup.edu.");
+  log_msg("Locking out Host: oak.grove.iup.edu.");
   strcpy(hostlist[0],"oak.grove.iup.edu");
   numberhosts = 1; 
-  log("Locking out Host: everest.rutgers.edu.");
+  log_msg("Locking out Host: everest.rutgers.edu.");
   strcpy(hostlist[1],"everest.rutgers.edu");
   numberhosts = 2;
 #endif /* LOCKGROVE */
@@ -223,21 +223,21 @@ int run_the_game(int port)
     
     descriptor_list = NULL;
   
-  log("Signal trapping.");
+  log_msg("Signal trapping.");
   signal_setup();
   
-  log("Opening mother connection.");
+  log_msg("Opening mother connection.");
   s = init_socket(port);
   
   if (lawful && load() >= 6)
     {
-      log("System load too high at startup.");
+      log_msg("System load too high at startup.");
       coma(1);
     }
   
   boot_db();
   
-  log("Entering game loop.");
+  log_msg("Entering game loop.");
   
   game_loop(s);
   
@@ -246,11 +246,11 @@ int run_the_game(int port)
   PROFILE(monitor(0);)
     
   if (reboot)  {
-    log("Rebooting.");
+    log_msg("Rebooting.");
     assert(52);           /* what's so great about HHGTTG, anyhow? */
   }
   
-  log("Normal termination of game.");
+  log_msg("Normal termination of game.");
 }
 
 
@@ -627,14 +627,14 @@ void write_to_q(char *txt, struct txt_q *queue)
   int strl;
 
   if (!queue) {
-    log("Output message to non-existant queue");
+    log_msg("Output message to non-existant queue");
     return;
   }
 
   CREATE(new, struct txt_block, 1);
   strl = strlen(txt);
   if (strl < 0 || strl > 15000) {
-    log("strlen returned bogus length in write_to_q");
+    log_msg("strlen returned bogus length in write_to_q");
     free(new);
     return;
   }
@@ -744,7 +744,7 @@ int init_socket(int port)
 		assert(0);
 	}
 
-	if (bind(s, &sa, sizeof(sa), 0) < 0)	{
+	if (bind(s, &sa, sizeof(sa)) < 0)	{
 	    perror("bind");
 	    exit(0);
 	}
@@ -768,9 +768,9 @@ int new_connection(int s)
   char buf[100];
   
   i = sizeof(isa);
-#ifdef 0
+  /*
   getsockname(s, &isa, &i);
-#endif
+  */
   
   if ((t = accept(s, (struct sockaddr *)&isa, &i)) < 0){
     perror("Accept");
@@ -787,7 +787,7 @@ int new_connection(int s)
     if (i > 0) {
       *(peer.sa_data + 49) = '\0';
       sprintf(buf, "New connection from addr %s.", peer.sa_data);
-      log(buf);
+      log_msg(buf);
     }
   }
 
@@ -999,7 +999,7 @@ int process_input(struct descriptor_data *t)
 	  break;
 	}
       } else {
-	log("EOF encountered on socket read.");
+	log_msg("EOF encountered on socket read.");
 	return(-1);
       }
     }
@@ -1080,7 +1080,7 @@ int process_input(struct descriptor_data *t)
 
 void close_sockets(int s)
 {
-  log("Closing all sockets.");
+  log_msg("Closing all sockets.");
   
   while (descriptor_list)
     close_socket(descriptor_list);
@@ -1121,7 +1121,7 @@ void close_socket(struct descriptor_data *d)
        do_save(d->character, "", 0);
       act("$n has lost $s link.", TRUE, d->character, 0, 0, TO_ROOM);
       sprintf(buf, "Closing link to: %s.", GET_NAME(d->character));
-      log(buf);
+      log_msg(buf);
       if (IS_NPC(d->character)) { /* poly, or switched god */
 	if (d->character->desc)
 	  d->character->orig = d->character->desc->original;
@@ -1138,12 +1138,12 @@ void close_socket(struct descriptor_data *d)
     } else {
       if (GET_NAME(d->character)) {
 	sprintf(buf, "Losing player: %s.", GET_NAME(d->character));
-	log(buf);
+	log_msg(buf);
       }
       free_char(d->character);
     }
   else
-    log("Losing descriptor without char.");
+    log_msg("Losing descriptor without char.");
   
   
   if (next_to_process == d)    	/* to avoid crashing the process loop */
@@ -1236,7 +1236,7 @@ void coma(int s)
   int workhours(void);
   int load(void);
   
-  log("Entering comatose state.");
+  log_msg("Entering comatose state.");
   
   sigsetmask(sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
 	     sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
@@ -1255,7 +1255,7 @@ void coma(int s)
     }
     if (FD_ISSET(s, &input_set))	{
       if (load() < 6){
-	log("Leaving coma with visitor.");
+	log_msg("Leaving coma with visitor.");
 	sigsetmask(0);
 	return;
       }
@@ -1268,13 +1268,13 @@ void coma(int s)
     
     tics = 1;
     if (workhours())  {
-      log("Working hours collision during coma. Exit.");
+      log_msg("Working hours collision during coma. Exit.");
       assert(0);
     }
   }
   while (load() >= 6);
   
-  log("Leaving coma.");
+  log_msg("Leaving coma.");
   sigsetmask(0);
 }
 
@@ -1521,8 +1521,8 @@ void act(char *str, int hide_invisible, struct char_data *ch,
 	  case '$': i = "$"; 
 	    break;
 	  default:
-	    log("Illegal $-code to act():");
-	    log(str);
+	    log_msg("Illegal $-code to act():");
+	    log_msg(str);
 	    break;
 	  }
 	  

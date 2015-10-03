@@ -18,8 +18,6 @@
 #include "wizlist.h"
 #include "parser.h"
 
-char *strdup(char *source);
-
 /* From Heap.c */
  
 void SmartStrCpy(char *s1, const char *s2);
@@ -336,7 +334,7 @@ int board_check_locks (int bnum, struct char_data *ch);
 /* From comm.c */
  
 int __main ();
-int close_socket_fd( int desc);
+void close_socket_fd( int desc);
 int main (int argc, char **argv);
 int run_the_game(int port);
 int game_loop(int s);
@@ -1757,7 +1755,7 @@ void cast_resist_blunt( byte level, struct char_data *ch, char *arg,
 
  
 /* From utility.c */
-
+void log_msg(char *buf);
 int char_array_size(char *thingie[]);
 int EgoBladeSave(struct char_data *ch);
 int MIN(int a, int b);

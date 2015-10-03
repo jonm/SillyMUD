@@ -407,14 +407,14 @@ void advance_level(struct char_data *ch, int class)
 
 
   if (class > MAX_CLASS) {
-    log("Bad advance class.. no such class");
+    log_msg("Bad advance class.. no such class");
     return;
   }
   
   if (GET_LEVEL(ch, class) > 0 && 
       GET_EXP(ch) < titles[class][GET_LEVEL(ch, class)+1].exp) {
     /*  they can't advance here */
-    log("Bad advance_level");
+    log_msg("Bad advance_level");
     return;
   }
 
@@ -864,7 +864,7 @@ int ObjFromCorpse( struct obj_data *c)
        **  don't extract it.
        */
       c->contains = 0;
-      log("Memory lost in ObjFromCorpse.");
+      log_msg("Memory lost in ObjFromCorpse.");
       return(TRUE);
     }
   }

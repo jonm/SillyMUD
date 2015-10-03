@@ -61,7 +61,7 @@ void get(struct char_data *ch, struct obj_data *obj_object,
       char buf[MAX_INPUT_LENGTH];
       sprintf(buf,"%s just got %d coins!",
 	      GET_NAME(ch),obj_object->obj_flags.value[0]);
-      log(buf);
+      log_msg(buf);
     }
     extract_obj(obj_object);
   }
@@ -683,7 +683,7 @@ void do_give(struct char_data *ch, char *argument, int cmd)
     save_char(ch, AUTO_RENT);
     if ((GET_GOLD(vict) > 500000) && (amount > 100000)) {
       sprintf(buf, "%s gave %d coins to %s", GET_NAME(ch), amount, GET_NAME(vict));
-      log(buf);
+      log_msg(buf);
     }
       
     return;

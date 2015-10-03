@@ -169,7 +169,7 @@ void update_file(struct char_data *ch, struct obj_file_u *st)
 #if 0
   for(p=buf;*p && *p != ' ';p++);
   *p = '\0';
-  log("buf");
+  log_msg("buf");
 #endif
   if (!(fl = fopen(buf, "w")))  {
     perror("saving PC's objects");
@@ -258,20 +258,20 @@ void load_char_objs(struct char_data *ch)
   
   /* r+b is for Binary Reading/Writing */
   if (!(fl = fopen(buf, "r+b")))  {
-    log("Char has no equipment");
+    log_msg("Char has no equipment");
     return;
   }
 
   rewind(fl);
 
   if (!ReadObjs(fl, &st)) {
-    log("No objects found");
+    log_msg("No objects found");
     fclose(fl);
     return;
   }
 
   if (str_cmp(st.owner, GET_NAME(ch)) != 0) {
-    log("Hmm.. bad item-file write. someone is losing thier objects");
+    log_msg("Hmm.. bad item-file write. someone is losing thier objects");
     fclose(fl);
     return;
   }
@@ -291,12 +291,12 @@ void load_char_objs(struct char_data *ch)
     if (ch->in_room == NOWHERE &&
 	st.last_update + 1*SECS_PER_REAL_HOUR > time(0)) {
 	/* you made it back from the crash in time, 1 hour grace period. */
-      log("Character reconnecting.");
+      log_msg("Character reconnecting.");
       found = TRUE;
     } else {
       char	buf[MAX_STRING_LENGTH];
       if (ch->in_room == NOWHERE)
-	log("Char reconnecting after autorent");
+	log_msg("Char reconnecting after autorent");
 #if NEW_RENT
       timegold = (int) ((100*((float)time(0) - st.last_update)) / 
 			(SECS_PER_REAL_DAY));
@@ -305,13 +305,13 @@ void load_char_objs(struct char_data *ch)
 			(SECS_PER_REAL_DAY));
 #endif
       sprintf(buf, "Char ran up charges of %g gold in rent", timegold);
-      log(buf);
+      log_msg(buf);
       sprintf(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
       send_to_char(buf, ch);
       GET_GOLD(ch) -= timegold;
       found = TRUE;    
       if (GET_GOLD(ch) < 0) {
-	log("Char ran out of money in rent");
+	log_msg("Char ran out of money in rent");
         send_to_char("You ran out of money, you deadbeat.\n\r", ch);
 	GET_GOLD(ch) = 0;
 	found = FALSE;
@@ -368,7 +368,7 @@ void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st)
          strcpy(oe->name, obj->name);
       else {
 	sprintf(buf, "object %d has no name!", obj_index[obj->item_number].virtual);
-	log(buf);
+	log_msg(buf);
 	
       }
 	
@@ -520,11 +520,11 @@ void update_obj_file()
       if (ReadObjs(fl, &st)) {
 	if (str_cmp(st.owner, player_table[i].name) != 0) {
        sprintf(buf, "Ack!  Wrong person written into object file! (%s/%s)", st.owner, player_table[i].name);
-	  log(buf);
+	  log_msg(buf);
 	  abort();
 	} else {
 	  sprintf(buf, "   Processing %s[%d].", st.owner, i);
-	  log(buf);
+	  log_msg(buf);
 	  days_passed = ((time(0) - st.last_update) / SECS_PER_REAL_DAY);
 	  secs_lost = ((time(0) - st.last_update) % SECS_PER_REAL_DAY);
 	  
@@ -537,7 +537,7 @@ void update_obj_file()
 	    st.last_update = time(0)+3600;  /* one hour grace period */
 
 	    sprintf(buf, "   Deautorenting %s", st.owner);
-	    log(buf);
+	    log_msg(buf);
 
 #if LIMITED_ITEMS
 	    fprintf(stderr, "Counting limited items\n");
@@ -559,7 +559,7 @@ void update_obj_file()
 	      if ((st.total_cost*days_passed) > st.gold_left) {
 		
 		sprintf(buf, "   Dumping %s from object file.", ch_st.name);
-		log(buf);
+		log_msg(buf);
 		
 		ch_st.points.gold = 0;
 		ch_st.load_room = NOWHERE;
@@ -573,7 +573,7 @@ void update_obj_file()
 	      } else {
 		
 		sprintf(buf, "   Updating %s", st.owner);
-		log(buf);
+		log_msg(buf);
 		st.gold_left  -= (st.total_cost*days_passed);
 		st.last_update = time(0)-secs_lost;
 #if 0
@@ -592,7 +592,7 @@ void update_obj_file()
 	      CountLimitedItems(&st);
 #endif
 	      sprintf(buf, "  same day update on %s", st.owner);
-	      log(buf);
+	      log_msg(buf);
 #if 0
 	      rewind(fl);
 	      WriteObjs(fl, &st);
@@ -653,7 +653,7 @@ void PrintLimitedItems()
   for (i=0;i<=top_of_objt;i++) {
     if (obj_index[i].number > 0) {
       sprintf(buf, "item> %d [%d]", obj_index[i].virtual, obj_index[i].number);
-      log(buf);
+      log_msg(buf);
     }
   }
 #endif
@@ -697,7 +697,7 @@ int receptionist(struct char_data *ch, int cmd, char *arg, struct char_data *mob
 	recep = temp_char;
   
   if (!recep) {
-    log("No_receptionist.\n\r");
+    log_msg("No_receptionist.\n\r");
     assert(0);
   }
   
@@ -1080,14 +1080,14 @@ void load_room_objs(int room)
   
   /* r+b is for Binary Reading/Writing */
   if (!(fl = fopen(buf, "r+b")))  {
-    log("Room has no equipment");
+    log_msg("Room has no equipment");
     return;
   }
 
   rewind(fl);
 
   if (!ReadObjs(fl, &st)) {
-    log("No objects found");
+    log_msg("No objects found");
     fclose(fl);
     return;
   }

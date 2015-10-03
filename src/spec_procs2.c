@@ -1172,7 +1172,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   default:
     sprintf(buf,"Teacher() attempted to be called with %d(mob#) as teacher.",
 	    teacher);
-    log(buf);
+    log_msg(buf);
     return(FALSE);
     break;
   }
@@ -2587,7 +2587,7 @@ int BreathWeapon(struct char_data *ch, int cmd, char *arg, struct char_data *mob
     if (scan->vnum < 0) {
       sprintf(buf, "monster %s tries to breath, but isn't listed.",
 	      ch->player.short_descr);
-      log(buf);
+      log_msg(buf);
       return FALSE;
     }
     
@@ -2597,7 +2597,7 @@ int BreathWeapon(struct char_data *ch, int cmd, char *arg, struct char_data *mob
     if (count<1) {
       sprintf(buf, "monster %s has no breath weapons",
 	      ch->player.short_descr);
-      log(buf);
+      log_msg(buf);
       return FALSE;
     }
     

@@ -25,7 +25,7 @@ char *fread_string(FILE *f1)
 
  if(i == MAX_STRING_LENGTH - 3) { /* We filled the buffer */
     buf[i] = '\0';
-    log("File too long (fread_string).");
+    log_msg("File too long (fread_string).");
     while(tmp = fgetc(f1))
         if(tmp == '~')
            break;

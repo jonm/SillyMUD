@@ -12,7 +12,7 @@
 
 #include "protos.h"
 
-void log (char *s) { log_sev(s, 1); } /*thought this was a prototype - heheh */
+void log_msg (char *s) { log_sev(s, 1); } /*thought this was a prototype - heheh */
 
 extern char *article_list[];
 extern struct time_data time_info;
@@ -296,18 +296,6 @@ int dice(int number, int size)
   return(sum);
 }
 
-
-/* Causing memory leak, but is a standard c function, so commenting out. -DM
-
-
-char *strdup(char *source)
-{
-	char *new;
-
-	CREATE(new, char, strlen(source)+1);
-	return(strcpy(new, source));
-}
-*/
 
 int scan_number(char *text, int *rval)
 {
@@ -709,7 +697,7 @@ char buf[200];
 
    if (exp_flags > 100) { 
      sprintf(buf, "Exp flags on %s are > 100 (%d)", GET_NAME(mob), exp_flags);
-     log(buf);
+     log_msg(buf);
    }
 
 /* 
@@ -2053,7 +2041,7 @@ void TeleportPulseStuff(int pulse)
 	
 	dest = real_roomp(rp->tele_targ);
 	if (!dest) {
-	  log("invalid tele_targ");
+	  log_msg("invalid tele_targ");
 	  continue;
 	}
 	

@@ -225,7 +225,7 @@ void RoomEdit(struct char_data *ch, char *arg)
  case CHANGE_NUMBER_UP:
  case CHANGE_NUMBER_DOWN: ChangeExitNumber(real_roomp(ch->in_room), ch, arg, 0);
                           return;
- default: log("Got to bad spot in RoomEdit");
+ default: log_msg("Got to bad spot in RoomEdit");
           return;
  }
 }
