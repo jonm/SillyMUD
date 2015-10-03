@@ -334,7 +334,7 @@ int board_check_locks (int bnum, struct char_data *ch);
 /* From comm.c */
  
 int __main ();
-int close_socket_fd( int desc);
+void close_socket_fd( int desc);
 int main (int argc, char **argv);
 int run_the_game(int port);
 int game_loop(int s);

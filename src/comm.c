@@ -85,7 +85,7 @@ int __main ()
    can die, and try to keep these 'invalid' sockets from getting to select
 */
 
-int close_socket_fd( int desc)
+void close_socket_fd( int desc)
 {
   struct descriptor_data *d;
   extern struct descriptor_data *descriptor_list;
