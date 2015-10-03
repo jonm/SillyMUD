@@ -18,8 +18,6 @@
 #include "wizlist.h"
 #include "parser.h"
 
-char *strdup(char *source);
-
 /* From Heap.c */
  
 void SmartStrCpy(char *s1, const char *s2);

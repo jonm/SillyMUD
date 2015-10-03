@@ -153,8 +153,6 @@ void do_title(struct char_data *ch, char *argument, int cmd)
 {
   char buf[512];
   
-  char *strdup(char *source);
-  
   if (IS_NPC(ch) || !ch->desc)
     return;
   

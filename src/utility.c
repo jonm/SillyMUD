@@ -297,18 +297,6 @@ int dice(int number, int size)
 }
 
 
-/* Causing memory leak, but is a standard c function, so commenting out. -DM
-
-
-char *strdup(char *source)
-{
-	char *new;
-
-	CREATE(new, char, strlen(source)+1);
-	return(strcpy(new, source));
-}
-*/
-
 int scan_number(char *text, int *rval)
 {
   int	length;

@@ -19,10 +19,6 @@ extern struct descriptor_data *descriptor_list;
 #define STATE(d) ((d)->connected)
 #define IS_IMMUNE(ch, bit) (IS_SET((ch)->M_immune, bit))
 
-/* Extern procedures */
-
-char *strdup(char *source);
-
 /*
   druid spells
 */
