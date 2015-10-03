@@ -768,9 +768,9 @@ int new_connection(int s)
   char buf[100];
   
   i = sizeof(isa);
-#ifdef 0
+  /*
   getsockname(s, &isa, &i);
-#endif
+  */
   
   if ((t = accept(s, (struct sockaddr *)&isa, &i)) < 0){
     perror("Accept");
