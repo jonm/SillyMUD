@@ -449,7 +449,7 @@ int AssistFriend( struct char_data *ch)
   targ = 0;
   
   if (check_peaceful(ch, ""))
-    return;
+    return(0);
 #if 0
   assert(ch->in_room >= 0); 
 #else
