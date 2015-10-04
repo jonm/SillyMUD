@@ -1038,8 +1038,8 @@ int DoDamage(struct char_data *ch, struct char_data *v, int dam, int type)
 }
 
 
-int DamageMessages( struct char_data *ch, struct char_data *v, int dam,
-		    int attacktype)
+void DamageMessages( struct char_data *ch, struct char_data *v, int dam,
+		     int attacktype)
 {
   int nr, max_hit, i, j;
   struct message_type *messages;

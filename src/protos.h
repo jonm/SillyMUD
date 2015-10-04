@@ -453,8 +453,8 @@ int SetCharFighting(struct char_data *ch, struct char_data *v);
 int SetVictFighting(struct char_data *ch, struct char_data *v);
 int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type);
 int DoDamage(struct char_data *ch, struct char_data *v, int dam, int type);
-int DamageMessages( struct char_data *ch, struct char_data *v, int dam,
-		    int attacktype);
+void DamageMessages( struct char_data *ch, struct char_data *v, int dam,
+		     int attacktype);
 int DamageEpilog(struct char_data *ch, struct char_data *victim);
 int MissileDamage(struct char_data *ch, struct char_data *victim,
 	          int dam, int attacktype);
