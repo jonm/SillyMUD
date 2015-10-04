@@ -3226,7 +3226,7 @@ void InitScripts()
 /* you really don't want to do a lot of reallocs all at once
 */   
 	   if (count==0) {
-	     script_data[top_of_scripts].script = (struct foo_data *) malloc(script_data[top_of_scripts].script, sizeof(struct foo_data));
+	     script_data[top_of_scripts].script = (struct foo_data *) malloc(sizeof(struct foo_data));
 	   } else  {
 	     script_data[top_of_scripts].script = (struct foo_data *) realloc(script_data[top_of_scripts].script, sizeof(struct foo_data) * (count + 1));
 	   }
