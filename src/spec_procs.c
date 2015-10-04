@@ -3277,7 +3277,7 @@ int bank (struct char_data *ch, int cmd, char *arg, struct room_data *rp, int ty
   money = atoi(arg);
   
   if (IS_NPC(ch))
-    return;
+    return(FALSE);
 
   save_char(ch, ch->in_room);
 
