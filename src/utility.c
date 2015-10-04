@@ -5,7 +5,7 @@
 */
 
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
@@ -876,10 +876,10 @@ for simplicity, 1 exceptional ability is 2 special abilities
       sab  = 12000;
       break;
     }
-#ifdef 0			/* removed 6/13, this was ridiculous */
-    case 35:			/* higher level people can allready clear */
-    case 36:			/* the mud. -keith */
-    case 37:
+                                /* removed 6/13, this was ridiculous */
+    /* case 35: */		/* higher level people can allready clear */
+    /* case 36: */		/* the mud. -keith */
+    /*    case 37:
     case 38:
     case 39:
       base = 32000;
@@ -933,8 +933,7 @@ for simplicity, 1 exceptional ability is 2 special abilities
       phit = 300;
       sab  = 40000;
       break;
-#endif
-
+    */
 
     return(base + (phit * GET_HIT(mob)) + (sab * exp_flags));
 

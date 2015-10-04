@@ -447,7 +447,7 @@ int special(struct char_data *ch, int cmd, char *arg)
   
   if (ch->in_room == NOWHERE) {
     char_to_room(ch, 3001);
-    return;
+    return(0);
   }
   
   /* special in room? */

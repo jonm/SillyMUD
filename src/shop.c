@@ -580,18 +580,18 @@ int shop_keeper(struct char_data *ch, int cmd, char *arg, char *mob, int type)
 
   if(type == EVENT_DWARVES_STRIKE) {
     ch->generic = DWARVES_STRIKE;
-    return;  
+    return(FALSE);
   }
 
   if(type == EVENT_FAMINE) {
     ch->generic = FAMINE;
-    return;
+    return(FALSE);
   }
 
   keeper = 0;
 
   if (!real_roomp(ch->in_room))
-    return;
+    return(FALSE);
   
   for (temp_char = real_roomp(ch->in_room)->people; (!keeper) && (temp_char) ; 
        temp_char = temp_char->next_in_room)

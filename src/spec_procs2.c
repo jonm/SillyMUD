@@ -533,12 +533,12 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
 	    }
 	  }
        }
-       return;
+       return(FALSE);
      }
   }
 
   if (!ch->specials.fighting)
-    return;
+    return(FALSE);
 
   if (!IS_PC(ch)) {  
     if ((GET_POS(ch) > POSITION_STUNNED) &&
@@ -1868,7 +1868,7 @@ int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg, 
      }
      if (!(vict = get_char_room_vis(ch, vict_name)))	{
        send_to_char("No one by that name around here.\n\r", ch);
-       return;
+       return(FALSE);
      }
      if (vict == gm) {
        if (obj_index[obj->item_number].virtual == QuestList[Class][GET_LEVEL(ch, Class)].item) {
@@ -3129,7 +3129,7 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *arg, struct room_da
                do_return(i,"",0);
              }
              if (IS_IMMORTAL(i))
-               return;
+               return(FALSE);
 	     
              if (HasClass(i, CLASS_MONK)) {
                GET_EXP(i) = MAX(titles[MONK_LEVEL_IND]
@@ -3282,7 +3282,7 @@ int portal(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int t
     if (port->obj_flags.value[1] <= 0 ||
 	port->obj_flags.value[1] > 32000) {
       send_to_char("The portal leads nowhere\n\r", ch);
-      return;
+      return(FALSE);
     }
     
     act("$n enters $p, and vanishes!", FALSE, ch, port, 0, TO_ROOM);
@@ -3731,7 +3731,7 @@ int astral_portal(struct char_data *ch, int cmd, char *arg, struct char_data *mo
   } else if(type == PULSE_TICK) {               /* hey, let's wander! */
     
     if (GET_POS(ch) != POSITION_STANDING)
-      return;
+      return(FALSE);
     
     if(ch->in_room < ASTRAL_START || ch->in_room > ASTRAL_END) {
       do_say(ch, "Woah!  How the fuck did I get here??", 0);
