@@ -752,7 +752,7 @@ int init_socket(int port)
 		assert(0);
 	}
 
-	if (bind(s, &sa, sizeof(sa)) < 0)	{
+	if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
 	    perror("bind");
 	    exit(0);
 	}
