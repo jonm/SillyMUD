@@ -687,7 +687,7 @@ int find_door(struct char_data *ch, char *type, char *dir)
 }
 
 
-open_door(struct char_data *ch, int dir)
+void open_door(struct char_data *ch, int dir)
      /* remove all necessary bits and send messages */
 {
   struct room_direction_data *exitp, *back;
@@ -730,7 +730,7 @@ open_door(struct char_data *ch, int dir)
   }
 }
 
-raw_open_door(struct char_data *ch, int dir)
+void raw_open_door(struct char_data *ch, int dir)
      /* remove all necessary bits and send messages */
 {
   struct room_direction_data *exitp, *back;
