@@ -18,6 +18,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <sys/resource.h>
+#include <unistd.h>
 
 #include "protos.h"
 
