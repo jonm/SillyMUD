@@ -1535,7 +1535,7 @@ void act(char *str, int hide_invisible, struct char_data *ch,
 	    break;
 	  }
 	  
-	  while (*point = *(i++))
+	  while ((*point = *(i++)) != '\0')
 	    ++point;
 	  
 	  ++strp;
