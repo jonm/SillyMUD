@@ -368,7 +368,7 @@ void send_to_room_except_two
   (char *messg, int room, struct char_data *ch1, struct char_data *ch2);
 void act(char *str, int hide_invisible, struct char_data *ch,
 	 struct obj_data *obj, void *vict_obj, int type);
-int raw_force_all( char *to_force);
+void raw_force_all( char *to_force);
  
  
 /* From constants.c */
