@@ -433,11 +433,13 @@ int game_loop(int s)
     
     for (point = descriptor_list; point; point = next_point) {
 	next_point = point->next;
-	if (FD_ISSET(point->descriptor, &output_set) && point->output.head)
-	  if (process_output(point) < 0)
+	if (FD_ISSET(point->descriptor, &output_set) && point->output.head) {
+	  if (process_output(point) < 0) {
 	    close_socket(point);
-	  else
+	  } else {
 	    point->prompt_mode = 1;
+	  }
+	}
       }
     
     /* give the people some prompts  */
@@ -445,11 +447,11 @@ int game_loop(int s)
       if (point->prompt_mode) {
 	if (point->str)
 	  write_to_descriptor(point->descriptor, "-> ");
-	else if (!point->connected)
-	  if (point->showstr_point)
+	else if (!point->connected) {
+	  if (point->showstr_point) {
 	    write_to_descriptor(point->descriptor,
 				"[Return to continue/Q to quit]");
-	  else { 
+	  } else { 
 	    struct char_data *ch;
 	    ch = point->character;
 
@@ -540,6 +542,7 @@ int game_loop(int s)
 	      write_to_descriptor(point->descriptor, promptbuf);
 	    }
 	  }
+	}
 	point->prompt_mode = 0;
       }
     
