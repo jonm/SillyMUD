@@ -846,7 +846,7 @@ int new_descriptor(int s)
 
   int desc;
   struct descriptor_data *newd;
-  int size;
+  socklen_t size;
 #ifdef sun
   struct hostent *from;
   struct sockaddr peer;
