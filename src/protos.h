@@ -336,7 +336,7 @@ int board_check_locks (int bnum, struct char_data *ch);
 int __main ();
 void close_socket_fd( int desc);
 int main (int argc, char **argv);
-int run_the_game(int port);
+void run_the_game(int port);
 int game_loop(int s);
 int get_from_q(struct txt_q *queue, char *dest);
 void write_to_q(char *txt, struct txt_q *queue);

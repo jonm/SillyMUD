@@ -216,7 +216,7 @@ int main (int argc, char **argv)
 
 
 /* Init sockets, run game, and cleanup sockets */
-int run_the_game(int port)
+void run_the_game(int port)
 {
   int s; 
   PROFILE(extern etext();)
