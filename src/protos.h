@@ -162,6 +162,7 @@ char *DescRatio(float f);
 char *DescDamage(float dam);
 char *DescAttacks(float a);
 char *EgoDesc(int a);
+int MobLevBonus(struct char_data *ch);
 void show_exits(struct char_data *ch);
  
  
