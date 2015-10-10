@@ -371,7 +371,7 @@ int MoveOne(struct char_data *ch, int dir)
   
 }
 
-int MoveGroup( struct char_data *ch, int dir)
+void MoveGroup( struct char_data *ch, int dir)
 {
   struct char_data *heap_ptr[50];
   int was_in, i, heap_top, heap_tot[50];
@@ -420,12 +420,12 @@ int MoveGroup( struct char_data *ch, int dir)
   }
 }
 
-int DisplayOneMove(struct char_data *ch, int dir, int was_in)
+void DisplayOneMove(struct char_data *ch, int dir, int was_in)
 {
   DisplayMove(ch, dir, was_in, 1);
 }
 
-int DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total)
+void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total)
 {
   DisplayMove(ch, dir, was_in, total);
 }
@@ -482,7 +482,7 @@ void do_move(struct char_data *ch, char *argument, int cmd)
   */
 
 
-int DisplayMove( struct char_data *ch, int dir, int was_in, int total)
+void DisplayMove( struct char_data *ch, int dir, int was_in, int total)
 {
   struct char_data *tmp_ch;
   char tmp[256], *how;
