@@ -264,7 +264,7 @@ void run_the_game(int port)
 
 
 /* Accept new connects, relay commands, and call 'heartbeat-functs' */
-int game_loop(int s)
+void game_loop(int s)
 {
   fd_set input_set, output_set, exc_set;
 #if 0

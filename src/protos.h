@@ -337,7 +337,7 @@ int __main ();
 void close_socket_fd( int desc);
 int main (int argc, char **argv);
 void run_the_game(int port);
-int game_loop(int s);
+void game_loop(int s);
 int get_from_q(struct txt_q *queue, char *dest);
 void write_to_q(char *txt, struct txt_q *queue);
 struct timeval timediff(struct timeval *a, struct timeval *b);
