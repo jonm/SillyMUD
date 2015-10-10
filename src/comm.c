@@ -12,6 +12,7 @@
 #include <sys/socket.h>
 #include <sys/wait.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <string.h>
 #include <sys/time.h>
@@ -820,7 +821,7 @@ static void printhost(addr, buf)
   if (s) {
     strcpy(buf, s);
   } else {
-    strcpy(buf, (char *)inet_ntoa(addr));
+    strcpy(buf, inet_ntoa(*addr));
   }
 }
 
