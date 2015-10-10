@@ -771,7 +771,7 @@ int new_connection(int s)
 #ifdef sun
    struct sockaddr peer;
 #endif
-  int i;
+  socklen_t i;
   int t;
   char buf[100];
   
