@@ -156,15 +156,18 @@ int main (int argc, char **argv)
     pos++;
   }
   
-  if (pos < argc)
-    if (!isdigit(*argv[pos]))      	{
+  if (pos < argc) {
+    if (!isdigit(*argv[pos])) {
       fprintf(stderr, "Usage: %s [-l] [-s] [-d pathname] [ port # ]\n", 
 	      argv[0]);
       assert(0);
-    }  else if ((port = atoi(argv[pos])) <= 1024)  {
-      printf("Illegal port #\n");
-      assert(0);
+    }  else {
+      if ((port = atoi(argv[pos])) <= 1024)  {
+	printf("Illegal port #\n");
+	assert(0);
+      }
     }
+  }
   
   Uptime = time(0);
   
