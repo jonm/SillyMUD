@@ -1762,6 +1762,7 @@ int MIN(int a, int b);
 int MAX(int a, int b);
 int GetItemClassRestrictions(struct obj_data *obj);
 int CAN_SEE(struct char_data *s, struct char_data *o);
+int CAN_SEE_OBJ(struct char_data *ch, struct obj_data *obj);
 int exit_ok(struct room_direction_data	*exit, struct room_data **rpp);
 int MobVnum( struct char_data *c);
 int ObjVnum( struct obj_data *o);
