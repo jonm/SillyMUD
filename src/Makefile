@@ -87,6 +87,9 @@ dmserver : ${OBJS}
 depend :
 	makedepend ${SRCS}
 
+clean :
+	rm -f ${OBJS} dmserver
+
 
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
