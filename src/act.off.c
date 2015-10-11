@@ -234,13 +234,15 @@ void do_backstab(struct char_data *ch, char *argument, int cmd)
       
     if (ch->skills && ch->skills[SKILL_BACKSTAB].learned) {
       if (percent > ch->skills[SKILL_BACKSTAB].learned) {
-	if(AWAKE(victim))
-	  if(!number(0,1))
+	if(AWAKE(victim)) {
+	  if(!number(0,1)) {
 	    act("Drats, you meant to insert $p a little more to the left!",
 		FALSE,ch,ch->equipment[WIELD],0,TO_CHAR);
-	  else
+	  } else {
 	    act("Drats, you meant to insert $p a little more to the right!",
 		FALSE,ch,ch->equipment[WIELD],0,TO_CHAR);
+	  }
+	}
 	if (AWAKE(victim)) {
 	  damage(ch, victim, 0, SKILL_BACKSTAB);
 	  AddHated(victim, ch);

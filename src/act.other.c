@@ -581,17 +581,19 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
     }
   }
   
-  if (ohoh && IS_NPC(victim) && AWAKE(victim))
+  if (ohoh && IS_NPC(victim) && AWAKE(victim)) {
     if (IS_SET(victim->specials.act, ACT_NICE_THIEF)) {
       sprintf(buf, "%s is a bloody thief.", GET_NAME(ch));
       do_shout(victim, buf, 0);
       do_say(victim, "Don't you ever do that again!", 0);
     } else {
-      if (CAN_SEE(victim, ch))
+      if (CAN_SEE(victim, ch)) {
 	hit(victim, ch, TYPE_UNDEFINED);
-      else if (number(0,1))
+      } else if (number(0,1)) {
 	hit(victim, ch, TYPE_UNDEFINED);
+      }
     }
+  }
   
 }
 
