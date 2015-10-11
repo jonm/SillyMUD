@@ -170,7 +170,7 @@ void do_get(struct char_data *ch, char *argument, int cmd)
     if (getall(arg1,newarg)!=NULL) {
       strcpy(arg1,newarg);
       num = -1;
-    } else if ((p = getabunch(arg1,newarg))!=NULL) {
+    } else if ((p = getabunch(arg1,newarg))!=0) {
       strcpy(arg1,newarg);
       num = p;
     } else {
@@ -304,7 +304,7 @@ void do_get(struct char_data *ch, char *argument, int cmd)
 	if (getall(arg1,newarg)!=NULL) {
 	  num = -1;
 	  strcpy(arg1,newarg);
-	} else if ((p = getabunch(arg1,newarg))!=NULL) {
+	} else if ((p = getabunch(arg1,newarg))!=0) {
 	  num = p;                     
 	  strcpy(arg1,newarg);
 	} else {
@@ -450,7 +450,7 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
       if (getall(arg,newarg)!=NULL) {
 	num = -1;
 	strcpy(arg,newarg);
-      } else if ((p = getabunch(arg,newarg))!=NULL) {
+      } else if ((p = getabunch(arg,newarg))!=0) {
 	num = p;                     
 	strcpy(arg,newarg);
       } else {
@@ -516,7 +516,7 @@ void do_put(struct char_data *ch, char *argument, int cmd)
       if (getall(arg1,newarg)!=NULL) {
 	num = -1;
 	strcpy(arg1,newarg);
-      } else if ((p = getabunch(arg1,newarg))!=NULL) {
+      } else if ((p = getabunch(arg1,newarg))!=0) {
 	num = p;                     
 	strcpy(arg1,newarg);
       } else {
@@ -699,7 +699,7 @@ void do_give(struct char_data *ch, char *argument, int cmd)
     if (getall(obj_name,newarg)!=NULL) {
       num = -1;
       strcpy(obj_name,newarg);
-    } else if ((p = getabunch(obj_name,newarg))!=NULL) {
+    } else if ((p = getabunch(obj_name,newarg))!=0) {
       num = p;                     
       strcpy(obj_name,newarg);
     } else {
