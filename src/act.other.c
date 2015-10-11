@@ -82,7 +82,7 @@ void do_junk(struct char_data *ch, char *argument, int cmd)
   
   only_argument(argument, arg);
   if (*arg) {
-    if (getall(arg,newarg)!=NULL) {
+    if (getall(arg,newarg)!=0) {
       num = -1;
       strcpy(arg,newarg);
     } else if ((p = getabunch(arg,newarg))!=0) {
@@ -1835,7 +1835,7 @@ void do_donate(struct char_data *ch, char *argument, int cmd)
   
   only_argument(argument, arg);
   if (*arg) {
-    if (getall(arg,newarg)!=NULL) {
+    if (getall(arg,newarg)!=0) {
       num = -1;
       strcpy(arg,newarg);
     } else if ((p = getabunch(arg,newarg))!=0) {
