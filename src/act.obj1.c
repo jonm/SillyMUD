@@ -49,7 +49,7 @@ void get(struct char_data *ch, struct obj_data *obj_object,
     act("You get $p.", 0, ch, obj_object, 0, TO_CHAR);
     act("$n gets $p.", 1, ch, obj_object, 0, TO_ROOM);
   }
-  if((obj_object->obj_flags.type_flag == ITEM_MONEY)) {
+  if (obj_object->obj_flags.type_flag == ITEM_MONEY) {
     if (obj_object->obj_flags.value[0]<1)
       obj_object->obj_flags.value[0] = 1;
     obj_from_char(obj_object);
