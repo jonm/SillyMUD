@@ -231,7 +231,7 @@ void do_get(struct char_data *ch, char *argument, int cmd)
       get_obj_vis_accessible(ch, arg2);
     if (sub_object) {
       if (GET_ITEM_TYPE(sub_object)==ITEM_CONTAINER){
-	if(blah = get_obj_in_list_vis(ch, arg2, ch->carrying)){
+	if((blah = get_obj_in_list_vis(ch, arg2, ch->carrying)) != NULL) {
 	  has=TRUE;
 	}
 	for(obj_object = sub_object->contains;

@@ -40,11 +40,11 @@ void weight_change_object(struct obj_data *obj, int weight)
   
   if (obj->in_room != NOWHERE) {
     GET_OBJ_WEIGHT(obj) += weight;
-  } else if (tmp_ch = obj->carried_by) {
+  } else if ((tmp_ch = obj->carried_by) != NULL) {
     obj_from_char(obj);
     GET_OBJ_WEIGHT(obj) += weight;
     obj_to_char(obj, tmp_ch);
-  } else if (tmp_obj = obj->in_obj) {
+  } else if ((tmp_obj = obj->in_obj) != NULL) {
     obj_from_obj(obj);
     GET_OBJ_WEIGHT(obj) += weight;
     obj_to_obj(obj, tmp_obj);
