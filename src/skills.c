@@ -1311,7 +1311,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 	    obj_from_room(obj_object);
 	    obj_to_char(obj_object, ch);
 	    act("You get $p.", 0, ch, obj_object, 0, TO_CHAR);
-	    if((obj_object->obj_flags.type_flag == ITEM_MONEY)) {
+	    if(obj_object->obj_flags.type_flag == ITEM_MONEY) {
 	      if (obj_object->obj_flags.value[0]<1)
 		obj_object->obj_flags.value[0] = 1;
 	      obj_from_char(obj_object);
@@ -1372,7 +1372,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 		  obj_from_obj(obj_object);
 		  obj_to_char(obj_object, ch);
 	  act("You get $p from $P.",0,ch,obj_object,sub_object,TO_CHAR);
-		  if((obj_object->obj_flags.type_flag == ITEM_MONEY)) {
+		  if(obj_object->obj_flags.type_flag == ITEM_MONEY) {
 		    if (obj_object->obj_flags.value[0]<1)
 		      obj_object->obj_flags.value[0] = 1;
 		    obj_from_char(obj_object);
