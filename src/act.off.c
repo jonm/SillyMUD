@@ -454,7 +454,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
           found = TRUE;
 
 	  if (RIDDEN(ch)) {
-	    if ((die = MoveOne(RIDDEN(ch), attempt, FALSE))== 1) {
+	    if ((die = MoveOne(RIDDEN(ch), attempt))== 1) {
 	      /* The escape has succeded */
 	      send_to_char("You flee head over heels.\n\r", ch);
               break;
@@ -465,7 +465,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	      /* return; */
 	    }
 	  } else {
-	    if ((die = MoveOne(ch, attempt, FALSE))== 1) {
+	    if ((die = MoveOne(ch, attempt))== 1) {
 	      /* The escape has succeded */
 	      send_to_char("You flee head over heels.\n\r", ch);
               break;
@@ -624,7 +624,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 
           found = TRUE;
 	  if (RIDDEN(ch)) {
-	    if ((die = MoveOne(RIDDEN(ch), attempt, FALSE))== 1) {
+	    if ((die = MoveOne(RIDDEN(ch), attempt))== 1) {
 	      /* The escape has succeded */
 	      send_to_char("You flee head over heels.\n\r", ch);
               break;
@@ -635,7 +635,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	      /* return; */
 	    }
 	  } else {
-	    if ((die = MoveOne(ch, attempt, FALSE))== 1) {
+	    if ((die = MoveOne(ch, attempt))== 1) {
 	      /* The escape has succeded */
 	      send_to_char("You flee head over heels.\n\r", ch);
               break;
@@ -671,7 +671,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);
 
 	if (RIDDEN(ch)) {
-	  if ((die = MoveOne(RIDDEN(ch), attempt, FALSE))== 1) {
+	  if ((die = MoveOne(RIDDEN(ch), attempt))== 1) {
 	    /* The escape has succeded */
 	    send_to_char("You flee head over heels.\n\r", ch);
 	    return;
@@ -681,7 +681,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	    return;
 	  }
 	} else {
-	  if ((die = MoveOne(ch, attempt, FALSE))== 1) {
+	  if ((die = MoveOne(ch, attempt))== 1) {
 	    /* The escape has succeded */
 	    send_to_char("You flee head over heels.\n\r", ch);
 	    return;

@@ -104,6 +104,7 @@ void half_orc_garble(char *buf, char *buf2, struct char_data *ch);
 void ogre_garble(char *buf, char *buf2, struct char_data *ch);
 void do_fly(struct char_data *ch, char *argument, int cmd);
 void do_walk(struct char_data *ch, char *argument, int cmd);
+int MoveOne(struct char_data *ch, int dir);
 void DisplayOneMove(struct char_data *ch, int dir, int was_in);
 void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total);
 void DisplayMove(struct char_data *ch, int dir, int was_in, int total);
