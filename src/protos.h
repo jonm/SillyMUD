@@ -1311,7 +1311,7 @@ struct breath_victim *choose_victims(struct char_data *ch,
 				     struct char_data *first_victim);
 void free_victims(struct breath_victim *head);
 int breath_weapon(struct char_data *ch, struct char_data *target,
-		  int mana_cost, void (*func)());
+		  int mana_cost, void (*func)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *));
 int use_breath_weapon(struct char_data *ch, struct char_data *target,
 		      int cost, void (*func)());
 int BreathWeapon(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);

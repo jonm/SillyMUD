@@ -1231,7 +1231,7 @@ void do_wimp(struct char_data *ch, char *argument, int cmd)
 
 extern struct breather breath_monsters[];
 extern struct index_data *mob_index;
-void (*bweapons[])() = {
+void (*bweapons[])(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *) = {
   cast_geyser,
   cast_fire_breath, cast_gas_breath, cast_frost_breath, cast_acid_breath,
   cast_lightning_breath};
@@ -1241,7 +1241,7 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
   struct char_data *victim;
   char	buf[MAX_STRING_LENGTH], name[MAX_STRING_LENGTH];
   int	count, manacost;
-  void	(*weapon)();
+  void	(*weapon)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *);
   
   if (check_peaceful(ch,"That wouldn't be nice at all.\n\r"))
     return;

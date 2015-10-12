@@ -2464,7 +2464,7 @@ void free_victims(struct breath_victim *head)
 }
 
 int breath_weapon(struct char_data *ch, struct char_data *target,
-		  int mana_cost, void (*func)())
+		  int mana_cost, void (*func)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *))
 {
   struct breath_victim *hitlist, *scan;
   struct char_data *tmp;
