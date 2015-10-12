@@ -245,7 +245,7 @@ void do_recite(struct char_data *ch, char *argument, int cmd);
 void do_use(struct char_data *ch, char *argument, int cmd);
 void do_plr_noshout(struct char_data *ch, char *argument, int cmd);
 void do_alias(struct char_data *ch, char *arg, int cmd);
-int Dismount(struct char_data *ch, struct char_data *h, int pos);
+void Dismount(struct char_data *ch, struct char_data *h, int pos);
 void do_mount(struct char_data *ch, char *arg, int cmd);
 void do_donate(struct char_data *ch, char *argument, int cmd);
 void do_auto(struct char_data *ch, char *argument, int cmd);  

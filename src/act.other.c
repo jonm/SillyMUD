@@ -1588,7 +1588,7 @@ void do_alias(struct char_data *ch, char *arg, int cmd)
   }
 }
 
-int Dismount(struct char_data *ch, struct char_data *h, int pos)
+void Dismount(struct char_data *ch, struct char_data *h, int pos)
 {
   
   MOUNTED(ch) = 0;
