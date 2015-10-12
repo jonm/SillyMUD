@@ -1236,7 +1236,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       strcat(buf, buf2);
       send_to_char(buf, ch);
       
-      sprintf(buf,"Birth : [%ld]secs, Logon[%ld]secs, Played[%ld]secs\n\r", 
+      sprintf(buf,"Birth : [%ld]secs, Logon[%ld]secs, Played[%d]secs\n\r", 
 	      k->player.time.birth,
 	      k->player.time.logon,
 	      k->player.time.played);
@@ -1387,7 +1387,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
           if(aff->location == APPLY_IMMUNE && !(aff->modifier) &&
              aff->bitvector) {
             sprintf(buf, "Spell : '%s'\n\r",spells[aff->type-1]);
-            sprintf(buf,"     Modifies %s by %d points\n\r",
+            sprintf(buf,"     Modifies %s by %ld points\n\r",
                     apply_types[aff->location],aff->bitvector);
             send_to_char(buf,ch);
             sprintf(buf,"     Expires in %3d hours, Resistance Bits set ",
@@ -1608,7 +1608,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       send_to_char("Can affect char :\n\r", ch);
       for (i=0;i<MAX_OBJ_AFFECT;i++) {
 	sprinttype(j->affected[i].location,apply_types,buf2);
-	sprintf(buf,"    Affects : %s By %d\n\r", buf2,j->affected[i].modifier);
+	sprintf(buf,"    Affects : %s By %lu\n\r", buf2,j->affected[i].modifier);
 	send_to_char(buf, ch);
       }			
       return;

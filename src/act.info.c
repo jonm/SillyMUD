@@ -2779,7 +2779,7 @@ void do_world(struct char_data *ch, char *argument, int cmd)
 #if HASH  
   sprintf(buf, "Total number of rooms in world: %d\n\r", room_db.klistlen);
 #else
-  sprintf(buf, "Total number of rooms in world: %d\n\r", room_count);
+  sprintf(buf, "Total number of rooms in world: %ld\n\r", room_count);
 #endif
   send_to_char(buf, ch);
   sprintf(buf, "Total number of zones in world: %d\n\r\n\r",
@@ -2794,10 +2794,10 @@ void do_world(struct char_data *ch, char *argument, int cmd)
   sprintf(buf,"Total number of registered players: %d\n\r",top_of_p_table + 1);
   send_to_char(buf, ch);
 
-  sprintf(buf, "Total number of monsters in game: %d\n\r", mob_count);
+  sprintf(buf, "Total number of monsters in game: %ld\n\r", mob_count);
   send_to_char(buf, ch);
 
-  sprintf(buf, "Total number of objects in game: %d\n\r", obj_count);
+  sprintf(buf, "Total number of objects in game: %ld\n\r", obj_count);
   send_to_char(buf, ch);
 
 }
