@@ -10,7 +10,7 @@ CPPFLAGS = -DIMPL_SECURITY -DNEW_RENT -DLEVEL_LOSS -DNEWEXP \
 TITANFLAGS = -g -43 -vector_c -safe=ptrs -DTITAN
 SUNFLAGS = -g
 ##
-CFLAGS = $(SUNFLAGS) $(CPPFLAGS) -Werror
+CFLAGS = $(SUNFLAGS) $(CPPFLAGS) # -Werror
 ##
 ##
 ##  For lower exp loss at lower levels -DNEWEXP
