@@ -6,17 +6,20 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <string.h>
 #include <sys/time.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <sys/resource.h>
+#include <unistd.h>
 
 #include "protos.h"
 
@@ -56,7 +59,7 @@ struct descriptor_data *descriptor_list, *next_to_process;
 int lawful = 0;		/* work like the game regulator */
 int slow_death = 0;     /* Shut her down, Martha, she's sucking mud */
 int mudshutdown = 0;       /* clean shutdown */
-int reboot = 0;         /* reboot the game after a shutdown */
+int should_reboot = 0;         /* reboot the game after a shutdown */
 int no_specials = 0;    /* Suppress ass. of special routines */
 long Uptime;            /* time that the game has been up */
 
@@ -155,15 +158,18 @@ int main (int argc, char **argv)
     pos++;
   }
   
-  if (pos < argc)
-    if (!isdigit(*argv[pos]))      	{
+  if (pos < argc) {
+    if (!isdigit(*argv[pos])) {
       fprintf(stderr, "Usage: %s [-l] [-s] [-d pathname] [ port # ]\n", 
 	      argv[0]);
       assert(0);
-    }  else if ((port = atoi(argv[pos])) <= 1024)  {
-      printf("Illegal port #\n");
-      assert(0);
+    }  else {
+      if ((port = atoi(argv[pos])) <= 1024)  {
+	printf("Illegal port #\n");
+	assert(0);
+      }
     }
+  }
   
   Uptime = time(0);
   
@@ -211,7 +217,7 @@ int main (int argc, char **argv)
 
 
 /* Init sockets, run game, and cleanup sockets */
-int run_the_game(int port)
+void run_the_game(int port)
 {
   int s; 
   PROFILE(extern etext();)
@@ -259,7 +265,7 @@ int run_the_game(int port)
 
 
 /* Accept new connects, relay commands, and call 'heartbeat-functs' */
-int game_loop(int s)
+void game_loop(int s)
 {
   fd_set input_set, output_set, exc_set;
 #if 0
@@ -428,11 +434,13 @@ int game_loop(int s)
     
     for (point = descriptor_list; point; point = next_point) {
 	next_point = point->next;
-	if (FD_ISSET(point->descriptor, &output_set) && point->output.head)
-	  if (process_output(point) < 0)
+	if (FD_ISSET(point->descriptor, &output_set) && point->output.head) {
+	  if (process_output(point) < 0) {
 	    close_socket(point);
-	  else
+	  } else {
 	    point->prompt_mode = 1;
+	  }
+	}
       }
     
     /* give the people some prompts  */
@@ -440,11 +448,11 @@ int game_loop(int s)
       if (point->prompt_mode) {
 	if (point->str)
 	  write_to_descriptor(point->descriptor, "-> ");
-	else if (!point->connected)
-	  if (point->showstr_point)
+	else if (!point->connected) {
+	  if (point->showstr_point) {
 	    write_to_descriptor(point->descriptor,
 				"[Return to continue/Q to quit]");
-	  else { 
+	  } else { 
 	    struct char_data *ch;
 	    ch = point->character;
 
@@ -535,6 +543,7 @@ int game_loop(int s)
 	      write_to_descriptor(point->descriptor, promptbuf);
 	    }
 	  }
+	}
 	point->prompt_mode = 0;
       }
     
@@ -744,7 +753,7 @@ int init_socket(int port)
 		assert(0);
 	}
 
-	if (bind(s, &sa, sizeof(sa)) < 0)	{
+	if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
 	    perror("bind");
 	    exit(0);
 	}
@@ -763,7 +772,7 @@ int new_connection(int s)
 #ifdef sun
    struct sockaddr peer;
 #endif
-  int i;
+  socklen_t i;
   int t;
   char buf[100];
   
@@ -812,7 +821,7 @@ static void printhost(addr, buf)
   if (s) {
     strcpy(buf, s);
   } else {
-    strcpy(buf, (char *)inet_ntoa(addr));
+    strcpy(buf, inet_ntoa(*addr));
   }
 }
 
@@ -837,7 +846,7 @@ int new_descriptor(int s)
 
   int desc;
   struct descriptor_data *newd;
-  int size;
+  socklen_t size;
 #ifdef sun
   struct hostent *from;
   struct sockaddr peer;
@@ -1526,7 +1535,7 @@ void act(char *str, int hide_invisible, struct char_data *ch,
 	    break;
 	  }
 	  
-	  while (*point = *(i++))
+	  while ((*point = *(i++)) != '\0')
 	    ++point;
 	  
 	  ++strp;
@@ -1545,7 +1554,7 @@ void act(char *str, int hide_invisible, struct char_data *ch,
   }
 }
 
-int raw_force_all( char *to_force)
+void raw_force_all( char *to_force)
 {
   struct descriptor_data *i;
   char buf[400];

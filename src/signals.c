@@ -73,7 +73,7 @@ int shutdown_request()
 int hupsig()
 {
   int i;
-  extern int mudshutdown, reboot;
+  extern int mudshutdown, should_reboot;
 
   log_msg("Received SIGHUP, SIGINT, or SIGTERM. Shutting down");
 
@@ -82,7 +82,7 @@ int hupsig()
   for (i=0;i<30;i++) {
     SaveTheWorld();
   }
-  mudshutdown = reboot = 1;
+  mudshutdown = should_reboot = 1;
 }
 
 int logsig()

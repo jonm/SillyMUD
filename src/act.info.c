@@ -5,6 +5,7 @@
  ************************************************************************* */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
@@ -110,7 +111,7 @@ struct obj_data *get_object_in_equip_vis(struct char_data *ch,
        		 char *arg, struct obj_data *equipment[], int *j) {
   
   for ((*j) = 0; (*j) < MAX_WEAR ; (*j)++)
-    if (equipment[(*j)])
+    if (equipment[(*j)]) {
       if (CAN_SEE_OBJ(ch,equipment[(*j)])) {
 	if (isname(arg, equipment[(*j)]->name)) {
 	  return(equipment[(*j)]);
@@ -120,6 +121,7 @@ struct obj_data *get_object_in_equip_vis(struct char_data *ch,
           return(equipment[(*j)]);
 	}
       }
+    }
 
   return (0);
 }
@@ -333,7 +335,7 @@ void list_obj_in_room(struct obj_data *list, struct char_data *ch)
       if ((ITEM_TYPE(cond_ptr[k]) == ITEM_TRAP) && 
 	  (GET_TRAP_CHARGES(cond_ptr[k]) > 0)) {
 	num = number(1,101);
-	if (ch->skills && (num < (ch->skills[SKILL_LOCATE_TRAP].learned/2)))
+	if (ch->skills && (num < (ch->skills[SKILL_LOCATE_TRAP].learned/2))) {
 	  if (cond_tot[k] > 1) {
 	    sprintf(buf,"[%2d] ",Inventory_Num++);
 	    send_to_char(buf,ch);
@@ -341,6 +343,7 @@ void list_obj_in_room(struct obj_data *list, struct char_data *ch)
 	  } else {
 	    show_obj_to_char(cond_ptr[k],ch,0);
 	  }
+	}
       } else {
 	if (cond_tot[k] > 1) {
 	  sprintf(buf,"[%2d] ",Inventory_Num++);
@@ -688,11 +691,12 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int mode,
   
   if (mode == 0) {
     if (IS_AFFECTED(i, AFF_HIDE) || !CAN_SEE(ch,i)) {
-      if (IS_AFFECTED(ch, AFF_SENSE_LIFE))
+      if (IS_AFFECTED(ch, AFF_SENSE_LIFE)) {
 	if (num==1)
 	  send_to_char("You sense a hidden life form in the room.\n\r", ch);
 	else 
-	  send_to_char("You sense hidden life forma in the room.\n\r", ch);		
+	  send_to_char("You sense hidden life forms in the room.\n\r", ch);
+      }
       return;
     }
     
@@ -2779,7 +2783,7 @@ void do_world(struct char_data *ch, char *argument, int cmd)
 #if HASH  
   sprintf(buf, "Total number of rooms in world: %d\n\r", room_db.klistlen);
 #else
-  sprintf(buf, "Total number of rooms in world: %d\n\r", room_count);
+  sprintf(buf, "Total number of rooms in world: %ld\n\r", room_count);
 #endif
   send_to_char(buf, ch);
   sprintf(buf, "Total number of zones in world: %d\n\r\n\r",
@@ -2794,10 +2798,10 @@ void do_world(struct char_data *ch, char *argument, int cmd)
   sprintf(buf,"Total number of registered players: %d\n\r",top_of_p_table + 1);
   send_to_char(buf, ch);
 
-  sprintf(buf, "Total number of monsters in game: %d\n\r", mob_count);
+  sprintf(buf, "Total number of monsters in game: %ld\n\r", mob_count);
   send_to_char(buf, ch);
 
-  sprintf(buf, "Total number of objects in game: %d\n\r", obj_count);
+  sprintf(buf, "Total number of objects in game: %ld\n\r", obj_count);
   send_to_char(buf, ch);
 
 }

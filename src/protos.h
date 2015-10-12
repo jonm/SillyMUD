@@ -104,6 +104,11 @@ void half_orc_garble(char *buf, char *buf2, struct char_data *ch);
 void ogre_garble(char *buf, char *buf2, struct char_data *ch);
 void do_fly(struct char_data *ch, char *argument, int cmd);
 void do_walk(struct char_data *ch, char *argument, int cmd);
+int MoveOne(struct char_data *ch, int dir);
+void DisplayOneMove(struct char_data *ch, int dir, int was_in);
+void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total);
+void DisplayMove(struct char_data *ch, int dir, int was_in, int total);
+int AddToCharHeap(struct char_data **heap, int *top, int *total, struct char_data *k);
  
 /* From act.info.c */
 
@@ -162,6 +167,7 @@ char *DescRatio(float f);
 char *DescDamage(float dam);
 char *DescAttacks(float a);
 char *EgoDesc(int a);
+int MobLevBonus(struct char_data *ch);
 void show_exits(struct char_data *ch);
  
  
@@ -186,7 +192,7 @@ void do_eat(struct char_data *ch, char *argument, int cmd);
 void do_pour(struct char_data *ch, char *argument, int cmd);
 void do_sip(struct char_data *ch, char *argument, int cmd);
 void do_taste(struct char_data *ch, char *argument, int cmd);
-int perform_wear(struct char_data *ch, struct obj_data *obj_object, int keyword);
+void perform_wear(struct char_data *ch, struct obj_data *obj_object, int keyword);
 int IsRestricted(int Mask, int Class);
 void wear(struct char_data *ch, struct obj_data *obj_object, int keyword);
 void do_wear(struct char_data *ch, char *argument, int cmd);
@@ -239,7 +245,7 @@ void do_recite(struct char_data *ch, char *argument, int cmd);
 void do_use(struct char_data *ch, char *argument, int cmd);
 void do_plr_noshout(struct char_data *ch, char *argument, int cmd);
 void do_alias(struct char_data *ch, char *arg, int cmd);
-int Dismount(struct char_data *ch, struct char_data *h, int pos);
+void Dismount(struct char_data *ch, struct char_data *h, int pos);
 void do_mount(struct char_data *ch, char *arg, int cmd);
 void do_donate(struct char_data *ch, char *argument, int cmd);
 void do_auto(struct char_data *ch, char *argument, int cmd);  
@@ -336,8 +342,8 @@ int board_check_locks (int bnum, struct char_data *ch);
 int __main ();
 void close_socket_fd( int desc);
 int main (int argc, char **argv);
-int run_the_game(int port);
-int game_loop(int s);
+void run_the_game(int port);
+void game_loop(int s);
 int get_from_q(struct txt_q *queue, char *dest);
 void write_to_q(char *txt, struct txt_q *queue);
 struct timeval timediff(struct timeval *a, struct timeval *b);
@@ -368,7 +374,7 @@ void send_to_room_except_two
   (char *messg, int room, struct char_data *ch1, struct char_data *ch2);
 void act(char *str, int hide_invisible, struct char_data *ch,
 	 struct obj_data *obj, void *vict_obj, int type);
-int raw_force_all( char *to_force);
+void raw_force_all( char *to_force);
  
  
 /* From constants.c */
@@ -1305,7 +1311,7 @@ struct breath_victim *choose_victims(struct char_data *ch,
 				     struct char_data *first_victim);
 void free_victims(struct breath_victim *head);
 int breath_weapon(struct char_data *ch, struct char_data *target,
-		  int mana_cost, void (*func)());
+		  int mana_cost, void (*func)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *));
 int use_breath_weapon(struct char_data *ch, struct char_data *target,
 		      int cost, void (*func)());
 int BreathWeapon(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
@@ -1762,6 +1768,7 @@ int MIN(int a, int b);
 int MAX(int a, int b);
 int GetItemClassRestrictions(struct obj_data *obj);
 int CAN_SEE(struct char_data *s, struct char_data *o);
+int CAN_SEE_OBJ(struct char_data *ch, struct obj_data *obj);
 int exit_ok(struct room_direction_data	*exit, struct room_data **rpp);
 int MobVnum( struct char_data *c);
 int ObjVnum( struct obj_data *o);

@@ -1424,7 +1424,7 @@ typedef void (*funcp)();
 struct breather {
   int	vnum;
   int	cost;
-  funcp	*breaths;
+  void (*breaths[])(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *);
 };
 
 struct figurine_data {

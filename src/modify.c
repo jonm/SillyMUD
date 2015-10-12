@@ -934,7 +934,7 @@ void check_reboot()
   char dummy;
   FILE *boot;
   
-  extern int mudshutdown, reboot;
+  extern int mudshutdown, should_reboot;
   
   tc = time(0);
   t_info = localtime(&tc);
@@ -962,7 +962,7 @@ void check_reboot()
 	      }
 	    
 	    send_to_all("Automatic reboot. Come back in a little while.\n\r");
-	    mudshutdown = reboot = 1;
+	    mudshutdown = should_reboot = 1;
 	  }
 	else if (t_info->tm_min > 40)
 	  send_to_all("ATTENTION: DikuMUD will reboot in 10 minutes.\n\r");

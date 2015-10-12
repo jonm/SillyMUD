@@ -158,15 +158,6 @@ int CAN_SEE_OBJ( struct char_data *ch, struct obj_data *obj)
 
   return(1);
 
-#if 0
-#define CAN_SEE_OBJ(sub, obj)                                           \
-	(   ( (!IS_NPC(sub)) && (GetMaxLevel(sub)>LOW_IMMORTAL))       ||   \
-        ( (( !IS_SET((obj)->obj_flags.extra_flags, ITEM_INVISIBLE) ||   \
-	     IS_AFFECTED((sub),AFF_DETECT_INVISIBLE) ) &&               \
-	     !IS_AFFECTED((sub),AFF_BLIND)) &&                          \
-             (IS_LIGHT(sub->in_room))))
-
-#endif
 }
 
 int exit_ok(struct room_direction_data	*exit, struct room_data **rpp)

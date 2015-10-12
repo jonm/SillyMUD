@@ -5,8 +5,11 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <time.h>
 
 
 #include "protos.h"
@@ -856,29 +859,26 @@ void do_at(struct char_data *ch, char *argument, int cmd)
     }
   
   
-  if (isdigit(*loc_str))
-    {
-      loc_nr = atoi(loc_str);
-      if (NULL==real_roomp(loc_nr)) {
-	send_to_char("No room exists with that number.\n\r", ch);
-	return;
-      }
-      location = loc_nr;
-    } else if (target_mob = get_char_vis(ch, loc_str)) {
-      location = target_mob->in_room;
-    } else if (target_obj=get_obj_vis_world(ch, loc_str, NULL))
-      if (target_obj->in_room != NOWHERE)
-	location = target_obj->in_room;
-      else
-	{
-	  send_to_char("The object is not available.\n\r", ch);
-	  return;
-	}
-    else
-      {
-	send_to_char("No such creature or object around.\n\r", ch);
-	return;
-      }
+  if (isdigit(*loc_str)) {
+    loc_nr = atoi(loc_str);
+    if (NULL==real_roomp(loc_nr)) {
+      send_to_char("No room exists with that number.\n\r", ch);
+      return;
+    }
+    location = loc_nr;
+  } else if ((target_mob = get_char_vis(ch, loc_str)) != NULL) {
+    location = target_mob->in_room;
+  } else if ((target_obj = get_obj_vis_world(ch, loc_str, NULL)) != NULL) {
+    if (target_obj->in_room != NOWHERE) {
+      location = target_obj->in_room;
+    } else {
+      send_to_char("The object is not available.\n\r", ch);
+      return;
+    }
+  } else {
+    send_to_char("No such creature or object around.\n\r", ch);
+    return;
+  }
   
   /* a location has been found. */
   
@@ -944,9 +944,9 @@ void do_goto(struct char_data *ch, char *argument, int cmd)
     }
     location = loc_nr;
   }
-  else if (target_mob = get_char_vis_world(ch, buf, NULL))
+  else if ((target_mob = get_char_vis_world(ch, buf, NULL)) != NULL)
     location = target_mob->in_room;
-  else if (target_obj=get_obj_vis_world(ch, buf, NULL))
+  else if ((target_obj = get_obj_vis_world(ch, buf, NULL)) != NULL)
     if (target_obj->in_room != NOWHERE)
       location = target_obj->in_room;
     else   	{
@@ -1172,7 +1172,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
     count = 1;
     
     /* mobile in world */
-    if (k = get_char_vis_world(ch, arg1, &count)){
+    if ((k = get_char_vis_world(ch, arg1, &count)) != NULL) {
 
       struct time_info_data ma;
       
@@ -1236,7 +1236,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       strcat(buf, buf2);
       send_to_char(buf, ch);
       
-      sprintf(buf,"Birth : [%ld]secs, Logon[%ld]secs, Played[%ld]secs\n\r", 
+      sprintf(buf,"Birth : [%ld]secs, Logon[%ld]secs, Played[%d]secs\n\r", 
 	      k->player.time.birth,
 	      k->player.time.logon,
 	      k->player.time.played);
@@ -1387,7 +1387,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
           if(aff->location == APPLY_IMMUNE && !(aff->modifier) &&
              aff->bitvector) {
             sprintf(buf, "Spell : '%s'\n\r",spells[aff->type-1]);
-            sprintf(buf,"     Modifies %s by %d points\n\r",
+            sprintf(buf,"     Modifies %s by %ld points\n\r",
                     apply_types[aff->location],aff->bitvector);
             send_to_char(buf,ch);
             sprintf(buf,"     Expires in %3d hours, Resistance Bits set ",
@@ -1417,7 +1417,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       return;
     }
     /* stat on object */
-    if (j=(struct obj_data *)get_obj_vis_world(ch, arg1, &count)) {
+    if ((j=(struct obj_data *)get_obj_vis_world(ch, arg1, &count)) != NULL) {
       virtual = (j->item_number >= 0) ? obj_index[j->item_number].virtual : 0;
       sprintf(buf, "Object name: [%s], R-number: [%d], V-number: [%d] Item type: ",
 	      j->name, j->item_number, virtual);
@@ -1608,7 +1608,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       send_to_char("Can affect char :\n\r", ch);
       for (i=0;i<MAX_OBJ_AFFECT;i++) {
 	sprinttype(j->affected[i].location,apply_types,buf2);
-	sprintf(buf,"    Affects : %s By %d\n\r", buf2,j->affected[i].modifier);
+	sprintf(buf,"    Affects : %s By %lu\n\r", buf2,j->affected[i].modifier);
 	send_to_char(buf, ch);
       }			
       return;
@@ -1843,7 +1843,7 @@ void do_shutdow(struct char_data *ch, char *argument, int cmd)
 
 void do_shutdown(struct char_data *ch, char *argument, int cmd)
 {
-  extern int mudshutdown, reboot;
+  extern int mudshutdown, should_reboot;
   char buf[100], arg[MAX_INPUT_LENGTH];
   
   if (IS_NPC(ch))
@@ -1860,7 +1860,7 @@ void do_shutdown(struct char_data *ch, char *argument, int cmd)
     sprintf(buf, "Reboot by %s.", GET_NAME(ch));
     send_to_all(buf);
     log_msg(buf);
-    mudshutdown = reboot = 1;
+    mudshutdown = should_reboot = 1;
   } else
     send_to_char("Go shut down someone your own size.\n\r", ch);
 }
@@ -2257,7 +2257,7 @@ void do_purge(struct char_data *ch, char *argument, int cmd)
       }
       return;
     }
-    if (vict = get_char_room_vis(ch, name))	{
+    if ((vict = get_char_room_vis(ch, name)) != NULL) {
       if ((!IS_NPC(vict) || IS_SET(vict->specials.act, ACT_POLYSELF)) && 
 	  (GetMaxLevel(ch)<IMPLEMENTOR)) {
 	send_to_char("I'm sorry...  I can't let you do that.\n\r", ch);
@@ -2277,8 +2277,7 @@ void do_purge(struct char_data *ch, char *argument, int cmd)
 	    extract_char(vict);
 	  }
 	}
-      } else if (obj = get_obj_in_list_vis
-		         (ch, name, real_roomp(ch->in_room)->contents)) {
+    } else if ((obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)) != NULL) {
 	act("$n destroys $p.", FALSE, ch, obj, 0, TO_ROOM);
 	extract_obj(obj);
       } else	{
