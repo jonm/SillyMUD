@@ -1,3 +1,6 @@
+# Emacs auto-saves
+*~
+
 # Object files
 *.o
 *.ko
@@ -28,6 +31,10 @@
 *.x86_64
 *.hex
 dmserver
+tests
 
 # Debug files
 *.dSYM/
+
+# makedepend
+Makefile.bak

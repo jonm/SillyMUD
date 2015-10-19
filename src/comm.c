@@ -100,7 +100,7 @@ void close_socket_fd( int desc)
   }
 }
 
-int main (int argc, char **argv)
+int real_main (int argc, char **argv)
 {
   int port, pos=1;
   char buf[512], *dir;
