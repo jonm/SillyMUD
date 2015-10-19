@@ -15,7 +15,7 @@ int shutdown_request(void);
 int logsig(void);
 int hupsig(void);
 
-int raw_force_all( char *to_force);
+void raw_force_all( char *to_force);
 
 void signal_setup()
 {
