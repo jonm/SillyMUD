@@ -77,18 +77,18 @@ SRCS = comm.c act.comm.c act.info.c act.move.c act.obj1.c act.obj2.c \
 
 all : dmserver
 
-dmserver : ${OBJS}
+dmserver : ${OBJS} main.o
 ## if you want to add debugging stuff, uncomment the following, and comment
 ##  out the line after that
 ##	$(LD) -o $@ -g ${OBJS} /local/lib/gnu/gcc-gnulib /usr/lib/debug/malloc.o
-	$(LD) -o $@ -g ${OBJS} 
+	$(LD) -o $@ -g ${OBJS} main.o
 ##	$(LD) -o $@  ${OBJS}
 ##
 depend :
-	makedepend ${SRCS}
+	makedepend ${SRCS} main.c
 
 clean :
-	rm -f ${OBJS} dmserver
+	rm -f ${OBJS} dmserver main.o
 
 
 
