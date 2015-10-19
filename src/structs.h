@@ -3,7 +3,6 @@
  
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
-
 #include <sys/types.h>
 #include <assert.h>
 
@@ -1421,10 +1420,12 @@ struct chr_app_type
 
 typedef void (*funcp)();
 
+typedef void (*breath_weapon_fp)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *);
+
 struct breather {
   int	vnum;
   int	cost;
-  void (*breaths[])(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *);
+  breath_weapon_fp *breaths;
 };
 
 struct figurine_data {
