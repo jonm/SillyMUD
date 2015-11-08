@@ -2014,7 +2014,7 @@ void reset_zone(int zone)
 	    } else {
 		last_cmd = 0;
 	    }
-	  } else if (obj = read_object(ZCMD.arg1, REAL)) {
+	  } else if ((obj = read_object(ZCMD.arg1, REAL)) != NULL) {
 	    sprintf(buf, "Error finding room #%d", ZCMD.arg3);
 	    log_msg(buf);
 	    last_cmd = 1;
@@ -3486,7 +3486,7 @@ int ReadTextZone( FILE *fl)
 	    } else {
 	      last_cmd = 0;
 	    }
-	  } else if (obj = read_object(i, VIRTUAL)) {
+	  } else if ((obj = read_object(i, VIRTUAL)) != NULL) {
 	    sprintf(buf, "Error finding room #%d", k);
 	    log_msg(buf);
 	    last_cmd = 1;

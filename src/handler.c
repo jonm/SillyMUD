@@ -57,7 +57,7 @@ int split_string(char *str, char *sep, char **argv)
     return 1;
   }
   
-  while  (s=strtok(NULL, sep)) {
+  while ((s=strtok(NULL, sep)) != NULL) {
     argv[argc++] = s;
   }
   return argc;
@@ -1668,7 +1668,7 @@ struct char_data *get_char_vis(struct char_data *ch, char *name)
   struct char_data *i;
   
   /* check location */
-  if (i = get_char_room_vis(ch, name))
+  if ((i = get_char_room_vis(ch, name)) != NULL)
     return(i);
   
   return get_char_vis_world(ch,name, NULL);
@@ -1737,11 +1737,11 @@ struct obj_data *get_obj_vis(struct char_data *ch, char *name)
   struct obj_data *i;
   
   /* scan items carried */
-  if (i = get_obj_in_list_vis(ch, name, ch->carrying))
+  if ((i = get_obj_in_list_vis(ch, name, ch->carrying)) != NULL)
     return(i);
   
   /* scan room */
-  if (i = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents))
+  if ((i = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)) != NULL)
     return(i);
   
   return get_obj_vis_world(ch, name, NULL);
@@ -1894,13 +1894,13 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
   *tar_obj = 0;
   
   if (IS_SET(bitvector, FIND_CHAR_ROOM)) {      /* Find person in room */
-    if (*tar_ch = get_char_room_vis(ch, name)) {
+    if ((*tar_ch = get_char_room_vis(ch, name)) != NULL) {
       return(FIND_CHAR_ROOM);
     }
   }
   
   if (IS_SET(bitvector, FIND_CHAR_WORLD)) {
-    if (*tar_ch = get_char_vis(ch, name)) {
+    if ((*tar_ch = get_char_vis(ch, name)) != NULL) {
       return(FIND_CHAR_WORLD);
     }
   }
@@ -1918,24 +1918,24 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
   
   if (IS_SET(bitvector, FIND_OBJ_INV)) {
     if (IS_SET(bitvector, FIND_OBJ_ROOM)) {
-      if (*tar_obj = get_obj_vis_accessible(ch, name)) {
+      if ((*tar_obj = get_obj_vis_accessible(ch, name)) != NULL) {
 	return(FIND_OBJ_INV);
       }
     } else {
-      if (*tar_obj = get_obj_in_list_vis(ch, name, ch->carrying)) {
+      if ((*tar_obj = get_obj_in_list_vis(ch, name, ch->carrying)) != NULL) {
 	return(FIND_OBJ_INV);
       }
     }
   }
   
   if (IS_SET(bitvector, FIND_OBJ_ROOM)) {
-    if (*tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)) {
+    if ((*tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)) != NULL) {
       return(FIND_OBJ_ROOM);
     }
   }
   
   if (IS_SET(bitvector, FIND_OBJ_WORLD)) {
-    if (*tar_obj = get_obj_vis(ch, name)) {
+    if ((*tar_obj = get_obj_vis(ch, name)) != NULL) {
       return(FIND_OBJ_WORLD);
     }
   }

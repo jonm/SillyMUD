@@ -940,7 +940,7 @@ void check_reboot()
   t_info = localtime(&tc);
   
   if ((t_info->tm_hour + 1) == REBOOT_AT && t_info->tm_min > 30)
-    if (boot = fopen("./reboot", "r"))
+    if ((boot = fopen("./reboot", "r")) != NULL)
       {
 	if (t_info->tm_min > 50)
 	  {
