@@ -2434,8 +2434,8 @@ int create_entry(char *name)
   CREATE(player_table[top_of_p_table].name, char , strlen(name) + 1);
   
   /* copy lowercase equivalent of name to table field */
-  for (i = 0; *(player_table[top_of_p_table].name + i) = 
-       LOWER(*(name + i)); i++);
+  for (i = 0; (*(player_table[top_of_p_table].name + i) = 
+	       LOWER(*(name + i))) != '\0'; i++);
   
   player_table[top_of_p_table].nr = top_of_p_table;
   

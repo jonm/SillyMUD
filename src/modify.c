@@ -174,7 +174,7 @@ void quad_arg(char *arg, int *type, char *name, int *field, char *string)
   
   /* string */
   for (; isspace(*arg); arg++);
-  for (; *string = *arg; arg++, string++);
+  for (; (*string = *arg) != '\0'; arg++, string++);
   
   return;
 }
@@ -409,7 +409,7 @@ void bisect_arg(char *arg, int *field, char *string)
   
   /* string */
   for (; isspace(*arg); arg++);
-  for (; *string = *arg; arg++, string++);
+  for (; (*string = *arg) != '\0'; arg++, string++);
   
   return;
 }

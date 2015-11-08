@@ -646,7 +646,7 @@ char getall(char *name, char *newname)
 
    name++;
 
-   for (; *newname = *name; name++,newname++);
+   for (; (*newname = *name) != '\0'; name++,newname++);
 
    return(TRUE);
 }
@@ -671,7 +671,7 @@ int getabunch(char *name, char  *newname)
 
    name++;
 
-   for (; *newname = *name; name++,newname++);
+   for (; (*newname = *name) != '\0'; name++,newname++);
 
    return(num);
 

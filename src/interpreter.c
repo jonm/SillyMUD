@@ -434,7 +434,7 @@ void half_chop(char *string, char *arg1, char *arg2)
   
   for (; isspace(*string); string++);
   
-  for (; *arg2 = *string; string++, arg2++);
+  for (; (*arg2 = *string) != '\0'; string++, arg2++);
 }
 
 
@@ -846,7 +846,7 @@ int _parse_name(char *arg, char *name)
   /* skip whitespaces */
   for (; isspace(*arg); arg++);
   
-  for (i = 0; *name = *arg; arg++, i++, name++) 
+  for (i = 0; (*name = *arg) != '\0'; arg++, i++, name++) 
     if ((*arg <0) || !isalpha(*arg) || i > 15)
       return(1); 
   
