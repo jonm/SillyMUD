@@ -3201,7 +3201,10 @@ void InitScripts()
        buf[strlen(buf) - 1] = '\0';
 
     if(strlen(buf) < 4)	{	/* no way we can get a valid thing in less */
-      sprintf(buf,"%s read in, garbage.");
+      char garbage[4];
+      strncpy(garbage, buf, 3);
+      garbage[3] = '\0';
+      sprintf(buf,"%s read in, garbage.", garbage);
       log_msg(buf);
     }
 
