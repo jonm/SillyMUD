@@ -196,8 +196,7 @@ void boot_db()
 
 
 	  if (i == 0) {
-	    fprintf(stderr, "Performing boot-time reload of static mobs\n",
-		    s);
+	    fprintf(stderr, "Performing boot-time reload of static mobs\n");
 	    reset_zone(0);
 
 	  }
