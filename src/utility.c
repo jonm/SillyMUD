@@ -3190,7 +3190,7 @@ int IsGoblinoid(struct char_data *ch)
 
 int IsArticle(char *c)
 {
-  register i;
+  register int i;
   
   for(i=0;article_list[i][0] != '\n'; i++)
     if(!str_cmp(article_list[i],c))
