@@ -1108,19 +1108,21 @@ in one big zone file, and restored later.
       cc = 20;
       
     for (expand = 1;;)     	{
-      if (expand)
-	if (!cmd_no)
+      if (expand) {
+	if (!cmd_no) {
 	  CREATE(zone_table[zon].cmd, struct reset_com, cc);
-	else
+	} else {
 	  if (cmd_no >= cc) {
 	    cc += 5;
 	    if (!(zone_table[zon].cmd =
 		  (struct reset_com *) realloc(zone_table[zon].cmd, 
 			       (cc * sizeof(struct reset_com)))))  {
-		perror("reset command load");
-		assert(0);
-	      }
+	      perror("reset command load");
+	      assert(0);
+	    }
 	  }
+	}
+      }
       
       expand = 1;
       

@@ -62,7 +62,7 @@ int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr)
 		do_say(keeper,
 		"Come back later!",17);
 		return(FALSE);
-	} else if (shop_index[shop_nr].close1<time_info.hours)
+	} else if (shop_index[shop_nr].close1<time_info.hours) {
 		if (shop_index[shop_nr].open2>time_info.hours){
 			do_say(keeper,
 			"Sorry, we have closed, but come back later.",17);
@@ -72,6 +72,7 @@ int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr)
 			"Sorry, come back tomorrow.",17);
 			return(FALSE);
 		};
+	}
 
 	if(!(CAN_SEE(keeper,ch)))	{
 		do_say(keeper,

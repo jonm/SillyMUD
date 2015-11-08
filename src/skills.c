@@ -1615,12 +1615,12 @@ void do_makepotion(struct char_data *ch, char *argument, int cmd)
 
   extract_obj(potion);
 
-  if(which_potion) 
+  if(which_potion) {
     if(!max || GetMaxLevel(ch) < max) {
       send_to_char("This brew is beyond your powers.\n\r", ch);
       return;
     }
-  else {
+  } else {
     if(GetMaxLevel(ch) < 40) {
       send_to_char("This brew is beyond your powers.\n\r", ch);
       return;

@@ -665,23 +665,28 @@ void char_to_room(struct char_data *ch, int room)
   rp->people = ch;
   ch->in_room = room;
   
-  if (ch->equipment[WEAR_LIGHT])
-    if (ch->equipment[WEAR_LIGHT]->obj_flags.type_flag == ITEM_LIGHT) 
+  if (ch->equipment[WEAR_LIGHT]) {
+    if (ch->equipment[WEAR_LIGHT]->obj_flags.type_flag == ITEM_LIGHT) {
       if (rp->sector_type != SECT_UNDERWATER) {
-	if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2])  /* Light is ON */
+	if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) { /* Light is ON */
 	  rp->light++;
-	if (rp->light < 1)
+	}
+	if (rp->light < 1) {
 	  rp->light = 1;
+	}
       } else {
 	if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2] > 0) {
 	  send_to_char("Your light source is extinguished instantyl!\n\r", ch);
 	  ch->equipment[WEAR_LIGHT]->obj_flags.value[2] = 0;
 	} else {
 	  rp->light++;
-	  if (rp->light < 1)
+	  if (rp->light < 1) {
 	    rp->light = 1;
+	  }
 	}
       }
+    }
+  }
 
   if (IS_PC(ch)) {
     if (rp->tele_cnt > 0 && rp->tele_time == 0) {
@@ -1760,18 +1765,24 @@ struct obj_data *get_obj_vis_accessible(struct char_data *ch, char *name)
     return(0);
   
   /* scan items carried */
-  for (i = ch->carrying, j=1; i && j<=number; i = i->next_content)
-    if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i))
-      if (j == number)
+  for (i = ch->carrying, j=1; i && j<=number; i = i->next_content) {
+    if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i)) {
+      if (j == number) {
 	return(i);
-      else
+      } else {
 	j++;
-  for (i = real_roomp(ch->in_room)->contents; i && j<=number; i = i->next_content)
-    if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i))
-      if (j==number)
+      }
+    }
+  }
+  for (i = real_roomp(ch->in_room)->contents; i && j<=number; i = i->next_content) {
+    if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i)) {
+      if (j==number) {
 	return(i);
-      else
+      } else {
 	j++;
+      }
+    }
+  }
   return 0;
 }
 

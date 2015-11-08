@@ -2092,15 +2092,16 @@ int GetWeaponDam(struct char_data *ch, struct char_data *v,
 	}
 	if (wielded->affected[j].location ==
 	    APPLY_ALIGN_SLAYER) {
-	  if (((int)wielded->affected[j].modifier) > 0)
+	  if (((int)wielded->affected[j].modifier) > 0) {
 	    if (IS_GOOD(v))
 	      dam *= 2;
-	  else if (((int)wielded->affected[j].modifier) < 0)
+	  } else if (((int)wielded->affected[j].modifier) < 0) {
 	    if (IS_EVIL(v))
 	      dam *= 2;
-	  else
+	  } else {
 	    if (!IS_GOOD(v) && !IS_EVIL(v))
 	      dam *=2;
+	  }
 	}
       }
 #endif

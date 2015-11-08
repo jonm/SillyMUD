@@ -2969,16 +2969,18 @@ int zm_stunned_followers(struct char_data *zmaster)
 zm_init_combat(struct char_data *zmaster, struct char_data *target)
 {
   struct follow_type	*fwr;
-  for (fwr = zmaster->followers; fwr; fwr = fwr->next)
+  for (fwr = zmaster->followers; fwr; fwr = fwr->next) {
     if (IS_AFFECTED(fwr->follower, AFF_CHARM) &&
 	fwr->follower->specials.fighting==NULL &&
-	fwr->follower->in_room == target->in_room)
+	fwr->follower->in_room == target->in_room) {
       if (GET_POS(fwr->follower) == POSITION_STANDING) {
 	hit(fwr->follower, target, TYPE_UNDEFINED);
       } else if (GET_POS(fwr->follower)>POSITION_SLEEPING &&
 		 GET_POS(fwr->follower)<POSITION_FIGHTING) {
 	do_stand(fwr->follower, "", -1);
       }
+    }
+  }
 }
 
 int zm_kill_fidos(struct char_data *zmaster)
@@ -5027,33 +5029,44 @@ int nodrop(struct char_data *ch, int cmd, char *arg, struct obj_data *tobj, int 
   }
 
   /* Look in the room first, in get case */
-  if(cmd == 10)
-    for (i=real_roomp(ch->in_room)->contents,j=1;i&&(j<=num);i=i->next_content)
-      if (i->item_number>=0)
-	if (do_all || isname(name, i->name))
+  if(cmd == 10) {
+    for (i=real_roomp(ch->in_room)->contents,j=1;i&&(j<=num);i=i->next_content) {
+      if (i->item_number>=0) {
+	if (do_all || isname(name, i->name)) {
 	  if(do_all || j == num) {
 	    if (obj_index[i->item_number].func == knowdrop) {
 	      obj = i;
 	      break;
 	    }
+	  } else {
+	    ++j;
 	  }
-	  else ++j;
+	}
+      }
+    }
+  }
   
   /* Check the character's inventory for give, drop, steal. */
-  if(!obj)
+  if(!obj) {
     /* Don't bother with get anymore */
     if(cmd == 10) return(FALSE);
-    for (i = ch->carrying,j=1;i&&(j<=num);i=i->next_content)
-      if (i->item_number>=0)
-	if (do_all || isname(name, i->name))
+    for (i = ch->carrying,j=1;i&&(j<=num);i=i->next_content) {
+      if (i->item_number>=0) {
+	if (do_all || isname(name, i->name)) {
 	  if(do_all || j == num) {
 	    if (obj_index[i->item_number].func == knowdrop) {
 	      obj = i;
 	      break;
+	    } else if(!do_all) {
+	      return(FALSE);
 	    }
-	    else if(!do_all) return(FALSE);
+	  } else {
+	    ++j;
 	  }
-	  else ++j;
+	}
+      }
+    }
+  }
   
   /* Musta been something else */
   if(!obj) return(FALSE);
@@ -6366,7 +6379,7 @@ int guardian(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
 
     /* Trying to move south, check against namelist */
     while(j < gstruct->num_names) {
-      if(!(strcmp(gstruct->names[j],GET_NAME(ch))))
+      if(!(strcmp(gstruct->names[j],GET_NAME(ch)))) {
 	if (real_roomp(ch->in_room) && (EXIT(ch, 2)->to_room != NOWHERE)) {
 	  if (ch->specials.fighting) return(FALSE);
 	  act("$N recognizes you, and escorts you through the gate.",
@@ -6393,9 +6406,11 @@ int guardian(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
 	    }
 	  }
 	  return(TRUE);
+	} else {
+	  return(FALSE);
 	}
-	else return(FALSE);
-      ++j;
+	++j;
+      }
     }
     return(FALSE);
   }

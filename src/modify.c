@@ -913,17 +913,17 @@ void night_watchman()
   t_info = localtime(&tc);
   
   if ((t_info->tm_hour == 8) && (t_info->tm_wday > 0) &&
-      (t_info->tm_wday < 6))
-    if (t_info->tm_min > 50)
-      {
+      (t_info->tm_wday < 6)) {
+    if (t_info->tm_min > 50) {
 	log_msg("Leaving the scene for the serious folks.");
 	send_to_all("Closing down. Thank you for flying DikuMUD.\n\r");
 	mudshutdown = 1;
-      }
-    else if (t_info->tm_min > 40)
+    } else if (t_info->tm_min > 40) {
       send_to_all("ATTENTION: DikuMUD will shut down in 10 minutes.\n\r");
-    else if (t_info->tm_min > 30)
+    } else if (t_info->tm_min > 30) {
       send_to_all("Warning: The game will close in 20 minutes.\n\r");
+    }
+  }
 }
 
 
