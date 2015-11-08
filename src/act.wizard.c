@@ -1661,7 +1661,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
       GET_EXP(mob) = parm;
     } else if (!strcmp(field, "lev")) {
       parm2 = 0; /* mage */
-      sscanf(parmstr,"%d %d",&parm);
+      sscanf(parmstr,"%d ",&parm);
       argument=one_argument(argument, parmstr);
       sscanf(parmstr,"%d", &parm2);
       if (!IS_NPC(mob)) {
