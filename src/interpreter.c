@@ -1482,7 +1482,7 @@ void nanny(struct descriptor_data *d, char *arg)
     d->character->player.class = 0;
     count=0;
     oops=FALSE;
-    for (; *arg && count < 3 && !oops; *arg++) {
+    for (; *arg && count < 3 && !oops; arg++) {
       if(count && GET_RACE(d->character) == RACE_HUMANTWO)
 	break;
       switch (*arg)  	{
