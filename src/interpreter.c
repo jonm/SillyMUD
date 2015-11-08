@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <arpa/telnet.h>
+#include <unistd.h>
 
 #include "protos.h"
 
