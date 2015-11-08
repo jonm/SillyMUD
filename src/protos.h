@@ -431,6 +431,7 @@ void InitScripts();
 void ReloadRooms();
 void FreeZone(int zone_nr); 
 void BootFigurines();
+int CheckKillFile(int virtual);
 /* char *strmake(char *string); KEEP THIS OUT UNTIL FIXED */
 /* void strfree(char *string);  KEEP THIS OUT UNTIL FIXED */
  
