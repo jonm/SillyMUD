@@ -2991,8 +2991,8 @@ void cast_command( byte level, struct char_data *ch, char *arg,
   if (arg && *arg) {
     p = fname(arg);
     
-    if ((GetMaxLevel(tar_ch) < 6) && (GET_INT(tar_ch) < 13) || 
-      !saves_spell(tar_ch, SAVING_PARA)) {
+    if (((GetMaxLevel(tar_ch) < 6) && (GET_INT(tar_ch) < 13)) || 
+	!saves_spell(tar_ch, SAVING_PARA)) {
 
       if (strcmp(p, "quit")) {
 	sprintf(buf, "$n has commanded you to '%s'.", p);

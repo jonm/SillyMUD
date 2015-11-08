@@ -1247,7 +1247,7 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
 
 	} else {
 	   if ((IS_GOOD(ch) && !IS_EVIL(victim))  ||
-	       IS_EVIL(ch) && IS_NEUTRAL(victim)) {
+	       (IS_EVIL(ch) && IS_NEUTRAL(victim))) {
 	     sprintf(buf, "%s killed by %s at %s -- <Player kill, Illegal>",
 		     GET_NAME(victim), ch->player.name, 
 		     (real_roomp(victim->in_room))->name);

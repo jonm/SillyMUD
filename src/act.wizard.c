@@ -3084,10 +3084,10 @@ void do_show(struct char_data *ch, char *argument, int cmd)
     }
     
     
-  } else if (is_abbrev(buf, "objects") &&
-	     (which_i=obj_index,topi=top_of_objt) ||
-	     is_abbrev(buf, "mobiles") &&
-	     (which_i=mob_index,topi=top_of_mobt) ) {
+  } else if ((is_abbrev(buf, "objects") &&
+	      (which_i=obj_index,topi=top_of_objt)) ||
+	     (is_abbrev(buf, "mobiles") &&
+	      (which_i=mob_index,topi=top_of_mobt))) {
     int		objn;
     struct index_data	*oi;
     
@@ -3107,8 +3107,8 @@ void do_show(struct char_data *ch, char *argument, int cmd)
     for (objn=0; objn<=topi; objn++) {
       oi = which_i + objn;
       
-      if (zone>=0 && (oi->virtual<bottom || oi->virtual>top) ||
-	  zone<0 && !isname(zonenum, oi->name))
+      if ((zone>=0 && (oi->virtual<bottom || oi->virtual>top)) ||
+	  (zone<0 && !isname(zonenum, oi->name)))
 	continue; /* optimize later*/
       
       sprintf(buf,"%5d %4d %3d  %s\n\r", oi->virtual, objn,
