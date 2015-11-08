@@ -523,7 +523,7 @@ void update_obj_file()
 	  log_msg(buf);
 	  abort();
 	} else {
-	  sprintf(buf, "   Processing %s[%d].", st.owner, i);
+	  sprintf(buf, "   Processing %s[%ld].", st.owner, i);
 	  log_msg(buf);
 	  days_passed = ((time(0) - st.last_update) / SECS_PER_REAL_DAY);
 	  secs_lost = ((time(0) - st.last_update) % SECS_PER_REAL_DAY);

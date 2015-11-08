@@ -1076,14 +1076,14 @@ void RoomSave(struct char_data *ch, int start, int end)
      fprintf(fp,"#%d\n%s~\n%s~\n",rp->number,rp->name,
  	                            temp);
      if (!rp->tele_targ) {
-        fprintf(fp,"%d %d %d",rp->zone, rp->room_flags, rp->sector_type);
+        fprintf(fp,"%d %ld %d",rp->zone, rp->room_flags, rp->sector_type);
       } else {
 	if (!IS_SET(TELE_COUNT, rp->tele_mask)) {
-	   fprintf(fp, "%d %d -1 %d %d %d %d", rp->zone, rp->room_flags,
+	   fprintf(fp, "%d %ld -1 %d %d %d %d", rp->zone, rp->room_flags,
 		rp->tele_time, rp->tele_targ, 
 		rp->tele_mask, rp->sector_type);
 	} else {
-	   fprintf(fp, "%d %d -1 %d %d %d %d %d", rp->zone, rp->room_flags,
+	   fprintf(fp, "%d %ld -1 %d %d %d %d %d", rp->zone, rp->room_flags,
 		rp->tele_time, rp->tele_targ, 
 		rp->tele_mask, rp->tele_cnt, rp->sector_type);
 	} 
@@ -2284,7 +2284,7 @@ int MobCountInRoom( struct char_data *list)
 void *Mymalloc( long size)
 {
   if (size < 1) {
-    fprintf(stderr, "attempt to malloc negative memory - %d\n", size);
+    fprintf(stderr, "attempt to malloc negative memory - %ld\n", size);
     assert(0);
   }
   return(malloc(size));
