@@ -251,7 +251,7 @@ void run_the_game(int port)
   
   PROFILE(monitor(0);)
     
-  if (reboot)  {
+  if (should_reboot)  {
     log_msg("Rebooting.");
     assert(52);           /* what's so great about HHGTTG, anyhow? */
   }
