@@ -1160,6 +1160,7 @@ void add_skill(int nr, int taught_by, int class_use, int percent);
 void do_berserk( struct char_data *ch, char *arg, int cmd);
 void do_palm( struct char_data *ch, char *arg, int cmd);
 void do_peek( struct char_data *ch, char *arg, int cmd);
+void assign_skills();
  
 /* From spec_assign.c */
  
