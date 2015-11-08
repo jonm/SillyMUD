@@ -1914,7 +1914,8 @@ void GenerateHash();
 void AddNodeTail(NODE *n, int length, int radix);
 NODE *SearchForNodeByName(NODE *head, char *name, int length);
 void InitRadix();
-NODE *FindValidCommand(char *name); 
+NODE *FindValidCommand(char *name);
+void AddCommand(char *name, void (*func), int number, int min_pos, int min_lev);
  
 /* from intrinsics.c */
 void do_changeform(struct char_data *ch, char *argument, int cmd);
