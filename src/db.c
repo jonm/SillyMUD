@@ -2469,8 +2469,8 @@ void save_char(struct char_data *ch, sh_int load_room)
       return;
     tmp = 0;
   }
-  
-  if (expand = (ch->desc->pos > top_of_p_file))	{
+
+  if ((expand = (ch->desc->pos > top_of_p_file))) {
     strcpy(mode, "a");
     top_of_p_file++;
   }  else

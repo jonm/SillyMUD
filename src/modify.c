@@ -105,7 +105,7 @@ void string_add(struct descriptor_data *d, char *str)
   
   /* determine if this is the terminal string, and truncate if so */
   for (scan = str; *scan; scan++)
-    if (terminator = (*scan == '@'))  {
+    if ((terminator = (*scan == '@')))  {
       *scan = '\0';
       break;
     }
