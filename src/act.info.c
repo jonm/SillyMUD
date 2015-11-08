@@ -2002,7 +2002,7 @@ void do_users(struct char_data *ch, char *argument, int cmd)
 	  sprintf(line, "%-16s: ", d->character->player.name);
       } else
 	sprintf(line, "UNDEFINED       : ");
-      if (d->host && *d->host) {
+      if (*d->host != '\0') {
 	sprintf(buf2, "%-22s [%s]\n\r", connected_types[d->connected],d->host);
       } else if(d) {
 	sprintf(buf2, "%-22s [%s]\n\r", connected_types[d->connected],"????");
