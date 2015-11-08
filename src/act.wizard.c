@@ -1597,7 +1597,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       for(j2=j->contains;j2;j2 = j2->next_content) {
 	strcat(buf,fname(j2->name));
 	strcat(buf,"\n\r");
-	found == TRUE;
+	found = TRUE;
       }
       if (!found)
 	strcpy(buf,"Contains : Nothing\n\r");

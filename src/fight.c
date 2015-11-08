@@ -201,7 +201,7 @@ void update_pos( struct char_data *victim )
       if (!MOUNTED(victim))
 	GET_POS(victim) = POSITION_STANDING;
       else 
-	GET_POS(victim) == POSITION_MOUNTED;
+	GET_POS(victim) = POSITION_MOUNTED;
     } else {
       GET_POS(victim) = POSITION_STUNNED;
     }
