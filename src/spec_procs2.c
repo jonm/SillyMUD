@@ -2463,7 +2463,7 @@ void free_victims(struct breath_victim *head)
   }
 }
 
-int breath_weapon(struct char_data *ch, struct char_data *target,
+void breath_weapon(struct char_data *ch, struct char_data *target,
 		  int mana_cost, void (*func)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *))
 {
   struct breath_victim *hitlist, *scan;
@@ -2506,8 +2506,8 @@ int breath_weapon(struct char_data *ch, struct char_data *target,
   free_victims(hitlist);
 }
 
-int use_breath_weapon(struct char_data *ch, struct char_data *target,
-		      int cost, void (*func)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *))
+void use_breath_weapon(struct char_data *ch, struct char_data *target,
+		       int cost, void (*func)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *))
 {
   if (GET_MANA(ch)>=0) {
     breath_weapon(ch, target, cost, func);
@@ -2636,7 +2636,7 @@ void DruidHeal(struct char_data *ch, int level)
   }
 }
 
-int DruidTree(struct char_data *ch)
+void DruidTree(struct char_data *ch)
 {
 
   act("$n utters the words 'harumph!'", FALSE, ch, 0, 0, TO_ROOM);
@@ -2655,7 +2655,7 @@ int DruidTree(struct char_data *ch)
 
 }
 
-DruidMob(struct char_data *ch)
+void DruidMob(struct char_data *ch)
 {
 
   act("$n utters the words 'lagomorph'", FALSE, ch, 0, 0, TO_ROOM);
@@ -3303,6 +3303,7 @@ int portal(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int t
       extract_obj(obj);
     }
   }
+  return(FALSE);
 }
 
 int scraps(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int type)

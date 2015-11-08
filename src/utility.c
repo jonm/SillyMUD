@@ -2297,7 +2297,7 @@ void *Mymalloc( long size)
   return(malloc(size));
 }
 
-int SpaceForSkills(struct char_data *ch)
+void SpaceForSkills(struct char_data *ch)
 {
 
   /*
@@ -2769,15 +2769,15 @@ int HasWBits(struct char_data *ch, int bits)
   return(FALSE);
 }
 
-int LearnFromMistake(struct char_data *ch, int sknum, int silent, int max)
+void LearnFromMistake(struct char_data *ch, int sknum, int silent, int max)
 {
-  if (!ch->skills) return(0);
+  if (!ch->skills) return;
 
   if (!IS_SET(ch->skills[sknum].flags, SKILL_KNOWN)) {
     if (HasClass(ch, CLASS_MONK)) {
         SET_BIT(ch->skills[sknum].flags, SKILL_KNOWN);
     }
-    return(0);
+    return;
   }
 
   if (ch->skills[sknum].learned < max && ch->skills[sknum].learned > 0) {

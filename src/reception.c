@@ -888,7 +888,7 @@ int ReadObjs( FILE *fl, struct obj_file_u *st)
 
 }
 
-int WriteObjs( FILE *fl, struct obj_file_u *st)
+void WriteObjs( FILE *fl, struct obj_file_u *st)
 {
   int i;
   char buf[128];

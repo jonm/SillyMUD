@@ -505,7 +505,7 @@ int AssistFriend( struct char_data *ch)
   return(1);
 }
   
-FindABetterWeapon(struct char_data *mob)
+void FindABetterWeapon(struct char_data *mob)
 {
   struct obj_data *o, *best;
   /*
@@ -514,9 +514,9 @@ FindABetterWeapon(struct char_data *mob)
     */
   
   /* check whether this mob can wield */
-  if (!HasHands(mob)) return(FALSE);
+  if (!HasHands(mob)) return;
   
-  if (!real_roomp(mob->in_room)) return(FALSE);
+  if (!real_roomp(mob->in_room)) return;
   
   /* check room */
   best = 0;
@@ -559,7 +559,7 @@ FindABetterWeapon(struct char_data *mob)
         best = 0;
      }
   } else {
-    return(FALSE);  /* nothing to choose from */
+    return;  /* nothing to choose from */
   }
 
   if (best) {
@@ -573,7 +573,7 @@ FindABetterWeapon(struct char_data *mob)
          do_wield(mob, best->name, 0);
       } else if (best->equipped_by == mob) {
 	/* do nothing */
-	return(TRUE);
+	return;
       } else {
          do_get(mob, best->name, 0);
       }      

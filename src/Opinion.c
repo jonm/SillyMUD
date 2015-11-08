@@ -19,7 +19,7 @@
 extern struct index_data *mob_index;
 extern struct room_data *world;
 
-int FreeHates( struct char_data *ch)
+void FreeHates( struct char_data *ch)
 {
   struct char_list *k, *n;
 
@@ -27,11 +27,11 @@ int FreeHates( struct char_data *ch)
     n = k->next;
     free(n);
   }
-
+  
 }
 
 
-int FreeFears( struct char_data *ch)
+void FreeFears( struct char_data *ch)
 {
   struct char_list *k, *n;
 

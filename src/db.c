@@ -3395,7 +3395,7 @@ void SaveTheWorld()
 #endif
 }
 
-int ReadTextZone( FILE *fl)
+void ReadTextZone( FILE *fl)
 {
   while (1){
     char c, buf[255], count=0, last_cmd=1;

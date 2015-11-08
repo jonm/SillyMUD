@@ -757,7 +757,7 @@ struct syllable syls[] = {
   {"v", "z"},{"w","x"},{"x","n"},{"y","l"},{"z","k"}, {"",""}
 };
 
-say_spell( struct char_data *ch, int si )
+void say_spell( struct char_data *ch, int si )
 {
   char buf[MAX_STRING_LENGTH], splwd[MAX_BUF_LENGTH];
   char buf2[MAX_STRING_LENGTH];
@@ -2172,11 +2172,11 @@ void check_falling_obj( struct obj_data *obj, int room)
   }
 }
 
-int check_nature( struct char_data *i)
+void check_nature( struct char_data *i)
 {
 
   if (check_falling(i)) {
-    return(TRUE);
+    return;
   }
   check_drowning(i);
 

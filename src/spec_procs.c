@@ -2966,7 +2966,7 @@ int zm_stunned_followers(struct char_data *zmaster)
   return FALSE;
 }
 
-zm_init_combat(struct char_data *zmaster, struct char_data *target)
+void zm_init_combat(struct char_data *zmaster, struct char_data *target)
 {
   struct follow_type	*fwr;
   for (fwr = zmaster->followers; fwr; fwr = fwr->next) {

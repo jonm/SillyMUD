@@ -1299,7 +1299,7 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
 
 }
 
-int AreaDamage(struct char_data *ch, int dam, int attacktype, 
+void AreaDamage(struct char_data *ch, int dam, int attacktype, 
 	       char *same_room_hitmsg, char *same_room_missmsg, 
 	       char *global_msg, bool save_negates, bool heat_blinder)
 {
@@ -2011,7 +2011,7 @@ int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco)
   }
 }
 
-int MissVictim(struct char_data *ch, struct char_data *v, int type, int w_type,
+void MissVictim(struct char_data *ch, struct char_data *v, int type, int w_type,
 	       int (*dam_func)())
 {
   struct obj_data *o;
@@ -2306,8 +2306,8 @@ int GetBackstabMult(struct char_data *ch, struct char_data *v)
   return(mult);
 }
 
-int HitVictim(struct char_data *ch, struct char_data *v, int dam, 
-		   int type, int w_type, int (*dam_func)())
+void HitVictim(struct char_data *ch, struct char_data *v, int dam, 
+	       int type, int w_type, int (*dam_func)())
 {
   char buf[80];
   extern byte backstab_mult[];
@@ -2878,7 +2878,7 @@ struct char_data *FindAnyVictim( struct char_data *ch)
   
 }
 
-int BreakLifeSaverObj( struct char_data *ch)
+void BreakLifeSaverObj( struct char_data *ch)
 {
 
       int found=FALSE, i, j;
@@ -3298,7 +3298,7 @@ int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam)
 }
 
 
-int DamageStuff(struct char_data *v, int type, int dam)
+void DamageStuff(struct char_data *v, int type, int dam)
 {
   int num, dam_type;
   struct obj_data *obj;
@@ -3394,7 +3394,7 @@ int SkipImmortals(struct char_data *v, int amnt)
 }
 
 
-int WeaponSpell( struct char_data *c, struct char_data *v, int type)
+void WeaponSpell( struct char_data *c, struct char_data *v, int type)
 {
   int j, num;
   

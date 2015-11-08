@@ -840,7 +840,7 @@ void check_idling(struct char_data *ch)
 
 
 
-int ObjFromCorpse( struct obj_data *c)
+void ObjFromCorpse( struct obj_data *c)
 {
   struct obj_data *jj, *next_thing;
 
@@ -865,7 +865,7 @@ int ObjFromCorpse( struct obj_data *c)
        */
       c->contains = 0;
       log_msg("Memory lost in ObjFromCorpse.");
-      return(TRUE);
+      return;
     }
   }
   extract_obj(c);
@@ -873,7 +873,7 @@ int ObjFromCorpse( struct obj_data *c)
 
 
 
-int ClassSpecificStuff( struct char_data *ch)
+void ClassSpecificStuff( struct char_data *ch)
 {
 
   if (HasClass(ch, CLASS_WARRIOR) || HasClass(ch, CLASS_MONK)) {
