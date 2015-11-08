@@ -2542,7 +2542,7 @@ char *fread_string(FILE *f1)
  if(i == MAX_STRING_LENGTH - 3) { /* We filled the buffer */
     buf[i] = '\0';
     log_msg("File too long (fread_string).");
-    while(tmp = fgetc(f1))
+    while((tmp = fgetc(f1)) != 0)
         if(tmp == '~')
            break;
   }
