@@ -220,30 +220,28 @@ void do_setsev(struct char_data *ch, char *arg, int cmd)
 /* Bamfin and bamfout - courtesy of DM from Epic */
 void dsearch(char *string, char *tmp)
 {
- char *c, buf[255], buf2[255], buf3[255];
- int i, j;
+  char *src, *dst;
 
- i = 0;
- while(i == 0) {
-    if(strchr(string, '~')==NULL) {
-       i = 1;
-       strcpy(tmp, string);
+  src = string;
+  dst = tmp;
+  while(*src != '\0') {
+    if (*src == '~') {
+      if (*(src + 1) == 'N') {
+	*dst++ = '$';
+	*dst++ = 'n';
+      } else if (*(src + 1) == 'H') {
+	*dst++ = '$';
+	*dst++ = 's';
+      } else if (*(src + 1) == '\0') {
+	break;
+      }
+      src += 2;
     } else {
-       c = strchr(string, '~');
-       j = c-string;
-       switch(string[j+1]) {
-         case 'N': strcpy(buf2, "$n"); break;
-         case 'H': strcpy(buf2, "$s"); break;
-         default:  strcpy(buf2, ""); break;
-       }
-       strcpy(buf, string);
-       buf[j] = '\0';
-       strcpy(buf3, (string+j+2));
-       sprintf(tmp, "%s%s%s" ,buf, buf2, buf3);
-       sprintf(string, tmp);
-
-     }
+      *dst++ = *src++;
+    }
   }
+  *dst = '\0';
+  strcpy(string, tmp);
 }
 
 void do_bamfin(struct char_data *ch, char *arg, int cmd)
