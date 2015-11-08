@@ -3071,8 +3071,8 @@ int ObjRoomCount(int nr, struct room_data *rp)
 
 int str_len(char *buf)
 {
-  int i = 0;
-  for(i; buf[i] != '\0'; i++);
+  int i;
+  for(i=0; buf[i] != '\0'; i++);
   return(i);
 }
 
