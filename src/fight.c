@@ -1443,7 +1443,7 @@ int damage(struct char_data *ch, struct char_data *victim,
    return(FALSE);  /* not dead */
 }
 
-#else    /* this is for an example of the old code, slightly modified &/
+#else    /* this is for an example of the old code, slightly modified */
 
 int damage(struct char_data *ch, struct char_data *victim,
 	   int dam, int attacktype)
