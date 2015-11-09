@@ -26,7 +26,7 @@ extern struct time_info_data time_info;
 char *ClassTitles(struct char_data *ch)
 {
   unsigned char i, count=0;
-  char buf[256];
+  char *buf = malloc(256);
   
     for (i = MAGE_LEVEL_IND; i <= MONK_LEVEL_IND; i++) {
       if (GET_LEVEL(ch, i)) {
