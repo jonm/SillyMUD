@@ -1877,6 +1877,7 @@ int IsGoblinoid(struct char_data *ch);
 int IsArticle(char *c);
 void ChangeStrength(struct char_data *ch, int delta);
 char *MovementType(struct char_data *ch, bool enter);
+char in_group(struct char_data *ch1, struct char_data *ch2);
 
 /* From weather.c */
  
