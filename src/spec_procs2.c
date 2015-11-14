@@ -3713,7 +3713,7 @@ int astral_portal(struct char_data *ch, int cmd, char *arg, struct char_data *mo
     one_argument(arg,buf);
     if(*buf) {
       if((str_cmp("pool",buf)) || (str_cmp("color",buf))) {
-	if(portal=get_char_room("color pool",ch->in_room)) {
+	if ((portal=get_char_room("color pool",ch->in_room)) != NULL) {
 	  j=destination[mob_index[portal->nr].virtual-AST_MOB_NUM];
 	  if(j > 0 && j < 32000) {
 	    send_to_char("\n\r",ch);
@@ -3759,7 +3759,7 @@ int astral_portal(struct char_data *ch, int cmd, char *arg, struct char_data *mo
 	
         /* hey, is there another pool in the room I am going to? */
 	
-        if(portal=get_char_room("color pool",going_to))
+        if ((portal=get_char_room("color pool",going_to)) != NULL)
           continue;
 	
         go_direction(ch, door);

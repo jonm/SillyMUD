@@ -1008,7 +1008,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
 	
 	if (*name) {
 	  if (IS_SET(skill_info[spl].targets, TAR_CHAR_ROOM)) {
-	    if (tar_char = get_char_room_vis(ch, name)) {
+	    if ((tar_char = get_char_room_vis(ch, name)) != NULL) {
 	      if (tar_char == ch || tar_char == ch->specials.fighting ||
 		  tar_char->attackers < 6 || 
 		  tar_char->specials.fighting == ch)
@@ -1022,19 +1022,19 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
 	    }
 	  }
 	  if (!target_ok && IS_SET(skill_info[spl].targets, TAR_CHAR_WORLD))
-	    if (tar_char = get_char_vis(ch, name))
+	    if ((tar_char = get_char_vis(ch, name)) != NULL)
 	      target_ok = TRUE;
 	  
 	  if (!target_ok && IS_SET(skill_info[spl].targets, TAR_OBJ_INV))
-	    if (tar_obj = get_obj_in_list_vis(ch, name, ch->carrying))
+	    if ((tar_obj = get_obj_in_list_vis(ch, name, ch->carrying)) != NULL)
 	      target_ok = TRUE;
 	  
 	  if (!target_ok && IS_SET(skill_info[spl].targets, TAR_OBJ_ROOM))
-	    if (tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents))
+	    if ((tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)) != NULL)
 	      target_ok = TRUE;
 	  
 	  if (!target_ok && IS_SET(skill_info[spl].targets, TAR_OBJ_WORLD))
-	    if (tar_obj = get_obj_vis(ch, name))
+	    if ((tar_obj = get_obj_vis(ch, name)) != NULL)
 	      target_ok = TRUE;
 	  
 	  if (!target_ok && IS_SET(skill_info[spl].targets, TAR_OBJ_EQUIP)) {

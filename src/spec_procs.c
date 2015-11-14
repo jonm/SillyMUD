@@ -2255,7 +2255,7 @@ int Tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int t
   } else {
     switch(ch->generic) {
     case TYT_NONE:
-      if (vict = FindVictim(ch)) {
+      if ((vict = FindVictim(ch)) != NULL) {
 	ch->generic = TYT_CIT;
 	SetHunting(ch, vict);
       }
