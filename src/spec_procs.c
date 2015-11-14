@@ -5160,6 +5160,9 @@ struct memory {
   short c;
 };
 
+int affect_status(struct memory *mem, struct char_data *ch,
+		  struct char_data *t, int aff_status);
+
 int lattimore(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {
 #define Lattimore_Initialize  0

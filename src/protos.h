@@ -108,7 +108,13 @@ int MoveOne(struct char_data *ch, int dir);
 void DisplayOneMove(struct char_data *ch, int dir, int was_in);
 void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total);
 void DisplayMove(struct char_data *ch, int dir, int was_in, int total);
+int ValidMove(struct char_data *ch, int cmd);
 int AddToCharHeap(struct char_data **heap, int *top, int *total, struct char_data *k);
+int find_door(struct char_data *ch, char *type, char *dir);
+void raw_open_door(struct char_data *ch, int dir);
+void open_door(struct char_data *ch, int dir);
+void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp,
+		     int door);
  
 /* From act.info.c */
 
@@ -1167,7 +1173,6 @@ void assign_rooms();
  
  
 /* From spec_procs.c */
- 
 int is_target_room_p(int room, void *tgt_room);
 int named_object_on_ground(int room, void *c_data);
 char *how_good(int percent);
