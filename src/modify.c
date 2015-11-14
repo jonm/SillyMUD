@@ -419,7 +419,7 @@ void do_edit(struct char_data *ch, char *arg, int cmd)
 {
   int field, dflags, dir, exroom, dkey, rspeed, rdir,
   tele_room, tele_time, tele_mask, moblim, tele_cnt;
-  unsigned r_flags;
+  int r_flags;
   int s_type;
   char name[MAX_INPUT_LENGTH], string[512], buf[132];
   struct extra_descr_data *ed, *tmp;
