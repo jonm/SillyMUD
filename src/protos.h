@@ -33,7 +33,6 @@ int FreeFears( struct char_data *ch);
 int RemHated( struct char_data *ch, struct char_data *pud);
 int AddHated( struct char_data *ch, struct char_data *pud);
 int AddHatred( struct char_data *ch, int parm_type, int parm);
-int RemHatred( struct char_data *ch, unsigned short bitv);
 void DeleteHatreds(struct char_data *ch);
 int Hates( struct char_data *ch, struct char_data *v);
 int Fears( struct char_data *ch, struct char_data *v);
