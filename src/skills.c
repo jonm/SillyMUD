@@ -624,7 +624,7 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 	      /* ancestor for first layer is the direction */
 	      hash_enter(&x_room, tmp_room,
 			 ((int)hash_find(&x_room,q_head->room_nr) == -1) ?
-			 (void*)(i+1) : hash_find(&x_room,q_head->room_nr));
+			 (void*)((long)(i+1)) : hash_find(&x_room,q_head->room_nr));
 	    }
 	  } else {
 	    /* have reached our goal so free queue */
