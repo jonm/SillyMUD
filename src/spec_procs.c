@@ -2836,7 +2836,7 @@ int Ringwraith( struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   
   /* the ring is in the same room! */
   
-  if (victim = char_holding(ring)) {
+  if ((victim = char_holding(ring)) != NULL) {
     if (victim==ch) {
       obj_from_char(ring);
       extract_obj(ring);
