@@ -1974,7 +1974,7 @@ void cast_knock( byte level, struct char_data *ch, char *arg, int type,
 
    argument_interpreter(arg, otype, dir);
 
-   if (!otype) {
+   if (otype[0] == '\0') {
       send_to_char("Knock on what?\n\r",ch);
       return;
    }

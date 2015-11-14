@@ -636,7 +636,7 @@ char getall(char *name, char *newname)
 
    if (prd != '.')
      return(FALSE);
-   if (tmpname == NULL) 
+   if (*tmpname == '\0') 
       return(FALSE);
    if (strcmp(arg,"all"))
       return(FALSE);
