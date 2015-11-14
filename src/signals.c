@@ -10,10 +10,10 @@
 
 #include "protos.h"
 
-int checkpointing(void);
-int shutdown_request(void);
-int logsig(void);
-int hupsig(void);
+void checkpointing(int);
+void shutdown_request(int);
+void logsig(int);
+void hupsig(int);
 
 void raw_force_all( char *to_force);
 
@@ -44,7 +44,7 @@ void signal_setup()
 
 
 
-int checkpointing()
+void checkpointing(int sig)
 {
   extern int tics;
 	
@@ -60,7 +60,7 @@ int checkpointing()
 
 
 
-int shutdown_request()
+void shutdown_request(int sig)
 {
 	extern int mudshutdown;
 
@@ -70,7 +70,7 @@ int shutdown_request()
 
 
 /* kick out players etc */
-int hupsig()
+void hupsig(int sig)
 {
   int i;
   extern int mudshutdown, should_reboot;
@@ -85,7 +85,7 @@ int hupsig()
   mudshutdown = should_reboot = 1;
 }
 
-int logsig()
+void logsig(int sig)
 {
 	log_msg("Signal received. Ignoring.");
 }
