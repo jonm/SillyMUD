@@ -669,12 +669,12 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 
 int choose_exit_global(int in_room, int tgt_room, int depth)
 {
-  return find_path(in_room, is_target_room_p, (void*)tgt_room, depth, 0);
+  return find_path(in_room, is_target_room_p, &tgt_room, depth, 0);
 }
 
 int choose_exit_in_zone(int in_room, int tgt_room, int depth)
 {
-  return find_path(in_room, is_target_room_p, (void*)tgt_room, depth, 1);
+  return find_path(in_room, is_target_room_p, &tgt_room, depth, 1);
 }
 
 int go_direction(struct char_data *ch, int dir)     

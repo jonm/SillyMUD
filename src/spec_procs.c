@@ -54,7 +54,7 @@ struct social_type {
 
 int is_target_room_p(int room, void *tgt_room)
 {
-  return room == (int)tgt_room;
+  return room == (*((int *)tgt_room));
 }
 
 int named_object_on_ground(int room, void *c_data)
@@ -2825,7 +2825,7 @@ int Ringwraith( struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   rnum = room_of_object(ring);
   
   if (rnum != ch->in_room) {
-    dir = find_path(ch->in_room, is_target_room_p, (void *)rnum, -5000, 0);
+    dir = find_path(ch->in_room, is_target_room_p, &rnum, -5000, 0);
     if (dir<0) { /* we can't find the ring */
       wh->ringnumber = 0;
       return FALSE;
