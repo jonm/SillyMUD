@@ -1585,7 +1585,7 @@ int IsGodly( struct char_data *ch)
   if (GET_RACE(ch) == RACE_DEMON || GET_RACE(ch) == RACE_DEVIL)
     if (GetMaxLevel(ch) >= 45)
       return(TRUE);
-
+  return(FALSE);
 }
 
 /*
@@ -2728,6 +2728,7 @@ int RideCheck( struct char_data *ch, int mod)
   } else {
     return(FALSE);
   }
+  return(FALSE);
 }
 
 void FallOffMount(struct char_data *ch, struct char_data *h)
@@ -2892,6 +2893,7 @@ int too_many_followers(struct char_data *ch)
 
   if(actual_fol < max_followers)
     return FALSE;
+  return TRUE;
 }
 
 int follow_time(struct char_data *ch)
@@ -3107,6 +3109,7 @@ int IsDarkOutside(struct room_data *rp)
     if (gLightLevel == 0)
       return(0);
   }
+  return FALSE;
 }
 
 /* will look at char's classes and chose the "best" stat to increment. */

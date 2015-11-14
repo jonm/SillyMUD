@@ -540,6 +540,7 @@ int timnus(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
       }
     }
   }
+  return(FALSE);
 }
 
 

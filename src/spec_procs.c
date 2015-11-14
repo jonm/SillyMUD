@@ -380,10 +380,10 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
       ch->skills[number].learned = 95;
       return(TRUE);
     }
-  } else {
-    send_to_char("The Guildmaster says 'Hey, I'm not your guildmaster.  Get lost!'\n\r", ch);
-    return(FALSE);
   }
+
+  send_to_char("The Guildmaster says 'Hey, I'm not your guildmaster.  Get lost!'\n\r", ch);
+  return(FALSE);
 }
 
 
@@ -436,6 +436,7 @@ int dump(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int typ
     else
       GET_GOLD(ch) += value;
   }
+  return(TRUE);
 }
 
 int mayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -1741,7 +1742,7 @@ int geyser(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
     send_to_zone("The volcano trembles slighly\n\r", ch);
     return(TRUE);
   }
-  
+  return(FALSE);
 }
 
 
@@ -1759,18 +1760,21 @@ int green_slime(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     if((!IS_NPC(cons)) && (GetMaxLevel(cons)<LOW_IMMORTAL))
       cast_green_slime( GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, cons, 0);
   
-  
+  return(TRUE);
 }
 
 
 int DracoLich(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {
+  return(FALSE);
 }
 int Drow(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {
+  return(FALSE);
 }
 int Leader(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {
+  return(FALSE);
 }
 
 
@@ -1848,6 +1852,7 @@ int Inquisitor(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
   default:
     break;
   }
+  return(FALSE);
 }
 
 int puff(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -2202,6 +2207,7 @@ int puff(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int ty
     default:
       return(0);
     }
+  return(FALSE);
 }
 
 int regenerator( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -2216,6 +2222,7 @@ int regenerator( struct char_data *ch, int cmd, char *arg, struct char_data *mob
     act("$n regenerates.", TRUE, ch, 0, 0, TO_ROOM);
     return(TRUE);
   }
+  return(FALSE);
 }
 
 int replicant( struct char_data *ch, int cmd, char *arg, struct char_data *mob1, int type)
@@ -2336,6 +2343,7 @@ int AbbarachDragon(struct char_data *ch, int cmd, char *arg, struct char_data *m
    } else {
      return(BreathWeapon(ch, cmd, arg,mob,type));
    }
+  return(FALSE);
 }
 
 
@@ -2723,6 +2731,7 @@ int NudgeNudge(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
     ch->generic = NN_LOOSE;
     break;
   }  
+  return(FALSE);
 }
 
 int AGGRESSIVE(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -2745,6 +2754,7 @@ int AGGRESSIVE(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
       }
     }
   }
+  return(TRUE);
 }
 
 int citizen(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -3696,8 +3706,8 @@ int jabberwocky(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     } else {
       FighterMove(ch);
     }
-    return(FALSE);
   }
+  return(FALSE);
 }
 
 int flame(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -3710,8 +3720,8 @@ int flame(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int t
     } else {
       FighterMove(ch);
     }
-    return(FALSE);
   }
+  return(FALSE);
 }
 
 int banana(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -4059,6 +4069,7 @@ int Keftab(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
       return(FALSE);
     }
   }
+  return(FALSE);
 }
 
 int StormGiant(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -4086,14 +4097,17 @@ int StormGiant(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
     }
     return(FALSE);
   }
+  return(FALSE);
 }
 
 int Manticore(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {
+  return(FALSE);
 }
 
 int Kraken(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {
+  return(FALSE);
 }
 
 
@@ -4376,6 +4390,7 @@ int NewThalosMayor(struct char_data *ch, int cmd, char *arg, struct char_data *m
       }
     }
   }
+  return(FALSE);
 }
 
 int SultanGuard(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -4405,9 +4420,8 @@ int NewThalosCitizen(struct char_data *ch, int cmd, char *arg, struct char_data 
     
        return(TRUE);
      }
-  } else {
-    return(FALSE);
   }
+  return(FALSE);
 }
 
 int NewThalosGuildGuard(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -4942,6 +4956,7 @@ int Tyrannosaurus_swallower(struct char_data *ch, int cmd, char *arg, struct cha
       }
     }
   }
+  return(FALSE);
 }
 
 
@@ -4986,6 +5001,7 @@ int soap(struct char_data *ch, int cmd, char *arg, struct obj_data *tobj, int ty
     act("That used up $p.",FALSE,ch,obj,t,TO_CHAR);
     extract_obj(obj);
   }
+  return(TRUE);
 }  
 
 int nodrop(struct char_data *ch, int cmd, char *arg, struct obj_data *tobj, int type)
@@ -5521,7 +5537,7 @@ int lattimore(struct char_data *ch, int cmd, char *arg, struct char_data *mob, i
     }
     return(FALSE);
   }
-  else return(FALSE);
+  return(FALSE);
 }
 
 /* Returns the index to the dude who did it */
@@ -5673,6 +5689,7 @@ int trogcook(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
       command_interpreter(ch, buf);
       return(TRUE);
     }
+  return(FALSE);
 }
 
 int shaman(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -5704,6 +5721,7 @@ int shaman(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
     }
     else return(cleric(ch, cmd, arg,mob,type));
   }
+  return(FALSE);
 }
 
 int golgar(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -5744,7 +5762,7 @@ int golgar(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
       }
     }
   }
-  else return(magic_user(ch, cmd, arg,mob,type));
+  return(magic_user(ch, cmd, arg,mob,type));
 }
 
 int troguard(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -5846,8 +5864,7 @@ int keystone(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
     }
     CallForGuard(ch, ch->specials.fighting, 3, OUTPOST);
   }
-  else return(FALSE);
-
+  return(FALSE);
 }
 
 int ghostsoldier(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -6446,5 +6463,6 @@ int web_slinger(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     act("$n casts sticky webs upon you!", TRUE, ch, 0, 0, TO_ROOM);
     cast_web(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
   }
+  return(FALSE);
 }
 

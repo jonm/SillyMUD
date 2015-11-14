@@ -885,7 +885,7 @@ int ReadObjs( FILE *fl, struct obj_file_u *st)
   for (i=0;i<st->number;i++) {
      fread(&st->objects[i], sizeof(struct obj_file_elem), 1, fl);
   }
-
+  return(TRUE);
 }
 
 void WriteObjs( FILE *fl, struct obj_file_u *st)

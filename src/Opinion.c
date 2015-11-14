@@ -163,15 +163,8 @@ int AddHatred( struct char_data *ch, int parm_type, int parm)
   if (!IS_SET(ch->specials.act, ACT_HATEFUL)) {
     SET_BIT(ch->specials.act, ACT_HATEFUL);
   }
+  return(0);
 }
-
-int RemHatred( struct char_data *ch, unsigned short bitv)
-{
-      REMOVE_BIT(ch->hatefield, bitv);
-      if (!ch->hatefield)
-	REMOVE_BIT(ch->specials.act, ACT_HATEFUL);
-}
-
 
 int Hates( struct char_data *ch, struct char_data *v)
 {
@@ -418,6 +411,7 @@ int AddFears( struct char_data *ch, int parm_type, int parm)
   if (!IS_SET(ch->specials.act, ACT_AFRAID)) {
      SET_BIT(ch->specials.act, ACT_AFRAID);
    }
+  return(0);
 }
 
 

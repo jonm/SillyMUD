@@ -670,10 +670,8 @@ int MobFriend( struct char_data *ch, struct char_data *f)
        if (IS_NPC(f))
           return(TRUE);
      }
-   } else {
-     return(FALSE);
    }
-
+   return(FALSE);
 }
 
 void PulseMobiles(int type)

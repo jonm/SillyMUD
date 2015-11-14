@@ -2036,6 +2036,7 @@ int check_falling( struct char_data *ch)
     do_look(ch, "", 0);
     return(FALSE);
   }
+  return(FALSE);
 }
 
 void check_drowning( struct char_data *ch)

@@ -2934,6 +2934,7 @@ int BrittleCheck(struct char_data *ch, int dam)
        }
     }
   }
+  return(FALSE);
 }
 
 int PreProcDam(struct char_data *ch, int type, int dam)

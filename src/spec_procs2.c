@@ -1278,9 +1278,8 @@ int Teacher(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       send_to_char("'You are now a master of this art.'\n\r", ch);
       return(TRUE);
     }
-  } else {
-    return(FALSE);
   }
+  return(FALSE);
 }
 
 
@@ -1926,9 +1925,9 @@ int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg, 
        GainLevel(ch, Class);
        return(TRUE);
      }
-   } else {			/* command is neither gain nor give */
-     return(FALSE);
    }
+   /* command is neither gain nor give */
+   return(FALSE);
 }
 
 
@@ -2073,6 +2072,7 @@ int creeping_death( struct char_data *ch, int cmd, char *arg, struct char_data *
       }
     }    
   }
+  return(FALSE);
 }
 
 #if 0
@@ -2865,6 +2865,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *arg, struct char_data *
       DruidAttackSpells(ch, vict, level);
     }
   }
+  return(FALSE);
 }
 
 int MonkChallenger(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
@@ -3325,6 +3326,7 @@ int scraps(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int t
       extract_obj(obj);
     }
   }
+  return(FALSE);
 }
 
 #define ATTACK_ROOM 3004
@@ -3354,6 +3356,7 @@ int attack_rats(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
  }
 
  go_direction(ch, dir);
+ return(FALSE);
 }
 
 #define WHO_TO_HUNT  6112 /* green dragon */
@@ -3884,6 +3887,7 @@ int DwarvenMiners(struct char_data *ch, int cmd, char *arg, struct char_data *mo
 
     return(FALSE);
   }
+ return(FALSE);
 }
 
 

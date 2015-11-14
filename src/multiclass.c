@@ -46,7 +46,7 @@ int CountBits(int class)
   if (class == 8) return(4);
   if (class == 16) return(5);
   if (class == 32) return(6);
-
+  return(0);
 }
 
 int OnlyClass( struct char_data *ch, int class)
@@ -212,6 +212,7 @@ int GetALevel(struct char_data *ch, int which)
   if (which > -1 && which < 4) {
     return(ind[which]);
   }
+  return(1);
 }
 
 int GetThirdMaxLev(struct char_data *ch)
