@@ -698,7 +698,7 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     
 #if 1
     /* multiple buy code */
-    if ((num = getabunch(argm,newarg))!=NULL) {
+    if ((num = getabunch(argm,newarg))!=0) {
       strcpy(argm,newarg);
     }
     if (num == 0) num = 1;
