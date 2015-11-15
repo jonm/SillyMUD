@@ -5,6 +5,7 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -540,6 +541,7 @@ int timnus(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
       }
     }
   }
+  return(FALSE);
 }
 
 

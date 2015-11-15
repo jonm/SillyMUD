@@ -5,6 +5,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <strings.h>
 
 #include "protos.h"
@@ -1974,7 +1975,7 @@ void cast_knock( byte level, struct char_data *ch, char *arg, int type,
 
    argument_interpreter(arg, otype, dir);
 
-   if (!otype) {
+   if (otype[0] == '\0') {
       send_to_char("Knock on what?\n\r",ch);
       return;
    }
@@ -2053,7 +2054,7 @@ void cast_weakness( byte level, struct char_data *ch, char *arg, int type,
   case SPELL_TYPE_STAFF:
     for (tar_ch = real_roomp(ch->in_room)->people ; 
 	 tar_ch ; tar_ch = tar_ch->next_in_room)
-      if (!in_group) 
+      if (!in_group(tar_ch,ch))
 	spell_weakness(level,ch,tar_ch,0);
     break;
     default : 
@@ -2991,8 +2992,8 @@ void cast_command( byte level, struct char_data *ch, char *arg,
   if (arg && *arg) {
     p = fname(arg);
     
-    if ((GetMaxLevel(tar_ch) < 6) && (GET_INT(tar_ch) < 13) || 
-      !saves_spell(tar_ch, SAVING_PARA)) {
+    if (((GetMaxLevel(tar_ch) < 6) && (GET_INT(tar_ch) < 13)) || 
+	!saves_spell(tar_ch, SAVING_PARA)) {
 
       if (strcmp(p, "quit")) {
 	sprintf(buf, "$n has commanded you to '%s'.", p);

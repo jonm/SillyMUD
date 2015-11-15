@@ -4,7 +4,9 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#include <stdlib.h>
 #include <stdio.h>
+#include <strings.h>
 
 #include "protos.h"
 

@@ -5,6 +5,8 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "protos.h"
 
@@ -624,7 +626,7 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 	      /* ancestor for first layer is the direction */
 	      hash_enter(&x_room, tmp_room,
 			 ((int)hash_find(&x_room,q_head->room_nr) == -1) ?
-			 (void*)(i+1) : hash_find(&x_room,q_head->room_nr));
+			 (void*)((long)(i+1)) : hash_find(&x_room,q_head->room_nr));
 	    }
 	  } else {
 	    /* have reached our goal so free queue */
@@ -669,12 +671,12 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 
 int choose_exit_global(int in_room, int tgt_room, int depth)
 {
-  return find_path(in_room, is_target_room_p, (void*)tgt_room, depth, 0);
+  return find_path(in_room, is_target_room_p, &tgt_room, depth, 0);
 }
 
 int choose_exit_in_zone(int in_room, int tgt_room, int depth)
 {
-  return find_path(in_room, is_target_room_p, (void*)tgt_room, depth, 1);
+  return find_path(in_room, is_target_room_p, &tgt_room, depth, 1);
 }
 
 int go_direction(struct char_data *ch, int dir)     
@@ -688,6 +690,7 @@ int go_direction(struct char_data *ch, int dir)
     open_door(ch, dir);
     return 0;
   }
+  return 0;
 }
 
 
@@ -1311,7 +1314,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 	    obj_from_room(obj_object);
 	    obj_to_char(obj_object, ch);
 	    act("You get $p.", 0, ch, obj_object, 0, TO_CHAR);
-	    if((obj_object->obj_flags.type_flag == ITEM_MONEY)) {
+	    if(obj_object->obj_flags.type_flag == ITEM_MONEY) {
 	      if (obj_object->obj_flags.value[0]<1)
 		obj_object->obj_flags.value[0] = 1;
 	      obj_from_char(obj_object);
@@ -1372,7 +1375,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 		  obj_from_obj(obj_object);
 		  obj_to_char(obj_object, ch);
 	  act("You get $p from $P.",0,ch,obj_object,sub_object,TO_CHAR);
-		  if((obj_object->obj_flags.type_flag == ITEM_MONEY)) {
+		  if(obj_object->obj_flags.type_flag == ITEM_MONEY) {
 		    if (obj_object->obj_flags.value[0]<1)
 		      obj_object->obj_flags.value[0] = 1;
 		    obj_from_char(obj_object);
@@ -1615,12 +1618,12 @@ void do_makepotion(struct char_data *ch, char *argument, int cmd)
 
   extract_obj(potion);
 
-  if(which_potion) 
+  if(which_potion) {
     if(!max || GetMaxLevel(ch) < max) {
       send_to_char("This brew is beyond your powers.\n\r", ch);
       return;
     }
-  else {
+  } else {
     if(GetMaxLevel(ch) < 40) {
       send_to_char("This brew is beyond your powers.\n\r", ch);
       return;

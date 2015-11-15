@@ -308,12 +308,15 @@ int str_cmp(char *arg1, char *arg2)
   if ((!arg2) || (!arg1))
     return(1);
 
-  for (i = 0; *(arg1 + i) || *(arg2 + i); i++)
-    if (chk = LOWER(*(arg1 + i)) - LOWER(*(arg2 + i)))
-      if (chk < 0)
+  for (i = 0; *(arg1 + i) || *(arg2 + i); i++) {
+    if ((chk = LOWER(*(arg1 + i)) - LOWER(*(arg2 + i))) != 0) {
+      if (chk < 0) {
 	return (-1);
-      else 
+      } else {
 	return (1);
+      }
+    }
+  }
   return(0);
 }
 
@@ -325,12 +328,15 @@ int strn_cmp(char *arg1, char *arg2, int n)
 {
   int chk, i;
   
-  for (i = 0; (*(arg1 + i) || *(arg2 + i)) && (n>0); i++, n--)
-    if (chk = LOWER(*(arg1 + i)) - LOWER(*(arg2 + i)))
-      if (chk < 0)
+  for (i = 0; (*(arg1 + i) || *(arg2 + i)) && (n>0); i++, n--) {
+    if ((chk = LOWER(*(arg1 + i)) - LOWER(*(arg2 + i))) != 0) {
+      if (chk < 0) {
 	return (-1);
-      else 
+      } else {
 	return (1);
+      }
+    }
+  }
   
   return(0);
 }
@@ -383,7 +389,7 @@ void sprintbit(unsigned long vektor, char *names[], char *result)
   
   for(nr=0; vektor; vektor>>=1)
     {
-      if (IS_SET(1, vektor))
+      if (IS_SET(1, vektor)) {
 	if (*names[nr] != '\n') {
 	  strcat(result,names[nr]);
 	  strcat(result," ");
@@ -391,6 +397,7 @@ void sprintbit(unsigned long vektor, char *names[], char *result)
 	  strcat(result,"UNDEFINED");
 	  strcat(result," ");
 	}
+      }
       if (*names[nr] != '\n')
 	nr++;
     }
@@ -636,7 +643,7 @@ char getall(char *name, char *newname)
 
    if (prd != '.')
      return(FALSE);
-   if (tmpname == NULL) 
+   if (*tmpname == '\0') 
       return(FALSE);
    if (strcmp(arg,"all"))
       return(FALSE);
@@ -646,7 +653,7 @@ char getall(char *name, char *newname)
 
    name++;
 
-   for (; *newname = *name; name++,newname++);
+   for (; (*newname = *name) != '\0'; name++,newname++);
 
    return(TRUE);
 }
@@ -671,7 +678,7 @@ int getabunch(char *name, char  *newname)
 
    name++;
 
-   for (; *newname = *name; name++,newname++);
+   for (; (*newname = *name) != '\0'; name++,newname++);
 
    return(num);
 
@@ -1076,14 +1083,14 @@ void RoomSave(struct char_data *ch, int start, int end)
      fprintf(fp,"#%d\n%s~\n%s~\n",rp->number,rp->name,
  	                            temp);
      if (!rp->tele_targ) {
-        fprintf(fp,"%d %d %d",rp->zone, rp->room_flags, rp->sector_type);
+        fprintf(fp,"%d %ld %d",rp->zone, rp->room_flags, rp->sector_type);
       } else {
 	if (!IS_SET(TELE_COUNT, rp->tele_mask)) {
-	   fprintf(fp, "%d %d -1 %d %d %d %d", rp->zone, rp->room_flags,
+	   fprintf(fp, "%d %ld -1 %d %d %d %d", rp->zone, rp->room_flags,
 		rp->tele_time, rp->tele_targ, 
 		rp->tele_mask, rp->sector_type);
 	} else {
-	   fprintf(fp, "%d %d -1 %d %d %d %d %d", rp->zone, rp->room_flags,
+	   fprintf(fp, "%d %ld -1 %d %d %d %d %d", rp->zone, rp->room_flags,
 		rp->tele_time, rp->tele_targ, 
 		rp->tele_mask, rp->tele_cnt, rp->sector_type);
 	} 
@@ -1578,7 +1585,7 @@ int IsGodly( struct char_data *ch)
   if (GET_RACE(ch) == RACE_DEMON || GET_RACE(ch) == RACE_DEVIL)
     if (GetMaxLevel(ch) >= 45)
       return(TRUE);
-
+  return(FALSE);
 }
 
 /*
@@ -2284,13 +2291,13 @@ int MobCountInRoom( struct char_data *list)
 void *Mymalloc( long size)
 {
   if (size < 1) {
-    fprintf(stderr, "attempt to malloc negative memory - %d\n", size);
+    fprintf(stderr, "attempt to malloc negative memory - %ld\n", size);
     assert(0);
   }
   return(malloc(size));
 }
 
-int SpaceForSkills(struct char_data *ch)
+void SpaceForSkills(struct char_data *ch)
 {
 
   /*
@@ -2721,6 +2728,7 @@ int RideCheck( struct char_data *ch, int mod)
   } else {
     return(FALSE);
   }
+  return(FALSE);
 }
 
 void FallOffMount(struct char_data *ch, struct char_data *h)
@@ -2762,15 +2770,15 @@ int HasWBits(struct char_data *ch, int bits)
   return(FALSE);
 }
 
-int LearnFromMistake(struct char_data *ch, int sknum, int silent, int max)
+void LearnFromMistake(struct char_data *ch, int sknum, int silent, int max)
 {
-  if (!ch->skills) return(0);
+  if (!ch->skills) return;
 
   if (!IS_SET(ch->skills[sknum].flags, SKILL_KNOWN)) {
     if (HasClass(ch, CLASS_MONK)) {
         SET_BIT(ch->skills[sknum].flags, SKILL_KNOWN);
     }
-    return(0);
+    return;
   }
 
   if (ch->skills[sknum].learned < max && ch->skills[sknum].learned > 0) {
@@ -2885,6 +2893,7 @@ int too_many_followers(struct char_data *ch)
 
   if(actual_fol < max_followers)
     return FALSE;
+  return TRUE;
 }
 
 int follow_time(struct char_data *ch)
@@ -3100,6 +3109,7 @@ int IsDarkOutside(struct room_data *rp)
     if (gLightLevel == 0)
       return(0);
   }
+  return FALSE;
 }
 
 /* will look at char's classes and chose the "best" stat to increment. */
@@ -3190,7 +3200,7 @@ int IsGoblinoid(struct char_data *ch)
 
 int IsArticle(char *c)
 {
-  register i;
+  register int i;
   
   for(i=0;article_list[i][0] != '\n'; i++)
     if(!str_cmp(article_list[i],c))

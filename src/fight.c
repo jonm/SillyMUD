@@ -5,6 +5,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
@@ -201,7 +202,7 @@ void update_pos( struct char_data *victim )
       if (!MOUNTED(victim))
 	GET_POS(victim) = POSITION_STANDING;
       else 
-	GET_POS(victim) == POSITION_MOUNTED;
+	GET_POS(victim) = POSITION_MOUNTED;
     } else {
       GET_POS(victim) = POSITION_STUNNED;
     }
@@ -1247,7 +1248,7 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
 
 	} else {
 	   if ((IS_GOOD(ch) && !IS_EVIL(victim))  ||
-	       IS_EVIL(ch) && IS_NEUTRAL(victim)) {
+	       (IS_EVIL(ch) && IS_NEUTRAL(victim))) {
 	     sprintf(buf, "%s killed by %s at %s -- <Player kill, Illegal>",
 		     GET_NAME(victim), ch->player.name, 
 		     (real_roomp(victim->in_room))->name);
@@ -1299,7 +1300,7 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
 
 }
 
-int AreaDamage(struct char_data *ch, int dam, int attacktype, 
+void AreaDamage(struct char_data *ch, int dam, int attacktype, 
 	       char *same_room_hitmsg, char *same_room_missmsg, 
 	       char *global_msg, bool save_negates, bool heat_blinder)
 {
@@ -1443,7 +1444,7 @@ int damage(struct char_data *ch, struct char_data *victim,
    return(FALSE);  /* not dead */
 }
 
-#else    /* this is for an example of the old code, slightly modified &/
+#else    /* this is for an example of the old code, slightly modified */
 
 int damage(struct char_data *ch, struct char_data *victim,
 	   int dam, int attacktype)
@@ -2011,7 +2012,7 @@ int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco)
   }
 }
 
-int MissVictim(struct char_data *ch, struct char_data *v, int type, int w_type,
+void MissVictim(struct char_data *ch, struct char_data *v, int type, int w_type,
 	       int (*dam_func)())
 {
   struct obj_data *o;
@@ -2092,15 +2093,16 @@ int GetWeaponDam(struct char_data *ch, struct char_data *v,
 	}
 	if (wielded->affected[j].location ==
 	    APPLY_ALIGN_SLAYER) {
-	  if (((int)wielded->affected[j].modifier) > 0)
+	  if (((int)wielded->affected[j].modifier) > 0) {
 	    if (IS_GOOD(v))
 	      dam *= 2;
-	  else if (((int)wielded->affected[j].modifier) < 0)
+	  } else if (((int)wielded->affected[j].modifier) < 0) {
 	    if (IS_EVIL(v))
 	      dam *= 2;
-	  else
+	  } else {
 	    if (!IS_GOOD(v) && !IS_EVIL(v))
 	      dam *=2;
+	  }
 	}
       }
 #endif
@@ -2305,8 +2307,8 @@ int GetBackstabMult(struct char_data *ch, struct char_data *v)
   return(mult);
 }
 
-int HitVictim(struct char_data *ch, struct char_data *v, int dam, 
-		   int type, int w_type, int (*dam_func)())
+void HitVictim(struct char_data *ch, struct char_data *v, int dam, 
+	       int type, int w_type, int (*dam_func)())
 {
   char buf[80];
   extern byte backstab_mult[];
@@ -2877,7 +2879,7 @@ struct char_data *FindAnyVictim( struct char_data *ch)
   
 }
 
-int BreakLifeSaverObj( struct char_data *ch)
+void BreakLifeSaverObj( struct char_data *ch)
 {
 
       int found=FALSE, i, j;
@@ -2933,6 +2935,7 @@ int BrittleCheck(struct char_data *ch, int dam)
        }
     }
   }
+  return(FALSE);
 }
 
 int PreProcDam(struct char_data *ch, int type, int dam)
@@ -3297,7 +3300,7 @@ int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam)
 }
 
 
-int DamageStuff(struct char_data *v, int type, int dam)
+void DamageStuff(struct char_data *v, int type, int dam)
 {
   int num, dam_type;
   struct obj_data *obj;
@@ -3393,7 +3396,7 @@ int SkipImmortals(struct char_data *v, int amnt)
 }
 
 
-int WeaponSpell( struct char_data *c, struct char_data *v, int type)
+void WeaponSpell( struct char_data *c, struct char_data *v, int type)
 {
   int j, num;
   

@@ -6,6 +6,7 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
@@ -19,7 +20,7 @@
 extern struct index_data *mob_index;
 extern struct room_data *world;
 
-int FreeHates( struct char_data *ch)
+void FreeHates( struct char_data *ch)
 {
   struct char_list *k, *n;
 
@@ -27,11 +28,11 @@ int FreeHates( struct char_data *ch)
     n = k->next;
     free(n);
   }
-
+  
 }
 
 
-int FreeFears( struct char_data *ch)
+void FreeFears( struct char_data *ch)
 {
   struct char_list *k, *n;
 
@@ -163,15 +164,8 @@ int AddHatred( struct char_data *ch, int parm_type, int parm)
   if (!IS_SET(ch->specials.act, ACT_HATEFUL)) {
     SET_BIT(ch->specials.act, ACT_HATEFUL);
   }
+  return(0);
 }
-
-int RemHatred( struct char_data *ch, unsigned short bitv)
-{
-      REMOVE_BIT(ch->hatefield, bitv);
-      if (!ch->hatefield)
-	REMOVE_BIT(ch->specials.act, ACT_HATEFUL);
-}
-
 
 int Hates( struct char_data *ch, struct char_data *v)
 {
@@ -418,6 +412,7 @@ int AddFears( struct char_data *ch, int parm_type, int parm)
   if (!IS_SET(ch->specials.act, ACT_AFRAID)) {
      SET_BIT(ch->specials.act, ACT_AFRAID);
    }
+  return(0);
 }
 
 

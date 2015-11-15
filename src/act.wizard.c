@@ -1597,7 +1597,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       for(j2=j->contains;j2;j2 = j2->next_content) {
 	strcat(buf,fname(j2->name));
 	strcat(buf,"\n\r");
-	found == TRUE;
+	found = TRUE;
       }
       if (!found)
 	strcpy(buf,"Contains : Nothing\n\r");
@@ -1661,7 +1661,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
       GET_EXP(mob) = parm;
     } else if (!strcmp(field, "lev")) {
       parm2 = 0; /* mage */
-      sscanf(parmstr,"%d %d",&parm);
+      sscanf(parmstr,"%d ",&parm);
       argument=one_argument(argument, parmstr);
       sscanf(parmstr,"%d", &parm2);
       if (!IS_NPC(mob)) {
@@ -3084,10 +3084,10 @@ void do_show(struct char_data *ch, char *argument, int cmd)
     }
     
     
-  } else if (is_abbrev(buf, "objects") &&
-	     (which_i=obj_index,topi=top_of_objt) ||
-	     is_abbrev(buf, "mobiles") &&
-	     (which_i=mob_index,topi=top_of_mobt) ) {
+  } else if ((is_abbrev(buf, "objects") &&
+	      (which_i=obj_index,topi=top_of_objt)) ||
+	     (is_abbrev(buf, "mobiles") &&
+	      (which_i=mob_index,topi=top_of_mobt))) {
     int		objn;
     struct index_data	*oi;
     
@@ -3107,8 +3107,8 @@ void do_show(struct char_data *ch, char *argument, int cmd)
     for (objn=0; objn<=topi; objn++) {
       oi = which_i + objn;
       
-      if (zone>=0 && (oi->virtual<bottom || oi->virtual>top) ||
-	  zone<0 && !isname(zonenum, oi->name))
+      if ((zone>=0 && (oi->virtual<bottom || oi->virtual>top)) ||
+	  (zone<0 && !isname(zonenum, oi->name)))
 	continue; /* optimize later*/
       
       sprintf(buf,"%5d %4d %3d  %s\n\r", oi->virtual, objn,

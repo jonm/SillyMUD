@@ -998,7 +998,7 @@ struct affected_type
 {
 	short type;           /* The type of spell that caused this      */
 	sh_int duration;      /* For how long its effects will last      */
-	sbyte modifier;       /* This is added to apropriate ability     */
+	int modifier;       /* This is added to apropriate ability     */
 	byte location;        /* Tells which ability to change(APPLY_XXX)*/
 	long bitvector;       /* Tells which bits to set (AFF_XXX)       */
 
