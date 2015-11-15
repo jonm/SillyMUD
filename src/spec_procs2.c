@@ -2507,7 +2507,7 @@ int breath_weapon(struct char_data *ch, struct char_data *target,
 }
 
 int use_breath_weapon(struct char_data *ch, struct char_data *target,
-		      int cost, void (*func)())
+		      int cost, void (*func)(byte, struct char_data *, char *, int, struct char_data *, struct obj_data *))
 {
   if (GET_MANA(ch)>=0) {
     breath_weapon(ch, target, cost, func);
