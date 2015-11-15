@@ -368,7 +368,7 @@ int Summoner(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
 	    }
 	  } else {  /* look up the char_ptr */
 	    for (d=descriptor_list; d; d = d->next) {
-	      if (d->character && i->name && (strcmp(GET_NAME(d->character), i->name)==0)) {
+	      if (d->character && (i->name[0] != '\0') && (strcmp(GET_NAME(d->character), i->name)==0)) {
 		targ = d->character;
 		break;
 	      }
@@ -1026,7 +1026,7 @@ int cleric(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
     case 18:      
     case 19:      
     default:
-      act("$n utters the words 'Hurts, doesn't it??'.",1,ch,0,0,TO_ROOM);
+      act("$n utters the words 'Hurts, doesn't it\?\?'.",1,ch,0,0,TO_ROOM);
       cast_harm(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     }
