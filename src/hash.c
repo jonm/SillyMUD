@@ -5,6 +5,7 @@
 */
 
 #include <stdio.h>
+#include <strings.h>
 
 #include "protos.h"
 
