@@ -2523,7 +2523,7 @@ int use_breath_weapon(struct char_data *ch, struct char_data *target,
 }
 
 
-static void (*breaths[])() = {
+static void (*breaths[])(byte, struct char_data *ch, char *, int, struct char_data *, struct obj_data *) = {
   cast_acid_breath, 0, cast_frost_breath, 0, cast_lightning_breath, 0,
   cast_fire_breath, 0,
   cast_acid_breath, cast_fire_breath, cast_lightning_breath, 0
