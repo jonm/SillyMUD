@@ -3675,7 +3675,7 @@ int SlotMachine(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, 
 
 int astral_portal(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {
-  int destination[20];
+  int destination[25];
   char buf[50];
   int j;
   struct char_data *portal;
