@@ -372,8 +372,7 @@ void VampireBite(struct char_data *ch, struct char_data *v)
       ammt = number(1,loss);
       
       if(GET_HIT(v) - ammt <= 0)
-	ammt = ammt = GET_HIT(v);
-      (ammt > 0) ? ammt : 0;
+	ammt = GET_HIT(v);
       GET_HIT(v) -= ammt;
       GET_HIT(ch) += ammt;
       
