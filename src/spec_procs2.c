@@ -362,7 +362,7 @@ int Summoner(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
           if (i->op_ch) {  /* if there is a char_ptr */
 	    targ = i->op_ch;
 	    if (IS_PC(targ)) {
-	      sprintf(buf, "You hate %s\n\r", targ);
+	      sprintf(buf, "You hate %s\n\r", targ->player.name);
 	      send_to_char(buf, ch);
 	      break;
 	    }
