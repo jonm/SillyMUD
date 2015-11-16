@@ -38,3 +38,21 @@ tests
 
 # makedepend
 Makefile.bak
+
+# autotools
+config.h
+config.log
+config.status
+stamp-h1
+Makefile
+autom4te.cache/
+Makefile.in
+config.h.in
+configure
+configure.ac
+test-driver
+aclocal.m4
+compile
+depcomp
+install-sh
+missing
