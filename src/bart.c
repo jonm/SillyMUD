@@ -3,6 +3,7 @@
  *  Usage : Informative commands.                                          *
  *  Copyright (C) 1990, 1991 - see 'license.doc' for complete information. *
  ************************************************************************* */
+#include "config.h"
 
 #include <stdio.h>
 #include <string.h>

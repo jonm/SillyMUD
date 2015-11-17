@@ -1,3 +1,4 @@
+#include "config.h"
 
 /* Original fread_string was a memory leaking piece of garbage... -DM */
 char *fread_string(FILE *f1)

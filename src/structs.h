@@ -3,6 +3,8 @@
  
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
+#include "config.h"
+
 #include <sys/types.h>
 #include <assert.h>
 
@@ -94,7 +96,6 @@ struct BrewMeister {
   int object[6];
 };
 
-#define VERSION "69.69b"
 /*
   tailoring stuff
 */
