@@ -10,3 +10,32 @@ https://github.com/Snaipe/Criterion/
 $ brew install snaipe/soft/criterion
 ```
 
+*NOTE*: At least one version of Criterion I installed forgot to install
+one of the header files, `assert_base.h`. When I cloned the source, I was
+able to just copy that file into the appropriate place.
+
+You'll also need the GNU autotools:
+
+```
+$ brew install autoconf
+$ brew install automake
+```
+
+# Building
+
+First you will have to initialize the build system via:
+```
+$ autoreconf --install
+```
+
+Then you can just:
+```$ ./configure && make```
+
+Note that the usual `make install` has not been set up yet.
+
+You can run the tests via:
+
+```$ make check```
+
+
+
