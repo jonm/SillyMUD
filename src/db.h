@@ -1,5 +1,7 @@
+#ifndef _DB_H
+#define _DB_H
 
-/* data files used by the game system */
+#include "config.h"
 
 #define DFLT_DIR          "lib"           /* default data directory     */
 
@@ -136,6 +138,8 @@ struct help_index_element
 #define ZONE_OLYMPUS 64
 #define ZONE_ABYSS   128
 #define ZONE_PMP     256	/* Prime Material Plane */
+
 #define ZONE_LIMBO   512
 
+#endif
 

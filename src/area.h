@@ -4,8 +4,10 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
-#ifndef _AREA_
-#define _AREA_
+#ifndef _AREA_H
+#define _AREA_H
+
+#include "config.h"
 
 /*
  *  these defines are to make differentiation easier

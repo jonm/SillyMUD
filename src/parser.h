@@ -3,6 +3,11 @@
  
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
+
+#ifndef _PARSER_H
+#define _PARSER_H
+
+#include "config.h"
  
 #define MAGIC    96  /* Magic number for the hash table */
  
@@ -25,3 +30,5 @@ struct radix_list {
    unsigned short int number;
    byte max_len;
 };
+
+#endif

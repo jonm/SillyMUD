@@ -4,6 +4,11 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#ifndef _HASH_H
+#define _HASH_H
+
+#include "config.h"
+
 struct hash_link {
   int	key;
   struct hash_link *next;
@@ -20,3 +25,5 @@ struct hash_header {
 
 
 #define WORLD_SIZE 30000
+
+#endif

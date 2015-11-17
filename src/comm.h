@@ -3,6 +3,10 @@
  
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
+#ifndef _COMM_H
+#define _COMM_H
+
+#include "config.h"
 
 #define TO_ROOM    0
 #define TO_VICT    1
@@ -14,3 +18,5 @@
 
 
 #define PLAYER_AUTH 0
+
+#endif

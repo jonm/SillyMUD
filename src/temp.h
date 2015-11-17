@@ -1,3 +1,8 @@
+#ifndef _TEMP_H
+#define _TEMP_H
+
+#include "config.h"
+
 struct char_file_u_1 {
   byte sex;
   byte class;
@@ -48,3 +53,5 @@ struct char_file_u_2 {
 struct char_file_u_insert {
   struct char_skill_data skills[200];
 };
+
+#endif

@@ -4,6 +4,11 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#ifndef _UTILS_H
+#define _UTILS_H
+
+#include "config.h"
+
 int CAN_SEE(struct char_data *s, struct char_data *o);
 
 #if DEBUG
@@ -293,3 +298,4 @@ int exit_ok(struct room_direction_data *, struct room_data **);
 #define SUNPROBLEM(ch) (GET_RACE(ch) == RACE_DROW || GET_RACE(ch) == \
 			RACE_MFLAYER)
 
+#endif

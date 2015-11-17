@@ -1,3 +1,8 @@
+#ifndef _PROTOS_H
+#define _PROTOS_H
+
+#include "config.h"
+
 /* Prototypes */
 #include "structs.h"
 #include "area.h"
@@ -1934,3 +1939,4 @@ int No_Hoard(struct char_data *ch, struct char_data *re,
 /*  */
 /* All Done! (yay!) */
 
+#endif

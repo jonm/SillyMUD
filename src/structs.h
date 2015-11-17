@@ -3,6 +3,9 @@
  
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
+#ifndef _STRUCTS_H
+#define _STRUCTS_H
+
 #include "config.h"
 
 #include <sys/types.h>
@@ -1471,3 +1474,5 @@ struct skill_data {
 #define TAUGHT_BY_LORE     256
 #define TAUGHT_BY_HUNTER   512
 #define TAUGHT_BY_ETTIN    1024	/* beserk */
+
+#endif

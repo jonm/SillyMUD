@@ -4,6 +4,11 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#ifndef _SCRIPT_H
+#define _SCRIPT_H
+
+#include "config.h"
+
 struct foo_data {
    char *line;
  };
@@ -19,4 +24,4 @@ struct script_com {
    char *arg;
  } *comp;
 
-
+#endif
