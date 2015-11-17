@@ -1,5 +1,4 @@
 ## Process this file with automake to produce Makefile.in
-AM_CFLAGS = -DIMPL_SECURITY -DNEW_RENT -DLEVEL_LOSS -DNEWEXP -DGROUP_NAMES
 
 # main program
 bin_PROGRAMS = dmserver

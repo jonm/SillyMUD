@@ -68,6 +68,63 @@ AC_ARG_ENABLE([group-names],
   [],
   [AC_DEFINE([GROUP_NAMES])])
 
+AH_TEMPLATE([HASH],
+  [Define as 1 to use hash tables for rooms (more cpu, less storage)])
+AC_ARG_ENABLE([room-hashtables],
+  [AS_HELP_STRING([--enable-room-hashtables],
+    [use hash tables for rooms])],
+  [AC_DEFINE([HASH])],
+  [])
+
+AH_TEMPLATE([NOTRACK],
+  [Define as 1 to disable tracking (lower cpu)])
+AC_ARG_ENABLE([tracking],
+  [AS_HELP_STRING([--disable-tracking],
+    [disable the track skill])],
+  [AC_DEFINE([NOTRACK])],
+  [])
+
+AH_TEMPLATE([LIMITED_ITEMS],
+  [Define as 1 to limit items above a specific rent cost])
+AC_ARG_ENABLE([limited-items],
+  [AS_HELP_STRING([--enable-limited-items],
+    [limit items above a specific rent cost])],
+  [AC_DEFINE([LIMITED_ITEMS])],
+  [])
+
+AH_TEMPLATE([PLAYER_AUTH],
+  [Define as 1 to require new players to be authorized])
+AC_ARG_ENABLE([player-auth],
+  [AS_HELP_STRING([--enable-player-auth],
+    [require new players to be authorized])],
+  [AC_DEFINE([PLAYER_AUTH])],
+  [])
+
+AH_TEMPLATE([SITELOCK],
+  [Define as 1 to add commands for locking out specific hosts])
+AC_ARG_ENABLE([site-lock],
+  [AS_HELP_STRING([--enable-site-lock],
+    [add commands for locking out specific hosts])],
+  [AC_DEFINE([SITELOCK])],
+  [])
+
+AH_TEMPLATE([SAVE_WORLD],
+  [Define as 1 to save objects and mobs too])
+AC_ARG_ENABLE([save-world],
+  [AS_HELP_STRING([--enable-save-world],
+    [save the world (objects and mobs)])],
+  [AC_DEFINE([SAVE_WORLD])],
+  [])
+
+AH_TEMPLATE([NODUPLICATES],
+  [Define as 1 to modify some commands to make item duplication
+   nearly impossible])
+AC_ARG_ENABLE([duplicates],
+  [AS_HELP_STRING([--disable-duplicates],
+    [make item duplication nearly impossible])],
+  [AC_DEFINE([NODUPLICATES])],
+  [])
+
 AC_CONFIG_FILES([
   Makefile
   src/Makefile
