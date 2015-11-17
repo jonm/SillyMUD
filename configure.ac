@@ -16,8 +16,6 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([bzero gethostbyaddr gethostbyname gethostname getpagesize gettimeofday inet_ntoa isascii memset select socket strchr strdup strrchr strstr])
 
-CFLAGS+=" -DIMPL_SECURITY -DNEW_RENT -DLEVEL_LOSS -DNEWEXP -DGROUP_NAMES"
-
 AC_CONFIG_FILES([
   Makefile
   src/Makefile

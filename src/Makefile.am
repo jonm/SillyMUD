@@ -1,4 +1,6 @@
 ## Process this file with automake to produce Makefile.in
+AM_CFLAGS = -DIMPL_SECURITY -DNEW_RENT -DLEVEL_LOSS -DNEWEXP -DGROUP_NAMES
+
 bin_PROGRAMS = dmserver
 common_sources = comm.c act.comm.c act.info.c act.move.c act.obj1.c \
 	act.obj2.c act.off.c act.other.c act.social.c act.wizard.c handler.c \
