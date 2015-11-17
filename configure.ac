@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AC_INIT([dmserver], [0.1.0], [foo@example.com])
+AC_INIT([dmserver], [0.1.0], [], [], [https://github.com/jonm/SillyMUD])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
