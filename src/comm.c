@@ -115,7 +115,7 @@ int real_main (int argc, char **argv)
 
   
   port = DFLT_PORT;
-  dir = DFLT_DIR;
+  dir = DEFAULT_LIBDIR;
 #ifdef sun
 /*
 **  this block sets the max # of connections.  

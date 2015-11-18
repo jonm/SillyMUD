@@ -125,6 +125,9 @@ AC_ARG_ENABLE([duplicates],
   [AC_DEFINE([NODUPLICATES])],
   [])
 
+AC_DEFINE([DEFAULT_LIBDIR],[LOCAL_STATE_DIR "/sillymud"],
+  [Default location to look for game data files])
+
 AC_CONFIG_FILES([
   Makefile
   src/Makefile

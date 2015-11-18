@@ -3,7 +3,7 @@
 
 #include "config.h"
 
-#define DFLT_DIR          "lib"           /* default data directory     */
+/* data files used by the game system */
 
 #define WORLD_FILE        "tinyworld.wld" /* room definitions           */
 #define MOB_FILE          "tinyworld.mob" /* monster prototypes         */
