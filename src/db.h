@@ -1,7 +1,9 @@
+#ifndef _DB_H
+#define _DB_H
+
+#include "config.h"
 
 /* data files used by the game system */
-
-#define DFLT_DIR          "lib"           /* default data directory     */
 
 #define WORLD_FILE        "tinyworld.wld" /* room definitions           */
 #define MOB_FILE          "tinyworld.mob" /* monster prototypes         */
@@ -136,6 +138,8 @@ struct help_index_element
 #define ZONE_OLYMPUS 64
 #define ZONE_ABYSS   128
 #define ZONE_PMP     256	/* Prime Material Plane */
+
 #define ZONE_LIMBO   512
 
+#endif
 

@@ -1,3 +1,5 @@
+#include "config.h"
+
 void die(struct char_data *ch)
 {
   struct char_data *pers;

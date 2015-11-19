@@ -4,6 +4,11 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#ifndef _TRAP_H
+#define _TRAP_H
+
+#include "config.h"
+
 #define TRAP_EFFECT_TYPE   0
 #define TRAP_DAM_TYPE      1
 #define TRAP_LEVEL         2
@@ -38,3 +43,4 @@
 #define GET_TRAP_CHARGES(obj) (obj)->obj_flags.value[TRAP_CHARGES]
 #define GET_TRAP_DAM_TYPE(obj) (obj)->obj_flags.value[TRAP_DAM_TYPE]
 
+#endif

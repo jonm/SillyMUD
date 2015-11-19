@@ -4,6 +4,11 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#ifndef _SPELLS_H
+#define _SPELLS_H
+
+#include "config.h"
+
 #define MAX_BUF_LENGTH              240
 
 #define TYPE_UNDEFINED               -1
@@ -375,3 +380,5 @@ struct attack_hit_type {
   char *singular;
   char *plural;
 };
+
+#endif

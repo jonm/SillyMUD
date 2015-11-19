@@ -15,7 +15,10 @@
  * Used with permission for SillyMUD
  */
  
- 
+#ifndef _VT100C_H
+#define _VT100C_H
+
+#include "config.h" 
  
 #define UNKNOWN       0
 #define VT100         1
@@ -46,3 +49,4 @@
 #define INFO_EXP           8
 #define INFO_GOLD          16
 
+#endif

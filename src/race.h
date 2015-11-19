@@ -1,3 +1,8 @@
+#ifndef _RACE_H
+#define _RACE_H
+
+#include "config.h"
+
 /* Race -- Npc, otherwise */
 #define RACE_HALFBREED 0
 #define RACE_HUMAN     1
@@ -60,3 +65,5 @@
 #define RACE_FAERIE    55
 
 #define MAX_RACE       55
+
+#endif

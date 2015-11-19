@@ -4,6 +4,11 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#ifndef _INTERPRETER_H
+#define _INTERPRETER_H
+
+#include "config.h"
+
 #define MENU         \
 "\n\rWelcome to SillyMUD\n\r\n\
 0) Exit from SillyMud.\n\r\
@@ -51,3 +56,5 @@ administration staff at the University of Florida made an alaias \n\r\
 for doldrums to silly, so it is now possible to telnet to \n\r\
 silly.cis.ufl.edu .  \n\r\
    and that, more or less, is the story of Silly Mud.\n\r"
+
+#endif

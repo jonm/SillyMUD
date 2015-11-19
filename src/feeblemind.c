@@ -1,3 +1,5 @@
+#include "config.h"
+
 void spell_feeblemind(byte level, struct char_data *ch,
 		 struct char_data *victim, struct obj_data *obj)
 {

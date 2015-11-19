@@ -4,6 +4,11 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 
+#ifndef _WIZLIST_H
+#define _WIZLIST_H
+
+#include "config.h"
+
 struct wiznest {
   char *name;
   char *title;
@@ -18,3 +23,4 @@ struct wizlistgen {
    struct wiznode lookup[11];
 };
 
+#endif
