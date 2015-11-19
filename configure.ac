@@ -131,5 +131,7 @@ AC_DEFINE([DEFAULT_LIBDIR],[LOCAL_STATE_DIR "/sillymud"],
 AC_CONFIG_FILES([
   Makefile
   src/Makefile
+  lib/Makefile
+  lib/security/Makefile
 ])
 AC_OUTPUT
