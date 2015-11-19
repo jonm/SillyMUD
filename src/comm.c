@@ -728,13 +728,7 @@ int init_socket(int port)
 	struct linger ld;
 
 	bzero(&sa, sizeof(struct sockaddr_in));
-	gethostname(hostname, MAX_HOSTNAME);
-	hp = gethostbyname(hostname);
-	if (hp == NULL)	{
-		perror("gethostbyname");
-		assert(0);
-	}
-	sa.sin_family = hp->h_addrtype;
+	sa.sin_family = AF_INET;
 	sa.sin_port	= htons(port);
 	s = socket(AF_INET, SOCK_STREAM, 0);
 	if (s < 0) 	{
