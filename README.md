@@ -31,11 +31,12 @@ $ autoreconf --install
 Then you can just:
 ```$ ./configure && make```
 
-Note that the usual `make install` has not been set up yet.
-
 You can run the tests via:
 
 ```$ make check```
 
+And then you can install the game via:
+
+```$ make install```
 
 
