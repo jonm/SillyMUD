@@ -3,7 +3,7 @@
 AM_CFLAGS = -DLOCAL_STATE_DIR=\"$(localstatedir)\"
 
 # main program
-bin_PROGRAMS = dmserver
+bin_PROGRAMS = sillymud
 common_sources = comm.c act.comm.c act.info.c act.move.c act.obj1.c \
 	act.obj2.c act.off.c act.other.c act.social.c act.wizard.c handler.c \
 	db.c interpreter.c utility.c spec_assign.c shop.c limits.c mobact.c \
@@ -12,7 +12,7 @@ common_sources = comm.c act.comm.c act.info.c act.move.c act.obj1.c \
 	magic2.c skills.c Opinion.c Trap.c magicutils.c multiclass.c hash.c \
 	Sound.c Heap.c spec_procs2.c magic3.c security.c spec_procs3.c \
         create.c bsd.c parser.c intrinsics.c
-dmserver_SOURCES = $(common_sources) main.c
+sillymud_SOURCES = $(common_sources) main.c
 
 # unit tests
 check_PROGRAMS = tests
