@@ -380,8 +380,8 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
     if (ch->skills[number].learned >= 95) {
       send_to_char("You are now a master of this art.\n\r", ch);
       ch->skills[number].learned = 95;
-      return(TRUE);
     }
+    return(TRUE);
   }
 
   send_to_char("The Guildmaster says 'Hey, I'm not your guildmaster.  Get lost!'\n\r", ch);
