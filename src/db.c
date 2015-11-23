@@ -1245,7 +1245,7 @@ struct char_data *read_mobile(int nr, int type)
     
     fscanf(mob_f, "\n");
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     GET_LEVEL(mob, WARRIOR_LEVEL_IND) = tmp;
 
 
@@ -1257,21 +1257,21 @@ struct char_data *read_mobile(int nr, int type)
     mob->abilities.chr   =  9+number(1,(MAX(1,tmp/5 - 1)));
 
 
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->points.hitroll = 20-tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
 
     if (tmp > 10 || tmp < -10)
       tmp /= 10;
 
     mob->points.armor = 10*tmp;
     
-    fscanf(mob_f, " %lDd%lD+%lD ", &tmp, &tmp2, &tmp3);
+    fscanf(mob_f, " %ldd%ld+%ld ", &tmp, &tmp2, &tmp3);
     mob->points.max_hit = dice(tmp, tmp2)+tmp3;
     mob->points.hit = mob->points.max_hit;
     
-    fscanf(mob_f, " %lDd%lD+%lD \n", &tmp, &tmp2, &tmp3);
+    fscanf(mob_f, " %ldd%ld+%ld \n", &tmp, &tmp2, &tmp3);
     mob->points.damroll = tmp3;
     mob->specials.damnodice = tmp;
     mob->specials.damsizedice = tmp2;
@@ -1283,13 +1283,13 @@ struct char_data *read_mobile(int nr, int type)
     mob->points.move = 50;
     mob->points.max_move = 50;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     if (tmp == -1) {
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->points.gold = tmp;
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       GET_EXP(mob) = tmp;
-      fscanf(mob_f, " %lD \n", &tmp);
+      fscanf(mob_f, " %ld \n", &tmp);
       GET_RACE(mob) = tmp;
       if(IsGiant(mob))
 	mob->abilities.str += number(1,4);
@@ -1297,16 +1297,16 @@ struct char_data *read_mobile(int nr, int type)
 	mob->abilities.str -= 1;
     } else {
       mob->points.gold = tmp;
-      fscanf(mob_f, " %lD \n", &tmp);
+      fscanf(mob_f, " %ld \n", &tmp);
       GET_EXP(mob) = tmp;
     }
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->specials.position = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->specials.default_pos = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     if (tmp < 3) {
       mob->player.sex = tmp;
       mob->immune = 0;
@@ -1314,11 +1314,11 @@ struct char_data *read_mobile(int nr, int type)
       mob->susc = 0;
     } else if (tmp < 6) {
       mob->player.sex = (tmp-3);
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->immune = tmp;
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->M_immune = tmp;
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->susc = tmp;
     } else {
       mob->player.sex = 0;
@@ -1347,7 +1347,7 @@ struct char_data *read_mobile(int nr, int type)
 	     (letter == 'L')) {
     
     if ((letter == 'A') || (letter == 'B') || (letter == 'L')) {
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->mult_att = (float)tmp;
       /*
       **  read in types:
@@ -1356,7 +1356,7 @@ struct char_data *read_mobile(int nr, int type)
     
     fscanf(mob_f, "\n");
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     GET_LEVEL(mob, WARRIOR_LEVEL_IND) = tmp;
 
 
@@ -1369,16 +1369,16 @@ struct char_data *read_mobile(int nr, int type)
 
 
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->points.hitroll = 20-tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->points.armor = 10*tmp;
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->points.max_hit = dice(GET_LEVEL(mob, WARRIOR_LEVEL_IND), 8)+tmp;
     mob->points.hit = mob->points.max_hit;
     
-    fscanf(mob_f, " %lDd%lD+%lD \n", &tmp, &tmp2, &tmp3);
+    fscanf(mob_f, " %ldd%ld+%ld \n", &tmp, &tmp2, &tmp3);
     mob->points.damroll = tmp3;
     mob->specials.damnodice = tmp;
     mob->specials.damsizedice = tmp2;
@@ -1390,17 +1390,17 @@ struct char_data *read_mobile(int nr, int type)
     mob->points.move = 50;
     mob->points.max_move = 50;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     
     if (tmp == -1) {
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->points.gold = tmp;
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       if (tmp >= 0)
 	GET_EXP(mob) = (DetermineExp(mob, tmp)+mob->points.gold);
       else 
 	GET_EXP(mob) = -tmp;
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       GET_RACE(mob) = tmp;
       if(IsGiant(mob))
 	mob->abilities.str += number(1,4);
@@ -1412,17 +1412,17 @@ struct char_data *read_mobile(int nr, int type)
       /*
 	this is where the new exp will come into play
 	*/
-      fscanf(mob_f, " %lD \n", &tmp);
+      fscanf(mob_f, " %ld \n", &tmp);
       GET_EXP(mob) = (DetermineExp(mob, tmp)+mob->points.gold);
     }
 
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->specials.position = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->specials.default_pos = tmp;
     
-    fscanf(mob_f, " %lD \n", &tmp);
+    fscanf(mob_f, " %ld \n", &tmp);
     if (tmp < 3) {
       mob->player.sex = tmp;
       mob->immune = 0;
@@ -1430,11 +1430,11 @@ struct char_data *read_mobile(int nr, int type)
       mob->susc = 0;
     } else if (tmp < 6) {
       mob->player.sex = (tmp-3);
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->immune = tmp;
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->M_immune = tmp;
-      fscanf(mob_f, " %lD ", &tmp);
+      fscanf(mob_f, " %ld ", &tmp);
       mob->susc = tmp;
     } else {
       mob->player.sex = 0;
@@ -1481,80 +1481,80 @@ struct char_data *read_mobile(int nr, int type)
     
     fscanf(mob_f, "\n");
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->abilities.str = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->abilities.intel = tmp; 
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->abilities.wis = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->abilities.dex = tmp;
     
-    fscanf(mob_f, " %lD \n", &tmp);
+    fscanf(mob_f, " %ld \n", &tmp);
     mob->abilities.con = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
-    fscanf(mob_f, " %lD ", &tmp2);
+    fscanf(mob_f, " %ld ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp2);
     
     mob->points.max_hit = number(tmp, tmp2);
     mob->points.hit = mob->points.max_hit;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->points.armor = 10*tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->points.mana = tmp;
     mob->points.max_mana = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->points.move = tmp;		
     mob->points.max_move = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->points.gold = tmp;
     
-    fscanf(mob_f, " %lD \n", &tmp);
+    fscanf(mob_f, " %ld \n", &tmp);
     GET_EXP(mob) = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->specials.position = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->specials.default_pos = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->player.sex = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->player.class = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     GET_LEVEL(mob, WARRIOR_LEVEL_IND) = tmp;
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->player.time.birth = time(0);
     mob->player.time.played	= 0;
     mob->player.time.logon  = time(0);
     
-    fscanf(mob_f, " %lD ", &tmp);
+    fscanf(mob_f, " %ld ", &tmp);
     mob->player.weight = tmp;
     
-    fscanf(mob_f, " %lD \n", &tmp);
+    fscanf(mob_f, " %ld \n", &tmp);
     mob->player.height = tmp;
     
     for (i = 0; i < 3; i++)
       {
-	fscanf(mob_f, " %lD ", &tmp);
+	fscanf(mob_f, " %ld ", &tmp);
 	GET_COND(mob, i) = tmp;
       }
     fscanf(mob_f, " \n ");
     
     for (i = 0; i < 5; i++)
       {
-	fscanf(mob_f, " %lD ", &tmp);
+	fscanf(mob_f, " %ld ", &tmp);
 	mob->specials.apply_saving_throw[i] = tmp;
       }
     
