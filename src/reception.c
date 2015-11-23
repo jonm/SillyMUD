@@ -9,8 +9,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+#include <sys/stat.h>
 
 #include "protos.h"
+#include "reception.h"
 
 #define OBJ_SAVE_FILE "pcobjs.obj"
 #define OBJ_FILE_FREE "\0\0\0"
@@ -832,6 +834,8 @@ void ZeroRent( char *n)
   FILE *fl;
   char buf[200];
 
+  ensure_rent_directory();
+
   sprintf(buf, "rent/%s", lower(n));
 
   if (!(fl = fopen(buf, "w"))) {
@@ -1137,3 +1141,13 @@ void save_room(int room)
   }
 }
 
+void ensure_rent_directory() {
+  struct stat stats;
+  
+  if (stat(RENT_DIRECTORY, &stats) == -1) {
+    if (mkdir(RENT_DIRECTORY, 0755) == -1) {
+      perror("Could not create rent directory " RENT_DIRECTORY);
+      exit(-1);
+    }
+  }
+}
