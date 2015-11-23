@@ -39,4 +39,15 @@ And then you can install the game via:
 
 ```$ make install```
 
+Note that there are lots of options available for `configure`; try
+either `configure --help` or see `INSTALL`.
+
+# Running the game
+
+The major note is that the first player to log in will become an
+"Implementor" level god; after the first log in, that player will need
+to have an entry in the `security` directory. By default on most systems
+this is `/usr/local/var/sillymud/security`. See the `README` file in
+that directory for more details.
+
 
