@@ -1144,9 +1144,9 @@ void save_room(int room)
 void ensure_rent_directory() {
   struct stat stats;
   
-  if (stat(RENT_DIRECTORY, &stats) == -1) {
-    if (mkdir(RENT_DIRECTORY, 0755) == -1) {
-      perror("Could not create rent directory " RENT_DIRECTORY);
+  if (stat("rent", &stats) == -1) {
+    if (mkdir("rent", 0755) == -1) {
+      perror("Could not create rent directory");
       exit(-1);
     }
   }
