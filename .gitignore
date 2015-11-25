@@ -55,3 +55,7 @@ compile
 depcomp
 install-sh
 missing
+
+# Vagrant
+.vagrant/
+Vagrantfile
