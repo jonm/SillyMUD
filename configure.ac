@@ -16,10 +16,13 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([bzero gethostbyaddr gethostbyname gethostname getpagesize gettimeofday inet_ntoa isascii memset select socket strchr strdup strrchr strstr])
 
+AC_SEARCH_LIBS([crypt],[crypt])
+
 AC_CHECK_HEADERS([criterion/criterion.h],[],[
   AC_MSG_WARN(unit tests will not be runnable without Criterion library)
   AC_MSG_WARN(See https://github.com/Snaipe/Criterion/)
 ])
+AC_SEARCH_LIBS([crypt],[crypt])
 AC_CHECK_LIB(criterion,extmatch,[
   true
 ],[
