@@ -279,7 +279,11 @@ void game_loop(int s)
   char comm[MAX_INPUT_LENGTH];
   char promptbuf[80];
   struct descriptor_data *point, *next_point;
+#ifdef HAVE_SIGPROCMASK
+  sigset_t sigmask;
+#else
   int mask;
+#endif
   struct room_data *rm;
 
   extern struct descriptor_data *descriptor_list;
@@ -291,15 +295,28 @@ void game_loop(int s)
   
   opt_time.tv_usec = OPT_USEC;  /* Init time values */
   opt_time.tv_sec = 0;
-  gettimeofday(&last_time, (struct timeval *) 0);
+  gettimeofday(&last_time, NULL);
   
   maxdesc = s;
   /* !! Change if more needed !! */
   avail_descs = getdtablesize() -2;
-  
+
+#ifdef HAVE_SIGPROCMASK
+  sigemptyset(&sigmask);
+  sigaddset(&sigmask, SIGUSR1);
+  sigaddset(&sigmask, SIGUSR2);
+  sigaddset(&sigmask, SIGINT);
+  sigaddset(&sigmask, SIGPIPE);
+  sigaddset(&sigmask, SIGALRM);
+  sigaddset(&sigmask, SIGTERM);
+  sigaddset(&sigmask, SIGURG);
+  sigaddset(&sigmask, SIGXCPU);
+  sigaddset(&sigmask, SIGHUP);
+#else
   mask = sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
     sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
       sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP);
+#endif
   
   /* Main loop */
   while (!mudshutdown)  {
@@ -344,7 +361,7 @@ void game_loop(int s)
 #endif
 
     /* check out the time */
-    gettimeofday(&now, (struct timeval *) 0);
+    gettimeofday(&now, NULL);
     timespent = timediff(&now, &last_time);
     timeout = timediff(&opt_time, &timespent);
     last_time.tv_sec = now.tv_sec + timeout.tv_sec;
@@ -353,8 +370,12 @@ void game_loop(int s)
       last_time.tv_usec -= 1000000;
       last_time.tv_sec++;
     }
-    
+
+#ifdef HAVE_SIGPROCMASK
+    sigprocmask(SIG_SETMASK, &sigmask, NULL);
+#else    
     sigsetmask(mask);
+#endif
 
     if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) 
 	< 0)   	{
@@ -370,8 +391,13 @@ void game_loop(int s)
       perror("Select sleep");
       /*assert(0);*/
     }
-    
+
+#ifdef HAVE_SIGPROCMASK
+    sigemptyset(&sigmask);
+    sigprocmask(SIG_SETMASK, &sigmask, NULL);
+#else    
     sigsetmask(0);
+#endif
     
     /* Respond to whatever might be happening */
     
@@ -1239,13 +1265,29 @@ void coma(int s)
   
   int workhours(void);
   int load(void);
+#ifdef HAVE_SIGPROCMASK
+  sigset_t sigmask;
+#endif
   
   log_msg("Entering comatose state.");
   
+#ifdef HAVE_SIGPROCMASK
+  sigemptyset(&sigmask);
+  sigaddset(&sigmask, SIGUSR1);
+  sigaddset(&sigmask, SIGUSR2);
+  sigaddset(&sigmask, SIGINT);
+  sigaddset(&sigmask, SIGPIPE);
+  sigaddset(&sigmask, SIGALRM);
+  sigaddset(&sigmask, SIGTERM);
+  sigaddset(&sigmask, SIGURG);
+  sigaddset(&sigmask, SIGXCPU);
+  sigaddset(&sigmask, SIGHUP);
+  sigprocmask(SIG_SETMASK, &sigmask, NULL);
+#else
   sigsetmask(sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
 	     sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
 	     sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP));
-  
+#endif
   
   while (descriptor_list)
     close_socket(descriptor_list);
@@ -1260,7 +1302,12 @@ void coma(int s)
     if (FD_ISSET(s, &input_set))	{
       if (load() < 6){
 	log_msg("Leaving coma with visitor.");
+#ifdef HAVE_SIGPROCMASK
+	sigemptyset(&sigmask);
+	sigprocmask(SIG_SETMASK, &sigmask, NULL);
+#else
 	sigsetmask(0);
+#endif
 	return;
       }
       if ((conn = new_connection(s)) >= 0)     {
@@ -1279,7 +1326,12 @@ void coma(int s)
   while (load() >= 6);
   
   log_msg("Leaving coma.");
+#ifdef HAVE_SIGPROCMASK
+  sigemptyset(&sigmask);
+  sigprocmask(SIG_SETMASK, &sigmask, NULL);
+#else
   sigsetmask(0);
+#endif
 }
 
 

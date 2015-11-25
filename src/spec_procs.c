@@ -5567,7 +5567,6 @@ int affect_status(struct memory *mem, struct char_data *ch,
   }
   mem->names[mem->c] = (char *) malloc(strlen(GET_NAME(t)+2));
   strcpy(mem->names[mem->c],GET_NAME(t));
-  mem->status[mem->c] = (int) malloc(sizeof(int));
   mem->status[mem->c] = aff_status;
   ++mem->c;
   return(mem->c-1);

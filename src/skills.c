@@ -626,7 +626,7 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 	      
 	      /* ancestor for first layer is the direction */
 	      hash_enter(&x_room, tmp_room,
-			 ((int)hash_find(&x_room,q_head->room_nr) == -1) ?
+			 ((PTR_SZ_INT)hash_find(&x_room,q_head->room_nr) == -1) ?
 			 (void*)((long)(i+1)) : hash_find(&x_room,q_head->room_nr));
 	    }
 	  } else {
@@ -637,7 +637,7 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 	      free(q_head);
 	    }
 	    /* return direction if first layer */
-	    if ((int)hash_find(&x_room,tmp_room)==-1) {
+	    if ((PTR_SZ_INT)hash_find(&x_room,tmp_room)==-1) {
               if (x_room.buckets) { /* junk left over from a previous track */
 		destroy_hash_table(&x_room, donothing);
               }
@@ -645,7 +645,7 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 	    } else {  /* else return the ancestor */
 	      int i;
 	      
-              i = (int)hash_find(&x_room,tmp_room);
+              i = (PTR_SZ_INT)hash_find(&x_room,tmp_room);
               if (x_room.buckets) { /* junk left over from a previous track */
 		destroy_hash_table(&x_room, donothing);
               }

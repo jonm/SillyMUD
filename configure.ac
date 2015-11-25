@@ -7,14 +7,15 @@ AC_CONFIG_HEADERS([config.h])
 
 AC_PROG_CC
 
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h strings.h sys/socket.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([arpa/inet.h crypt.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h signal.h string.h sys/socket.h sys/time.h unistd.h])
 
 AC_CHECK_HEADER_STDBOOL
 AC_TYPE_SIZE_T
+AC_CHECK_SIZEOF([void *])
 
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([bzero gethostbyaddr gethostbyname gethostname getpagesize gettimeofday inet_ntoa isascii memset select socket strchr strdup strrchr strstr])
+AC_CHECK_FUNCS([bzero gethostbyaddr gethostbyname gethostname getpagesize gettimeofday inet_ntoa isascii memset select sigaddset sigemptyset sigprocmask socket strchr strdup strrchr strstr])
 
 AC_CHECK_HEADERS([criterion/criterion.h],[],[
   AC_MSG_WARN(unit tests will not be runnable without Criterion library)
@@ -26,6 +27,8 @@ AC_CHECK_LIB(criterion,extmatch,[
   AC_MSG_WARN(unit tests will not be runnable without Criterion library)
   AC_MSG_WARN(See https://github.com/Snaipe/Criterion/)
 ])
+
+AC_SEARCH_LIBS([crypt],[crypt])
 
 AH_TEMPLATE([IMPL_SECURITY],
         [Define as 1 to restrict each level 58+ god to one site or set of
@@ -127,6 +130,16 @@ AC_ARG_ENABLE([duplicates],
 
 AC_DEFINE([DEFAULT_LIBDIR],[LOCAL_STATE_DIR "/sillymud"],
   [Default location to look for game data files])
+
+AH_BOTTOM([
+#if (SIZEOF_VOID_P == 8)
+#define PTR_SZ_INT long
+#elif (SIZEOF_VOID_P == 4)
+#define PTR_SZ_INT int
+#else
+#error "Not sure what integer type is equivalently sized to a (void *)"
+#endif
+])
 
 AC_CONFIG_FILES([
   Makefile
