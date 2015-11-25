@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#ifdef HAVE_CRYPT_H
+#include <crypt.h>
+#endif
 #include <unistd.h>
 #include <time.h>
 

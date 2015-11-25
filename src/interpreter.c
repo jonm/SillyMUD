@@ -7,6 +7,9 @@
 
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_CRYPT_H
+#include <crypt.h>
+#endif
 #include <ctype.h>
 #include <stdio.h>
 #include <arpa/telnet.h>
