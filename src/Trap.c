@@ -90,7 +90,7 @@ int TriggerTrap( struct char_data *ch, struct obj_data *i)
   if (ITEM_TYPE(i) == ITEM_TRAP) {
     if (i->obj_flags.value[TRAP_CHARGES]) {
 	adj = GET_TRAP_LEV(i) - GetMaxLevel(ch);
-	adj -= dex_app[GET_DEX(ch)].reaction * 5;
+	adj -= dex_app[(int)GET_DEX(ch)].reaction * 5;
 	fireperc = 95 + adj;
 	roll = number(1,100);
 	if (roll < fireperc) {   /* trap is sprung */

@@ -1390,7 +1390,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
              aff->bitvector) {
             sprintf(buf, "Spell : '%s'\n\r",spells[aff->type-1]);
             sprintf(buf,"     Modifies %s by %ld points\n\r",
-                    apply_types[aff->location],aff->bitvector);
+                    apply_types[(int)aff->location],aff->bitvector);
             send_to_char(buf,ch);
             sprintf(buf,"     Expires in %3d hours, Resistance Bits set ",
                     aff->duration);
@@ -1402,7 +1402,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
 	    sprintf(buf, "Spell : '%s'\n\r",spells[aff->type-1]);
 	    send_to_char(buf, ch);
 	    sprintf(buf,"     Modifies %s by %d points\n\r",
-		    apply_types[aff->location], aff->modifier);
+		    apply_types[(int)aff->location], aff->modifier);
 	    send_to_char(buf, ch);
 	    sprintf(buf,"     Expires in %3d hours, Bits set ",
 		    aff->duration);
@@ -3455,7 +3455,7 @@ void do_cset(struct char_data *ch, char *arg, int cmd)
  i = atoi(buf4);
  
  if(!strcmp(buf1, "show")) {
-    radix = HashTable[*buf2];
+    radix = HashTable[(int)*buf2];
     if(!radix_head[radix].next) {
        send_to_char("Sorry, command not found.\n\r", ch);
        return;
@@ -3473,7 +3473,7 @@ void do_cset(struct char_data *ch, char *arg, int cmd)
   }
  
  else if(!strcmp(buf1, "set")) {
-    radix = HashTable[*buf2];
+    radix = HashTable[(int)*buf2];
     if(!radix_head[radix].next) {
        send_to_char("Sorry, command not found.\n\r", ch);
        return;
@@ -3511,7 +3511,7 @@ void do_cset(struct char_data *ch, char *arg, int cmd)
 
  
  else if(!strcmp(buf1, "log")) {
-    radix = HashTable[*buf2];
+    radix = HashTable[(int)*buf2];
     if(!radix_head[radix].next) {
        send_to_char("Sorry, command not found.\n\r", ch);
        return;

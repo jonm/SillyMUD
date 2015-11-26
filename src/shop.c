@@ -171,7 +171,7 @@ void shopping_buy( char *arg, struct char_data *ch,
     return;
   }
 
-  perc = 100.0 + chr_apply[GET_CHR(ch)].reaction;
+  perc = 100.0 + chr_apply[(int)GET_CHR(ch)].reaction;
   perc /= 100.0;
   
   if(shop_index[shop_nr].profit_buy < 1.0)
@@ -320,7 +320,7 @@ void shopping_sell( char *arg, struct char_data *ch,
     return;
   }
 
-  perc = 100.0 + chr_apply[GET_CHR(ch)].reaction;
+  perc = 100.0 + chr_apply[(int)GET_CHR(ch)].reaction;
   perc /= 100.0;
   
   cost = (temp1->obj_flags.cost*mult)*(shop_index[shop_nr].profit_sell*perc);
@@ -454,7 +454,7 @@ void shopping_value( char *arg, struct char_data *ch,
       return;
     }
 
-  perc = 100.0 + chr_apply[GET_CHR(ch)].reaction;
+  perc = 100.0 + chr_apply[(int)GET_CHR(ch)].reaction;
   perc /= 100.0;
   
   cost = (temp1->obj_flags.cost*mult)*
@@ -508,7 +508,7 @@ void shopping_list( char *arg, struct char_data *ch,
       if((CAN_SEE_OBJ(ch,temp1)) && (temp1->obj_flags.cost>0))	{
 	found_obj = TRUE; 
 
-	perc = 100.0 + chr_apply[GET_CHR(ch)].reaction;
+	perc = 100.0 + chr_apply[(int)GET_CHR(ch)].reaction;
 	perc /= 100.0;
 	
 	if(shop_index[shop_nr].profit_buy < 1.0)

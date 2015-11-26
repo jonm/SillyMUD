@@ -374,7 +374,7 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
      ch->specials.spells_to_learn--;
 
      SET_BIT(ch->skills[number].flags, SKILL_KNOWN);
-     percent = ch->skills[number].learned+int_app[GET_RINT(ch)].learn;
+     percent = ch->skills[number].learned+int_app[(int)GET_RINT(ch)].learn;
      ch->skills[number].learned = MIN(95, percent);
 
     if (ch->skills[number].learned >= 95) {

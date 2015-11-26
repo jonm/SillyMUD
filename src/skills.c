@@ -269,8 +269,8 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
    */
   percent=number(1,101); /* 101% is a complete failure */
   
-  percent -= dex_app[GET_DEX(ch)].reaction*10;
-  percent += dex_app[GET_DEX(victim)].reaction*10;
+  percent -= dex_app[(int)GET_DEX(ch)].reaction*10;
+  percent += dex_app[(int)GET_DEX(victim)].reaction*10;
   if (!ch->equipment[WIELD] && !HasClass(ch, CLASS_MONK)) {
     percent += 50;
   }

@@ -2843,7 +2843,7 @@ void reset_char(struct char_data *ch)
 		  TRUE);
 
   if (!HasClass(ch, CLASS_MONK))
-    GET_AC(ch) += dex_app[GET_DEX(ch)].defensive;
+    GET_AC(ch) += dex_app[(int)GET_DEX(ch)].defensive;
   if (GET_AC(ch) > 100)
     GET_AC(ch) = 100;
 

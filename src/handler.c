@@ -1330,7 +1330,7 @@ void extract_obj(struct obj_data *obj)
       /*
        **  set players equipment slot to 0; that will avoid the garbage items.
        */
-      obj->equipped_by->equipment[obj->eq_pos] = 0;
+      obj->equipped_by->equipment[(int)obj->eq_pos] = 0;
       
     } else {
       log_msg("Extract on equipped item in slot -1 on:");

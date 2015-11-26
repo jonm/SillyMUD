@@ -206,7 +206,7 @@ int mana_gain(struct char_data *ch)
     gain += veggie_gain_mods(ch, gain, 0);
   }
     
-  gain += wis_app[GET_WIS(ch)].bonus*2;
+  gain += wis_app[(int)GET_WIS(ch)].bonus*2;
 
   gain += ch->points.mana_gain;
   
@@ -291,7 +291,7 @@ int hit_gain(struct char_data *ch)
   if (GET_RACE(ch) == RACE_HALFLING)
     gain += 1;
 
-  gain += con_app[GET_CON(ch)].hitp/2;
+  gain += con_app[(int)GET_CON(ch)].hitp/2;
 
   if (IS_AFFECTED(ch,AFF_POISON))  {
     gain = 0;
@@ -426,9 +426,9 @@ void advance_level(struct char_data *ch, int class)
 
 
   if (class == WARRIOR_LEVEL_IND)  
-     add_hp = con_app[GET_RCON(ch)].hitp;
+    add_hp = con_app[(int)GET_RCON(ch)].hitp;
   else 
-     add_hp = MIN(con_app[GET_RCON(ch)].hitp,2);
+    add_hp = MIN(con_app[(int)GET_RCON(ch)].hitp,2);
     
 
   switch(class) {
@@ -484,10 +484,10 @@ void advance_level(struct char_data *ch, int class)
   if (ch->specials.spells_to_learn < 50) {
     if(GET_RACE(ch) == RACE_OGRE) 
       ch->specials.spells_to_learn += 
-	MIN(3,MAX(1, MAX(2, wis_app[GET_RWIS(ch)].bonus)/HowManyClasses(ch)));
+	MIN(3,MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus)/HowManyClasses(ch)));
     else
       ch->specials.spells_to_learn += 
-	MAX(1, MAX(2, wis_app[GET_RWIS(ch)].bonus)/HowManyClasses(ch));
+	MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus)/HowManyClasses(ch));
   } else {
     send_to_char("Practices: Use them or lose them (you just did).\n\r", ch);
   }
@@ -520,7 +520,7 @@ void drop_level(struct char_data *ch, int class)
   if (GetMaxLevel(ch) == 1)
     return;
   
-  add_hp = con_app[GET_RCON(ch)].hitp;
+  add_hp = con_app[(int)GET_RCON(ch)].hitp;
   
   switch(class) {
     
@@ -604,10 +604,10 @@ void drop_level(struct char_data *ch, int class)
   if (ch->points.max_hit < 1)
     ch->points.max_hit = 1;
   
-    ch->specials.spells_to_learn -= MAX(1, MAX(2, wis_app[GET_RWIS(ch)].bonus)/HowManyClasses(ch));
+  ch->specials.spells_to_learn -= MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus)/HowManyClasses(ch));
 
   ch->points.exp = 
-    MIN(titles[lin_class][GET_LEVEL(ch, lin_class)].exp, GET_EXP(ch));
+    MIN(titles[lin_class][(int)GET_LEVEL(ch, lin_class)].exp, GET_EXP(ch));
   
   if (ch->points.exp < 0)
     ch->points.exp = 0;

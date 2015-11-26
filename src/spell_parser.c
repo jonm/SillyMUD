@@ -816,12 +816,12 @@ bool saves_spell(struct char_data *ch, sh_int save_type)
 
   if(GET_RACE(ch) == RACE_DWARF || GET_RACE(ch) == RACE_GNOME || GET_RACE(ch) 
      == RACE_HALFLING ) {
-    save -= con_app[GET_CON(ch)].hitp;
+    save -= con_app[(int)GET_CON(ch)].hitp;
   }
   
   if (!IS_NPC(ch)) {
     
-    save += saving_throws[BestMagicClass(ch)][save_type][GET_LEVEL(ch,BestMagicClass(ch))];
+    save += saving_throws[BestMagicClass(ch)][save_type][(int)GET_LEVEL(ch,BestMagicClass(ch))];
     if (GetMaxLevel(ch) > MAX_MORT)
       return(TRUE);
   }
@@ -845,7 +845,7 @@ bool ImpSaveSpell(struct char_data *ch, sh_int save_type, int mod)
   if (!IS_NPC(ch)) {
     
     save += saving_throws[BestMagicClass(ch)][save_type]
-      [GET_LEVEL(ch,BestMagicClass(ch))];
+      [(int)GET_LEVEL(ch,BestMagicClass(ch))];
     if (GetMaxLevel(ch) >= LOW_IMMORTAL)
       return(TRUE);
   }

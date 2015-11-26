@@ -2886,7 +2886,7 @@ int too_many_followers(struct char_data *ch)
   int max_followers,actual_fol;
   char buf[80];
 
-  max_followers = (int) chr_apply[GET_CHR(ch)].num_fol;
+  max_followers = (int) chr_apply[(int)GET_CHR(ch)].num_fol;
   
   for(k=ch->followers,actual_fol=0; k; k=k->next) 
     if (IS_AFFECTED(k->follower, AFF_CHARM)) 

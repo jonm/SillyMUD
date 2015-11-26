@@ -362,7 +362,7 @@ void do_sneak(struct char_data *ch, char *argument, int cmd)
     percent = MIN(1, percent-35);  /* much easier when silenced */
   
   if (percent > ch->skills[SKILL_SNEAK].learned +
-      dex_app_skill[GET_DEX(ch)].sneak) {
+      dex_app_skill[(int)GET_DEX(ch)].sneak) {
     LearnFromMistake(ch, SKILL_SNEAK, 1, 90);
     WAIT_STATE(ch, PULSE_VIOLENCE/2);
     return;
@@ -406,7 +406,7 @@ void do_hide(struct char_data *ch, char *argument, int cmd)
     return;
   
   if (percent > ch->skills[SKILL_HIDE].learned +
-      dex_app_skill[GET_DEX(ch)].hide) {
+      dex_app_skill[(int)GET_DEX(ch)].hide) {
     LearnFromMistake(ch, SKILL_HIDE, 1, 90);
     WAIT_STATE(ch, PULSE_VIOLENCE*1);
     return;
@@ -475,7 +475,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
     return;
   
   /* 101% is a complete failure */
-  percent=number(1,101) - dex_app_skill[GET_DEX(ch)].p_pocket;
+  percent=number(1,101) - dex_app_skill[(int)GET_DEX(ch)].p_pocket;
   
   if (GET_POS(victim) < POSITION_SLEEPING)
     percent = -1; /* ALWAYS SUCCESS */

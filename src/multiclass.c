@@ -190,7 +190,8 @@ int GetSecMaxLev(struct char_data *ch)
 
 int GetALevel(struct char_data *ch, int which)
 {
-  byte ind[MAX_CLASS],j,k,i;
+  byte ind[MAX_CLASS],k;
+  int i,j;
 
   for (i=0; i< MAX_CLASS; i++) {
     ind[i] = GET_LEVEL(ch,i);

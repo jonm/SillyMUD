@@ -567,11 +567,11 @@ void die(struct char_data *ch)
      for(i=0;i<MAX_CLASS;i++) {
        if (GET_LEVEL(ch,i) > 1) {
 	 if (GET_LEVEL(ch,i) >= LOW_IMMORTAL) break;
-	 if (GET_EXP(ch) < (titles[i][GET_LEVEL(ch, i)].exp/fraction)) {
+	 if (GET_EXP(ch) < (titles[i][(int)GET_LEVEL(ch, i)].exp/fraction)) {
 	   tmp = (ch->points.max_hit)/GetMaxLevel(ch);
 	   ch->points.max_hit -= tmp;
 	   GET_LEVEL(ch, i) -= 1;
-	   ch->specials.spells_to_learn -= MAX(1, MAX(2, wis_app[GET_RWIS(ch)].bonus)/HowManyClasses(ch));
+	   ch->specials.spells_to_learn -= MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus)/HowManyClasses(ch));
 	   send_to_char("\n\rInsufficient experience has cost you a level.\n\r",
 			ch);
 	 }
@@ -596,13 +596,13 @@ void die(struct char_data *ch)
   /* warn people if their next death will result in a level loss */
   for(i=0;i<MAX_CLASS;i++) {
     if (GET_LEVEL(ch,i) > 1) {
-      if (GET_EXP(ch) < (titles[i][GET_LEVEL(ch, i)].exp/fraction)) {
+      if (GET_EXP(ch) < (titles[i][(int)GET_LEVEL(ch, i)].exp/fraction)) {
         send_to_char("\n\r\n\rWARNING WARNING WARNING WARNING WARNING WARNING\n\r",
                      ch);
         send_to_char("Your next death will result in the loss of a level,\n\r",
                      ch);
         sprintf(buf,"unless you get at least %d more exp points.\n\r",
-                (titles[i][GET_LEVEL(ch, i)].exp/fraction) - GET_EXP(ch));
+                (titles[i][(int)GET_LEVEL(ch, i)].exp/fraction) - GET_EXP(ch));
         send_to_char(buf,ch);
       }
     }
@@ -1958,7 +1958,7 @@ int CalcThaco(struct char_data *ch)
   /* The lower AC, the better                      */
   
   if (!IS_NPC(ch))
-    calc_thaco = thaco[BestFightingClass(ch)][GET_LEVEL(ch, BestFightingClass(ch))];
+    calc_thaco = thaco[BestFightingClass(ch)][(int)GET_LEVEL(ch, BestFightingClass(ch))];
   else
     /* THAC0 for monsters is set in the HitRoll */
     calc_thaco = 20;
@@ -1989,7 +1989,7 @@ int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco)
   victim_ac  = GET_AC(victim)/10;
   
   if (!AWAKE(victim))
-    victim_ac -= dex_app[GET_DEX(victim)].defensive;
+    victim_ac -= dex_app[(int)GET_DEX(victim)].defensive;
 
   if (GET_POS(victim) <= POSITION_INCAP)
     return(TRUE);
@@ -2072,7 +2072,7 @@ int GetWeaponDam(struct char_data *ch, struct char_data *v,
 	  dam += 1;
 	}
       }
-      if (wielded->obj_flags.weight > str_app[GET_STR(ch)].wield_w) {
+      if (wielded->obj_flags.weight > str_app[(int)GET_STR(ch)].wield_w) {
 	if (ch->equipment[HOLD]) {
 	  /*
 	    its too heavy to wield properly
@@ -2179,7 +2179,7 @@ int GetBackstabMult(struct char_data *ch, struct char_data *v)
   char buf[80];
 
   if (GET_LEVEL(ch, THIEF_LEVEL_IND)) {
-    mult = backstab_mult[GET_LEVEL(ch, THIEF_LEVEL_IND)];
+    mult = backstab_mult[(int)GET_LEVEL(ch, THIEF_LEVEL_IND)];
   } else {
     mult = backstab_mult[GetMaxLevel(ch)];
   }

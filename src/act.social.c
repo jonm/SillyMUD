@@ -281,12 +281,12 @@ void boot_pose_messages()
   }
 
   for (counter = 0;;counter++)  {
-    fscanf(fl, " %d ", &pose_messages[counter].level);
-    if (pose_messages[counter].level < 0)
+    fscanf(fl, " %d ", &pose_messages[(int)counter].level);
+    if (pose_messages[(int)counter].level < 0)
       break;
     for (class = 0;class < 4;class++){
-      pose_messages[counter].poser_msg[class] = fread_action(fl);
-      pose_messages[counter].room_msg[class] = fread_action(fl);
+      pose_messages[(int)counter].poser_msg[(int)class] = fread_action(fl);
+      pose_messages[(int)counter].room_msg[(int)class] = fread_action(fl);
     }
   }
   fclose(fl);
@@ -318,13 +318,13 @@ void do_pose(struct char_data *ch, char *argument, int cmd)
   } while((lev = GET_LEVEL(ch, class)) < pose_messages[0].level);
 
   
-  for (counter = 0; (pose_messages[counter].level < lev) && 
-       (pose_messages[counter].level > 0); counter++);
+  for (counter = 0; (pose_messages[(int)counter].level < lev) && 
+         (pose_messages[(int)counter].level > 0); counter++);
   counter--;
   
   to_pose = number(0, counter);
 
-  act(pose_messages[to_pose].poser_msg[class], 0, ch, 0, 0, TO_CHAR);
-  act(pose_messages[to_pose].room_msg[class], 0, ch, 0, 0, TO_ROOM);
+  act(pose_messages[(int)to_pose].poser_msg[class], 0, ch, 0, 0, TO_CHAR);
+  act(pose_messages[(int)to_pose].room_msg[class], 0, ch, 0, 0, TO_ROOM);
 
 }
