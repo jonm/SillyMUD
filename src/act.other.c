@@ -31,8 +31,6 @@ void do_gain(struct char_data *ch, char *argument, int cmd)
 
 void do_guard(struct char_data *ch, char *argument, int cmd)
 {
-  char comm[100];
-  
   if (!IS_NPC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)) {
     send_to_char("Sorry. you can't just put your brain on autopilot!\n\r",ch);
     return;
@@ -208,7 +206,7 @@ void do_save(struct char_data *ch, char *argument, int cmd)
   struct obj_cost cost;
   struct char_data *tmp;
   struct obj_data *tl, *f;
-  struct obj_data *teq[MAX_WEAR], *eq[MAX_WEAR], *o;
+  struct obj_data *teq[MAX_WEAR], *o;
   int i;
   struct follow_type *fol;
   
@@ -1605,7 +1603,6 @@ void Dismount(struct char_data *ch, struct char_data *h, int pos)
 
 void do_mount(struct char_data *ch, char *arg, int cmd)
 {
-  char buf[256];
   char name[112];
   int check;
   struct char_data *horse;

@@ -3042,7 +3042,6 @@ int zombie_master(struct char_data *ch, int cmd, char *arg, struct char_data *mo
 {
   struct obj_data *temp1;
   struct char_data	*zmaster;
-  char	buf[240];
   int	dir;
 
   zmaster = find_mobile_here_with_spec_proc(zombie_master, ch->in_room);
@@ -3838,26 +3837,6 @@ int jugglernaut(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   }
   return(FALSE);
 }
-
-static char *elf_comm[] = {
-  "wake", "yawn",
-  "stand", "say Well, back to work.", "get all",
-  "eat bread", "wink",
-  "w", "w", "s", "s", "s", "d", "open gate", "e",  /* home to gate*/
-  "close gate",
-  "e", "e", "e", "e", "n", "w", "n", /* gate to baker */
-  "give all.bread baker", /* pretend to give a bread */
-  "give all.pastry baker", /* pretend to give a pastry */
-  "say That'll be 33 coins, please.",
-  "echo The baker gives some coins to the Elf",
-  "wave",
-  "s", "e", "n", "n", "e", "drop all.bread", "drop all.pastry", 
-  "w", "s", "s", /* to main square */
-  "s", "w", "w", "w", "w", /* back to gate */
-  "pat sisyphus",
-  "open gate", "w", "close gate", "u", "n", "n", "n", "e", "e", /* to home */
-  "say Whew, I'm exhausted.", "rest", "$"};
-
 
 int delivery_elf(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {

@@ -2792,13 +2792,8 @@ void do_advance(struct char_data *ch, char *argument, int cmd)
 }
 
 
-void do_reroll(struct char_data *ch, char *argument, int cmd)
-{
-
-  char buf[100];
-  
+void do_reroll(struct char_data *ch, char *argument, int cmd) {
   send_to_char("Use @set str..charisma..\n\r", ch);  
-
 }
 
 
@@ -3337,7 +3332,7 @@ void CreateOneRoom( int loc_nr)
 
 void do_set_log(struct char_data *ch, char *arg, int cmd)
 {
- char buf[255], name[255];
+ char name[255];
  struct char_data *victim;
  struct obj_data *dummy;
 

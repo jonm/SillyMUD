@@ -2022,7 +2022,6 @@ void spell_charm_person(byte level, struct char_data *ch,
 void spell_charm_monster(byte level, struct char_data *ch,
 			 struct char_data *victim, struct obj_data *obj)
 {
-  char buf[MAX_INPUT_LENGTH];
   struct affected_type af;
   
   void add_follower(struct char_data *ch, struct char_data *leader);

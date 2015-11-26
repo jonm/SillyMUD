@@ -2266,7 +2266,6 @@ void do_levels(struct char_data *ch, char *argument, int cmd)
 {
   int i, RaceMax, class;
   char buf[MAX_STRING_LENGTH];
-  char buf2[MAX_STRING_LENGTH];
   
   extern const struct title_type titles[MAX_CLASS][ABS_MAX_LVL];
   

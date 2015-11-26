@@ -574,7 +574,7 @@ void shopping_kill( char *arg, struct char_data *ch,
 
 int shop_keeper(struct char_data *ch, int cmd, char *arg, char *mob, int type)
 {
-  char argm[100], buf[MAX_STRING_LENGTH];
+  char argm[100];
   struct char_data *temp_char;
   struct char_data *keeper;
   int shop_nr;

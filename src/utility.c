@@ -1222,7 +1222,7 @@ void RoomLoad( struct char_data *ch, int start, int end)
 {
   FILE *fp;
   int vnum, found = FALSE, x;
-  char chk[50], buf[80];
+  char buf[80];
   struct room_data *rp, dummy;
 
   sprintf(buf, "rooms/%s", ch->player.name);
@@ -1601,7 +1601,6 @@ int IsUndead( struct char_data *ch)
 void SetHunting( struct char_data *ch, struct char_data *tch)
 {
    int persist, dist;
-   char buf[256];
 
 #if NOTRACK
 return;
@@ -2884,7 +2883,6 @@ int too_many_followers(struct char_data *ch)
 {
   struct follow_type *k;
   int max_followers,actual_fol;
-  char buf[80];
 
   max_followers = (int) chr_apply[(int)GET_CHR(ch)].num_fol;
   

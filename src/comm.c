@@ -273,7 +273,6 @@ void game_loop(int s)
   fd_set tin, tout, tex;
   fd_set mtin, mtout, mtex;
 #endif
-  static int cap;
   struct timeval last_time, now, timespent, timeout, null_time;
   static struct timeval opt_time;
   char comm[MAX_INPUT_LENGTH];
@@ -748,9 +747,7 @@ int init_socket(int port)
 {
 	int s;
 	char *opt;
-	char hostname[MAX_HOSTNAME+1];
 	struct sockaddr_in sa;
-	struct hostent *hp;
 	struct linger ld;
 
 	bzero(&sa, sizeof(struct sockaddr_in));
@@ -795,7 +792,6 @@ int new_connection(int s)
 #endif
   socklen_t i;
   int t;
-  char buf[100];
   
   i = sizeof(isa);
   /*
@@ -824,42 +820,6 @@ int new_connection(int s)
 #endif
 #endif
   return(t);
-}
-
-
-
-/* print an internet host address prettily */
-static void printhost(addr, buf)
-     struct in_addr	*addr;
-     char	*buf;
-{
-  struct hostent	*h;
-  char	*s;
-
-  h = gethostbyaddr(addr, sizeof(*addr),AF_INET);
-  s = (h==NULL) ? NULL : h->h_name;
-
-  if (s) {
-    strcpy(buf, s);
-  } else {
-    strcpy(buf, inet_ntoa(*addr));
-  }
-}
-
-
-/* print an internet host address prettily */
-static void printhostaddr(addr, buf)
-     struct in_addr	*addr;
-     char	*buf;
-{
-  struct hostent	*h;
-  char	*s;
-
-  h = gethostbyaddr(addr, sizeof(*addr),AF_INET);
-  s = (h==NULL) ? "1.1.1.1" : h->h_name;
-
-  strcpy(buf, s);
-
 }
 
 int new_descriptor(int s)

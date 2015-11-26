@@ -423,7 +423,7 @@ void do_edit(struct char_data *ch, char *arg, int cmd)
   tele_room, tele_time, tele_mask, moblim, tele_cnt;
   int r_flags;
   int s_type;
-  char name[MAX_INPUT_LENGTH], string[512], buf[132];
+  char string[512];
   struct extra_descr_data *ed, *tmp;
   struct room_data	*rp;
   

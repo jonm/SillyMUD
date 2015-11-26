@@ -337,8 +337,6 @@ void build_player_index()
   struct char_file_u dummy;
   FILE *fl;
   
-  char tempbuf[255];
-  char title[255], tmp2[255], blank[255];
   char buf[MAX_STRING_LENGTH*2];
 
   register int max=0, j;
@@ -1185,7 +1183,7 @@ struct char_data *read_mobile(int nr, int type)
   int i;
   long tmp, tmp2, tmp3, bc=0;
   struct char_data *mob;
-  char buf[100], buffer[255];
+  char buf[100];
   char letter;
 
   extern int mob_tick_count;
@@ -3096,13 +3094,7 @@ int workhours()
   return(0);
 }
 
-void reboot_text(struct char_data *ch, char *arg, int cmd)
-{
-  char buffer[100];
-  /*   struct char_data *p;
-  int i;
-  */
-
+void reboot_text(struct char_data *ch, char *arg, int cmd) {
  if(IS_NPC(ch))
     return;
 

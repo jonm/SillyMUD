@@ -766,7 +766,7 @@ void raw_open_door(struct char_data *ch, int dir)
 void do_open(struct char_data *ch, char *argument, int cmd)
 {
   int door;
-  char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
+  char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH];
   struct obj_data *obj;
   struct char_data *victim;
   struct room_direction_data	*exitp;

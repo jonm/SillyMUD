@@ -1144,7 +1144,7 @@ void do_climb( struct char_data *ch, char *arg, int cmd)
   int was_in, roll;
   extern char *dirs[];
 
-  char buf[256], type[128], direction[128];
+  char buf[256], direction[128];
 
   if (GET_MOVE(ch) < 10) {
     send_to_char("You're too tired to do that\n\r", ch);
@@ -1552,7 +1552,6 @@ void do_makepotion(struct char_data *ch, char *argument, int cmd)
   bool object[5];
   struct obj_data *o, *in_o, *next, *potion;
   struct room_data *rp;
-  char buf[80];
 
   extern struct index_data *obj_index;
   extern struct BrewMeister BrewList[MAX_POTIONS];

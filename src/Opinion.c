@@ -229,7 +229,6 @@ int Hates( struct char_data *ch, struct char_data *v)
 int Fears( struct char_data *ch, struct char_data *v)
 {
   struct char_list *i;
-  char buf[255];
   
   if (IS_AFFECTED(ch, AFF_PARALYSIS))
     return(FALSE);

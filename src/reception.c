@@ -33,7 +33,6 @@ extern int top_of_p_table;
 int add_obj_cost(struct char_data *ch, struct char_data *re,
                   struct obj_data *obj, struct obj_cost *cost, int hoarder)
 {
-  char buf[MAX_INPUT_LENGTH];
   int  temp;
   struct obj_data *hobj;
 
@@ -406,10 +405,7 @@ int contained_weight(struct obj_data *container)
 
 /* Destroy inventory after transferring it to "store inventory" */
 void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
-                  struct char_data * ch, int delete)
-{
-  static char buf[240];
-  
+                  struct char_data * ch, int delete) {
   if (!obj)
     return;
 
@@ -649,11 +645,10 @@ void CountLimitedItems(struct obj_file_u *st)
 }
 
 
-void PrintLimitedItems()
-{
+void PrintLimitedItems() {
 /*  int i; */
-  char buf[200];
 #if 0
+  char buf[200];
   for (i=0;i<=top_of_objt;i++) {
     if (obj_index[i].number > 0) {
       sprintf(buf, "item> %d [%d]", obj_index[i].virtual, obj_index[i].number);
@@ -670,9 +665,7 @@ void PrintLimitedItems()
 ************************************************************************* */
 #define DONATION_ROOM 99
 
-int receptionist(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
-  char buf[240];
+int receptionist(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type) {
   struct obj_cost cost;
   struct char_data *recep = 0;
   struct char_data *temp_char;
@@ -847,10 +840,8 @@ void ZeroRent( char *n)
   
 }
 
-int ReadObjs( FILE *fl, struct obj_file_u *st)
-{
+int ReadObjs( FILE *fl, struct obj_file_u *st) {
   int i;
-  char buf[128];
 
   if (feof(fl)) {
     fclose(fl);
@@ -897,7 +888,6 @@ int ReadObjs( FILE *fl, struct obj_file_u *st)
 void WriteObjs( FILE *fl, struct obj_file_u *st)
 {
   int i;
-  char buf[128];
 
   fwrite(st->owner, sizeof(st->owner), 1, fl);
   fwrite(&st->gold_left, sizeof(st->gold_left), 1, fl);

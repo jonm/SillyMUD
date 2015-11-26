@@ -36,7 +36,6 @@ void spell_resurrection(byte level, struct char_data *ch,
   struct obj_data *obj_object, *next_obj;  
   FILE *fl;  
   int i;
-  char t_name[100];
   extern int top_of_p_table;
   extern struct player_index_element *player_table;
   
@@ -353,7 +352,6 @@ void spell_turn(byte level, struct char_data *ch,
   int diff,i, chance;
   bool turned;
   struct affected_type af;
-  char buf[80];
 
   assert(ch && victim);
   assert((level >= 1) && (level<=ABS_MAX_LVL));
@@ -714,7 +712,6 @@ void spell_true_seeing(byte level, struct char_data *ch,
 void spell_track(byte level, struct char_data *ch,
    struct char_data *targ, struct obj_data *obj)
 {
-  char name[256], buf[256];
   struct affected_type af;
 
   extern struct char_data *character_list;

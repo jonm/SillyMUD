@@ -1964,7 +1964,7 @@ void cast_knock( byte level, struct char_data *ch, char *arg, int type,
   struct char_data *tar_ch, struct obj_data *tar_obj )
 {
   int door;
-  char dir[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH];
+  char dir[MAX_INPUT_LENGTH];
   char otype[MAX_INPUT_LENGTH];
   struct obj_data *obj;
   struct char_data *victim;
@@ -3793,10 +3793,7 @@ void cast_sending( byte level, struct char_data *ch, char *arg,
 
 
 void cast_portal( byte level, struct char_data *ch, char *arg, 
-     int type, struct char_data *tar_ch, struct obj_data *tar_obj )
-{
-  char buf[512];
-
+     int type, struct char_data *tar_ch, struct obj_data *tar_obj ) {
   switch(type) {
   case SPELL_TYPE_SPELL:
   case SPELL_TYPE_SCROLL:

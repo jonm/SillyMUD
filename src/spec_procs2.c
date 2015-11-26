@@ -512,8 +512,6 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
   struct char_data *vict;
 
   byte lspell;
-  char buf[200];  
-
 
   if (cmd || !AWAKE(ch) || IS_AFFECTED(ch, AFF_PARALYSIS))
     return(FALSE);
@@ -3788,7 +3786,6 @@ extern float shop_multiplier;
  
 int DwarvenMiners(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
 {
- char buf[255];
  void do_emote(struct char_data *ch, char *arg, int cmd);
  void do_stand(struct char_data *ch, char *arg, int cmd);
  void do_sit(struct char_data *ch, char *arg, int cmd);

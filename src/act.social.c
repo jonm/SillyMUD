@@ -170,7 +170,7 @@ int find_action(int cmd)
 void do_action(struct char_data *ch, char *argument, int cmd)
 {
   int act_nr;
-  char buf[MAX_INPUT_LENGTH], tmp[MAX_STRING_LENGTH];
+  char buf[MAX_INPUT_LENGTH];
   struct social_messg *action;
   struct char_data *vict;
   
