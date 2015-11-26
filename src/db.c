@@ -3402,7 +3402,7 @@ void ReadTextZone( FILE *fl)
   while (1){
     char c, buf[255], count=0, last_cmd=1;
     int i, j, k, tmp, zone=0;
-    struct char_data *mob, *master;
+    struct char_data *mob = NULL, *master = NULL;
     struct room_data *rp;
     struct obj_data *obj, *obj_to;
 

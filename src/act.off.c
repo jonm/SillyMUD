@@ -376,7 +376,7 @@ void do_order(struct char_data *ch, char *argument, int cmd)
 
 void do_flee(struct char_data *ch, char *argument, int cmd)
 {
-  int i, attempt, loose, die, percent, charm, nmbr, f, panic, j, tries, badroom;
+  int i, attempt, loose = 0, die, percent, charm, nmbr, f, panic, j, tries, badroom;
   bool found;
   void gain_exp(struct char_data *ch, int gain);
   int special(struct char_data *ch, int cmd, char *arg);

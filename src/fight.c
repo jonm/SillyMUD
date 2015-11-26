@@ -1133,7 +1133,7 @@ void DamageMessages( struct char_data *ch, struct char_data *v, int dam,
       act("You wish that your wounds would stop BLEEDING so much!",
 	  FALSE,v,0,0,TO_CHAR);
       if (IS_NPC(v) && (IS_SET(v->specials.act, ACT_FIGURINE)) && GET_HIT(v) < GET_MAX_HIT(v)/10) {
-          struct char_data *t;
+          struct char_data *t = NULL;
           if(v->master)
              t = v->master;
           act("$n shakes and begins to shrink.", FALSE, v, 0, 0, TO_ROOM);
