@@ -61,7 +61,7 @@ void do_inset(struct char_data *ch, char *argument, int cmd)
   char sp[100], sp2[100], buf[512];
   int ok=FALSE;
   struct extra_descr_data *new_descr;
-  int stone_slots, sword_slots, i, j, bits, perc;
+  int stone_slots, sword_slots, i, j, perc;
 
   /* get the sword and the gem from the argument */
 
@@ -75,11 +75,8 @@ void do_inset(struct char_data *ch, char *argument, int cmd)
     return;
   }
 
-  bits = generic_find(sp, FIND_OBJ_INV,
-		      ch, &tmp_char, &sword);
-
-  bits = generic_find(sp2, FIND_OBJ_INV,
-		      ch, &tmp_char, &gem);
+  generic_find(sp, FIND_OBJ_INV, ch, &tmp_char, &sword);
+  generic_find(sp2, FIND_OBJ_INV, ch, &tmp_char, &gem);
 
   /* make sure we have a gem and a sword */
 

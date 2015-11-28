@@ -137,9 +137,6 @@ void board_write_msg(struct char_data *ch, char *arg, int bnum) {
   long ct; /* clock time */
   char *tmstr;
 
-  extern struct time_info_data time_info;
-  extern char *month_name[];
-
   if ( bnum == -1 ) {
     log_msg("Board special procedure called for non-board object.\r\n");
     send_to_char("This board is not in operation at this time.\n\r", ch);

@@ -904,7 +904,6 @@ void do_goto(struct char_data *ch, char *argument, int cmd)
   int loc_nr, location, i;
   struct char_data *target_mob, *pers, *v;
   struct obj_data *target_obj;
-  extern int top_of_world;
   
   void do_look(struct char_data *ch, char *argument, int cmd);
   
@@ -2544,8 +2543,6 @@ void do_start(struct char_data *ch)
 {
   int r_num;
   struct obj_data *obj;
-  
-  extern struct dex_skill_type dex_app_skill[];
   
   send_to_char("Welcome to SillyMud.  Enjoy the game...\n\r",ch);
   ch->specials.start_room = NOWHERE;

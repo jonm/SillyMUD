@@ -34,6 +34,8 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 
 #define CAP(st)  (*(st) = UPPER(*(st)), st)
 
+#define CAPITALIZE(st) (*(st) = UPPER(*(st)))
+
 #define CREATE(result, type, number)  do {\
 	if (!((result) = (type *) calloc ((number), sizeof(type))))\
 		{ perror("malloc failure"); abort(); }\

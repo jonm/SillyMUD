@@ -15,7 +15,9 @@ typedef char sbyte;
 typedef unsigned char ubyte;
 typedef short int sh_int;
 typedef unsigned short int ush_int;
+#ifndef bool
 typedef char bool;
+#endif
 typedef char byte;
 
 /*  
