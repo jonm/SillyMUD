@@ -453,7 +453,7 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode)
 	  strcat(buffer,GET_TITLE(i));
       } else {
 	strcpy(buffer, i->player.short_descr);
-	CAP(buffer);
+	CAPITALIZE(buffer);
       }
       
       if ( IS_AFFECTED(i,AFF_INVISIBLE) || i->invis_level == LOW_IMMORTAL)
@@ -711,7 +711,7 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int mode,
 	  strcat(buffer,GET_TITLE(i));
       } else {
 	strcpy(buffer, i->player.short_descr);
-	CAP(buffer);
+	CAPITALIZE(buffer);
       }
       
       if ( IS_AFFECTED(i,AFF_INVISIBLE))
