@@ -724,7 +724,7 @@ void load_one_room(FILE *fl, struct room_data *rp)
 {
   char chk[50];
   int   bc=0;
-  unsigned long int	tmp;
+  long int	tmp;
 
   struct extra_descr_data *new_descr;
 
@@ -3090,7 +3090,7 @@ int workhours()
   return(0);
 }
 
-void reboot_text(struct char_data *ch, char *arg, int cmd) {
+void reboot_text(struct char_data *ch, char * UNUSED(arg), int UNUSED(cmd)) {
  if(IS_NPC(ch))
     return;
 

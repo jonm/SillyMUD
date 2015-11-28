@@ -1889,7 +1889,7 @@ void do_who(struct char_data *ch, char *argument, int cmd)
 		}
 	      }
 	      if ((person->desc != NULL) || (index(arg,'d') != NULL)) {
-		for (l = 1; l <= strlen(arg) ; l++) {
+		for (l = 1; (size_t)l <= strlen(arg) ; l++) {
 		  switch (arg[l]) {
 		  case 'i': {
 		    sprintf(tempbuf,"Idle:[%-3d] ",person->specials.timer);

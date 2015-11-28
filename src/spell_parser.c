@@ -1133,7 +1133,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
 	}
       } else {      
 	if (GetMaxLevel(ch) < LOW_IMMORTAL && !intrinsic) {
-	  if (GET_MANA(ch) < (unsigned int)USE_MANA(ch, (int)spl)) {
+	  if (GET_MANA(ch) < USE_MANA(ch, (int)spl)) {
 	    send_to_char("You can't summon enough energy to cast the spell.\n\r", ch);
 	    return;
 	  }

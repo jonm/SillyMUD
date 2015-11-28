@@ -2088,7 +2088,7 @@ int GetWeaponDam(struct char_data *ch, struct char_data *v,
       for(j=0; j<MAX_OBJ_AFFECT; j++) {
 	if (wielded->affected[j].location ==
 	    APPLY_RACE_SLAYER) {
-	  if (wielded->affected[j].modifier == GET_RACE(v))
+	  if (wielded->affected[j].modifier == (unsigned long)GET_RACE(v))
 	    dam *= 2;
 	}
 	if (wielded->affected[j].location ==

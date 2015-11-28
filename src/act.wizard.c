@@ -247,7 +247,7 @@ void dsearch(char *string, char *tmp)
 
 void do_bamfin(struct char_data *ch, char *arg, int UNUSED(cmd)) {
  char buf[255];
- int len;
+ size_t len;
 
  for (; *arg == ' '; arg++);  /* pass all those spaces */
 
@@ -296,7 +296,7 @@ void do_bamfin(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
 void do_bamfout(struct char_data *ch, char *arg, int UNUSED(cmd)) {
  char buf[255];
- int len;
+ size_t len;
 
  for (; *arg == ' '; arg++);  /* pass all those spaces */
 

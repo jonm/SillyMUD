@@ -1026,7 +1026,8 @@ void down_river( int pulse )
 void RoomSave(struct char_data *ch, int start, int end)
 {
    char fn[80], temp[2048], dots[500];
-   int rstart, rend, i, j, k, x;
+   int rstart, rend, i, j, x;
+   size_t k;
    struct extra_descr_data *exptr;
    FILE *fp;
    struct room_data	*rp;
