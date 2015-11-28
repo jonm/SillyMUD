@@ -9,7 +9,7 @@ mkdir build && \
 cd build && \
 cmake .. && \
 cmake --build . && \
+ls -F &&
 sudo make install && \
 sudo ldconfig
-
 
