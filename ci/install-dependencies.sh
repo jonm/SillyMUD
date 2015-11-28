@@ -7,6 +7,6 @@ git checkout master && \
 cp LICENSE debian.copyright && \
 mkdir build && \
 cd build && \
-cmake .. && \
-CFLAGS="-fPIC" cmake --build .
+CFLAGS="$CFLAGS -fPIC" cmake .. && \
+CFLAGS="$CFLAGS -fPIC" cmake --debug-output --build .
 
