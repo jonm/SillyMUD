@@ -39,7 +39,6 @@
 #define SPELL_MEMORIZED 2
 
 #define MEMORIZED(ch, spl) ((ch)->skills[spl].flags & SPELL_MEMORIZED)
-#define FORGET(ch, spl) (IS_SET((ch)->skills[spl].flags, SPELL_MEMORIZED))
 
 /* Global data */
 
@@ -63,6 +62,7 @@ int IsIntrinsic(struct char_data *ch, int spl);
 int CastIntrinsic(struct char_data *ch, int spl);
 void check_decharm( struct char_data *ch);
 void SpellWearOff(int s, struct char_data *ch);
+void forget(struct char_data *ch, int spl);
 
 /* struct spell_info_type spell_info[MAX_SPL_LIST]; */
 struct skill_data skill_info[MAX_SPL_LIST];
@@ -1255,7 +1255,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
       ((*skill_info[spl].spell_pointer) (GET_LEVEL(ch, BestMagicClass(ch)), ch, argument, SPELL_TYPE_SPELL, tar_char, tar_obj));
       cost = (int)USE_MANA(ch, (int)spl);
       if (cmd == 283) /* recall */ {
-	FORGET(ch, spl);
+	forget(ch, spl);
       } else if(!intrinsic) {
 	if(OUTSIDE(ch) && weather_info.sky < 2)
 	  cost -= cost>>2;
@@ -2283,4 +2283,8 @@ int CastIntrinsic(struct char_data *ch, int spl)
 
   send_to_char("Calling on your innate powers...\n\r", ch);
   return(TRUE);
+}
+
+void forget(struct char_data *ch, int spl) {
+  ch->skills[spl].flags &= ~(SPELL_MEMORIZED);
 }
