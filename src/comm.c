@@ -17,6 +17,7 @@
 #include <netdb.h>
 #include <string.h>
 #include <sys/time.h>
+#include <time.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <sys/resource.h>
