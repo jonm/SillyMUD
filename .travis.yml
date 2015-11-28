@@ -3,5 +3,6 @@ before_script: autoreconf --install
 install:
   - sudo apt-get install check
   - ./ci/install-dependencies.sh
-script: ./configure && make && make check
+script: CFLAGS="-ICriterion/include" LDFLAGS="-LCriterion/build" ./configure && make && make check
+
 

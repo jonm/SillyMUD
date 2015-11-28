@@ -8,8 +8,5 @@ cp LICENSE debian.copyright && \
 mkdir build && \
 cd build && \
 cmake .. && \
-cmake --build . && \
-ls -F &&
-sudo make install && \
-sudo ldconfig
+cmake --build .
 
