@@ -3,6 +3,6 @@ before_script: autoreconf --install
 install:
   - sudo apt-get install check
   - ./ci/install-dependencies.sh
-script: CFLAGS="-I`pwd`/Criterion/include" LDFLAGS="-Wl,-R -Wl,`pwd`/Criterion/build" ./configure && make && make check
+script: CFLAGS="-I`pwd`/Criterion/include" LDFLAGS="-L`pwd`/Criterion/build -Wl,-R -Wl,`pwd`/Criterion/build" ./configure && make && make check
 
 
