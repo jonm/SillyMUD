@@ -1341,7 +1341,7 @@ void spell_locate_object(byte level, struct char_data *ch,
   strcpy(name, obj->name);
 
   j=level>>1;
-  sprintf(buf, "");
+  *buf = '\0';
   for (i = object_list; i && (j>0); i = i->next)
     if (isname(name, i->name)) {
       if(i->carried_by) {
