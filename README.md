@@ -1,6 +1,8 @@
 # VerySillyMUD
 A refactoring exercise based on SillyMUD, a derivative of DikuMUD.
 
+[![Build Status](https://travis-ci.org/jonm/SillyMUD.svg?branch=master)](https://travis-ci.org/jonm/SillyMUD)
+
 # Prerequisites
 
 You'll need to install the `criterion` C unit testing library:
