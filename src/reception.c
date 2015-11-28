@@ -10,6 +10,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <sys/stat.h>
+#include <time.h>
 
 #include "protos.h"
 #include "reception.h"
