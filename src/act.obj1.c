@@ -70,9 +70,7 @@ void get(struct char_data *ch, struct obj_data *obj_object,
   }
 }
 
-
-void do_get(struct char_data *ch, char *argument, int cmd)
-{
+void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char arg1[MAX_STRING_LENGTH];
   char arg2[MAX_STRING_LENGTH];
   char buffer[MAX_STRING_LENGTH];
@@ -375,9 +373,7 @@ void do_get(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-
-void do_drop(struct char_data *ch, char *argument, int cmd) 
-{
+void do_drop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char arg[MAX_INPUT_LENGTH];
   int amount;
   char buffer[MAX_STRING_LENGTH];
@@ -499,10 +495,7 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-
-
-void do_put(struct char_data *ch, char *argument, int cmd)
-{
+void do_put(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char buffer[256];
   char arg1[128];
   char arg2[128];
@@ -636,10 +629,7 @@ int newstrlen(char *p) {
   return(i);
 }
 
-
-
-void do_give(struct char_data *ch, char *argument, int cmd)
-{
+void do_give(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char obj_name[200], vict_name[80], buf[132];
   char arg[80], newarg[100];
   int amount, num, p, count;

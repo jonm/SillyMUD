@@ -22,7 +22,7 @@ extern const char *half_orc_words[];
 extern const char *half_orc_noises[];
 extern const char *ogre_speak[];
 
-void do_say(struct char_data *ch, char *argument, int cmd)
+void do_say(struct char_data *ch, char *argument, int UNUSED(cmd))
 {
   char buf[MAX_INPUT_LENGTH+40], buf2[MAX_INPUT_LENGTH+40];
   
@@ -59,7 +59,7 @@ void do_say(struct char_data *ch, char *argument, int cmd)
 
 
 
-void do_shout(struct char_data *ch, char *argument, int cmd)
+void do_shout(struct char_data *ch, char *argument, int UNUSED(cmd))
 {
   char buf1[MAX_INPUT_LENGTH+40], buf2[MAX_INPUT_LENGTH+40];
   struct descriptor_data *i;
@@ -126,7 +126,7 @@ void do_shout(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_commune(struct char_data *ch, char *argument, int cmd)
+void do_commune(struct char_data *ch, char *argument, int UNUSED(cmd))
 {
   static char buf1[MAX_INPUT_LENGTH];
   struct descriptor_data *i;
@@ -152,7 +152,7 @@ void do_commune(struct char_data *ch, char *argument, int cmd)
 }
 
 
-void do_tell(struct char_data *ch, char *argument, int cmd)
+void do_tell(struct char_data *ch, char *argument, int UNUSED(cmd))
 {
   struct char_data *vict;
   char name[100], message[MAX_INPUT_LENGTH+20],
@@ -210,7 +210,7 @@ void do_tell(struct char_data *ch, char *argument, int cmd)
 
 
 
-void do_whisper(struct char_data *ch, char *argument, int cmd)
+void do_whisper(struct char_data *ch, char *argument, int UNUSED(cmd))
 {
   struct char_data *vict;
   char name[100], message[MAX_INPUT_LENGTH],
@@ -245,7 +245,7 @@ void do_whisper(struct char_data *ch, char *argument, int cmd)
 }
 
 
-void do_ask(struct char_data *ch, char *argument, int cmd)
+void do_ask(struct char_data *ch, char *argument, int UNUSED(cmd))
 {
   struct char_data *vict;
   char name[100], message[MAX_INPUT_LENGTH],
@@ -283,7 +283,7 @@ void do_ask(struct char_data *ch, char *argument, int cmd)
 
 #define MAX_NOTE_LENGTH 1000      /* arbitrary */
 
-void do_write(struct char_data *ch, char *argument, int cmd)
+void do_write(struct char_data *ch, char *argument, int UNUSED(cmd))
 {
   struct obj_data *paper = 0, *pen = 0;
   char papername[MAX_INPUT_LENGTH], penname[MAX_INPUT_LENGTH],
@@ -397,7 +397,7 @@ char *RandomWord()
 
 }
 
-void do_sign(struct char_data *ch, char *argument, int cmd)
+void do_sign(struct char_data *ch, char *argument, int UNUSED(cmd))
 {
   int i;
   char buf[MAX_INPUT_LENGTH+40];
@@ -469,8 +469,8 @@ void do_sign(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void bird_garble(char *buf, char *buf2, struct char_data *ch)
-{
+void bird_garble(char * UNUSED(buf), char * UNUSED(buf2), 
+                 struct char_data * UNUSED(ch)) {
 #if 0
   char *p;
 

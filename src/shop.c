@@ -471,7 +471,7 @@ void shopping_value( char *arg, struct char_data *ch,
   return;
 }
 
-void shopping_list( char *arg, struct char_data *ch,
+void shopping_list(char * UNUSED(arg), struct char_data *ch,
 		   struct char_data *keeper, int shop_nr)
 {
   char buf[MAX_STRING_LENGTH], buf2[100],buf3[100];
@@ -548,9 +548,8 @@ void shopping_list( char *arg, struct char_data *ch,
   return;
 }
 
-void shopping_kill( char *arg, struct char_data *ch,
-		   struct char_data *keeper, int shop_nr)
-{
+void shopping_kill(char * UNUSED(arg), struct char_data *ch, 
+                   struct char_data *keeper, int shop_nr) {
   char buf[100];
   
   switch(shop_index[shop_nr].temper2){
@@ -571,9 +570,8 @@ void shopping_kill( char *arg, struct char_data *ch,
   }
 }
 
-
-int shop_keeper(struct char_data *ch, int cmd, char *arg, char *mob, int type)
-{
+int shop_keeper(struct char_data *ch, int cmd, char *arg, char * UNUSED(mob),
+                int type) {
   char argm[100];
   struct char_data *temp_char;
   struct char_data *keeper;

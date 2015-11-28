@@ -44,10 +44,7 @@ void signal_setup()
 	signal(SIGVTALRM, checkpointing);
 }
 
-
-
-void checkpointing(int sig)
-{
+void checkpointing(int UNUSED(sig)) {
   extern int tics;
 	
   if (!tics)
@@ -59,21 +56,15 @@ void checkpointing(int sig)
     tics = 0;
 }
 
+void shutdown_request(int UNUSED(sig)) {
+  extern int mudshutdown;
 
-
-
-void shutdown_request(int sig)
-{
-	extern int mudshutdown;
-
-	log_msg("Received USR2 - shutdown request");
-	mudshutdown = 1;
+  log_msg("Received USR2 - shutdown request");
+  mudshutdown = 1;
 }
 
-
 /* kick out players etc */
-void hupsig(int sig)
-{
+void hupsig(int UNUSED(sig)) {
   int i;
   extern int mudshutdown, should_reboot;
 
@@ -87,7 +78,6 @@ void hupsig(int sig)
   mudshutdown = should_reboot = 1;
 }
 
-void logsig(int sig)
-{
-	log_msg("Signal received. Ignoring.");
+void logsig(int UNUSED(sig)) {
+  log_msg("Signal received. Ignoring.");
 }

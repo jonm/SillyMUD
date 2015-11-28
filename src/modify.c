@@ -181,12 +181,8 @@ void quad_arg(char *arg, int *type, char *name, int *field, char *string)
   return;
 }
 
-	 
-
-
 /* modification of malloc'ed strings in chars/objects */
-void do_string(struct char_data *ch, char *arg, int cmd)
-{
+void do_string(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   
   char name[MAX_STRING_LENGTH], string[MAX_STRING_LENGTH];
   struct extra_descr_data *ed, *tmp;
@@ -416,9 +412,7 @@ void bisect_arg(char *arg, int *field, char *string)
   return;
 }
 
-
-void do_edit(struct char_data *ch, char *arg, int cmd)
-{
+void do_edit(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   int field, dflags, dir, exroom, dkey, rspeed, rdir,
   tele_room, tele_time, tele_mask, moblim, tele_cnt;
   int r_flags;
@@ -718,11 +712,10 @@ void do_edit(struct char_data *ch, char *arg, int cmd)
 ********************************************************************** */
 
 
-void do_setskill(struct char_data *ch, char *arg, int cmd)
-{
-	send_to_char("This routine is disabled untill it fitts\n\r", ch);
-	send_to_char("The new structures (sorry Quinn) ....Bombman\n\r", ch);
-	return;
+void do_setskill(struct char_data *ch, char * UNUSED(arg), int UNUSED(cmd)) {
+  send_to_char("This routine is disabled untill it fitts\n\r", ch);
+  send_to_char("The new structures (sorry Quinn) ....Bombman\n\r", ch);
+  return;
 }
 
 

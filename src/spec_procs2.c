@@ -40,8 +40,8 @@ extern int gSeason;  /* what season is it ? */
 #define CMD_SAY 17
 #define CMD_ASAY 169
 
-int ghost(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int ghost(struct char_data *ch, int cmd, char * UNUSED(arg),
+          struct char_data * UNUSED(mob), int UNUSED(type)) {
   void cast_energy_drain( byte level, struct char_data *ch, char *arg, 
 			 int type,struct char_data *tar_ch, 
 			 struct obj_data *tar_obj );
@@ -62,8 +62,8 @@ int ghost(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int t
   return FALSE;
 }
 
-int druid_protector(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int druid_protector(struct char_data *ch, int cmd, char * UNUSED(arg),
+                    struct char_data * UNUSED(mob), int UNUSED(type)) {
   static int b=1;  /* use this as a switch, to avoid double challenges */
 
   if (cmd) {
@@ -102,9 +102,8 @@ int druid_protector(struct char_data *ch, int cmd, char *arg, struct char_data *
   return(FALSE);
 } /* end druid_protector */
 
-
 int Magic_Fountain(struct char_data *ch, int cmd, char *arg,
-                   struct room_data *rp, int type) {
+                   struct room_data * UNUSED(rp), int UNUSED(type)) {
 
   char buf[MAX_INPUT_LENGTH];
 
@@ -325,9 +324,8 @@ int DruidAttackSpells(struct char_data *ch, struct char_data *vict, int level)
   }
 }	
 
-
-int Summoner(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int Summoner(struct char_data *ch, int cmd, char * UNUSED(arg),
+             struct char_data * UNUSED(mob), int UNUSED(type)) {
   extern struct descriptor_data *descriptor_list;
   struct descriptor_data *d;
   struct char_data *targ=0;
@@ -406,9 +404,8 @@ int Summoner(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
   }
 }
 
-
-int monk(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int monk(struct char_data *ch, int cmd, char * UNUSED(arg),
+         struct char_data * UNUSED(mob), int UNUSED(type)) {
   
   if (cmd || !AWAKE(ch))
     return(FALSE);
@@ -475,8 +472,8 @@ void invert(char *arg1, char *arg2)
  *(arg2 + i) = '\0';
 }
  
-int jive_box(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int type)
-{
+int jive_box(struct char_data *ch, int cmd, char *arg,
+             struct obj_data * UNUSED(obj), int type) {
  char buf[255], buf2[255], buf3[255], tmp[255];
 
  if (type != PULSE_COMMAND)
@@ -869,9 +866,8 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
   return TRUE;  
 }
 
-
-int cleric(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int cleric(struct char_data *ch, int cmd, char * UNUSED(arg),
+           struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
   byte lspell, healperc=0;
   
@@ -1131,11 +1127,9 @@ int hunter(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
 				 /*  */
        /* nifty new teacher proc compliments of Kiku, 9/26/93 */
-
-
-int Teacher(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
-	    int type, int teacher, char *say_str)
-{
+int Teacher(struct char_data *ch, int cmd, char *arg,
+            struct char_data *UNUSED(mob), int UNUSED(type), int teacher,
+            char *say_str) {
 
   char buf[256];
   
@@ -1503,9 +1497,8 @@ int RepairGuy( struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
   }
 }
 
-
-int Samah( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int Samah(struct char_data *ch, int cmd, char *arg,
+          struct char_data * UNUSED(mob), int UNUSED(type)) {
   char *p, buf[256];
   struct char_data *Sammy;  /* Samah's own referent pointer */
   struct char_data *t, *t2, *t3;
@@ -1644,8 +1637,8 @@ int Samah( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
 
 #if EGO
 
-int BitterBlade(struct char_data *ch, int cmd, char *arg,struct obj_data *tobj, int type)
-{
+int BitterBlade(struct char_data *ch, int cmd, char *arg,
+                struct obj_data * UNUSED(tobj), int type) {
    extern struct str_app_type str_app[];
    struct obj_data *obj, *blade;
    struct char_data *joe, *holder;
@@ -1947,9 +1940,8 @@ int AbyssGateKeeper( struct char_data *ch, int cmd, char *arg, struct char_data 
   return(FALSE);
 }
 
-
-int creeping_death( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int creeping_death(struct char_data *ch, int cmd, char * UNUSED(arg),
+                   struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct char_data *t, *next;
   struct room_data *rp;
   struct obj_data *co, *o;
@@ -2405,9 +2397,8 @@ int GenericCityguard(struct char_data *ch, int cmd, char *arg, struct char_data 
   return(FALSE);
 }
 
-
-int PrydainGuard(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int PrydainGuard(struct char_data *ch, int cmd, char *arg,
+                 struct char_data *mob, int UNUSED(type)) {
   return(GenericCityguardHateUndead(ch,cmd,arg,mob,PRYDAIN));
 }
 
@@ -2559,11 +2550,11 @@ struct breather breath_monsters[] = {
   { 25009, 30, breaths+6 },
   { 25504, 30, breaths+4 },
   { 27016, 30, breaths+6 },
-  { -1 },
+  { -1 , -1, NULL },
 };
 
-int BreathWeapon(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int BreathWeapon(struct char_data *ch, int cmd, char * UNUSED(arg),
+                 struct char_data * UNUSED(mob), int UNUSED(type)) {
   char	buf[MAX_STRING_LENGTH];
   struct breather *scan;
   int	count;
@@ -2671,8 +2662,8 @@ void DruidMob(struct char_data *ch)
 
 }
 
-int DruidChallenger(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int DruidChallenger(struct char_data *ch, int cmd, char * UNUSED(arg),
+                    struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct room_data *rp;
   int level;
   struct char_data *vict;
@@ -2864,8 +2855,8 @@ int DruidChallenger(struct char_data *ch, int cmd, char *arg, struct char_data *
   return(FALSE);
 }
 
-int MonkChallenger(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int MonkChallenger(struct char_data *ch, int cmd, char * UNUSED(arg),
+                   struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
 
   if (cmd) return(FALSE);
@@ -2895,8 +2886,9 @@ int MonkChallenger(struct char_data *ch, int cmd, char *arg, struct char_data *m
 #define MONK_MOB  650
 #define FLEE 151
 
-int druid_challenge_prep_room(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int type) 
-{
+int druid_challenge_prep_room(struct char_data *ch, int cmd,
+                              char * UNUSED(arg),
+                              struct room_data * UNUSED(rp), int UNUSED(type)) {
   struct room_data *me, *chal;
   int i, newr;
   struct obj_data *o, *obj, *next_o;
@@ -2980,9 +2972,8 @@ int druid_challenge_prep_room(struct char_data *ch, int cmd, char *arg, struct r
 
 }
 
-
-int druid_challenge_room(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int type) 
-{
+int druid_challenge_room(struct char_data *ch, int cmd, char * UNUSED(arg),
+                         struct room_data * UNUSED(rp), int UNUSED(type)) {
   struct char_data *i;
   struct room_data *me;
   int rm;
@@ -3061,9 +3052,8 @@ int druid_challenge_room(struct char_data *ch, int cmd, char *arg, struct room_d
 
 }
 
-
-int monk_challenge_room(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int type) 
-{
+int monk_challenge_room(struct char_data *ch, int cmd, char * UNUSED(arg),
+                        struct room_data * UNUSED(rp), int UNUSED(type)) {
   struct char_data *i;
   struct room_data *me;
   int rm;
@@ -3155,8 +3145,8 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *arg, struct room_da
   return(FALSE);
 }
 
-int monk_challenge_prep_room(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int type) 
-{
+int monk_challenge_prep_room(struct char_data *ch, int cmd, char * UNUSED(arg),
+                             struct room_data * UNUSED(rp), int UNUSED(type)) {
   struct room_data *me, *chal;
   int i, newr;
   struct obj_data *o, *obj, *next_o;
@@ -3303,8 +3293,8 @@ int portal(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int t
   return(FALSE);
 }
 
-int scraps(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int type)
-{
+int scraps(struct char_data * UNUSED(ch), int UNUSED(cmd), char * UNUSED(arg),
+           struct obj_data *obj, int type) {
 
   if (type == PULSE_COMMAND) {
     return(FALSE);
@@ -3327,8 +3317,8 @@ int scraps(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int t
 
 #define ATTACK_ROOM 3004
 
-int attack_rats(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int attack_rats(struct char_data *ch, int UNUSED(cmd), char * UNUSED(arg),
+                struct char_data * UNUSED(mob), int type) {
  int dir;
 
  if(type == PULSE_COMMAND)
@@ -3359,8 +3349,9 @@ int attack_rats(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 #define WHERE_TO_SIT 3007 /* tavern */
 #define WHO_TO_CALL  3063 /* mercenary */
 
-int DragonHunterLeader(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int DragonHunterLeader(struct char_data *ch, int UNUSED(cmd),
+                       char * UNUSED(arg), struct char_data * UNUSED(mob),
+                       int type) {
  register struct char_data *i, *j;
  int found = FALSE, dir, count;
  char buf[255];
@@ -3508,8 +3499,8 @@ int DragonHunterLeader(struct char_data *ch, int cmd, char *arg, struct char_dat
  return(FALSE);
 }
 
-int HuntingMercenary(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int HuntingMercenary(struct char_data *ch, int UNUSED(cmd), char * UNUSED(arg),
+                     struct char_data *mob, int type) {
  int dir;
 
  if(type == PULSE_COMMAND)
@@ -3560,9 +3551,8 @@ int HuntingMercenary(struct char_data *ch, int cmd, char *arg, struct char_data 
  
 long jackpot = 25;
  
- 
-int SlotMachine(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int type)
-{
+int SlotMachine(struct char_data *ch, int cmd, char * UNUSED(arg),
+                struct obj_data * UNUSED(obj), int UNUSED(type)) {
  int c, i[3], ind;
  char buf[255];
  
@@ -3672,8 +3662,8 @@ int SlotMachine(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, 
 #define ASTRAL_START 8100
 #define ASTRAL_END   8224
 
-int astral_portal(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int astral_portal(struct char_data *ch, int cmd, char *arg,
+                  struct char_data * UNUSED(mob), int type) {
   int destination[25];
   char buf[50];
   int j;
@@ -3771,17 +3761,12 @@ int astral_portal(struct char_data *ch, int cmd, char *arg, struct char_data *mo
   return(FALSE);
 
 }
-
-  
-
-
- 
  
 extern int gevent;
 extern float shop_multiplier;
  
-int DwarvenMiners(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int DwarvenMiners(struct char_data *ch, int UNUSED(cmd), char * UNUSED(arg),
+                  struct char_data * UNUSED(mob), int type) {
  void do_emote(struct char_data *ch, char *arg, int cmd);
  void do_stand(struct char_data *ch, char *arg, int cmd);
  void do_sit(struct char_data *ch, char *arg, int cmd);
@@ -3885,11 +3870,10 @@ int DwarvenMiners(struct char_data *ch, int cmd, char *arg, struct char_data *mo
  return(FALSE);
 }
 
-
 /* From the appendages of Gecko... (now you know who to blame =) */
 
-int real_rabbit(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int real_rabbit(struct char_data *ch, int cmd, char * UNUSED(arg),
+                struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct char_data *i;
 
   if (cmd || !AWAKE(ch) || ch->specials.fighting)
@@ -3909,8 +3893,8 @@ int real_rabbit(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   return FALSE;
 }
 
-int real_fox(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int real_fox(struct char_data *ch, int cmd, char * UNUSED(arg),
+             struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct char_data *i;
   struct obj_data  *j, *k, *next;
   
@@ -3953,7 +3937,7 @@ int real_fox(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
   holy hand-grenade of antioch code
 */
 
-int antioch_grenade(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int type)
+int antioch_grenade(struct char_data * UNUSED(ch), int cmd, char *arg, struct obj_data *obj, int type)
 {
   
   if (type == PULSE_TICK) {

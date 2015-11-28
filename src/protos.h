@@ -157,7 +157,7 @@ void do_credits(struct char_data *ch, char *argument, int cmd);
 void do_news(struct char_data *ch, char *argument, int cmd);
 void do_info(struct char_data *ch, char *argument, int cmd);
 void do_wizlist(struct char_data *ch, char *argument, int cmd);
-int which_number_mobile(struct char_data *ch, struct char_data *mob);
+int which_number_mobile(struct char_data *mob);
 char *numbered_person(struct char_data *ch, struct char_data *person);
 void do_where_person(struct char_data *ch, struct char_data *p,
 			    struct string_block *sb);
@@ -480,7 +480,7 @@ int damage(struct char_data *ch, struct char_data *victim,
 	          int dam, int attacktype);
 int GetWeaponType(struct char_data *ch, struct obj_data **wielded);
 int Getw_type(struct obj_data *wielded);
-int HitCheckDeny(struct char_data *ch, struct char_data *victim, int type);
+int HitCheckDeny(struct char_data *ch, struct char_data *victim);
 int CalcThaco(struct char_data *ch);
 int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco);
 void MissVictim(struct char_data *ch, struct char_data *v, int type, int w_type,
@@ -494,7 +494,7 @@ void root_hit(struct char_data *ch, struct char_data *victim, int type,
 	      int (*dam_func)());
 void MissileHit(struct char_data *ch, struct char_data *victim, int type);
 void hit(struct char_data *ch, struct char_data *victim, int type);
-void perform_violence(int pulse);
+void perform_violence(void);
 struct char_data *FindVictim( struct char_data *ch);
 struct char_data *FindAnyVictim( struct char_data *ch);
 void BreakLifeSaverObj( struct char_data *ch);
@@ -503,7 +503,7 @@ int PreProcDam(struct char_data *ch, int type, int dam);
 int DamageOneItem( struct char_data *ch, int dam_type, struct obj_data *obj);
 void MakeScrap( struct char_data *ch, struct obj_data *obj);
 void DamageAllStuff( struct char_data *ch, int dam_type);
-int DamageItem(struct char_data *ch, struct obj_data *o, int num);
+int DamageItem(struct obj_data *o, int num);
 int ItemSave( struct obj_data *i, int dam_type);
 int DamagedByAttack( struct obj_data *i, int dam_type);
 int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam);
@@ -1856,7 +1856,7 @@ int check_nomagic(struct char_data *ch, char *msg_ch, char *msg_rm);
 int NumCharmedFollowersInRoom(struct char_data *ch);
 struct char_data *FindMobDiffZoneSameRace(struct char_data *ch);
 int NoSummon(struct char_data *ch);
-int GetNewRace(struct char_file_u *s);
+int GetNewRace(void);
 int GetApprox(int num, int perc);
 int MountEgoCheck(struct char_data *ch, struct char_data *horse);
 int RideCheck( struct char_data *ch, int mod);

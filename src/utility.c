@@ -1275,8 +1275,7 @@ void RoomLoad( struct char_data *ch, int start, int end)
   
 }    
 
-void fake_setup_dir(FILE *fl, int room, int dir)
-{
+void fake_setup_dir(FILE *fl, int UNUSED(room), int UNUSED(dir)) {
 	int tmp;
 	char *temp;
 
@@ -1969,10 +1968,8 @@ void RemAllAffects( struct char_data *ch)
 
 }
 
-int CheckForBlockedMove
-  (struct char_data *ch, int cmd, char *arg, int room, int dir, int class)
-{
-  
+int CheckForBlockedMove(struct char_data *ch, int cmd, char * UNUSED(arg),
+                        int room, int dir, int class) {
   char buf[256], buf2[256];
   
   if (cmd>6 || cmd<1)
@@ -2605,8 +2602,7 @@ int NoSummon(struct char_data *ch)
   return(FALSE);
 }
 
-int GetNewRace(struct char_file_u *s)
-{
+int GetNewRace() {
   int ok, newrace, i;
 
   while (1) {

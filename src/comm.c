@@ -596,7 +596,7 @@ void game_loop(int s)
     }
     
     if (!(pulse % PULSE_VIOLENCE))
-      perform_violence( pulse );
+      perform_violence();
     
     
     if (!(pulse % (SECS_PER_MUD_HOUR*4))){

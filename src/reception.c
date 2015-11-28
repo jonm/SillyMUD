@@ -658,7 +658,8 @@ void PrintLimitedItems() {
 ************************************************************************* */
 #define DONATION_ROOM 99
 
-int receptionist(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type) {
+int receptionist(struct char_data *ch, int cmd, char * UNUSED(arg),
+                 struct char_data *mob, int type) {
   struct obj_cost cost;
   struct char_data *recep = 0;
   struct char_data *temp_char;

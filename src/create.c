@@ -101,9 +101,7 @@ void ChangeRoomFlags(struct room_data *rp, struct char_data *ch, char *arg, int 
  send_to_char("Select the number to toggle, <C/R> to return to main menu.\n\r--> ", ch);
 }
  
- 
-void do_redit(struct char_data *ch, char *arg, int cmd)
-{
+void do_redit(struct char_data *ch, char * UNUSED(arg), int UNUSED(cmd)) {
 #ifndef TEST_SERVER
  struct room_data *rp;
 
@@ -264,9 +262,8 @@ void ChangeRoomName(struct room_data *rp, struct char_data *ch, char *arg, int t
  return;
 } 
  
- 
-void ChangeRoomDesc(struct room_data *rp, struct char_data *ch, char *arg, int type)
-{
+void ChangeRoomDesc(struct room_data *rp, struct char_data *ch,
+                    char * UNUSED(arg), int type) {
  char buf[255];
  
  if(type != ENTER_CHECK) {
@@ -602,8 +599,8 @@ void ChangeKeyNumber(struct room_data *rp, struct char_data *ch, char *arg, int 
  ChangeExitDir(rp, ch, "", ENTER_CHECK);
 }
 
-void DeleteExit(struct room_data *rp, struct char_data *ch, char *arg, int type)
-{
- ch->specials.edit = MAIN_MENU;
- UpdateRoomMenu(ch);
+void DeleteExit(struct room_data * UNUSED(rp), struct char_data *ch,
+                char * UNUSED(arg), int UNUSED(type)) {
+  ch->specials.edit = MAIN_MENU;
+  UpdateRoomMenu(ch);
 }

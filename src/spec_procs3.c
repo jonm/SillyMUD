@@ -356,8 +356,8 @@ int chess_game(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
   return FALSE;
 }
 
-int AcidBlob(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int AcidBlob(struct char_data *ch, int cmd, char * UNUSED(arg),
+             struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct obj_data *i;
   
   if (cmd || !AWAKE(ch))
@@ -375,8 +375,8 @@ int AcidBlob(struct char_data *ch, int cmd, char *arg, struct char_data *mob, in
   return(FALSE);
 }
  
-int death_knight(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int death_knight(struct char_data * UNUSED(ch), int cmd, char *arg,
+                 struct char_data *mob, int type) {
 
   if (cmd) return(FALSE);
   if (!AWAKE(mob)) return(FALSE);
@@ -388,8 +388,8 @@ int death_knight(struct char_data *ch, int cmd, char *arg, struct char_data *mob
   }
 }
 
-int baby_bear(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int baby_bear(struct char_data *ch, int cmd, char * UNUSED(arg),
+              struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct char_data *t;
   struct room_data *rp;
 
@@ -414,8 +414,8 @@ int baby_bear(struct char_data *ch, int cmd, char *arg, struct char_data *mob, i
 #define TIMNUSNORTHLIMIT 30
 #define TIMNUSWESTLIMIT 12
 
-int timnus(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int timnus(struct char_data *ch, int cmd, char * UNUSED(arg),
+           struct char_data *mob, int UNUSED(type)) {
   /* north = 1 */
   /* west  = 4 */
 
@@ -545,9 +545,8 @@ int timnus(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
   return(FALSE);
 }
 
-
-int winger(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int winger(struct char_data *ch, int cmd, char * UNUSED(arg),
+           struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
 
   if(cmd)
@@ -624,8 +623,8 @@ int DeathRoom(int dt_room)
   return(FALSE);
 }
 
-int YouthPotion( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int YouthPotion(struct char_data *ch, int cmd, char *arg,
+                struct char_data * UNUSED(mob), int UNUSED(type)) {
   char buf[MAX_INPUT_LENGTH];
   /*   struct char_data *vict; */
   struct obj_data *obj;
@@ -681,8 +680,8 @@ int YouthPotion( struct char_data *ch, int cmd, char *arg, struct char_data *mob
 
 #define WARPSTONE 29
 
-int warpstone( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int warpstone(struct char_data *ch, int cmd, char *arg,
+              struct char_data * UNUSED(mob), int UNUSED(type)) {
 
   char buf[100];
   struct obj_data *temp;
@@ -741,7 +740,8 @@ const struct turbolift_keywords TurboLiftList[5] = {
 
 #define TURBO_LIFT 2639
 
-int entering_turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int type)
+int entering_turbo_lift(struct char_data *ch, int cmd, char * UNUSED(arg),
+                        struct room_data *rp, int UNUSED(type))
 {
   int i;
 
@@ -767,9 +767,7 @@ int entering_turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_da
 }
   
 int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-int type)
-{
-
+               int UNUSED(type)) {
   int i, dest;
   char buf[80];
 
@@ -851,8 +849,8 @@ char *scroll_text[] = {
 #define MAX_SCROLL     18    /* Max of scrolls */
 #define SCROLL_OBJ     87    /* Scroll to load */
  
-int OldHag(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
+int OldHag(struct char_data * UNUSED(ch), int UNUSED(cmd), char * UNUSED(arg),
+           struct char_data *mob, int UNUSED(type)) {
   /* Mob is always passed as the mobile, no matter what */
   /* So we'll intercept the first call here, no matter  */
   /* What it is, that way we can make sure something's  */
