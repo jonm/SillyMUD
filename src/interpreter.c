@@ -882,7 +882,6 @@ void nanny(struct descriptor_data *d, char *arg)
   extern int plr_tick_count;
   extern int top_of_mobt;
   extern int RacialMax[][6];
-  extern const char *RaceName[];
   
   void do_look(struct char_data *ch, char *argument, int cmd);
   void load_char_objs(struct char_data *ch);

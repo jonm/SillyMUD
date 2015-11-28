@@ -2159,9 +2159,7 @@ void spell_identify(byte level, struct char_data *ch,
   extern char *extra_bits[];
   extern char *apply_types[];
   extern char *affected_bits[];
-  extern char *affected_bits2[];
   extern char *immunity_names[];
-  
   
   assert(ch && (obj || victim));
   

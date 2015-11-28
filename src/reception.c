@@ -35,12 +35,6 @@ int add_obj_cost(struct char_data *ch, struct char_data *re,
                   struct obj_data *obj, struct obj_cost *cost, int hoarder)
 {
   int  temp;
-  struct obj_data *hobj;
-
-  if((cost->total_cost == 100) && (cost->no_carried == 0)) {
-    hobj = obj;
-      /* Add cost for an item and it's contents, and next->contents */
-  }
 
   if (obj) {
     if ((obj->item_number > -1) && (cost->ok) && ItemEgoClash(ch,obj,0) >-5 ) {
@@ -505,8 +499,6 @@ void update_obj_file()
   char buf[200];
   
   int find_name(char *name);
-  extern int errno;
-
 
   if (!(char_file = fopen(PLAYER_FILE, "r+"))) {
     perror("Opening player file for reading. (reception.c, update_obj_file)");

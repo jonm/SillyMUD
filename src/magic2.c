@@ -710,11 +710,8 @@ void spell_true_seeing(byte level, struct char_data *ch,
 */
 
 void spell_track(byte level, struct char_data *ch,
-   struct char_data *targ, struct obj_data *obj)
-{
+                 struct char_data *targ, struct obj_data *obj) {
   struct affected_type af;
-
-  extern struct char_data *character_list;
 
   if (ch != targ) {
     send_to_char("You feel your awareness grow!\n\r", targ);

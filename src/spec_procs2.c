@@ -103,17 +103,13 @@ int druid_protector(struct char_data *ch, int cmd, char *arg, struct char_data *
 } /* end druid_protector */
 
 
-int Magic_Fountain(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int type)
-{
+int Magic_Fountain(struct char_data *ch, int cmd, char *arg,
+                   struct room_data *rp, int type) {
 
   char buf[MAX_INPUT_LENGTH];
 
-  extern int drink_aff[][3];
-
-  extern struct weather_data weather_info;
-        void name_to_drinkcon(struct obj_data *obj,int type);
-        void name_from_drinkcon(struct obj_data *obj);
-
+  void name_to_drinkcon(struct obj_data *obj,int type);
+  void name_from_drinkcon(struct obj_data *obj);
 
   if (cmd==11) { /* drink */
 
