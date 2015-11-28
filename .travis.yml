@@ -1,5 +1,7 @@
 language: c
 before_script: autoreconf --install
-install: ./ci/install-dependencies.sh
+install:
+  - sudo apt-get install check
+  - ./ci/install-dependencies.sh
 script: ./configure && make && make check
 
