@@ -1,4 +1,7 @@
 language: c
+compiler:
+  - clang
+  - gcc
 sudo: false
 before_script: autoreconf --install
 addons:
