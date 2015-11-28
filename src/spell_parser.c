@@ -610,15 +610,6 @@ void clone_char(struct char_data *ch)
   send_to_char("Nosir, i don't like it\n\r", ch);
 }
 
-
-
-void clone_obj(struct obj_data *obj)
-{
-
-}
-
-
-
 /* Check if making CH follow VICTIM will create an illegal */
 /* Follow "Loop/circle"                                    */
 bool circle_follow(struct char_data *ch, struct char_data *victim)

@@ -1748,19 +1748,11 @@ int green_slime(struct char_data *ch, int cmd, char * UNUSED(arg),
   return(TRUE);
 }
 
-int DracoLich(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
-  return(FALSE);
-}
 int Drow(struct char_data * UNUSED(ch), int UNUSED(cmd), char * UNUSED(arg),
          struct char_data * UNUSED(mob), int UNUSED(type)) {
   return(FALSE);
 }
 
-int Leader(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
-  return(FALSE);
-}
 int thief(struct char_data *ch, int cmd, char * UNUSED(arg),
           struct char_data * UNUSED(mob), int UNUSED(type)) {
   struct char_data *cons;
@@ -4045,17 +4037,6 @@ int StormGiant(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
   }
   return(FALSE);
 }
-
-int Manticore(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
-  return(FALSE);
-}
-
-int Kraken(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
-  return(FALSE);
-}
-
 
 int fighter(struct char_data *ch, int cmd, char * UNUSED(arg),
             struct char_data * UNUSED(mob), int UNUSED(type)) {
