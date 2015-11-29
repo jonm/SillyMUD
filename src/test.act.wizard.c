@@ -1,6 +1,6 @@
-#include "config.h"
 #include <stdio.h>
 #include <criterion/criterion.h>
+#include "config.h"
 
 void dsearch(char *, char *);
 
