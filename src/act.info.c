@@ -1641,7 +1641,7 @@ void do_weather(struct char_data *ch, char * UNUSED(argument),
                 int UNUSED(cmd)) {
   extern struct weather_data weather_info;
   static char buf[100];
-  char static *sky_look[4]= {
+  static char *sky_look[4]= {
     "cloudless",
     "cloudy",
     "rainy",
