@@ -19,7 +19,6 @@
 #include "db.h"
 
 #define NEW_ZONE_SYSTEM
-#define killfile "killfile"
 
 /**************************************************************************
 *  declarations of most of the 'global' variables                         *
@@ -102,6 +101,14 @@ void boot_db()
 
 	log_msg("Resetting the game time:");
 	reset_time();
+
+        ensure_file_exists(PLAYER_FILE);
+        ensure_file_exists(WIZLIST_FILE);
+        ensure_file_exists(BUG_FILE);
+        ensure_file_exists(IDEA_FILE);
+        ensure_file_exists(KILL_FILE);
+        ensure_file_exists(TYPO_FILE);
+        ensure_file_exists(RHYODIN_FILE);
 
 	log_msg("Reading newsfile, credits, help-page, info and motd.");
 	file_to_string(NEWS_FILE, news);
@@ -351,8 +358,6 @@ void build_player_index()
 
   for(j = 0; j <= 11; j++)
      list_wiz.number[j] = 0;
-
-  ensure_file_exists(PLAYER_FILE);
 
   if (!(fl = fopen(PLAYER_FILE, "rb+")))	{
      perror("build player index");
@@ -3266,7 +3271,7 @@ int CheckKillFile(int virtual)
  char buf[255];
  int i;
 
- if(!(f1 = fopen(killfile, "r"))) {
+ if(!(f1 = fopen(KILL_FILE, "r"))) {
     log_msg("Unable to find killfile.");
     exit(0);
   }
@@ -3733,7 +3738,7 @@ void ensure_file_exists(const char *path) {
     int fd;
     {
       char *buf;
-      const char *fmt = "Creating empty %s";
+      const char *fmt = "Creating empty file \"%s\"";
       buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
       sprintf(buf, fmt, path);
       log_msg(buf);

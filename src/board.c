@@ -12,7 +12,7 @@
 #include <time.h>
 
 #include "protos.h"
-
+#include "db.h"
 
 #define MAX_MSGS 99	            /* Max number of messages.          */
 #define MAX_MESSAGE_LENGTH 2048     /* that should be enough            */
@@ -373,6 +373,7 @@ void board_load_board() {
                                      /* Allocated space                  */
 
   for ( bnum = 0 ; bnum < NUM_BOARDS ; bnum++ ) {
+    ensure_file_exists(save_file[bnum]);
     board_lock[bnum].lock = 0;
     board_lock[bnum].locked_for = 0;
   }
