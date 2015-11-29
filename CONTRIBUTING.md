@@ -28,8 +28,9 @@ There is a basic unit testing framework in place using the
 [Criterion](https://github.com/Snaipe/Criterion/) library. Please take
 advantage of it in order to refactor _safely_ and to document any
 behavioral changes you have made. Please ensure all tests pass on your
-PR. We have eventual plans to incorporate continuous integration for
-the project, which will make this easier to check.
+PR, even when compiling with `-Wall -Wextra -Werror`. Continuous
+integration is provided by [Travis
+CI](https://travis-ci.org/jonm/SillyMUD).
 
 ## Code Standards
 
@@ -37,7 +38,8 @@ The code is of varying quality, having been assembled by a number of
 authors over the years, so please help us clean it up gradually. The
 basics are:
 * on supported platforms, MUST NOT generate compiler warnings; you
-can check this when you build via `CFLAGS="-Werror" ./configure"`.
+can check this when you build via
+`CFLAGS="-Wall -Wextra -Werror" ./configure"`.
 * SHOULD use two spaces for indents, no tabs
 * open braces SHOULD be at the end of the prior line, not on a line by
 themselves
