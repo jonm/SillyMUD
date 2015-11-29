@@ -10,7 +10,9 @@
 #include <string.h>
 #include <ctype.h>
 
+
 #include "protos.h"
+#include "db.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -6176,7 +6178,6 @@ int Valik( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
 
 int guardian(struct char_data *ch, int cmd, char *arg,
              struct char_data * UNUSED(mob), int UNUSED(type)) {
-#define RHYODIN_FILE "rhyodin"
 #define Necklace 21122
 
   FILE *pass;

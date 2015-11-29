@@ -22,8 +22,10 @@
 #define HELP_KWRD_FILE    "help_table"    /* for HELP <keywrd>          */
 #define HELP_PAGE_FILE    "help"          /* for HELP <CR>              */
 #define INFO_FILE         "info"          /* for INFO                   */
+#define KILL_FILE         "killfile"      /* see CheckKillFile          */
 #define WIZLIST_FILE      "wizlist"       /* for WIZLIST                */
 #define POSEMESS_FILE     "poses"         /* for 'pose'-command         */
+#define RHYODIN_FILE      "rhyodin"       /* see guardian() in spec_procs */
 
 #define REAL 0
 #define VIRTUAL 1

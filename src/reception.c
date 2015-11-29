@@ -15,7 +15,6 @@
 #include "protos.h"
 #include "reception.h"
 
-#define OBJ_SAVE_FILE "pcobjs.obj"
 #define OBJ_FILE_FREE "\0\0\0"
 
 extern struct room_data *world;
