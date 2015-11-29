@@ -213,10 +213,7 @@ void do_action(struct char_data *ch, char *argument, int cmd)
     }
 }
 
-
-
-void do_insult(struct char_data *ch, char *argument, int cmd)
-{
+void do_insult(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	static char buf[100];
 	static char arg[MAX_STRING_LENGTH];
 	struct char_data *victim;
@@ -292,8 +289,7 @@ void boot_pose_messages()
   fclose(fl);
 }
 
-void do_pose(struct char_data *ch, char *argument, int cmd)
-{
+void do_pose(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   byte to_pose;
   byte counter;
   int lev, class;

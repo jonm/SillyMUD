@@ -1370,7 +1370,7 @@ void AreaDamage(struct char_data *ch, int dam, int attacktype,
 	  sprintf(buf, "%s is %s.\n\r",obj->short_description,
 		  ItemDamType[dam_type-1]);
 	  send_to_room(buf, ch->in_room);
-	  if (DamageItem(ch, obj, i)) {
+	  if (DamageItem(obj, i)) {
 	    MakeScrap(ch, obj);
 	  }
 	}
@@ -1770,8 +1770,7 @@ int Getw_type(struct obj_data *wielded)
   return(w_type);
 }
 
-int HitCheckDeny(struct char_data *ch, struct char_data *victim, int type)
-{
+int HitCheckDeny(struct char_data *ch, struct char_data *victim) {
   struct room_data *rp;
   char buf[256];
   extern char PeacefulWorks;
@@ -2089,7 +2088,7 @@ int GetWeaponDam(struct char_data *ch, struct char_data *v,
       for(j=0; j<MAX_OBJ_AFFECT; j++) {
 	if (wielded->affected[j].location ==
 	    APPLY_RACE_SLAYER) {
-	  if (wielded->affected[j].modifier == GET_RACE(v))
+	  if (wielded->affected[j].modifier == (unsigned long)GET_RACE(v))
 	    dam *= 2;
 	}
 	if (wielded->affected[j].location ==
@@ -2364,7 +2363,7 @@ void root_hit(struct char_data *ch, struct char_data *victim, int type,
   int w_type, thaco, dam;
   struct obj_data *wielded=0;  /* this is rather important. */
 
-  if (HitCheckDeny(ch, victim, type)) return;
+  if (HitCheckDeny(ch, victim)) return;
 
   GET_MOVE(ch) -= 1;
 
@@ -2430,8 +2429,7 @@ float WoundWearyness(struct char_data *ch)
 
 
 /* control the fights going on */
-void perform_violence(int pulse)
-{
+void perform_violence() {
   struct char_data *ch, *vict;
   struct obj_data *tmp,*tmp2;
   float x;
@@ -3052,7 +3050,7 @@ int DamageOneItem( struct char_data *ch, int dam_type, struct obj_data *obj)
     sprintf(buf, "%s is %s.\n\r",obj->short_description, 
 	    ItemDamType[dam_type-1]);
     send_to_char(buf,ch);
-    if (DamageItem(ch, obj, num)) {
+    if (DamageItem(obj, num)) {
       return(TRUE);
     }
   }
@@ -3166,9 +3164,7 @@ void DamageAllStuff( struct char_data *ch, int dam_type)
   }
 }
 
-
-int DamageItem(struct char_data *ch, struct obj_data *o, int num)
-{
+int DamageItem(struct obj_data *o, int num) {
   /*  damage weaons or armor */
   
   if (ITEM_TYPE(o) == ITEM_ARMOR) {

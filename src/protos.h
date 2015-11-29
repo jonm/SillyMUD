@@ -139,7 +139,6 @@ void list_obj_to_char(struct obj_data *l, struct char_data *ch, int m, bool show
 void show_char_to_char(struct char_data *i, struct char_data *ch, int mode);
 void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int m, int n);
 void list_char_in_room(struct char_data *list, struct char_data *ch);
-void list_char_to_char(struct char_data *list, struct char_data *ch, int mode);
 void do_look(struct char_data *ch, char *argument, int cmd);
 void do_read(struct char_data *ch, char *argument, int cmd);
 void do_examine(struct char_data *ch, char *argument, int cmd);
@@ -157,7 +156,7 @@ void do_credits(struct char_data *ch, char *argument, int cmd);
 void do_news(struct char_data *ch, char *argument, int cmd);
 void do_info(struct char_data *ch, char *argument, int cmd);
 void do_wizlist(struct char_data *ch, char *argument, int cmd);
-int which_number_mobile(struct char_data *ch, struct char_data *mob);
+int which_number_mobile(struct char_data *mob);
 char *numbered_person(struct char_data *ch, struct char_data *person);
 void do_where_person(struct char_data *ch, struct char_data *p,
 			    struct string_block *sb);
@@ -480,7 +479,7 @@ int damage(struct char_data *ch, struct char_data *victim,
 	          int dam, int attacktype);
 int GetWeaponType(struct char_data *ch, struct obj_data **wielded);
 int Getw_type(struct obj_data *wielded);
-int HitCheckDeny(struct char_data *ch, struct char_data *victim, int type);
+int HitCheckDeny(struct char_data *ch, struct char_data *victim);
 int CalcThaco(struct char_data *ch);
 int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco);
 void MissVictim(struct char_data *ch, struct char_data *v, int type, int w_type,
@@ -494,7 +493,7 @@ void root_hit(struct char_data *ch, struct char_data *victim, int type,
 	      int (*dam_func)());
 void MissileHit(struct char_data *ch, struct char_data *victim, int type);
 void hit(struct char_data *ch, struct char_data *victim, int type);
-void perform_violence(int pulse);
+void perform_violence(void);
 struct char_data *FindVictim( struct char_data *ch);
 struct char_data *FindAnyVictim( struct char_data *ch);
 void BreakLifeSaverObj( struct char_data *ch);
@@ -503,7 +502,7 @@ int PreProcDam(struct char_data *ch, int type, int dam);
 int DamageOneItem( struct char_data *ch, int dam_type, struct obj_data *obj);
 void MakeScrap( struct char_data *ch, struct obj_data *obj);
 void DamageAllStuff( struct char_data *ch, int dam_type);
-int DamageItem(struct char_data *ch, struct obj_data *o, int num);
+int DamageItem(struct obj_data *o, int num);
 int ItemSave( struct obj_data *i, int dam_type);
 int DamagedByAttack( struct obj_data *i, int dam_type);
 int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam);
@@ -1212,9 +1211,7 @@ int wraith(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
 int shadow(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int geyser(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int green_slime(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
-int DracoLich(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int Drow(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
-int Leader(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int thief(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int guild_guard(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int Inquisitor(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
@@ -1259,8 +1256,6 @@ int delivery_elf(struct char_data *ch, int cmd, char *arg, struct char_data *mob
 int delivery_beast(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int Keftab(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int StormGiant(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
-int Manticore(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
-int Kraken(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int fighter(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int NewThalosMayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
 int SultanGuard(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type);
@@ -1384,7 +1379,6 @@ void spello(int nr, byte beat, byte pos, byte mlev, byte clev, byte dlev, ubyte 
 int SPELL_LEVEL(struct char_data *ch, int sn);
 void affect_update( int pulse );
 void clone_char(struct char_data *ch);
-void clone_obj(struct obj_data *obj);
 bool circle_follow(struct char_data *ch, struct char_data *victim);
 void stop_follower(struct char_data *ch);
 void die_follower(struct char_data *ch);
@@ -1856,7 +1850,7 @@ int check_nomagic(struct char_data *ch, char *msg_ch, char *msg_rm);
 int NumCharmedFollowersInRoom(struct char_data *ch);
 struct char_data *FindMobDiffZoneSameRace(struct char_data *ch);
 int NoSummon(struct char_data *ch);
-int GetNewRace(struct char_file_u *s);
+int GetNewRace(void);
 int GetApprox(int num, int perc);
 int MountEgoCheck(struct char_data *ch, struct char_data *horse);
 int RideCheck( struct char_data *ch, int mod);

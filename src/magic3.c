@@ -26,9 +26,9 @@ extern struct descriptor_data *descriptor_list;
   druid spells
 */
 
-void spell_tree_travel(byte level, struct char_data *ch,
-		     struct char_data *victim, struct obj_data *obj)
-{
+void spell_tree_travel(byte UNUSED(level), struct char_data *ch,
+                       struct char_data *victim,
+                       struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   if (!affected_by_spell(ch, SPELL_TREE_TRAVEL)) {
@@ -47,9 +47,9 @@ void spell_tree_travel(byte level, struct char_data *ch,
 
 }
 
-void spell_transport_via_plant(byte level, struct char_data *ch,
-		     struct char_data *victim, struct obj_data *obj)
-{
+void spell_transport_via_plant(byte UNUSED(level), struct char_data *ch,
+                               struct char_data * UNUSED(victim),
+                               struct obj_data *obj) {
   struct room_data *rp;
   struct obj_data *o;
 
@@ -91,9 +91,9 @@ void spell_transport_via_plant(byte level, struct char_data *ch,
   
 }
 
-void spell_speak_with_plants(byte level, struct char_data *ch,
-		     struct char_data *victim, struct obj_data *obj)
-{
+void spell_speak_with_plants(byte UNUSED(level), struct char_data *ch,
+                             struct char_data * UNUSED(victim),
+                             struct obj_data *obj) {
   char buffer[128];
 
   assert(ch && obj);
@@ -112,9 +112,9 @@ void spell_speak_with_plants(byte level, struct char_data *ch,
 
 #define TREE 6110
 
-void spell_changestaff(byte level, struct char_data *ch,
-		     struct char_data *victim, struct obj_data *obj)
-{
+void spell_changestaff(byte UNUSED(level), struct char_data *ch,
+                       struct char_data *victim,
+                       struct obj_data * UNUSED(obj)) {
   struct affected_type af;
   struct obj_data *s;
   struct char_data *t;
@@ -185,8 +185,7 @@ void spell_changestaff(byte level, struct char_data *ch,
 
 /* mage spells */
 void spell_pword_kill(byte level, struct char_data *ch,
-		       struct char_data *victim, struct obj_data *obj)
-{
+                      struct char_data *victim, struct obj_data * UNUSED(obj)) {
   int max = 80;
 
   max += level;
@@ -200,9 +199,9 @@ void spell_pword_kill(byte level, struct char_data *ch,
     
 }
 
-void spell_pword_blind(byte level, struct char_data *ch,
-		       struct char_data *victim, struct obj_data *obj)
-{
+void spell_pword_blind(byte UNUSED(level), struct char_data *ch,
+		       struct char_data *victim,
+                       struct obj_data * UNUSED(obj)) {
 
   if (GET_MAX_HIT(victim) <= 100 || GetMaxLevel(ch) > 53) {
     SET_BIT(victim->specials.affected_by, AFF_BLIND);
@@ -214,8 +213,8 @@ void spell_pword_blind(byte level, struct char_data *ch,
 
 
 void spell_chain_lightn(byte level, struct char_data *ch,
-		       struct char_data *victim, struct obj_data *obj)
-{
+                        struct char_data *victim,
+                        struct obj_data * UNUSED(obj)) {
   int lev = level;
   struct char_data *t, *next;
   
@@ -232,17 +231,14 @@ void spell_chain_lightn(byte level, struct char_data *ch,
   }
 }
 
-
-void spell_scare(byte level, struct char_data *ch,
-		       struct char_data *victim, struct obj_data *obj)
-{
+void spell_scare(byte UNUSED(level), struct char_data * UNUSED(ch),
+                 struct char_data *victim, struct obj_data * UNUSED(obj)) {
   if (GetMaxLevel(victim) <= 5)
     do_flee(victim, "\0", 0);
 }
 
 void spell_haste(byte level, struct char_data *ch,
-		       struct char_data *victim, struct obj_data *obj)
-{
+                 struct char_data *victim, struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   if (affected_by_spell(victim, SPELL_HASTE)) {
@@ -291,8 +287,7 @@ void spell_haste(byte level, struct char_data *ch,
 }
 
 void spell_slow(byte level, struct char_data *ch,
-		       struct char_data *victim, struct obj_data *obj)
-{
+                struct char_data *victim, struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   if (affected_by_spell(victim, SPELL_SLOW)) {
@@ -336,8 +331,7 @@ void spell_slow(byte level, struct char_data *ch,
 #define BENGAL  9027
 
 void spell_familiar(byte level, struct char_data *ch,
-		       struct char_data **victim, struct obj_data *obj)
-{
+                    struct char_data **victim, struct obj_data *UNUSED(obj)) {
 
   struct affected_type af;
   struct char_data *f;
@@ -391,10 +385,8 @@ void spell_familiar(byte level, struct char_data *ch,
 }
 
 /* cleric */
-
-void spell_aid(byte level, struct char_data *ch,
-		 struct char_data *victim, struct obj_data *obj)
-{
+void spell_aid(byte UNUSED(level), struct char_data *ch,
+               struct char_data *victim, struct obj_data * UNUSED(obj)) {
   /* combo bless, cure light woundsish */
   struct affected_type af;
 
@@ -422,8 +414,8 @@ void spell_aid(byte level, struct char_data *ch,
 #define GOLEM 38
 
 void spell_golem(byte level, struct char_data *ch,
-		 struct char_data *victim, struct obj_data *obj)
-{
+		 struct char_data * UNUSED(victim),
+                 struct obj_data * UNUSED(obj)) {
   int count=0;
   int armor;
   struct char_data *gol;
@@ -565,10 +557,9 @@ void spell_golem(byte level, struct char_data *ch,
 
 /***************/
 
-
-void spell_feeblemind(byte level, struct char_data *ch,
-		 struct char_data *victim, struct obj_data *obj)
-{
+void spell_feeblemind(byte UNUSED(level), struct char_data *ch,
+                      struct char_data *victim,
+                      struct obj_data * UNUSED(obj)) {
   struct affected_type af;
   int t,i;
 
@@ -626,11 +617,9 @@ void spell_feeblemind(byte level, struct char_data *ch,
   }
 }
 
-
-
-void spell_shillelagh(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_shillelagh(byte UNUSED(level), struct char_data *ch,
+                      struct char_data * UNUSED(victim),
+                      struct obj_data *obj) {
   int i;
   int count=0;
   
@@ -672,10 +661,9 @@ void spell_shillelagh(byte level, struct char_data *ch,
   }
 }
 
-
 void spell_goodberry(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                     struct char_data * UNUSED(victim),
+                     struct obj_data * UNUSED(obj)) {
   struct obj_data *tmp_obj;
 
   assert(ch);
@@ -724,8 +712,8 @@ void spell_goodberry(byte level, struct char_data *ch,
 }
 
 void spell_flame_blade(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                       struct char_data * UNUSED(victim),
+                       struct obj_data * UNUSED(obj)) {
   struct obj_data *tmp_obj;
 
   assert(ch);
@@ -769,12 +757,9 @@ void spell_flame_blade(byte level, struct char_data *ch,
   act("$p appears in $n's hand.",TRUE,ch,tmp_obj,0,TO_ROOM);
 }
 
-
-
-
-void spell_animal_growth(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_animal_growth(byte UNUSED(level), struct char_data *ch,
+                         struct char_data *victim,
+                         struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   if (IS_SET(real_roomp(ch->in_room)->room_flags, INDOORS)) {
@@ -832,9 +817,9 @@ void spell_animal_growth(byte level, struct char_data *ch,
 */
 }
 
-void spell_insect_growth(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_insect_growth(byte UNUSED(level), struct char_data *ch,
+                         struct char_data *victim,
+                         struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
 
@@ -894,9 +879,8 @@ void spell_insect_growth(byte level, struct char_data *ch,
 
 #define CREEPING_DEATH 39
 
-void spell_creeping_death(byte level, struct char_data *ch,
-  struct char_data *victim, int dir)
-{
+void spell_creeping_death(byte UNUSED(level), struct char_data *ch,
+                          struct char_data * UNUSED(victim), int dir) {
   struct affected_type af;
   struct char_data *cd;
 
@@ -947,10 +931,9 @@ void spell_creeping_death(byte level, struct char_data *ch,
 
 }
 
-
-void spell_commune(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_commune(byte UNUSED(level), struct char_data *ch,
+                   struct char_data * UNUSED(victim),
+                   struct obj_data * UNUSED(obj)) {
   struct char_data *c;
   struct room_data *rp, *dp;
   char buf[MAX_STRING_LENGTH], buffer[MAX_STRING_LENGTH];
@@ -994,8 +977,8 @@ void spell_commune(byte level, struct char_data *ch,
 #define ANISUM3  9021
 
 void spell_animal_summon(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                         struct char_data *victim,
+                         struct obj_data * UNUSED(obj)) {
   struct affected_type af;
   struct char_data *mob;
   int num, i;
@@ -1104,9 +1087,8 @@ void spell_animal_summon(byte level, struct char_data *ch,
 
 #define FIRE_ELEMENTAL  40
 
-void spell_elemental_summoning(byte level, struct char_data *ch,
-  struct char_data *victim, int spell)
-{
+void spell_elemental_summoning(byte UNUSED(level), struct char_data *ch,
+                               struct char_data * UNUSED(victim), int spell) {
   int vnum;
   struct char_data *mob;
   struct affected_type af;
@@ -1188,10 +1170,9 @@ void spell_elemental_summoning(byte level, struct char_data *ch,
 
 }
 
-
-void spell_reincarnate(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_reincarnate(byte UNUSED(level), struct char_data *ch,
+                       struct char_data * UNUSED(victim),
+                       struct obj_data *obj) {
   struct char_data *newch;
   struct char_file_u st;
   struct descriptor_data *d;
@@ -1234,7 +1215,7 @@ void spell_reincarnate(byte level, struct char_data *ch,
 	st.talks[2] = TRUE;
 	st.abilities.con -= 1;
 
-	st.race = GetNewRace(&st);
+	st.race = GetNewRace();
 
       act("The forest comes alive with the sounds of birds and animals",
 	    TRUE, ch, 0, 0, TO_CHAR);
@@ -1302,9 +1283,9 @@ void spell_reincarnate(byte level, struct char_data *ch,
   }  
 }
 
-void spell_charm_veggie(byte level, struct char_data *ch,
-			 struct char_data *victim, struct obj_data *obj)
-{
+void spell_charm_veggie(byte UNUSED(level), struct char_data *ch,
+                        struct char_data *victim,
+                        struct obj_data * UNUSED(obj)) {
   struct affected_type af;
   
   void add_follower(struct char_data *ch, struct char_data *leader);
@@ -1385,12 +1366,10 @@ void spell_charm_veggie(byte level, struct char_data *ch,
   }
 }
 
-
 void spell_veggie_growth(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                         struct char_data *victim,
+                         struct obj_data * UNUSED(obj)) {
   struct affected_type af;
-
 
   if (!IsVeggie(victim)) {
     send_to_char("Thats not a plant-creature!\n\r", ch);
@@ -1450,8 +1429,8 @@ void spell_veggie_growth(byte level, struct char_data *ch,
 #define SAPLING  45
 
 void spell_tree(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                struct char_data * UNUSED(victim),
+                struct obj_data * UNUSED(obj)) {
   struct char_data *mob;
   int mobn;
 
@@ -1487,9 +1466,9 @@ void spell_tree(byte level, struct char_data *ch,
 
 #define LITTLE_ROCK  50
 
-void spell_animate_rock(byte level, struct char_data *ch,
-     struct char_data *victim, struct obj_data *obj)
-{
+void spell_animate_rock(byte UNUSED(level), struct char_data *ch,
+                        struct char_data * UNUSED(victim),
+                        struct obj_data *obj) {
   struct char_data *mob;
   struct affected_type af;
   int mobn=LITTLE_ROCK;
@@ -1562,10 +1541,9 @@ void spell_animate_rock(byte level, struct char_data *ch,
 
 }
 
-
 void spell_travelling(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                      struct char_data *victim,
+                      struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch && victim);
@@ -1586,8 +1564,8 @@ void spell_travelling(byte level, struct char_data *ch,
 }
 
 void spell_animal_friendship(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                             struct char_data *victim,
+                             struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch && victim);
@@ -1663,9 +1641,9 @@ void spell_animal_friendship(byte level, struct char_data *ch,
 
 }
 
-void spell_invis_to_animals(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_invis_to_animals(byte UNUSED(level), struct char_data *ch,
+                            struct char_data *victim,
+                            struct obj_data * UNUSED(obj)) {
   struct affected_type af;
   
   assert(ch && victim);
@@ -1684,10 +1662,9 @@ void spell_invis_to_animals(byte level, struct char_data *ch,
   }
 }
 
-
-void spell_slow_poison(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_slow_poison(byte UNUSED(level), struct char_data *ch,
+                       struct char_data *victim,
+                       struct obj_data * UNUSED(obj)) {
   struct affected_type af;
   
   assert(ch && victim);
@@ -1706,10 +1683,8 @@ void spell_slow_poison(byte level, struct char_data *ch,
   }
 }
 
-
-void spell_snare(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_snare(byte UNUSED(level), struct char_data *ch,
+                 struct char_data *victim, struct obj_data * UNUSED(obj)) {
   if (IS_SET(real_roomp(ch->in_room)->room_flags, INDOORS)) {
     send_to_char("You can't cast this spell indoors!\n\r",ch);
     return;
@@ -1730,9 +1705,8 @@ void spell_snare(byte level, struct char_data *ch,
   }
 }
 
-void spell_entangle(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_entangle(byte UNUSED(level), struct char_data *ch,
+                    struct char_data *victim, struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   if (IS_SET(real_roomp(ch->in_room)->room_flags, INDOORS)) {
@@ -1764,8 +1738,7 @@ void spell_entangle(byte level, struct char_data *ch,
 }
 
 void spell_barkskin(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                    struct char_data *victim, struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(victim);
@@ -1805,8 +1778,8 @@ void spell_barkskin(byte level, struct char_data *ch,
 }
 
 void spell_gust_of_wind(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                        struct char_data * UNUSED(victim),
+                        struct obj_data * UNUSED(obj)) {
   struct char_data *tmp_victim, *temp;
 
   assert(ch);
@@ -1836,10 +1809,8 @@ void spell_gust_of_wind(byte level, struct char_data *ch,
   }
 }
 
-
 void spell_silence(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                   struct char_data *victim, struct obj_data * UNUSED(obj)) {
   struct affected_type af;
   extern struct index_data *mob_index;
   
@@ -1870,9 +1841,8 @@ void spell_silence(byte level, struct char_data *ch,
   }
 }
 
-void spell_warp_weapon(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_warp_weapon(byte UNUSED(level), struct char_data *ch,
+                       struct char_data *victim, struct obj_data *obj) {
   
   assert(ch && (victim || obj));
 
@@ -1896,11 +1866,8 @@ void spell_warp_weapon(byte level, struct char_data *ch,
       set_fighting(victim,ch);
 }
 
-
-
 void spell_heat_stuff(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                      struct char_data *victim, struct obj_data * UNUSED(obj)) {
   struct affected_type af;
   
   assert(victim);
@@ -1937,9 +1904,9 @@ void spell_heat_stuff(byte level, struct char_data *ch,
 
 #define DUST_DEVIL 60
 
-void spell_dust_devil(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+void spell_dust_devil(byte UNUSED(level), struct char_data *ch,
+                      struct char_data * UNUSED(victim),
+                      struct obj_data * UNUSED(obj)) {
   int vnum;
   struct char_data *mob;
   struct affected_type af;
@@ -2058,8 +2025,8 @@ void spell_sunray(byte level, struct char_data *ch,
 }
 
 void spell_know_monster(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                        struct char_data *victim,
+                        struct obj_data * UNUSED(obj)) {
   char buf[256], buf2[256];
   int exp, lev, hits;
 
@@ -2144,8 +2111,8 @@ void spell_know_monster(byte level, struct char_data *ch,
 }
 
 void spell_find_traps(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                      struct char_data * UNUSED(victim),
+                      struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 /*
   raise their detect traps skill
@@ -2160,8 +2127,8 @@ void spell_find_traps(byte level, struct char_data *ch,
 }
 
 void spell_firestorm(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                     struct char_data * UNUSED(victim),
+                     struct obj_data * UNUSED(obj)) {
 /*
   a-e -    2d8+level
 */
@@ -2204,10 +2171,9 @@ void spell_firestorm(byte level, struct char_data *ch,
 #endif
 }
 
-
 void spell_teleport_wo_error(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                             struct char_data *victim,
+                             struct obj_data * UNUSED(obj)) {
   int location;
   struct room_data *rp;
 
@@ -2264,8 +2230,7 @@ void spell_teleport_wo_error(byte level, struct char_data *ch,
 #define PORTAL 31
 
 void spell_portal(byte level, struct char_data *ch,
-  struct char_data *tmp_ch, struct obj_data *obj)
-{
+                  struct char_data *tmp_ch, struct obj_data * UNUSED(obj)) {
   /* create a magic portal */
   struct obj_data *tmp_obj;
   struct extra_descr_data *ed;
@@ -2348,8 +2313,8 @@ void spell_portal(byte level, struct char_data *ch,
 #define MOUNT_NEUT 71
 
 void spell_mount(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                 struct char_data * UNUSED(victim),
+                 struct obj_data * UNUSED(obj)) {
   struct char_data *m;
   int mnr;
 
@@ -2390,8 +2355,8 @@ void spell_mount(byte level, struct char_data *ch,
 }
 
 void spell_dragon_ride(byte level, struct char_data *ch,
-  struct char_data *victim, struct obj_data *obj)
-{
+                       struct char_data * UNUSED(victim),
+                       struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   if (affected_by_spell(ch, SPELL_DRAGON_RIDE)) {
@@ -2431,9 +2396,9 @@ void spell_thorn_spray(byte level, struct char_data *ch,
   MissileDamage(ch, victim, dam, SPELL_THORN_SPRAY);
 }
  
-void spell_resist_hold(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_hold(byte UNUSED(level), struct char_data *ch,
+                       struct char_data * UNUSED(victim),
+                       struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2457,9 +2422,9 @@ void spell_resist_hold(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_electricity(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_electricity(byte UNUSED(level), struct char_data *ch,
+                              struct char_data * UNUSED(victim),
+                              struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2484,9 +2449,9 @@ void spell_resist_electricity(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_cold(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_cold(byte UNUSED(level), struct char_data *ch,
+                       struct char_data * UNUSED(victim),
+                       struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2510,9 +2475,9 @@ void spell_resist_cold(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_drain(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_drain(byte UNUSED(level), struct char_data *ch,
+                        struct char_data * UNUSED(victim),
+                        struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2536,9 +2501,9 @@ void spell_resist_drain(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_poison(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_poison(byte UNUSED(level), struct char_data *ch,
+                         struct char_data * UNUSED(victim),
+                         struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2562,9 +2527,9 @@ void spell_resist_poison(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_acid(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_acid(byte UNUSED(level), struct char_data *ch,
+                       struct char_data * UNUSED(victim),
+                       struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2588,9 +2553,9 @@ void spell_resist_acid(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_fire(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_fire(byte UNUSED(level), struct char_data *ch,
+                       struct char_data * UNUSED(victim),
+                       struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2614,9 +2579,9 @@ void spell_resist_fire(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_energy(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_energy(byte UNUSED(level), struct char_data *ch,
+                         struct char_data * UNUSED(victim),
+                         struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2640,9 +2605,9 @@ void spell_resist_energy(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_pierce(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_pierce(byte UNUSED(level), struct char_data *ch,
+                         struct char_data * UNUSED(victim),
+                         struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2666,9 +2631,9 @@ void spell_resist_pierce(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_slash(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_slash(byte UNUSED(level), struct char_data *ch,
+                        struct char_data * UNUSED(victim),
+                        struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);
@@ -2692,9 +2657,9 @@ void spell_resist_slash(byte level, struct char_data *ch,
   }
 }
 
-void spell_resist_blunt(byte level, struct char_data *ch,
-   struct char_data *victim, struct obj_data *obj)
-{
+void spell_resist_blunt(byte UNUSED(level), struct char_data *ch,
+                        struct char_data * UNUSED(victim),
+                        struct obj_data * UNUSED(obj)) {
   struct affected_type af;
 
   assert(ch);

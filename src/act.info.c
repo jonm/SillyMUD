@@ -949,22 +949,7 @@ void list_char_in_room(struct char_data *list, struct char_data *ch)
   }
 }
 
-
-void list_char_to_char(struct char_data *list, struct char_data *ch, 
-		       int mode) {
-  struct char_data *i;
-  
-  for (i = list; i ; i = i->next_in_room) {
-    if ( (ch!=i) && (IS_AFFECTED(ch, AFF_SENSE_LIFE) ||
-		     (CAN_SEE(ch,i) && !IS_AFFECTED(i, AFF_HIDE))) )
-      show_char_to_char(i,ch,0); 
-  } 
-}
-
-
-
-void do_look(struct char_data *ch, char *argument, int cmd)
-{
+void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char buffer[MAX_STRING_LENGTH];
   char arg1[MAX_INPUT_LENGTH];
   char arg2[MAX_INPUT_LENGTH];
@@ -1350,8 +1335,7 @@ void do_look(struct char_data *ch, char *argument, int cmd)
 
 
 
-void do_read(struct char_data *ch, char *argument, int cmd)
-{
+void do_read(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char buf[100];
   
   /* This is just for now - To be changed later.! */
@@ -1359,10 +1343,7 @@ void do_read(struct char_data *ch, char *argument, int cmd)
   do_look(ch,buf,15);
 }
 
-
-
-void do_examine(struct char_data *ch, char *argument, int cmd)
-{
+void do_examine(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char name[100], buf[100];
   struct char_data *tmp_char;
   struct obj_data *tmp_object;
@@ -1424,8 +1405,7 @@ void show_exits(struct char_data *ch)
 
 /*  Gecko's spiffy enhancement to do_exits() from act.info.c */
 
-void do_exits(struct char_data *ch, char *argument, int cmd)
-{
+void do_exits(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   /* NOTE: Input var 'cmd' is not used. */
   int door;
   char buf[1000];
@@ -1477,8 +1457,7 @@ void do_exits(struct char_data *ch, char *argument, int cmd)
 
 #endif
 
-void do_score(struct char_data *ch, char *argument, int cmd)
-{
+void do_score(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   struct time_info_data playing_time;
   static char buf[100], buf2[100];
   struct time_info_data my_age;
@@ -1612,8 +1591,7 @@ void do_score(struct char_data *ch, char *argument, int cmd)
 }
 
 
-void do_time(struct char_data *ch, char *argument, int cmd)
-{
+void do_time(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   char buf[100], *suf;
   int weekday, day;
   extern struct time_info_data time_info;
@@ -1659,8 +1637,8 @@ void do_time(struct char_data *ch, char *argument, int cmd)
 }
 
 
-void do_weather(struct char_data *ch, char *argument, int cmd)
-{
+void do_weather(struct char_data *ch, char * UNUSED(argument),
+                int UNUSED(cmd)) {
   extern struct weather_data weather_info;
   static char buf[100];
   char static *sky_look[4]= {
@@ -1681,8 +1659,7 @@ void do_weather(struct char_data *ch, char *argument, int cmd)
 }
 
 
-void do_help(struct char_data *ch, char *argument, int cmd)
-{
+void do_help(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   extern int top_of_helpt;
   extern struct help_index_element *help_index;
@@ -1746,8 +1723,7 @@ void do_help(struct char_data *ch, char *argument, int cmd)
 }
 
 
-void do_wizhelp(struct char_data *ch, char *arg, int cmd)
-{
+void do_wizhelp(struct char_data *ch, char * UNUSED(arg), int UNUSED(cmd)) {
  char buf[1000];
  int i, j = 1;
  NODE *n;
@@ -1913,7 +1889,7 @@ void do_who(struct char_data *ch, char *argument, int cmd)
 		}
 	      }
 	      if ((person->desc != NULL) || (index(arg,'d') != NULL)) {
-		for (l = 1; l <= strlen(arg) ; l++) {
+		for (l = 1; (size_t)l <= strlen(arg) ; l++) {
 		  switch (arg[l]) {
 		  case 'i': {
 		    sprintf(tempbuf,"Idle:[%-3d] ",person->specials.timer);
@@ -1985,8 +1961,7 @@ void do_who(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_users(struct char_data *ch, char *argument, int cmd)
-{
+void do_users(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   char buf[MAX_STRING_LENGTH], line[200], buf2[255];
   extern const char *connected_types[];
 
@@ -2017,14 +1992,15 @@ void do_users(struct char_data *ch, char *argument, int cmd)
 
 
 
-void do_inventory(struct char_data *ch, char *argument, int cmd) {
-  
+void do_inventory(struct char_data *ch, char * UNUSED(argument),
+                  int UNUSED(cmd)) {
   send_to_char("You are carrying:\n\r", ch);
   list_obj_in_heap(ch->carrying, ch);
 }
 
 
-void do_equipment(struct char_data *ch, char *argument, int cmd) {
+void do_equipment(struct char_data *ch, char * UNUSED(argument),
+                  int UNUSED(cmd)) {
   int j,Worn_Index;
   bool found;
   char String[256];
@@ -2051,30 +2027,28 @@ void do_equipment(struct char_data *ch, char *argument, int cmd) {
 }
 
 
-void do_credits(struct char_data *ch, char *argument, int cmd) {
-  
+void do_credits(struct char_data *ch, char * UNUSED(argument),
+                int UNUSED(cmd)) {
   page_string(ch->desc, credits, 0);
 }
 
 
-void do_news(struct char_data *ch, char *argument, int cmd) {
-  
+void do_news(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   page_string(ch->desc, news, 0);
 }
 
 
-void do_info(struct char_data *ch, char *argument, int cmd) {
-  
+void do_info(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   page_string(ch->desc, info, 0);
 }
 
 
-void do_wizlist(struct char_data *ch, char *argument, int cmd) {
-  
+void do_wizlist(struct char_data *ch, char * UNUSED(argument),
+                int UNUSED(cmd)) {
   page_string(ch->desc, wizlist, 0);
 }
 
-int which_number_mobile(struct char_data *ch, struct char_data *mob)
+int which_number_mobile(struct char_data *mob)
 {
   struct char_data	*i;
   char	*name;
@@ -2095,7 +2069,7 @@ char *numbered_person(struct char_data *ch, struct char_data *person)
 {
   static char buf[MAX_STRING_LENGTH];
   if (IS_NPC(person) && IS_IMMORTAL(ch)) {
-    sprintf(buf, "%d.%s", which_number_mobile(ch, person),
+    sprintf(buf, "%d.%s", which_number_mobile(person),
 	    fname(person->player.name));
   } else {
     strcpy(buf, PERS(person, ch));
@@ -2158,8 +2132,7 @@ void do_where_object(struct char_data *ch, struct obj_data *obj,
   }
 }
 
-void do_where(struct char_data *ch, char *argument, int cmd)
-{
+void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char name[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
   char	*nameonly;
   register struct char_data *i;
@@ -2257,11 +2230,7 @@ void do_where(struct char_data *ch, char *argument, int cmd)
   destroy_string_block(&sb);
 }
 
-
-
-
-void do_levels(struct char_data *ch, char *argument, int cmd)
-{
+void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   int i, RaceMax, class;
   char buf[MAX_STRING_LENGTH];
   
@@ -2396,8 +2365,7 @@ void do_levels(struct char_data *ch, char *argument, int cmd)
 
 
 
-void do_consider(struct char_data *ch, char *argument, int cmd)
-{
+void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   struct char_data *victim;
   char name[256], buf[256];
   int diff;
@@ -2576,8 +2544,7 @@ void do_consider(struct char_data *ch, char *argument, int cmd)
 
 }
 
-void do_spells(struct char_data *ch, char *argument, int cmd)
-{
+void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   int spl, i;
   char buf[MAX_EXIST_SPELL*80];
   extern char *spells[];
@@ -2755,8 +2722,7 @@ void do_spells(struct char_data *ch, char *argument, int cmd)
     return;
   }
 }
-void do_world(struct char_data *ch, char *argument, int cmd)
-{
+void do_world(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   static char buf[100];
   long ct, ot;
   char *tmstr, *otmstr;
@@ -2804,8 +2770,8 @@ void do_world(struct char_data *ch, char *argument, int cmd)
 
 }
 
-void do_attribute(struct char_data *ch, char *argument, int cmd)
-{
+void do_attribute(struct char_data *ch, char * UNUSED(argument),
+                  int UNUSED(cmd)) {
   char buf[MAX_STRING_LENGTH];
   struct affected_type *aff;
 
@@ -2869,8 +2835,7 @@ void do_attribute(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_value(struct char_data *ch, char *argument, int cmd)
-{
+void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char buf[100],buf2[100], name[100];
   struct obj_data *obj=0;
   struct char_data *vict=0;
@@ -3196,9 +3161,7 @@ char *DescAttacks(float a)
   }
 }
 
-
-void do_display(struct char_data *ch, char *arg, int cmd)
-{
+void do_display(struct char_data *ch, char *arg, int UNUSED(cmd)) {
  int i;
 
  if(IS_NPC(ch))
@@ -3243,8 +3206,7 @@ void ScreenOff(struct char_data *ch)
  send_to_char(VT_HOMECLR, ch);
 }
 
-void do_resize(struct char_data *ch, char *arg, int cmd)
-{
+void do_resize(struct char_data *ch, char *arg, int UNUSED(cmd)) {
  int i;
 
  if(IS_NPC(ch))
@@ -3296,8 +3258,8 @@ int MobLevBonus(struct char_data *ch)
   return(t);
 }
 
-void do_report(struct char_data *ch, char *argument, int cmd)
-{
+void do_report(struct char_data *ch, char * UNUSED(argument),
+               int UNUSED(cmd)) {
   /* do a 'say' containing one's vital statistics */
   char buf[256];
 

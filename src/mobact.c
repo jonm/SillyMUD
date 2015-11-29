@@ -786,9 +786,8 @@ void noop(char *arg, struct char_data *ch)
  return; 
 }
 
-void end2(char *arg, struct char_data *ch)
-{
- ch->commandp = 0;
+void end2(char * UNUSED(arg), struct char_data *ch) {
+  ch->commandp = 0;
 }  
 
 void sgoto(char *arg, struct char_data *ch)
@@ -898,10 +897,9 @@ void do_jsr(char *arg, struct char_data *ch)
  ch->commandp++;
 }
 
-void do_rts(char *arg, struct char_data *ch)
-{
- ch->commandp = ch->commandp2;
- ch->commandp2 = 0;
+void do_rts(char * UNUSED(arg), struct char_data *ch) {
+  ch->commandp = ch->commandp2;
+  ch->commandp2 = 0;
 }
 
 void MobHit(struct char_data *ch, struct char_data *v, int type)

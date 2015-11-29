@@ -17,8 +17,8 @@ extern int TrapDir[];
 
 void NailThisSucker( struct char_data *ch);
 
-void do_settrap( struct char_data *ch, char *arg, int cmd)
-{
+void do_settrap(struct char_data * UNUSED(ch), char * UNUSED(arg),
+                int UNUSED(cmd)) {
 
   /* parse for directions */
 

@@ -114,7 +114,7 @@ int old_search_block(char *argument,int begin,int length,char **list,int mode)
   if(mode)
     while ( NOT found AND *(list[guess]) != '\n' )      
       {
-	found=(length==strlen(list[guess]));
+	found=((size_t)length==strlen(list[guess]));
 	for(search=0;( search < length AND found );search++)
 	found=(*(argument+begin+search)== *(list[guess]+search));
 	guess++;
@@ -149,7 +149,8 @@ void command_interpreter(struct char_data *ch, char *argument)
    *  a bug check.
    */
   if (!IS_NPC(ch)) {
-    int i, found=FALSE;
+    int found=FALSE;
+    size_t i;
     if ((!ch->player.name[0]) || (ch->player.name[0]<' ')) {
 	log_msg("Error in character name.  Changed to 'Error'");
 	free(ch->player.name);
