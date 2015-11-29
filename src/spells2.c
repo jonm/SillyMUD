@@ -1773,7 +1773,7 @@ struct pbreath {
   { 3972, {203, 0} },
   { 3973, {204, 0} },
   { 3974, {205, 0} },
-  { 0 },
+  { 0, { 0, 0 } },
 };
 
 void cast_dragon_breath(byte level, struct char_data *ch, char * UNUSED(arg),

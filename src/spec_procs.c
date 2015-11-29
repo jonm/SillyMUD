@@ -577,7 +577,7 @@ struct pub_beers sold_here[] = {
   {3931, 0, 0, 0 },
   {3932, 0, 0, 0 },
   {3102, 0, 0, 0 },
-  {-1}
+  {-1, 0, 0, 0 }
 };
   
 int andy_wilcox(struct char_data *ch, int cmd, char *arg,
