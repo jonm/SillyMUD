@@ -141,5 +141,7 @@ struct help_index_element
 
 #define ZONE_LIMBO   512
 
+void ensure_file_exists(const char *path);
+
 #endif
 

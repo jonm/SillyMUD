@@ -10,8 +10,13 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "protos.h"
+#include "db.h"
 
 #define NEW_ZONE_SYSTEM
 #define killfile "killfile"
@@ -346,6 +351,8 @@ void build_player_index()
 
   for(j = 0; j <= 11; j++)
      list_wiz.number[j] = 0;
+
+  ensure_file_exists(PLAYER_FILE);
 
   if (!(fl = fopen(PLAYER_FILE, "rb+")))	{
      perror("build player index");
@@ -3714,4 +3721,41 @@ void clean_playerfile()
   system(buf);
   log_msg("Cleaning done.");
 
+}
+
+void ensure_file_exists(const char *path) {
+  struct stat stats;
+  int result;
+
+  result = stat(path, &stats);
+  if (result == 0) return;
+  if (errno == ENOENT) {
+    int fd;
+    {
+      char *buf;
+      const char *fmt = "Creating empty %s";
+      buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
+      sprintf(buf, fmt, path);
+      log_msg(buf);
+      free(buf);
+    }
+    if ((fd = open(path, O_CREAT|O_WRONLY, 0644)) == -1) {
+      char *buf;
+      const char *fmt = "ensure_file_exists(%s)(open)";
+      buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
+      sprintf(buf, fmt, path);
+      perror(buf);
+      free(buf);
+      exit(-1);
+    }
+    close(fd);
+  } else {
+    char *buf;
+    const char *fmt = "ensure_file_exists(%s)(stat)";
+    buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
+    sprintf(buf, fmt, path);
+    perror(buf);
+    free(buf);
+    exit(-1);
+  }
 }
