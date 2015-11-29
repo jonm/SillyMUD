@@ -7,7 +7,7 @@ AC_CONFIG_HEADERS([config.h])
 
 AC_PROG_CC
 
-AC_CHECK_HEADERS([arpa/inet.h crypt.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h signal.h string.h sys/socket.h sys/time.h time.h unistd.h])
+AC_CHECK_HEADERS([arpa/inet.h crypt.h errno.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h signal.h string.h sys/socket.h sys/stat.h sys/time.h time.h unistd.h])
 
 AC_TYPE_SIZE_T
 AC_CHECK_SIZEOF([void *])
