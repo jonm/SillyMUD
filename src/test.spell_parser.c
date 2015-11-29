@@ -1,7 +1,7 @@
-#include "config.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <criterion/criterion.h>
+#include "config.h"
 #include "structs.h"
 
 extern void forget(struct char_data *ch, int spl);

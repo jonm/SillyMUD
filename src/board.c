@@ -330,7 +330,7 @@ char *fix_returns(char *text_string)
   return(localbuf);
 }
   
-void board_save_board(bnum) {
+void board_save_board(int bnum) {
 
   FILE *the_file;
   int ind;
