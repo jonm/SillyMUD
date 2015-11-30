@@ -2571,7 +2571,6 @@ char *fread_string(FILE *f1)
 /* release memory allocated for a char struct */
 void free_char(struct char_data *ch)
 {
-  struct affected_type *af;
   int i;
 
   free(GET_NAME(ch));
@@ -2596,8 +2595,9 @@ void free_char(struct char_data *ch)
     free(ch->specials.A_list);
   }
 
-  for (af = ch->affected; af; af = af->next) 
-    affect_remove(ch, af);
+  while(ch->affected) {
+    affect_remove(ch, ch->affected);
+  }
 
   if (ch->skills)
     free(ch->skills);
