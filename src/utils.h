@@ -301,3 +301,12 @@ int exit_ok(struct room_direction_data *, struct room_data **);
 			RACE_MFLAYER)
 
 #endif
+
+#define SPRINTF(str, ...)                       \
+  (sizeof(str) > 8 ?                            \
+   snprintf(str, sizeof(str), __VA_ARGS__) :    \
+   sprintf(str, __VA_ARGS__))
+
+#define SAPPENDF(str, ...)                                          \
+  snprintf(str+strlen(str), sizeof(str)-strlen(str) - 1, __VA_ARGS__)
+

@@ -152,7 +152,7 @@ int real_main (int argc, char **argv)
       log_msg("Suppressing assignment of special routines.");
       break;
     default:
-      sprintf(buf, "Unknown option -% in argument string.",
+      SPRINTF(buf, "Unknown option -% in argument string.",
 	      *(argv[pos] + 1));
       log_msg(buf);
       break;
@@ -175,7 +175,7 @@ int real_main (int argc, char **argv)
   
   Uptime = time(0);
   
-  sprintf(buf, "Running game on port %d.", port);
+  SPRINTF(buf, "Running game on port %d.", port);
   log_msg(buf);
   
   if (chdir(dir) < 0)	{
@@ -183,7 +183,7 @@ int real_main (int argc, char **argv)
     assert(0);
   }
   
-  sprintf(buf, "Using %s as data directory.", dir);
+  SPRINTF(buf, "Using %s as data directory.", dir);
   log_msg(buf);
   
   srandom(time(0));
@@ -532,7 +532,7 @@ void game_loop(int s)
 		}
 
 		if(IS_SET(ch->specials.prompt, PROMPT_R)) {
-		  sprintf(promptbuf,"<Rm: %d ", rm->number);
+		  SPRINTF(promptbuf,"<Rm: %d ", rm->number);
 		  write_to_descriptor(point->descriptor, promptbuf);
 		}
                 if(IS_SET(ch->specials.prompt, PROMPT_S)) {
@@ -544,29 +544,29 @@ void game_loop(int s)
 		  sprintbit((unsigned long)rm->room_flags,room_bits,promptbuf);
 		  write_to_descriptor(point->descriptor, promptbuf);
 		}
-		sprintf(promptbuf, "> ");
+		SPRINTF(promptbuf, "> ");
 		write_to_descriptor(point->descriptor, promptbuf);
 	      } else {
 		if(IS_SET(ch->specials.prompt, PROMPT_H)) {
-		  sprintf(promptbuf,"H:%d ",
+		  SPRINTF(promptbuf,"H:%d ",
 			  point->character->points.hit);
 		  write_to_descriptor(point->descriptor, promptbuf);
 		}
 		if(IS_SET(ch->specials.prompt, PROMPT_M)) {
-		  sprintf(promptbuf,"M:%d ",
+		  SPRINTF(promptbuf,"M:%d ",
 			  point->character->points.mana);
 		  write_to_descriptor(point->descriptor, promptbuf);
 		}
 		if(IS_SET(ch->specials.prompt, PROMPT_V)) {
-		  sprintf(promptbuf,"V:%d ",
+		  SPRINTF(promptbuf,"V:%d ",
 			  point->character->points.move);
 		  write_to_descriptor(point->descriptor, promptbuf);
 		}
-		sprintf(promptbuf, "> ");
+		SPRINTF(promptbuf, "> ");
 		write_to_descriptor(point->descriptor, promptbuf);
 	      }
 	    } else {
-	      sprintf(promptbuf, "> ");
+	      SPRINTF(promptbuf, "> ");
 	      write_to_descriptor(point->descriptor, promptbuf);
 	    }
 	  }
@@ -809,7 +809,7 @@ int new_connection(int s)
   if (!getpeername(t, &peer, &i))	{
     if (i > 0) {
       *(peer.sa_data + 49) = '\0';
-      sprintf(buf, "New connection from addr %s.", peer.sa_data);
+      SPRINTF(buf, "New connection from addr %s.", peer.sa_data);
       log_msg(buf);
     }
   }
@@ -867,12 +867,12 @@ int new_descriptor(int s)
 #ifndef sun
     if ((long) strncpy(newd->host, inet_ntoa(sock.sin_addr), 49) > 0)  {
       *(newd->host + 49) = '\0';
-      sprintf(buf, "New connection from addr %s: %d: %d", newd->host, desc, maxdesc);
+      SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc, maxdesc);
       log_sev(buf,3);
     }
 #else
     strcpy(newd->host, (char *)inet_ntoa(&sock.sin_addr));
-    sprintf(buf, "New connection from addr %s: %d: %d", newd->host, desc, maxdesc);
+    SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc, maxdesc);
     log_sev(buf,3);
 #endif
   }
@@ -1038,7 +1038,7 @@ int process_input(struct descriptor_data *t)
 	}
 	
 	if (flag) {
-	  sprintf(buffer, 
+	  SPRINTF(buffer, 
 		  "Line too long. Truncated to:\n\r%s\n\r", tmp);
 	  if (write_to_descriptor(t->descriptor, buffer) < 0)
 	    return(-1);
@@ -1107,7 +1107,7 @@ void close_socket(struct descriptor_data *d)
     if (d->connected == CON_PLYNG) 	{
        do_save(d->character, "", 0);
       act("$n has lost $s link.", TRUE, d->character, 0, 0, TO_ROOM);
-      sprintf(buf, "Closing link to: %s.", GET_NAME(d->character));
+      SPRINTF(buf, "Closing link to: %s.", GET_NAME(d->character));
       log_msg(buf);
       if (IS_NPC(d->character)) { /* poly, or switched god */
 	if (d->character->desc)
@@ -1124,7 +1124,7 @@ void close_socket(struct descriptor_data *d)
 
     } else {
       if (GET_NAME(d->character)) {
-	sprintf(buf, "Losing player: %s.", GET_NAME(d->character));
+	SPRINTF(buf, "Losing player: %s.", GET_NAME(d->character));
 	log_msg(buf);
       }
       free_char(d->character);
@@ -1565,7 +1565,7 @@ void raw_force_all( char *to_force)
 
   for (i = descriptor_list; i; i = i->next)
     if (!i->connected) {
-      sprintf(buf, "The game has forced you to '%s'.\n\r", to_force);
+      SPRINTF(buf, "The game has forced you to '%s'.\n\r", to_force);
       send_to_char(buf, i->character);
       command_interpreter(i->character, to_force);
     }
@@ -1583,77 +1583,77 @@ void UpdateScreen(struct char_data *ch, int update)
  size = ch->size;
 
  if(IS_SET(update, INFO_MANA)) {
-    sprintf(buf, VT_CURSAVE);
+    SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 2, 7);
+    SPRINTF(buf, VT_CURSPOS, size - 2, 7);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "          ");
+    SPRINTF(buf, "          ");
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 2, 7);
+    SPRINTF(buf, VT_CURSPOS, size - 2, 7);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
+    SPRINTF(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURREST);
+    SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
  
  if(IS_SET(update, INFO_MOVE)) {
-    sprintf(buf, VT_CURSAVE);
+    SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 3, 58);
+    SPRINTF(buf, VT_CURSPOS, size - 3, 58);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "          ");
+    SPRINTF(buf, "          ");
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 3, 58);
+    SPRINTF(buf, VT_CURSPOS, size - 3, 58);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
+    SPRINTF(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURREST);
+    SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
  
  if(IS_SET(update, INFO_HP)) {
-    sprintf(buf, VT_CURSAVE);
+    SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 3, 13);
+    SPRINTF(buf, VT_CURSPOS, size - 3, 13);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "          ");
+    SPRINTF(buf, "          ");
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 3, 13);
+    SPRINTF(buf, VT_CURSPOS, size - 3, 13);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
+    SPRINTF(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURREST);
+    SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
  
  if(IS_SET(update, INFO_GOLD)) {
-    sprintf(buf, VT_CURSAVE);
+    SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 2, 47);
+    SPRINTF(buf, VT_CURSPOS, size - 2, 47);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "                ");
+    SPRINTF(buf, "                ");
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 2, 47);
+    SPRINTF(buf, VT_CURSPOS, size - 2, 47);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "%d", GET_GOLD(ch));
+    SPRINTF(buf, "%d", GET_GOLD(ch));
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURREST);
+    SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
  
  if(IS_SET(update, INFO_EXP)) {
-    sprintf(buf, VT_CURSAVE);
+    SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 1, 20);
+    SPRINTF(buf, VT_CURSPOS, size - 1, 20);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "                ");
+    SPRINTF(buf, "                ");
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURSPOS, size - 1, 20);
+    SPRINTF(buf, VT_CURSPOS, size - 1, 20);
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, "%d", GET_EXP(ch));
+    SPRINTF(buf, "%d", GET_EXP(ch));
     write_to_descriptor(ch->desc->descriptor, buf);
-    sprintf(buf, VT_CURREST);
+    SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
 }
@@ -1665,33 +1665,33 @@ void InitScreen(struct char_data *ch)
  int size;
 
  size = ch->size; 
- sprintf(buf, VT_HOMECLR);
+ SPRINTF(buf, VT_HOMECLR);
  send_to_char(buf, ch);
- sprintf(buf, VT_MARGSET, 0, size - 5);
+ SPRINTF(buf, VT_MARGSET, 0, size - 5);
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 4, 1);
+ SPRINTF(buf, VT_CURSPOS, size - 4, 1);
  send_to_char(buf, ch);
- sprintf(buf, "-===========================================================================-");
+ SPRINTF(buf, "-===========================================================================-");
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 3, 1);
+ SPRINTF(buf, VT_CURSPOS, size - 3, 1);
  send_to_char(buf, ch);
- sprintf(buf, "Hit Points: ");
+ SPRINTF(buf, "Hit Points: ");
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 3, 40);
+ SPRINTF(buf, VT_CURSPOS, size - 3, 40);
  send_to_char(buf, ch);
- sprintf(buf, "Movement Points: ");
+ SPRINTF(buf, "Movement Points: ");
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 2, 1);
+ SPRINTF(buf, VT_CURSPOS, size - 2, 1);
  send_to_char(buf, ch);
- sprintf(buf, "Mana: ");
+ SPRINTF(buf, "Mana: ");
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 2, 40);
+ SPRINTF(buf, VT_CURSPOS, size - 2, 40);
  send_to_char(buf, ch);
- sprintf(buf, "Gold: ");
+ SPRINTF(buf, "Gold: ");
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 1, 1);
+ SPRINTF(buf, VT_CURSPOS, size - 1, 1);
  send_to_char(buf, ch);
- sprintf(buf, "Experience Points: ");
+ SPRINTF(buf, "Experience Points: ");
  send_to_char(buf, ch);
  
  ch->last.mana = GET_MANA(ch);
@@ -1704,28 +1704,28 @@ void InitScreen(struct char_data *ch)
  ch->last.gold = GET_GOLD(ch);
  
  /* Update all of the info parts */
- sprintf(buf, VT_CURSPOS, size - 3, 13);
+ SPRINTF(buf, VT_CURSPOS, size - 3, 13);
  send_to_char(buf, ch);
- sprintf(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
+ SPRINTF(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 3, 58);
+ SPRINTF(buf, VT_CURSPOS, size - 3, 58);
  send_to_char(buf, ch);
- sprintf(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
+ SPRINTF(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 2, 7);
+ SPRINTF(buf, VT_CURSPOS, size - 2, 7);
  send_to_char(buf, ch);
- sprintf(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
+ SPRINTF(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 2, 47);
+ SPRINTF(buf, VT_CURSPOS, size - 2, 47);
  send_to_char(buf, ch);
- sprintf(buf, "%d", GET_GOLD(ch));
+ SPRINTF(buf, "%d", GET_GOLD(ch));
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, size - 1, 20);
+ SPRINTF(buf, VT_CURSPOS, size - 1, 20);
  send_to_char(buf, ch);
- sprintf(buf, "%d", GET_EXP(ch));
+ SPRINTF(buf, "%d", GET_EXP(ch));
  send_to_char(buf, ch);
 
- sprintf(buf, VT_CURSPOS, 0, 0);
+ SPRINTF(buf, VT_CURSPOS, 0, 0);
  send_to_char(buf, ch);
 
 }

@@ -103,7 +103,7 @@ void mobile_wander(struct char_data *ch)
 	go_direction(ch, door);
 	if (ch->in_room == 0) {
 	  if (or != 0) {
-	    sprintf(buf, "%s just entered void from %d", GET_NAME(ch), or);
+	    SPRINTF(buf, "%s just entered void from %d", GET_NAME(ch), or);
 	    log_sev(buf,5);
 	  }
 	}
@@ -182,7 +182,7 @@ void MobScavenge(struct char_data *ch)
 	cc++;
 	if (obj->contains) {
 	  if (IsHumanoid(ch) && !number(0,4)) {
-	    sprintf(buf, " all %d.corpse", cc);
+	    SPRINTF(buf, " all %d.corpse", cc);
 	    do_get(ch, buf, 0);
 	    return;
 	  }
@@ -222,7 +222,7 @@ void MobScavenge(struct char_data *ch)
 
   if (!number(0,3)) {
     if (IsHumanoid(ch) && ch->carrying) {
-      sprintf(buf, "all");
+      SPRINTF(buf, "all");
       do_wear(ch, buf, 0);
     }
   }
@@ -287,7 +287,7 @@ void mobile_activity(struct char_data *ch)
   if (((IS_SET(ch->specials.act, ACT_SPEC) || mob_index[ch->nr].func)) && !no_specials) {
     if (!mob_index[ch->nr].func) {
       char buf[180];
-      sprintf(buf, "Attempting to call a non-existing mob func on %s", GET_NAME(ch));
+      SPRINTF(buf, "Attempting to call a non-existing mob func on %s", GET_NAME(ch));
       log_msg(buf);
       REMOVE_BIT(ch->specials.act, ACT_SPEC);
     } else {
@@ -455,7 +455,7 @@ int AssistFriend( struct char_data *ch)
   assert(ch->in_room >= 0); 
 #else
   if (ch->in_room < 0) {
-    sprintf(buf, "Mob %s in negative room", ch->player.name);
+    SPRINTF(buf, "Mob %s in negative room", ch->player.name);
     log_msg(buf);
     ch->in_room = 0;
     extract_char(ch);
@@ -812,7 +812,7 @@ void sgoto(char *arg, struct char_data *ch)
        room = atoi(arg);
      }
    } else {
-     sprintf(buf, "Error in script %s, no destination for goto", 
+     SPRINTF(buf, "Error in script %s, no destination for goto", 
 	     script_data[ch->script].filename);
      log_msg(buf);
      ch->commandp++;
@@ -868,7 +868,7 @@ void do_jmp(char *arg, struct char_data *ch)
      }
   }
 
- sprintf(buf, "Label %s undefined in script assigned to %s.  Ignoring.", arg, GET_NAME(ch));
+ SPRINTF(buf, "Label %s undefined in script assigned to %s.  Ignoring.", arg, GET_NAME(ch));
  log_msg(buf);
 
  ch->commandp++;
@@ -891,7 +891,7 @@ void do_jsr(char *arg, struct char_data *ch)
      }
   }
 
- sprintf(buf, "Label %s undefined in script assigned to %s.  Ignoring.", arg, GET_NAME(ch));
+ SPRINTF(buf, "Label %s undefined in script assigned to %s.  Ignoring.", arg, GET_NAME(ch));
  log_msg(buf);
 
  ch->commandp++;

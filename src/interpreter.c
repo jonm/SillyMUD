@@ -252,19 +252,19 @@ void command_interpreter(struct char_data *ch, char *argument)
 	  return;  
 
           if(n->log) {
-            sprintf(buf,"%s:%s",ch->player.name, argument);
+            SPRINTF(buf,"%s:%s",ch->player.name, argument);
             slog(buf);
 	  }
 	  if ((GetMaxLevel(ch)>=LOW_IMMORTAL)&&(GetMaxLevel(ch)<60)) {
-	    sprintf(buf,"%s:%s",ch->player.name,argument);
+	    SPRINTF(buf,"%s:%s",ch->player.name,argument);
 	    slog(buf);
 	  }
            if(IS_AFFECTED2(ch, AFF2_LOG_ME)) {
-             sprintf(buf,"%s:%s", ch->player.name, argument);
+             SPRINTF(buf,"%s:%s", ch->player.name, argument);
              slog(buf);
 	   }
 	  if (GET_GOLD(ch) > 2000000) {
-	    sprintf(buf,"%s:%s",fname(ch->player.name),argument);
+	    SPRINTF(buf,"%s:%s",fname(ch->player.name),argument);
 	    slog(buf);
 	  }
 	
@@ -1018,14 +1018,14 @@ void nanny(struct descriptor_data *d, char *arg)
 	    do_help(d->character,help_thing,0);
 	    SEND_TO_Q("Level limits (NVC = Not a Valid Class):\n\r",d);
 	    if(CheckValidClass(d, CLASS_MAGIC_USER)) {
-	      sprintf(buf,"Mage: %d  ",
+	      SPRINTF(buf,"Mage: %d  ",
 		      RacialMax[RaceList[choice].race_num][0]);
 	      SEND_TO_Q(buf,d);
 	    } else 
 	      SEND_TO_Q("Mage: NVC  ",d);
 	    
 	    if(CheckValidClass(d, CLASS_CLERIC)) {
-	      sprintf(buf,"Cleric: %d  ",
+	      SPRINTF(buf,"Cleric: %d  ",
 		      RacialMax[RaceList[choice].race_num][1]);
 	      SEND_TO_Q(buf,d);
 	    } else 
@@ -1033,7 +1033,7 @@ void nanny(struct descriptor_data *d, char *arg)
 
 	    
 	    if(CheckValidClass(d, CLASS_WARRIOR)) {
-	      sprintf(buf,"Warrior: %d  ",
+	      SPRINTF(buf,"Warrior: %d  ",
 		      RacialMax[RaceList[choice].race_num][2]);
 	      SEND_TO_Q(buf,d);
 	    } else 
@@ -1041,14 +1041,14 @@ void nanny(struct descriptor_data *d, char *arg)
 
 	    
 	    if(CheckValidClass(d, CLASS_THIEF)) {
-	      sprintf(buf,"Thief: %d  ",
+	      SPRINTF(buf,"Thief: %d  ",
 		      RacialMax[RaceList[choice].race_num][3]);
 	      SEND_TO_Q(buf,d);
 	    } else 
 	      SEND_TO_Q("Thief: NVC  ",d);
 	    
 	    if(CheckValidClass(d, CLASS_DRUID)) {
-	      sprintf(buf,"Druid: %d  ",
+	      SPRINTF(buf,"Druid: %d  ",
 		      RacialMax[RaceList[choice].race_num][4]);
 	      SEND_TO_Q(buf,d);
 	    } else 
@@ -1056,7 +1056,7 @@ void nanny(struct descriptor_data *d, char *arg)
 
 	    
 	    if(CheckValidClass(d, CLASS_MONK)) {
-	      sprintf(buf,"Monk: %d  ",
+	      SPRINTF(buf,"Monk: %d  ",
 		      RacialMax[RaceList[choice].race_num][0]);
 	      SEND_TO_Q(buf,d);
 	    } else 
@@ -1182,7 +1182,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	/*
 	  if (tmp_store.max_corpse > 3) {
 	  SEND_TO_Q("Too many corpses in game, can not connect\n\r", d);
-	  sprintf(buf, "%s: too many corpses.",tmp_name);
+	  SPRINTF(buf, "%s: too many corpses.",tmp_name);
 	  log_msg(buf);
 	  STATE(d) = CON_WIZLOCK;
 	  break;
@@ -1214,12 +1214,12 @@ void nanny(struct descriptor_data *d, char *arg)
 	  CREATE(GET_NAME(d->character), char, 
 		 strlen(tmp_name) + 1);
 	  strcpy(GET_NAME(d->character), CAP(tmp_name));
-	  sprintf(buf, "Did I get that right, %s (Y/N)? ",
+	  SPRINTF(buf, "Did I get that right, %s (Y/N)? ",
 		  tmp_name);
 	  SEND_TO_Q(buf, d);
 	  STATE(d) = CON_NMECNF;
 	} else {
-	  sprintf(buf, "Sorry, no new characters at this time\n\r");
+	  SPRINTF(buf, "Sorry, no new characters at this time\n\r");
 	  SEND_TO_Q(buf,d);
 	  STATE(d) = CON_WIZLOCK;
 	}
@@ -1234,7 +1234,7 @@ void nanny(struct descriptor_data *d, char *arg)
     if (*arg == 'y' || *arg == 'Y')	{
       SEND_TO_Q("New character.\n\r", d);
       
-      sprintf(buf, 
+      SPRINTF(buf, 
 	      "Give me a password for %s: ",
 	      GET_NAME(d->character));
       
@@ -1307,14 +1307,14 @@ void nanny(struct descriptor_data *d, char *arg)
 	  STATE(d) = CON_PLYNG;
 	  
 	  act("$n has reconnected.", TRUE, tmp_ch, 0, 0, TO_ROOM);
-	  sprintf(buf, "%s[%s] has reconnected.",
+	  SPRINTF(buf, "%s[%s] has reconnected.",
 		  GET_NAME(d->character), d->host);
 	  log_msg(buf);
 	  return;
 	}
       
       
-      sprintf(buf, "%s[%s] has connected.", GET_NAME(d->character),
+      SPRINTF(buf, "%s[%s] has connected.", GET_NAME(d->character),
 	      d->host);
       log_msg(buf);
       SEND_TO_Q(motd, d);
@@ -1444,7 +1444,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	break;
       } else {
 	SEND_TO_Q(VT_HOMECLR,d);
-	sprintf(buf,"Hey, what kinda statistic does an %c represent?\n\r",
+	SPRINTF(buf,"Hey, what kinda statistic does an %c represent?\n\r",
 		*arg);
 	SEND_TO_Q(STATQ_MESSG,d);
 	STATE(d) = CON_STAT_LIST;
@@ -1629,7 +1629,7 @@ void nanny(struct descriptor_data *d, char *arg)
       SEND_TO_Q("***PRESS ENTER**", d);
 #else
       if (STATE(d) != CON_QCLASS) {
-	sprintf(buf, "%s [%s] new player.", GET_NAME(d->character), d->host);
+	SPRINTF(buf, "%s [%s] new player.", GET_NAME(d->character), d->host);
 	log_msg(buf);
 	/*
 	 ** now that classes are set, initialize
@@ -1662,7 +1662,7 @@ void nanny(struct descriptor_data *d, char *arg)
        SEND_TO_Q("\n\r\n*** PRESS RETURN: ", d);
        STATE(d) = CON_RMOTD;            
      } else if (d->character->generic >= NEWBIE_REQUEST) {
-       sprintf(buf, "%s [%s] new player.", GET_NAME(d->character), d->host);
+       SPRINTF(buf, "%s [%s] new player.", GET_NAME(d->character), d->host);
        log_sev(buf, 7);
        if (!strncmp(d->host,"128.197.152",11))
            d->character->generic=1;
@@ -1673,7 +1673,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	 d->character->generic=1;	 
        } else {
 	 if (top_of_p_table > 0) {
-	   sprintf(buf,"type Auth[orize] %s to allow into game.", GET_NAME(d->character));
+	   SPRINTF(buf,"type Auth[orize] %s to allow into game.", GET_NAME(d->character));
 	   log_sev(buf, 6);
 	   log_sev("type 'Help Authorize' for other commands", 2);
 	 } else {
@@ -1685,7 +1685,7 @@ void nanny(struct descriptor_data *d, char *arg)
        **  enough for gods.  now player is told to shut up.
        */
        d->character->generic--;   /* NEWBIE_START == 3 == 3 chances */
-       sprintf(buf, "Please wait. You have %d requests remaining.\n\r", 
+       SPRINTF(buf, "Please wait. You have %d requests remaining.\n\r", 
 	       d->character->generic);
        SEND_TO_Q(buf, d);
        if (d->character->generic == 0) {
@@ -1716,7 +1716,7 @@ void nanny(struct descriptor_data *d, char *arg)
     STATE(d) = CON_SLCT;
     if (WizLock) {
       if (GetMaxLevel(d->character) < LOW_IMMORTAL) {
-	sprintf(buf, "Sorry, the game is locked up for repair\n\r");
+	SPRINTF(buf, "Sorry, the game is locked up for repair\n\r");
 	SEND_TO_Q(buf,d);
 	STATE(d) = CON_WIZLOCK;
       }
@@ -1730,7 +1730,7 @@ void nanny(struct descriptor_data *d, char *arg)
     STATE(d) = CON_SLCT;
     if (WizLock) {
       if (GetMaxLevel(d->character) < LOW_IMMORTAL) {
-	sprintf(buf, "Sorry, the game is locked up for repair\n\r");
+	SPRINTF(buf, "Sorry, the game is locked up for repair\n\r");
 	SEND_TO_Q(buf,d);
 	STATE(d) = CON_WIZLOCK;
       }
@@ -1752,7 +1752,7 @@ void nanny(struct descriptor_data *d, char *arg)
       case '1':
 
         reset_char(d->character);
-        sprintf(buf, "Loading %s's equipment", d->character->player.name);
+        SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
         log_msg(buf);
         load_char_objs(d->character);
         save_char(d->character, AUTO_RENT);
@@ -1780,7 +1780,7 @@ void nanny(struct descriptor_data *d, char *arg)
       case '2':
 
         reset_char(d->character);
-        sprintf(buf, "Loading %s's equipment", d->character->player.name);
+        SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
         log_msg(buf);
         load_char_objs(d->character);
         save_char(d->character, AUTO_RENT);
@@ -1808,7 +1808,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	if (GetMaxLevel(d->character) > 5) {
 
           reset_char(d->character);
-          sprintf(buf, "Loading %s's equipment", d->character->player.name);
+          SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
           log_msg(buf);
           load_char_objs(d->character);
           save_char(d->character, AUTO_RENT);
@@ -1841,7 +1841,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	if (GetMaxLevel(d->character) > 5) {
 
           reset_char(d->character);
-          sprintf(buf, "Loading %s's equipment", d->character->player.name);
+          SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
           log_msg(buf);
           load_char_objs(d->character);
           save_char(d->character, AUTO_RENT);
@@ -1874,7 +1874,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	if (GetMaxLevel(d->character) > 5) {
 
           reset_char(d->character);
-          sprintf(buf, "Loading %s's equipment", d->character->player.name);
+          SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
           log_msg(buf);
           load_char_objs(d->character);
           save_char(d->character, AUTO_RENT);
@@ -1921,7 +1921,7 @@ void nanny(struct descriptor_data *d, char *arg)
       
     case '1':
       reset_char(d->character);
-      sprintf(buf, "Loading %s's equipment", d->character->player.name);
+      SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
       log_msg(buf);
       load_char_objs(d->character);
       save_char(d->character, AUTO_RENT);
@@ -2048,7 +2048,7 @@ void nanny(struct descriptor_data *d, char *arg)
 
       /* read in the char, change the name, write back */
       fread(&ch_st, sizeof(struct char_file_u), 1, char_file);
-      sprintf(ch_st.name,"111111");
+      SPRINTF(ch_st.name,"111111");
       fseek(char_file, (long) (player_table[i].nr *
 			       sizeof(struct char_file_u)), 0);
       fwrite(&ch_st, sizeof(struct char_file_u), 1, char_file);
@@ -2187,7 +2187,7 @@ void DisplayRaceClasses(struct descriptor_data *d)
     if(CheckValidClass(d,classes[i])) {
       if(bart)
 	SEND_TO_Q(", ",d);
-      sprintf(buf,"%s [%d]", class_selections[i], 
+      SPRINTF(buf,"%s [%d]", class_selections[i], 
 	      RacialMax[GET_RACE(d->character)][i]);
       SEND_TO_Q(buf,d);
       bart = TRUE;
@@ -2206,7 +2206,7 @@ void DisplayRaces(struct descriptor_data *d)
 
   SEND_TO_Q("     ",d);
   for(i=1;RaceList[i-1].what[0] != '\n'; i++) {
-    sprintf(buf,"%2d - %-15s ",i,RaceList[i-1].what);
+    SPRINTF(buf,"%2d - %-15s ",i,RaceList[i-1].what);
     if(!(i%3))
       strcat(buf,"\n\r     ");
     SEND_TO_Q(buf,d);

@@ -276,7 +276,7 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
         }
         return(TRUE);
       default:
-        sprintf(buf, "Strangeness in guildmaster, class %d passed in by %s.",
+        SPRINTF(buf, "Strangeness in guildmaster, class %d passed in by %s.",
 		class, GET_NAME(ch));
         log_msg(buf);
         send_to_char(" 'Ack! I feel faint!'\n\r", ch);
@@ -284,7 +284,7 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
       }
     }
     if (!*arg) {
-      sprintf(buf,"You have got %d practice sessions left.\n\r",
+      SPRINTF(buf,"You have got %d practice sessions left.\n\r",
               ch->specials.spells_to_learn);
       send_to_char(buf, ch);
       switch(class) {
@@ -299,7 +299,7 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
               (skill_info[i+1].min_level[level_num] <=
                GetMaxLevel(guildmaster)-10)) {
 
-            sprintf(buf,"[%-2d] %-30s %s \n\r",
+            SPRINTF(buf,"[%-2d] %-30s %s \n\r",
                     skill_info[i+1].min_level[level_num],
                     spells[i],how_good(ch->skills[i+1].learned));
             send_to_char(buf, ch);
@@ -313,14 +313,14 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
         send_to_char("You can practice any of the following skills:\n\r", ch);
         for(i=0; *spells[i] != '\n'; i++) {
           if (skill_info[i+1].taught_by & teacher) {
-            sprintf(buf, "%-30s %s\n\r", spells[i],
+            SPRINTF(buf, "%-30s %s\n\r", spells[i],
                     how_good(ch->skills[i+1].learned));
             send_to_char(buf, ch);
           }
         }
         return(TRUE);
       default:
-        sprintf(buf, "Strangeness in guildmaster for class %d.\n\r",class);
+        SPRINTF(buf, "Strangeness in guildmaster for class %d.\n\r",class);
         log_msg(buf);
         send_to_char("Ack, I feel faint!\n\r", ch);
       } /* switch */
@@ -400,7 +400,7 @@ int dump(struct char_data *ch, int cmd, char *arg,
   char *fname(char *namelist);
   
   for(k = real_roomp(ch->in_room)->contents; k ; k = real_roomp(ch->in_room)->contents)    {
-      sprintf(buf, "The %s vanish in a puff of smoke.\n\r" ,fname(k->name));
+      SPRINTF(buf, "The %s vanish in a puff of smoke.\n\r" ,fname(k->name));
       for(tmp_char = real_roomp(ch->in_room)->people; tmp_char;
 	  tmp_char = tmp_char->next_in_room)
 	if (CAN_SEE_OBJ(tmp_char, k))
@@ -416,7 +416,7 @@ int dump(struct char_data *ch, int cmd, char *arg,
   
   for(k = real_roomp(ch->in_room)->contents; k ; 
       k = real_roomp(ch->in_room)->contents)    {
-      sprintf(buf, "The %s vanishes in a puff of smoke.\n\r",fname(k->name));
+      SPRINTF(buf, "The %s vanishes in a puff of smoke.\n\r",fname(k->name));
       for(tmp_char = real_roomp(ch->in_room)->people; tmp_char;
 	  tmp_char = tmp_char->next_in_room)
 	if (CAN_SEE_OBJ(tmp_char, k))
@@ -776,7 +776,7 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg,
       cost *= 9;
       cost /=10;
       cost++;
-      sprintf(buf,"%s for %d gold coins.\n\r", temp1->short_description, cost);
+      SPRINTF(buf,"%s for %d gold coins.\n\r", temp1->short_description, cost);
       send_to_char(buf, ch);
       extract_obj(temp1);
       if (temp2)
@@ -1067,7 +1067,7 @@ int eric_johnson(struct char_data *ch, int cmd, char * UNUSED(arg),
 					    eric->carrying)) {
 	      char	*s;
 	      s = (scan[0][1] == '.') ? scan[0]+2 : scan[0];
-	      sprintf(buf, "buy %s", s);
+	      SPRINTF(buf, "buy %s", s);
 	      command_interpreter(eric, buf);
 	      if (NULL == get_obj_in_list_vis(eric, *scan,
 					      eric->carrying)) {
@@ -1882,7 +1882,7 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
   switch (number(0, 250))
     {
     case 0:
-      sprintf(buf,"Pass the bong, dude\n");
+      SPRINTF(buf,"Pass the bong, dude\n");
       do_say(ch, buf, 0);
       return(1);
     case 1:
@@ -1925,10 +1925,10 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
 	      } else if (!strcmp(GET_NAME(i), "God")) {
 		do_shout(ch, "God!  Theres only room for one smartass robot on this mud!",0);
 	      } else if (GET_SEX(i)==SEX_MALE) {
-		sprintf(buf,"Hey, %s, how about some MUDSex?",GET_NAME(i));
+		SPRINTF(buf,"Hey, %s, how about some MUDSex?",GET_NAME(i));
 		do_say(ch,buf,0);
 	      } else {
-		sprintf(buf,"I'm much prettier than %s, don't you think?",GET_NAME(i));
+		SPRINTF(buf,"I'm much prettier than %s, don't you think?",GET_NAME(i));
 		do_say(ch,buf,0);
 	      }
 	    }
@@ -1947,7 +1947,7 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
       {
 	tmp_ch = (struct char_data *)FindAnyVictim(ch);
 	if (!IS_NPC(ch)) {
-	  sprintf(buf, "Party on, %s", GET_NAME(tmp_ch)); 
+	  SPRINTF(buf, "Party on, %s", GET_NAME(tmp_ch)); 
 	  do_say(ch, buf, 0);
 	  return(1);
 	} else {
@@ -1965,9 +1965,9 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
       for (i = character_list; i; i = i->next) {
 	if (!IS_NPC(i)) {
 	  if (number(0,30)==0) {
-	    sprintf(buf, "%s shout I love to MOSH!",GET_NAME(i));
+	    SPRINTF(buf, "%s shout I love to MOSH!",GET_NAME(i));
 	    do_force(ch, buf, 0);
-            sprintf(buf, "%s mosh", GET_NAME(i));
+            SPRINTF(buf, "%s mosh", GET_NAME(i));
             do_force(ch, buf, 0);
 	    do_restore(ch, GET_NAME(i), 0);
 	    return(TRUE);
@@ -1998,7 +1998,7 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
       for (i = character_list; i; i = i->next) {
 	if (!IS_NPC(i)) {
 	  if (number(0,30)==0) {
-	    sprintf(buf, "Top of the morning to you %s!", GET_NAME(i));
+	    SPRINTF(buf, "Top of the morning to you %s!", GET_NAME(i));
 	    do_shout(ch, buf, 0);
 	    return(TRUE);
 	  }
@@ -2009,7 +2009,7 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
       for (i = real_roomp(ch->in_room)->people; i; i= i->next_in_room) {
 	if (!IS_NPC(i)) {
 	  if (number(0,3)==0) {
-	    sprintf(buf, "Pardon me, %s, but are those bugle boy jeans you are wearing?", GET_NAME(i));
+	    SPRINTF(buf, "Pardon me, %s, but are those bugle boy jeans you are wearing?", GET_NAME(i));
 	    do_say(ch, buf, 0);
 	    return(TRUE);
 	  }
@@ -2020,7 +2020,7 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
       for (i = real_roomp(ch->in_room)->people; i; i= i->next_in_room) {
 	if (!IS_NPC(i)) {
 	  if (number(0,3)==0) {
-	    sprintf(buf, "Pardon me, %s, but do you have any Grey Poupon?", GET_NAME(i));
+	    SPRINTF(buf, "Pardon me, %s, but do you have any Grey Poupon?", GET_NAME(i));
 	    do_say(ch, buf, 0);
 	    return(TRUE);
 	  }
@@ -2092,7 +2092,7 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
       for (i = real_roomp(ch->in_room)->people; i; i=i->next_in_room) {
 	if (!IS_NPC(i)) {
 	  if (number(0,3)==0) {
-	    sprintf(buf, "%s, do you think I'm going bald?",GET_NAME(i));
+	    SPRINTF(buf, "%s, do you think I'm going bald?",GET_NAME(i));
 	    do_say(ch, buf, 0);
 	    return(TRUE);
 	  }
@@ -2110,7 +2110,7 @@ int puff(struct char_data *ch, int cmd, char * UNUSED(arg),
 	if (!IS_NPC(i)) {
 	  if (number(0,20) == 0) {
 	    if (i->in_room != NOWHERE) {
-	      sprintf(buf, "%s save", GET_NAME(i));
+	      SPRINTF(buf, "%s save", GET_NAME(i));
 	      do_force(ch, buf, 0);
 	      return(TRUE);
 	    }
@@ -2793,7 +2793,7 @@ int Ringwraith( struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     wh->ringnumber = number(1,howmanyrings++);
   }
   
-  sprintf(buf, "%d.one ring.", (int)wh->ringnumber); /* where is this ring? */
+  SPRINTF(buf, "%d.one ring.", (int)wh->ringnumber); /* where is this ring? */
   if (NULL== (ring=get_obj_vis_world(ch, buf, NULL))) {
     /* there aren't as many one rings in the game as we thought */
     howmanyrings = 1;
@@ -3100,7 +3100,7 @@ int pet_shops(struct char_data *ch, int cmd, char *arg,
   if (cmd==59) { /* List */
     send_to_char("Available pets are:\n\r", ch);
     for(pet = real_roomp(pet_room)->people; pet; pet = pet->next_in_room) {
-      sprintf(buf, "%8d - %s\n\r", 24*GET_EXP(pet), pet->player.short_descr);
+      SPRINTF(buf, "%8d - %s\n\r", 24*GET_EXP(pet), pet->player.short_descr);
       send_to_char(buf, ch);
     }
     return(TRUE);
@@ -3127,11 +3127,11 @@ int pet_shops(struct char_data *ch, int cmd, char *arg,
     SET_BIT(pet->specials.affected_by, AFF_CHARM);
     
     if (*pet_name) {
-      sprintf(buf,"%s %s", pet->player.name, pet_name);
+      SPRINTF(buf,"%s %s", pet->player.name, pet_name);
       free(pet->player.name);
       pet->player.name = (char*)strdup(buf);		
       
-      sprintf(buf,"%sA small sign on a chain around the neck says 'My Name is %s'\n\r",
+      SPRINTF(buf,"%sA small sign on a chain around the neck says 'My Name is %s'\n\r",
 	      pet->player.description, pet_name);
       free(pet->player.description);
       pet->player.description = (char *)strdup(buf);
@@ -3226,10 +3226,10 @@ int Fountain(struct char_data *ch, int cmd, char *arg,
       return(FALSE);
     }
     
-    sprintf(buf,"You drink from the %s.\n\r",container);
+    SPRINTF(buf,"You drink from the %s.\n\r",container);
     send_to_char(buf, ch);
 
-    sprintf(buf,"$n drinks from the %s.",container);
+    SPRINTF(buf,"$n drinks from the %s.",container);
     act(buf, FALSE, ch, 0, 0, TO_ROOM);
 
 
@@ -3287,7 +3287,7 @@ int bank (struct char_data *ch, int cmd, char *arg,
       send_to_char("Thank you.\n\r",ch);
       GET_GOLD(ch) = GET_GOLD(ch) - money;
       GET_BANK(ch) = GET_BANK(ch) + money;
-      sprintf(buf,"Your balance is %d.\n\r", GET_BANK(ch));
+      SPRINTF(buf,"Your balance is %d.\n\r", GET_BANK(ch));
       send_to_char(buf, ch);
       return(TRUE);
     }
@@ -3310,12 +3310,12 @@ int bank (struct char_data *ch, int cmd, char *arg,
       send_to_char("Thank you.\n\r",ch);
       GET_GOLD(ch) = GET_GOLD(ch) + money;
       GET_BANK(ch) = GET_BANK(ch) - money;
-      sprintf(buf,"Your balance is %d.\n\r", GET_BANK(ch));
+      SPRINTF(buf,"Your balance is %d.\n\r", GET_BANK(ch));
       send_to_char(buf, ch);
       return(TRUE);
     }
   } else if (cmd == 221) {
-    sprintf(buf,"Your balance is %d.\n\r", GET_BANK(ch));
+    SPRINTF(buf,"Your balance is %d.\n\r", GET_BANK(ch));
     send_to_char(buf, ch);
     return(TRUE);
   }
@@ -3581,7 +3581,7 @@ int House(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int ty
 
     cost.total_cost = 0;
 
-    sprintf(buf, "It will cost you %d coins per day\n\r", cost.total_cost);
+    SPRINTF(buf, "It will cost you %d coins per day\n\r", cost.total_cost);
     send_to_char(buf, ch);
 
     save_obj(ch, &cost,1);
@@ -4594,21 +4594,21 @@ int StatTeller(struct char_data *ch, int cmd, char * UNUSED(arg),
       switch(choice) {
       case 0:
 	if (HasClass(ch, CLASS_WARRIOR) && GET_STR(ch) == 18)
-	  sprintf(buf, "STR: %d/%d, WIS: %d, DEX: %d\n\r", GET_STR(ch), GET_ADD(ch), GET_WIS(ch), GET_DEX(ch));
+	  SPRINTF(buf, "STR: %d/%d, WIS: %d, DEX: %d\n\r", GET_STR(ch), GET_ADD(ch), GET_WIS(ch), GET_DEX(ch));
 	else
-	  sprintf(buf, "STR: %d, WIS: %d, DEX: %d\n\r", GET_STR(ch), GET_WIS(ch), GET_DEX(ch));
+	  SPRINTF(buf, "STR: %d, WIS: %d, DEX: %d\n\r", GET_STR(ch), GET_WIS(ch), GET_DEX(ch));
 	send_to_char(buf, ch);
 	break;
       case 1:
-	sprintf(buf, "INT: %d, DEX:  %d, CON: %d \n\r", GET_INT(ch), GET_DEX(ch), GET_CON(ch));
+	SPRINTF(buf, "INT: %d, DEX:  %d, CON: %d \n\r", GET_INT(ch), GET_DEX(ch), GET_CON(ch));
 	send_to_char(buf, ch);
 	break;
       case 2:
-	sprintf(buf, "CON: %d, INT: %d , WIS: %d \n\r", GET_CON(ch), GET_INT(ch), GET_WIS(ch));
+	SPRINTF(buf, "CON: %d, INT: %d , WIS: %d \n\r", GET_CON(ch), GET_INT(ch), GET_WIS(ch));
 	send_to_char(buf, ch);
 	break;
       case 3:
-	sprintf(buf, "DEX: %d, INT: %d, CHR: %d \n\r", GET_DEX(ch), GET_INT(ch), GET_CHR(ch));
+	SPRINTF(buf, "DEX: %d, INT: %d, CHR: %d \n\r", GET_DEX(ch), GET_INT(ch), GET_CHR(ch));
 	send_to_char(buf, ch);
 	break;
       default:
@@ -4661,15 +4661,15 @@ int StatTeller(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
       choice = number(0,2);
       switch(choice) {
       case 0:
-	sprintf(buf, "STR: %d, WIS: %d, DEX: %d\n\r", GET_STR(ch), GET_WIS(ch), GET_DEX(ch));
+	SPRINTF(buf, "STR: %d, WIS: %d, DEX: %d\n\r", GET_STR(ch), GET_WIS(ch), GET_DEX(ch));
 	send_to_char(buf, ch);
 	break;
       case 1:
-	sprintf(buf, "INT: %d, DEX:  %d, CON: %d \n\r", GET_INT(ch), GET_DEX(ch), GET_CON(ch));
+	SPRINTF(buf, "INT: %d, DEX:  %d, CON: %d \n\r", GET_INT(ch), GET_DEX(ch), GET_CON(ch));
 	send_to_char(buf, ch);
 	break;
       case 2:
-	sprintf(buf, "CON: %d, INT: %d , WIS: %d \n\r", GET_CON(ch), GET_INT(ch), GET_WIS(ch));
+	SPRINTF(buf, "CON: %d, INT: %d , WIS: %d \n\r", GET_CON(ch), GET_INT(ch), GET_WIS(ch));
 	send_to_char(buf, ch);
 	break;
       default:
@@ -4714,7 +4714,7 @@ void ThrowChar(struct char_data *ch, struct char_data *v, int dir)
     if (v->specials.fighting) {
       stop_fighting(v);
     }
-    sprintf(buf, "%s picks you up and throws you %s\n\r", 
+    SPRINTF(buf, "%s picks you up and throws you %s\n\r", 
 	    ch->player.short_descr, dirs[dir]);
     send_to_char(buf,v);
     or = v->in_room;
@@ -4845,7 +4845,7 @@ int Tyrannosaurus_swallower(struct char_data *ch, int cmd, char * UNUSED(arg),
 	  kill target:
 	  */
 	GET_HIT(targ) = 0;
-	sprintf(buf, "%s killed by being swallowed whole", GET_NAME(targ));
+	SPRINTF(buf, "%s killed by being swallowed whole", GET_NAME(targ));
 	log_msg(buf);
 	die(targ);
 	/*
@@ -5037,7 +5037,7 @@ int nodrop(struct char_data *ch, int cmd, char *arg,
 	  FALSE, ch, obj, 0, TO_CHAR);
       act("$n drops $p, and it shatters!", FALSE, ch, obj, 0, TO_ROOM);
       i = read_object(30, VIRTUAL);
-      sprintf(buf, "Scraps from %s lie in a pile here.",
+      SPRINTF(buf, "Scraps from %s lie in a pile here.",
 	      obj->short_description);
       i->description = (char *)strdup(buf);
       obj_to_room(i, ch->in_room);
@@ -5571,7 +5571,7 @@ int trapper(struct char_data *ch, int cmd, char * UNUSED(arg),
       act("$n has suffocated inside $N!",
 	  FALSE, ch->specials.fighting, 0, ch, TO_ROOM);
       act("$n is dead!", FALSE, ch->specials.fighting, 0, ch, TO_ROOM);
-      sprintf(buf, "%s has suffocated to death.", 
+      SPRINTF(buf, "%s has suffocated to death.", 
 	      GET_NAME(ch->specials.fighting));
       log_msg(buf);
       die(ch->specials.fighting);
@@ -5606,7 +5606,7 @@ int trogcook(struct char_data *ch, int cmd, char * UNUSED(arg),
   if (corpse) {
       do_get(ch, "corpse", -1);
       act("$n cackles 'Into the soup with it!'", FALSE, ch, 0, 0, TO_ROOM);
-      sprintf(buf, "put corpse pot");
+      SPRINTF(buf, "put corpse pot");
       command_interpreter(ch, buf);
       return(TRUE);
     }
@@ -5990,7 +5990,7 @@ int Valik( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
       else {
 	if(!(strcmp(arg," What is the quest of the Rhyodin?")))
 	  for(i = 0 ; i < 9 ; ++i) {
-	    sprintf(buf,"%s %s",GET_NAME(ch),quest_intro[i]);
+	    SPRINTF(buf,"%s %s",GET_NAME(ch),quest_intro[i]);
 	    do_tell(vict,buf,19);
 	  }
 	return(TRUE);
@@ -6057,7 +6057,7 @@ int Valik( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int 
 	char_from_room(ch);
 	char_to_room(ch,Med_Chambers);
 	act("Reality warps and spins around you!",FALSE,ch,0,0,TO_ROOM);
-	sprintf(buf, "close mahogany");
+	SPRINTF(buf, "close mahogany");
 	command_interpreter(ch, buf);
 	do_rest(ch, "", -1);
 	ch->generic = Valik_Meditating;

@@ -765,8 +765,8 @@ void say_spell( struct char_data *ch, int si )
   
   offs = 0;
   if(si == SPELL_FIREBALL && GET_SEX(ch) == SEX_MALE) {
-    sprintf(buf2,"$n utters the words, 'Hmm hmmhmm, heh heh, FIRE! FIRE! FIRE!'");
-    sprintf(buf, "$n utters the words, 'Hmm hmmhmm, heh heh, FIRE! FIRE! FIRE!'");
+    SPRINTF(buf2,"$n utters the words, 'Hmm hmmhmm, heh heh, FIRE! FIRE! FIRE!'");
+    SPRINTF(buf, "$n utters the words, 'Hmm hmmhmm, heh heh, FIRE! FIRE! FIRE!'");
   } else {
   
     while(*(splwd+offs)) {
@@ -780,8 +780,8 @@ void say_spell( struct char_data *ch, int si )
 	}
     }
     
-    sprintf(buf2,"$n utters the words, '%s'", buf);
-    sprintf(buf, "$n utters the words, '%s'", spells[si-1]);
+    SPRINTF(buf2,"$n utters the words, '%s'", buf);
+    SPRINTF(buf, "$n utters the words, '%s'", spells[si-1]);
   }
   for(temp_char = real_roomp(ch->in_room)->people;
       temp_char;
@@ -1924,7 +1924,7 @@ int check_falling( struct char_data *ch)
 
 	if (!IS_IMMORTAL(ch)) {
 	  GET_HIT(ch) = 0;
-	  sprintf(buf, "%s has fallen to death", GET_NAME(ch));
+	  SPRINTF(buf, "%s has fallen to death", GET_NAME(ch));
 	  log_msg(buf);
 	if (!ch->desc)
 	  GET_GOLD(ch) = 0;
@@ -1993,7 +1993,7 @@ int check_falling( struct char_data *ch)
 
 	if (!IS_IMMORTAL(ch)) {
 	  GET_HIT(ch) = 0;
-	  sprintf(buf, "%s has fallen to death", GET_NAME(ch));
+	  SPRINTF(buf, "%s has fallen to death", GET_NAME(ch));
 	  log_msg(buf);
 	if (!ch->desc)
 	  GET_GOLD(ch) = 0;
@@ -2054,7 +2054,7 @@ void check_drowning( struct char_data *ch)
       GET_MOVE(ch) -= number(10,50);
       update_pos(ch);
       if (GET_HIT(ch) < -10) {
-	sprintf(buf, "%s killed by drowning", GET_NAME(ch));
+	SPRINTF(buf, "%s killed by drowning", GET_NAME(ch));
 	log_msg(buf);
 	if (!ch->desc)
 	  GET_GOLD(ch) = 0;

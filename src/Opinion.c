@@ -195,7 +195,7 @@ int Hates( struct char_data *ch, struct char_data *v)
     if (ch->hates.race != -1) {
       if (ch->hates.race == GET_RACE(v)) {
 	char buf[256];
-	sprintf(buf, "You hate %d", GET_RACE(v));
+	SPRINTF(buf, "You hate %d", GET_RACE(v));
 	send_to_char(buf, ch);
 	return(TRUE);
       }

@@ -87,15 +87,15 @@ void DisplayStringHeap
    for (i=0; i<Heap->uniq; i++) {
      if (type != TO_CHAR) {
         if (Heap->str[i].total > 1) {
-          sprintf(buf, "%s [%d]", Heap->str[i].string, Heap->str[i].total);
+          SPRINTF(buf, "%s [%d]", Heap->str[i].string, Heap->str[i].total);
         } else {
-           sprintf(buf, "%s", Heap->str[i].string);
+           SPRINTF(buf, "%s", Heap->str[i].string);
         }
       } else {
         if (Heap->str[i].total > 1) {
-           sprintf(buf, "%s [%d]\n\r", Heap->str[i].string, Heap->str[i].total);
+           SPRINTF(buf, "%s [%d]\n\r", Heap->str[i].string, Heap->str[i].total);
         } else {
-           sprintf(buf, "%s\n\r", Heap->str[i].string);
+           SPRINTF(buf, "%s\n\r", Heap->str[i].string);
         }
       }
      if (type == TO_CHAR) {

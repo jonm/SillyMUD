@@ -32,10 +32,10 @@ void weight_change_object(struct obj_data *obj, int weight)
   if (GET_OBJ_WEIGHT(obj) + weight < 1) {
       weight = 0 - (GET_OBJ_WEIGHT(obj) -1);
       if (obj->carried_by) {
-	sprintf(buf,"Bad weight change on %s, carried by %s.",obj->name,obj->carried_by->player.name);
+	SPRINTF(buf,"Bad weight change on %s, carried by %s.",obj->name,obj->carried_by->player.name);
 	log_msg(buf);
       } else {
-	sprintf(buf,"Bad weight change on %s.",obj->name);
+	SPRINTF(buf,"Bad weight change on %s.",obj->name);
 	log_msg(buf);
       }
   }
@@ -79,7 +79,7 @@ void name_to_drinkcon(struct obj_data *obj,int type)
   extern char *drinknames[];
   
   CREATE(new_name,char,strlen(obj->name)+strlen(drinknames[type])+2);
-  sprintf(new_name,"%s %s",drinknames[type],obj->name);
+  SPRINTF(new_name,"%s %s",drinknames[type],obj->name);
   free(obj->name);
   obj->name=new_name;
 }
@@ -117,9 +117,9 @@ void do_drink(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   
   if (temp->obj_flags.type_flag==ITEM_DRINKCON){
     if (temp->obj_flags.value[1]>0)  /* Not empty */ {
-      sprintf(buf,"$n drinks %s from $p",drinks[temp->obj_flags.value[2]]);
+      SPRINTF(buf,"$n drinks %s from $p",drinks[temp->obj_flags.value[2]]);
       act(buf, TRUE, ch, temp, 0, TO_ROOM);
-      sprintf(buf,"You drink the %s.\n\r",drinks[temp->obj_flags.value[2]]);
+      SPRINTF(buf,"You drink the %s.\n\r",drinks[temp->obj_flags.value[2]]);
       send_to_char(buf,ch);
       
       if (drink_aff[temp->obj_flags.value[2]][DRUNK] > 0 )
@@ -322,7 +322,7 @@ void do_pour(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
   
-  sprintf(buf,"You pour the %s into the %s.",
+  SPRINTF(buf,"You pour the %s into the %s.",
 	  drinks[from_obj->obj_flags.value[2]],arg2);
   send_to_char(buf,ch);
   
@@ -387,7 +387,7 @@ void do_sip(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
   
   act("$n sips from the $o",TRUE,ch,temp,0,TO_ROOM);
-  sprintf(buf,"It tastes like %s.\n\r",drinks[temp->obj_flags.value[2]]);
+  SPRINTF(buf,"It tastes like %s.\n\r",drinks[temp->obj_flags.value[2]]);
   send_to_char(buf,ch);
   
   gain_condition(ch,DRUNK,(int)(drink_aff[temp->obj_flags.value[2]]
@@ -677,13 +677,13 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
       } else {
 	perform_wear(ch,obj_object,keyword);
 	if (ch->equipment[WEAR_FINGER_L]) {
-	  sprintf(buffer, "You put %s on your right finger.\n\r",
+	  SPRINTF(buffer, "You put %s on your right finger.\n\r",
 		  obj_object->short_description);
 	  send_to_char(buffer, ch);
 	  obj_from_char(obj_object);
 	  equip_char(ch, obj_object, WEAR_FINGER_R);
 	} else {
-	  sprintf(buffer, "You put %s on your left finger.\n\r", 
+	  SPRINTF(buffer, "You put %s on your left finger.\n\r", 
 		  obj_object->short_description);
 	  send_to_char(buffer, ch);
 	  obj_from_char(obj_object);
@@ -835,12 +835,12 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
 	perform_wear(ch,obj_object,keyword);
 	obj_from_char(obj_object);
 	if (ch->equipment[WEAR_WRIST_L]) {
-	  sprintf(buffer, "You wear %s around your right wrist.\n\r", 
+	  SPRINTF(buffer, "You wear %s around your right wrist.\n\r", 
 		  obj_object->short_description);
 	  send_to_char(buffer, ch);
 	  equip_char(ch,  obj_object, WEAR_WRIST_R);
 	} else {
-	  sprintf(buffer, "You wear %s around your left wrist.\n\r", 	
+	  SPRINTF(buffer, "You wear %s around your left wrist.\n\r", 	
 		  obj_object->short_description);
 	  send_to_char(buffer, ch);
 	  equip_char(ch, obj_object, WEAR_WRIST_L);
@@ -937,7 +937,7 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
 	    send_to_char("You cannot wield a two handed weapon and wear a shield.\n\r", ch);
       } else {
 	perform_wear(ch,obj_object,keyword);
-	sprintf(buffer, "You start using %s.\n\r", 
+	SPRINTF(buffer, "You start using %s.\n\r", 
 		obj_object->short_description);
 	send_to_char(buffer, ch);
 	obj_from_char(obj_object);
@@ -948,11 +948,11 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
     }
   } break;
   case -1: {
-    sprintf(buffer,"Wear %s where?.\n\r", obj_object->short_description);
+    SPRINTF(buffer,"Wear %s where?.\n\r", obj_object->short_description);
     send_to_char(buffer, ch);
   } break;
   case -2: {
-    sprintf(buffer,"You can't wear %s.\n\r", obj_object->short_description);
+    SPRINTF(buffer,"You can't wear %s.\n\r", obj_object->short_description);
     send_to_char(buffer, ch);
   } break;
   default: {
@@ -1009,7 +1009,7 @@ void do_wear(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	if (CAN_WEAR(obj_object,ITEM_HOLD)) keyword = 13;
 	
 	if (keyword != -2) {
-	  sprintf(buf,"%s :", obj_object->short_description);
+	  SPRINTF(buf,"%s :", obj_object->short_description);
 	  send_to_char(buf,ch);
 	  wear(ch, obj_object, keyword);
 	}
@@ -1021,10 +1021,10 @@ void do_wear(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	if (*arg2) {
 	  keyword = search_block(arg2, keywords, FALSE); /* Partial Match */
 	  if (keyword == -1) {
-	    sprintf(buf, "%s is an unknown body location.\n\r", arg2);
+	    SPRINTF(buf, "%s is an unknown body location.\n\r", arg2);
 	    send_to_char(buf, ch);
 	  } else {
-	  sprintf(buf,"%s :", obj_object->short_description);
+	  SPRINTF(buf,"%s :", obj_object->short_description);
 	  send_to_char(buf,ch);
 	    wear(ch, obj_object, keyword+1);
 	  }
@@ -1043,12 +1043,12 @@ void do_wear(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	  if (CAN_WEAR(obj_object,ITEM_WEAR_HEAD)) keyword = 4;
 	  if (CAN_WEAR(obj_object,ITEM_WEAR_BODY)) keyword = 3;
 	  
-	  sprintf(buf,"%s :", obj_object->short_description);
+	  SPRINTF(buf,"%s :", obj_object->short_description);
 	  send_to_char(buf,ch);
 	  wear(ch, obj_object, keyword);
 	}
       } else {
-	sprintf(buffer, "You do not seem to have the '%s'.\n\r",arg1);
+	SPRINTF(buffer, "You do not seem to have the '%s'.\n\r",arg1);
 	send_to_char(buffer,ch);
       }
     }
@@ -1070,7 +1070,7 @@ void do_wield(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     if (obj_object) {
       wear(ch, obj_object, keyword);
     } else {
-      sprintf(buffer, "You do not seem to have the '%s'.\n\r",arg1);
+      SPRINTF(buffer, "You do not seem to have the '%s'.\n\r",arg1);
       send_to_char(buffer,ch);
     }
   } else {
@@ -1094,7 +1094,7 @@ void do_grab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       else
 	wear(ch, obj_object, 13);
     } else {
-      sprintf(buffer, "You do not seem to have the '%s'.\n\r",arg1);
+      SPRINTF(buffer, "You do not seem to have the '%s'.\n\r",arg1);
       send_to_char(buffer,ch);
     }
   } else {
@@ -1176,7 +1176,7 @@ void do_remove(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	    j = MAX_WEAR;
 	  }
 	} else 	{
-	  sprintf(buffer,"You dont seem to have the %s\n\r",T);
+	  SPRINTF(buffer,"You dont seem to have the %s\n\r",T);
 	  send_to_char(buffer,ch);
 	}
 	if (T != P) T = P + 1;

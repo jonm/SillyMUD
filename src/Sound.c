@@ -113,7 +113,7 @@ void MakeSound(int pulse)
 	  /*
 	   * snore 
 	   */	 
-	  sprintf(buffer, "%s snores loudly.\n\r", ch->player.short_descr);
+	  SPRINTF(buffer, "%s snores loudly.\n\r", ch->player.short_descr);
 	  MakeNoise(ch->in_room, buffer, "You hear a loud snore nearby.\n\r");
 	}
       } else if (GET_POS(ch) == ch->specials.default_pos) {

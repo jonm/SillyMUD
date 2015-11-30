@@ -159,9 +159,9 @@ void do_inset(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   /* add an extra description for the stone to the object*/
   CREATE(new_descr, struct extra_descr_data, 1);
-  sprintf(buf, "%s hilt",sword->name);
+  SPRINTF(buf, "%s hilt",sword->name);
   new_descr->keyword = strdup(buf);
-  sprintf(buf, "It is inset with %s", gem->short_description);
+  SPRINTF(buf, "It is inset with %s", gem->short_description);
   new_descr->description = strdup(buf);
   new_descr->next = sword->ex_description;
   sword->ex_description = new_descr;
@@ -442,7 +442,7 @@ void do_track(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   } else {
     if (IS_LIGHT(ch->in_room) || IS_AFFECTED(ch, AFF_TRUE_SIGHT) ) {
       SET_BIT(ch->specials.act, PLR_HUNTING);
-      sprintf(buf, "You see traces of your quarry to the %s.\n\r", dirs[code]);
+      SPRINTF(buf, "You see traces of your quarry to the %s.\n\r", dirs[code]);
       send_to_char(buf,ch);
     } else {
       ch->specials.hunting = 0;
@@ -480,7 +480,7 @@ int track( struct char_data *ch, struct char_data *vict)
     send_to_char("##You have lost the trail.\n\r",ch);
     return(FALSE);
   } else {
-    sprintf(buf, "##You see a faint trail to the %s.\n\r", dirs[code]);
+    SPRINTF(buf, "##You see a faint trail to the %s.\n\r", dirs[code]);
     send_to_char(buf, ch);
     return(TRUE);
   }
@@ -516,7 +516,7 @@ int dir_track( struct char_data *ch, struct char_data *vict)
     }
     return(-1);  /* false to continue the hunt */
   } else {
-    sprintf(buf, "##You see a faint trail to the %s.\n\r", dirs[code]);
+    SPRINTF(buf, "##You see a faint trail to the %s.\n\r", dirs[code]);
     send_to_char(buf, ch);
     return(code);
   }
@@ -703,10 +703,10 @@ void slam_into_wall( struct char_data *ch, struct room_direction_data *exitp)
   } else {
     strcpy(doorname, "barrier");
   }
-  sprintf(buf, "You slam against the %s with no effect.\n\r", doorname);
+  SPRINTF(buf, "You slam against the %s with no effect.\n\r", doorname);
   send_to_char(buf, ch);
   send_to_char("OUCH!  That REALLY Hurt!\n\r", ch);
-  sprintf(buf, "$n crashes against the %s with no effect.\n\r", doorname);
+  SPRINTF(buf, "$n crashes against the %s with no effect.\n\r", doorname);
   act(buf, FALSE, ch, 0, 0, TO_ROOM);
   GET_HIT(ch) -= number(1, 10)*2;
   if (GET_HIT(ch) < 0)
@@ -772,9 +772,9 @@ void do_doorbash( struct char_data *ch, char *arg, int UNUSED(cmd)) {
     }
   }
   
-  sprintf(buf, "$n charges %swards", dirs[dir]);
+  SPRINTF(buf, "$n charges %swards", dirs[dir]);
   act(buf, FALSE, ch, 0, 0, TO_ROOM);
-  sprintf(buf, "You charge %swards\n\r", dirs[dir]);
+  SPRINTF(buf, "You charge %swards\n\r", dirs[dir]);
   send_to_char(buf, ch);
 
   if (!IS_SET(exitp->exit_info, EX_CLOSED)) {
@@ -822,10 +822,10 @@ void do_doorbash( struct char_data *ch, char *arg, int UNUSED(cmd)) {
 	/*
 	  unlock and open the door
 	  */
-	sprintf(buf, "$n slams into the %s, and it bursts open!", 
+	SPRINTF(buf, "$n slams into the %s, and it bursts open!", 
 		fname(exitp->keyword));
 	act(buf, FALSE, ch, 0, 0, TO_ROOM);
-	sprintf(buf, "You slam into the %s, and it bursts open!\n\r", 
+	SPRINTF(buf, "You slam into the %s, and it bursts open!\n\r", 
 		fname(exitp->keyword));
 	send_to_char(buf, ch);
 	raw_unlock_door(ch, exitp, dir);
@@ -1179,9 +1179,9 @@ void do_climb( struct char_data *ch, char *arg, int UNUSED(cmd)) {
     return;
   }
 
-  sprintf(buf, "$n attempts to climb %swards", dirs[dir]);
+  SPRINTF(buf, "$n attempts to climb %swards", dirs[dir]);
   act(buf, FALSE, ch, 0, 0, TO_ROOM);
-  sprintf(buf, "You attempt to climb %swards\n\r", dirs[dir]);
+  SPRINTF(buf, "You attempt to climb %swards\n\r", dirs[dir]);
   send_to_char(buf, ch);
 
   GET_MOVE(ch) -= 10;
@@ -1304,7 +1304,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 	      if (obj_object->obj_flags.value[0]<1)
 		obj_object->obj_flags.value[0] = 1;
 	      obj_from_char(obj_object);
-	      sprintf(buffer,"There %s %d coins.\n\r",
+	      SPRINTF(buffer,"There %s %d coins.\n\r",
 		      obj_object->obj_flags.value[0] > 1 ? "were" : "was",
 		      obj_object->obj_flags.value[0]);
 	      send_to_char(buffer,ch);
@@ -1312,7 +1312,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 	      if (GET_GOLD(ch) > 100000 && 
 		  obj_object->obj_flags.value[0] > 10000) {
 		char buf[MAX_INPUT_LENGTH];
-		sprintf(buf,"%s just got %d coins!",
+		SPRINTF(buf,"%s just got %d coins!",
 			GET_NAME(ch),obj_object->obj_flags.value[0]);
 		log_msg(buf);
 	      }
@@ -1323,19 +1323,19 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 	    return;
 	  }
 	} else {
-	  sprintf(buffer,"%s : You can't carry that much weight.\n\r",
+	  SPRINTF(buffer,"%s : You can't carry that much weight.\n\r",
 		  obj_object->short_description);
 	  send_to_char(buffer, ch);
 	  return;
 	}
       } else {
-	sprintf(buffer,"%s : You can't carry that many items.\n\r",
+	SPRINTF(buffer,"%s : You can't carry that many items.\n\r",
 		obj_object->short_description);
 	send_to_char(buffer, ch);
 	return;
       }
     } else {
-      sprintf(buffer,"You do not see a %s here.\n\r", arg1);
+      SPRINTF(buffer,"You do not see a %s here.\n\r", arg1);
       send_to_char(buffer, ch);
       return;
     }
@@ -1365,7 +1365,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 		    if (obj_object->obj_flags.value[0]<1)
 		      obj_object->obj_flags.value[0] = 1;
 		    obj_from_char(obj_object);
-		    sprintf(buffer,"There %s %d coins.\n\r",
+		    SPRINTF(buffer,"There %s %d coins.\n\r",
 			   obj_object->obj_flags.value[0] > 1 ? "were" : "was",
 			    obj_object->obj_flags.value[0]);
 		    send_to_char(buffer,ch);
@@ -1373,7 +1373,7 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 		    if (GET_GOLD(ch) > 100000 &&
 			obj_object->obj_flags.value[0] > 10000) {
 		      char buf[MAX_INPUT_LENGTH];
-		      sprintf(buf,"%s just got %d coins!",
+		      SPRINTF(buf,"%s just got %d coins!",
 			      GET_NAME(ch),obj_object->obj_flags.value[0]);
 		      log_msg(buf);
 		    }
@@ -1386,26 +1386,26 @@ void do_palm( struct char_data *ch, char *arg, int cmd)
 		send_to_char("You can't take that.\n\r", ch);
 	      }
 	    } else {
-	      sprintf(buffer,"%s : You can't carry that much weight.\n\r",
+	      SPRINTF(buffer,"%s : You can't carry that much weight.\n\r",
 		      obj_object->short_description);
 	      send_to_char(buffer, ch);
 	    }
 	  } else {
-	    sprintf(buffer,"%s : You can't carry that many items.\n\r",
+	    SPRINTF(buffer,"%s : You can't carry that many items.\n\r",
 		    obj_object->short_description);
 	    send_to_char(buffer, ch);
 	  }
 	} else {
-	  sprintf(buffer,"%s does not contain the %s.\n\r",
+	  SPRINTF(buffer,"%s does not contain the %s.\n\r",
 		  sub_object->short_description, arg1);
 	  send_to_char(buffer, ch);
 	}
       } else {
-	sprintf(buffer,"%s is not a container.\n\r", 
+	SPRINTF(buffer,"%s is not a container.\n\r", 
 		sub_object->short_description);
       }
     } else {
-      sprintf(buffer,"You do not see or have the %s.\n\r", arg2);
+      SPRINTF(buffer,"You do not see or have the %s.\n\r", arg2);
       send_to_char(buffer, ch);
     }
   }
@@ -1595,7 +1595,7 @@ void do_makepotion(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   {
     char buf[80];
-    sprintf(buf,"Min brew level is: %d", max);
+    SPRINTF(buf,"Min brew level is: %d", max);
     log_msg(buf);
   }
 

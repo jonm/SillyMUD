@@ -103,7 +103,7 @@ void spell_speak_with_plants(byte UNUSED(level), struct char_data *ch,
     return;
   }
 
-  sprintf(buffer, "%s says 'Hi $n, how ya doin?'", 
+  SPRINTF(buffer, "%s says 'Hi $n, how ya doin?'", 
 	  fname(obj->name));
   act(buffer, FALSE, ch, obj, 0, TO_CHAR);
   act("$p rustles slightly.", FALSE, ch, obj, 0, TO_ROOM);
@@ -959,7 +959,7 @@ void spell_commune(byte UNUSED(level), struct char_data *ch,
 
     if (rp->zone == dp->zone) {
       if (!IS_SET(rp->room_flags, INDOORS)) {
-	sprintf(buf, "%s is in %s\n\r", (IS_NPC(c)?c->player.short_descr:GET_NAME(c)),rp->name);
+	SPRINTF(buf, "%s is in %s\n\r", (IS_NPC(c)?c->player.short_descr:GET_NAME(c)),rp->name);
 	if (strlen(buf)+strlen(buffer) > MAX_STRING_LENGTH-2)
 	  break;
 	strcat(buffer, buf);
@@ -2039,59 +2039,59 @@ void spell_know_monster(byte level, struct char_data *ch,
 */
 
   if (!IS_PC(victim)) {
-    sprintf(buf,"$N belongs to the %s race.", RaceName[GET_RACE(victim)]);
+    SPRINTF(buf,"$N belongs to the %s race.", RaceName[GET_RACE(victim)]);
     act(buf,FALSE, ch, 0, victim, TO_CHAR);
     if (level > 5) {
       exp = GetApprox(GET_EXP(victim), 40+level);
-      sprintf(buf, "$N is worth approximately %d experience", exp);
+      SPRINTF(buf, "$N is worth approximately %d experience", exp);
       act(buf,FALSE, ch, 0, victim, TO_CHAR);
     }
     if (level > 10) {
       lev = GetApprox(GetMaxLevel(victim), 40+level);
-      sprintf(buf, "$N fights like a %d level warrior, you think", lev);
+      SPRINTF(buf, "$N fights like a %d level warrior, you think", lev);
       act(buf,FALSE, ch, 0, victim, TO_CHAR);      
     }
     if (level > 15) {
       if (IS_SET(victim->hatefield, HATE_RACE)) {
-	sprintf(buf, "$n seems to hate the %s race", RaceName[victim->hates.race]);
+	SPRINTF(buf, "$n seems to hate the %s race", RaceName[victim->hates.race]);
 	act(buf,FALSE, ch, 0, victim, TO_CHAR);      
       }
       if (IS_SET(victim->hatefield, HATE_CLASS)) {
 	sprintbit((unsigned)victim->hates.class, pc_class_types, buf2);
-	sprintf(buf, "$n seems to hate the %s class(es)", buf2);
+	SPRINTF(buf, "$n seems to hate the %s class(es)", buf2);
 	act(buf,FALSE, ch, 0, victim, TO_CHAR);      
       }
     }
     if (level > 20) {
       hits = GetApprox(GET_MAX_HIT(victim), 40+level);
-      sprintf(buf,"$N probably has about %d hit points", hits);
+      SPRINTF(buf,"$N probably has about %d hit points", hits);
       act(buf,FALSE, ch, 0, victim, TO_CHAR);      
     }
     if (level > 25) {
       if (victim->susc) {
 	sprintbit(victim->susc, immunity_names, buf2);
-	sprintf(buf, "$N is susceptible to %s\n\r", buf2);
+	SPRINTF(buf, "$N is susceptible to %s\n\r", buf2);
 	act(buf,FALSE, ch, 0, victim, TO_CHAR);
       }
     }
     if (level > 30) {
       if (victim->immune) {
 	sprintbit(victim->immune, immunity_names, buf2);
-	sprintf(buf, "$N is resistant to %s\n\r", buf2);
+	SPRINTF(buf, "$N is resistant to %s\n\r", buf2);
 	act(buf,FALSE, ch, 0, victim, TO_CHAR);
       }
     }
     if (level > 35) {
       if (victim->M_immune) {
 	sprintbit(victim->M_immune, immunity_names, buf2);
-	sprintf(buf, "$N is immune to %s\n\r", buf2);
+	SPRINTF(buf, "$N is immune to %s\n\r", buf2);
 	act(buf,FALSE, ch, 0, victim, TO_CHAR);
       }
     }
     if (level > 40) {
       int att;
       att = GetApprox((int)victim->mult_att, 30+level);
-      sprintf(buf,"$N gets approx %d.0 attack(s) per round", att);
+      SPRINTF(buf,"$N gets approx %d.0 attack(s) per round", att);
       act(buf,FALSE, ch, 0, victim, TO_CHAR);
     }
     if (level > 45) {
@@ -2099,7 +2099,7 @@ void spell_know_monster(byte level, struct char_data *ch,
       no = GetApprox(victim->specials.damnodice, 30+level);
       s = GetApprox(victim->specials.damsizedice, 30+level);
 
-      sprintf(buf,"Each does about %dd%d points of damage", 
+      SPRINTF(buf,"Each does about %dd%d points of damage", 
 	      no, s);
       act(buf,FALSE, ch, 0, victim, TO_CHAR);
     }
@@ -2264,7 +2264,7 @@ void spell_portal(byte level, struct char_data *ch,
 
   if (!(nrp = real_roomp(tmp_ch->in_room))) {
     char str[180];
-    sprintf(str, "%s not in any room.", GET_NAME(tmp_ch));
+    SPRINTF(str, "%s not in any room.", GET_NAME(tmp_ch));
     log_msg(str);
     send_to_char("Your magic cannot locate the target.\n\r", ch);
     return;
@@ -2288,7 +2288,7 @@ void spell_portal(byte level, struct char_data *ch,
     return;
   }
 
-  sprintf(buf, "Through the mists of the portal, you can faintly see %s", nrp->name);
+  SPRINTF(buf, "Through the mists of the portal, you can faintly see %s", nrp->name);
 
   CREATE(ed , struct extra_descr_data, 1);
   ed->next = tmp_obj->ex_description;

@@ -156,7 +156,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
    if (GET_POS(v) == POSITION_DEAD) {
      if (!IS_NPC(v)) {
        if (real_roomp(v->in_room)->name)
-	 sprintf(buf, "%s killed by a trap at %s",
+	 SPRINTF(buf, "%s killed by a trap at %s",
 		 GET_NAME(v),
 		 real_roomp(v->in_room)->name);
        log_msg(buf);
@@ -209,14 +209,14 @@ void TrapDam(struct char_data *v, int damtype, int amnt, struct obj_data *t)
   if ((damtype != TRAP_DAM_TELEPORT)   &&
       (damtype != TRAP_DAM_SLEEP)) {
       if (amnt > 0) {
-    sprintf(buf, "$n is %s by $p!", desc);
+    SPRINTF(buf, "$n is %s by $p!", desc);
     act(buf,TRUE,v,t,0,TO_ROOM);
-    sprintf(buf, "You are %s by $p!", desc);
+    SPRINTF(buf, "You are %s by $p!", desc);
     act(buf,TRUE,v,t,0,TO_CHAR);
       } else {
-    sprintf(buf, "$n is almost %s by $p!", desc);
+    SPRINTF(buf, "$n is almost %s by $p!", desc);
     act(buf,TRUE,v,t,0,TO_ROOM);
-    sprintf(buf, "You are almost %s by $p!", desc);
+    SPRINTF(buf, "You are almost %s by $p!", desc);
     act(buf,TRUE,v,t,0,TO_CHAR);
       }
   }

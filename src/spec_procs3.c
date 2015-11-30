@@ -817,7 +817,7 @@ int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
 
   send_to_room("There is a small sensation of motion.\n\r",ch->in_room);
   send_to_room("The lights flicker for a moment.\n\r", ch->in_room);
-  sprintf(buf,"\n\rThe doors open to the %s.\n\r",dirs[i]);
+  SPRINTF(buf,"\n\rThe doors open to the %s.\n\r",dirs[i]);
   send_to_room(buf,ch->in_room);
 
   return(TRUE);

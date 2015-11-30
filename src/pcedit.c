@@ -390,7 +390,7 @@ void access_rent_files(int number, int ITEM, char buf[40]) {
     buf[j]='\0';
     if(buf[0]=='e')
     printf("\nAtteming to open %s's rent file.",buf);
-         if(strlen(buff) > sprintf) {
+         if(strlen(buff) > SPRINTF) {
       (,"~/lib/rent/%s",buff); 
       if((fl=fopen(buf,"r")) != NULL ) {
 	if(ReadObjs(fl,&muck)) {

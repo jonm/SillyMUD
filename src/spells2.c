@@ -1012,7 +1012,7 @@ void cast_curse(byte level, struct char_data *ch, char * UNUSED(arg), int type,
 	spell_curse(level,ch,tar_ch,0);
     break;
     default : 
-      sprintf(buf,"Serious screw up in curse! Char = %s.",ch->player.name);
+      SPRINTF(buf,"Serious screw up in curse! Char = %s.",ch->player.name);
       log_msg(buf);
     break;
   }
@@ -1610,16 +1610,16 @@ void cast_ventriloquate(byte UNUSED(level), struct char_data *ch, char *arg,
 	}
 	for(; *arg && (*arg == ' '); arg++);
 	if (tar_obj) {
-		sprintf(buf1, "The %s says '%s'\n\r", fname(tar_obj->name), arg);
-		sprintf(buf2, "Someone makes it sound like the %s says '%s'.\n\r",
+		SPRINTF(buf1, "The %s says '%s'\n\r", fname(tar_obj->name), arg);
+		SPRINTF(buf2, "Someone makes it sound like the %s says '%s'.\n\r",
 		  fname(tar_obj->name), arg);
 	}	else {
-		sprintf(buf1, "%s says '%s'\n\r", GET_NAME(tar_ch), arg);
-		sprintf(buf2, "Someone makes it sound like %s says '%s'\n\r",
+		SPRINTF(buf1, "%s says '%s'\n\r", GET_NAME(tar_ch), arg);
+		SPRINTF(buf2, "Someone makes it sound like %s says '%s'\n\r",
 		  GET_NAME(tar_ch), arg);
 	}
 
-	sprintf(buf3, "Someone says, '%s'\n\r", arg);
+	SPRINTF(buf3, "Someone says, '%s'\n\r", arg);
 
 	for (tmp_ch = real_roomp(ch->in_room)->people; tmp_ch;
 	  tmp_ch = tmp_ch->next_in_room) {
@@ -1792,7 +1792,7 @@ void cast_dragon_breath(byte level, struct char_data *ch, char * UNUSED(arg),
   if (scan->vnum==0) {
     char	buf[MAX_STRING_LENGTH];
     send_to_char("Hey, this potion isn't in my list!\n\r", ch);
-    sprintf(buf,"unlisted breath potion %s %d", potion->short_description,
+    SPRINTF(buf,"unlisted breath potion %s %d", potion->short_description,
 	    obj_index[potion->item_number].virtual);
     log_msg(buf);
     return;
@@ -2821,7 +2821,7 @@ void cast_familiar(byte level, struct char_data *ch, char *arg, int type,
     spell_familiar(level, ch, &tar_ch, 0);
 
     if (tar_ch) {
-      sprintf(buf, "%s %s", GET_NAME(tar_ch), fname(arg));
+      SPRINTF(buf, "%s %s", GET_NAME(tar_ch), fname(arg));
       free(GET_NAME(tar_ch));
       GET_NAME(tar_ch) = (char *)malloc(strlen(buf)+1);
       strcpy(GET_NAME(tar_ch), buf);
@@ -2908,7 +2908,7 @@ void cast_command(byte UNUSED(level), struct char_data *ch, char *arg,
 	!saves_spell(tar_ch, SAVING_PARA)) {
 
       if (strcmp(p, "quit")) {
-	sprintf(buf, "$n has commanded you to '%s'.", p);
+	SPRINTF(buf, "$n has commanded you to '%s'.", p);
 	act(buf, FALSE, ch, 0, tar_ch, TO_VICT);
 	send_to_char("Ok.\n\r", ch);
 	command_interpreter(tar_ch, p);
@@ -2916,7 +2916,7 @@ void cast_command(byte UNUSED(level), struct char_data *ch, char *arg,
       }
     }
 
-    sprintf(buf, "$n just tried to command you to '%s'.", p);
+    SPRINTF(buf, "$n just tried to command you to '%s'.", p);
     act(buf, FALSE, ch, 0, tar_ch, TO_VICT);
 
     if (!IS_PC(tar_ch))
@@ -3652,9 +3652,9 @@ void cast_sending(byte UNUSED(level), struct char_data *ch, char *arg,
   switch(type) {
   case SPELL_TYPE_SPELL:
     for (;*arg == ' ';arg++);
-    sprintf(buf, "$n sends you a mystic message: %s", arg);
+    SPRINTF(buf, "$n sends you a mystic message: %s", arg);
     act(buf, TRUE, ch, 0, tar_ch, TO_VICT);
-    sprintf(buf, "You send $N the message: %s", arg);
+    SPRINTF(buf, "You send $N the message: %s", arg);
     act(buf, TRUE, ch, 0, tar_ch, TO_CHAR);
     break;
   default:
