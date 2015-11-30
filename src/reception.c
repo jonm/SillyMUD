@@ -164,6 +164,7 @@ void update_file(struct char_data *ch, struct obj_file_u *st)
     */
   write_char_extra(ch);
   sprintf(buf, "rent/%s", lower(ch->player.name));
+  ensure_rent_directory();
 #if 0
   for(p=buf;*p && *p != ' ';p++);
   *p = '\0';
