@@ -740,16 +740,12 @@ void flush_queues(struct descriptor_data *d)
 /* ******************************************************************
 *  socket handling							 *
 ****************************************************************** */
-
-
-
-
 int init_socket(int port)
 {
 	int s;
-	char *opt;
 	struct sockaddr_in sa;
 	struct linger ld;
+	int optval = 1;
 
 	bzero(&sa, sizeof(struct sockaddr_in));
 	sa.sin_family = AF_INET;
@@ -760,7 +756,7 @@ int init_socket(int port)
 		assert(0);
  	}
 	if (setsockopt (s, SOL_SOCKET, SO_REUSEADDR,
-		(char *) &opt, sizeof (opt)) < 0) 	{
+			&optval, sizeof(optval)) < 0) {
 		perror ("setsockopt REUSEADDR");
 		exit (1);
 	}
