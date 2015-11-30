@@ -86,17 +86,23 @@ struct zone_data
 /* element in monster and object index-tables   */
 struct index_data
 {
-	int virtual;    /* virtual number of this mob/obj           */
-	long pos;       /* file position of this field              */
-	int number;     /* number of existing units of this mob/obj	*/
-	int (*func)();  /* special procedure for this mob/obj       */
-	char *name;
-        char *short_desc;
-        char *long_desc;
+  int virtual;    /* virtual number of this mob/obj           */
+  long pos;       /* file position of this field              */
+  int number;     /* number of existing units of this mob/obj	*/
+
+  /* mob special procs are:
+     int (*func)(struct char_data *, int, char *, char *, int);
+     obj special procs are:
+     int (*func)(struct char_data *, int, char *, struct obj_data *, int);
+  */
+  int (*func)();
+  char *name;
+  char *short_desc;
+  char *long_desc;
 };
 
-
-
+extern int top_of_mobt;
+extern int top_of_objt;
 
 /* for queueing zones for update   */
 struct reset_q_element

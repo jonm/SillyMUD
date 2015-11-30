@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "db.h"
 
 #define SHOP_FILE "tinyworld.shp"
 #define MAX_TRADE 5
@@ -667,6 +668,7 @@ void boot_the_shops()
   int temp;
   int count;
   FILE *shop_f;
+  int keeper;
   
   if (!(shop_f = fopen(SHOP_FILE, "r")))
     {
@@ -727,11 +729,19 @@ void boot_the_shops()
 	     &shop_index[number_of_shops].temper1);
       fscanf(shop_f,"%d \n",
 	     &shop_index[number_of_shops].temper2);
-      fscanf(shop_f,"%d \n",
-	     &shop_index[number_of_shops].keeper);
+      fscanf(shop_f,"%d \n", &keeper);
       
-      shop_index[number_of_shops].keeper =
-	real_mobile(shop_index[number_of_shops].keeper);
+      shop_index[number_of_shops].keeper = real_mobile(keeper);
+
+      if (shop_index[number_of_shops].keeper < 0 ||
+	  shop_index[number_of_shops].keeper > top_of_mobt) {
+	char *fmt = "***WARNING***: Shop %d has invalid keeper mobile %d";
+	char *buf;
+	buf = (char *)malloc(strlen(fmt) + 40);
+	sprintf(buf, fmt, number_of_shops, keeper);
+	log_msg(buf);
+	free(buf);
+      }
       
       fscanf(shop_f,"%d \n",
 	     &shop_index[number_of_shops].with_who);
@@ -756,13 +766,15 @@ void boot_the_shops()
   fclose(shop_f);
 }
 
-void assign_the_shopkeepers()
-{
-  int temp1;
+void assign_the_shopkeepers() {
+  int i;
   
-  for(temp1=0 ; temp1<number_of_shops ; temp1++)
-    mob_index[shop_index[temp1].keeper].func = shop_keeper;
-  
+  for(i=0 ; i<number_of_shops ; i++) {
+    int keeper = shop_index[i].keeper;
+    if (keeper >= 0 && keeper <= top_of_mobt) {
+      mob_index[keeper].func = shop_keeper;
+    }
+  }
 }
 
 

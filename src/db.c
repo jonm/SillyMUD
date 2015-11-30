@@ -654,12 +654,12 @@ struct index_data *generate_indices(FILE *fl, int *top)
   
   rewind(fl);
   
-  for (;;)	{
-    if (fgets(buf, sizeof(buf), fl)) 	{
-      if (*buf == '#')       	{
-	if (!i)						 /* first cell */
+  for (;;) {
+    if (fgets(buf, sizeof(buf), fl)) {
+      if (*buf == '#') {
+	if (!i)	{					 /* first cell */
 	  CREATE(index, struct index_data, bc);
-	else
+	} else {
 	  if (i >= bc) {
 	    if (!(index = (struct index_data*) 
 		realloc(index, (i + 50) * sizeof(struct index_data)))) {
@@ -668,6 +668,7 @@ struct index_data *generate_indices(FILE *fl, int *top)
 	    } 
             bc += 50;
           }
+	}
 	sscanf(buf, "#%d", &index[i].virtual);
 	index[i].pos = ftell(fl);
 	index[i].number = 0;
@@ -679,12 +680,12 @@ struct index_data *generate_indices(FILE *fl, int *top)
 	if (*buf == '$')	/* EOF */
 	  break;
       }
-    }    else      {
-	fprintf(stderr,"generate indices");
-	assert(0);
+    } else {
+      fprintf(stderr,"generate indices");
+      assert(0);
     }
   }
-  *top = i - 2;
+  *top = i - 1;
   return(index);
 }
 
@@ -735,8 +736,8 @@ void completely_cleanout_room(struct room_data *rp)
 void load_one_room(FILE *fl, struct room_data *rp)
 {
   char chk[50];
-  int   bc=0;
-  long int	tmp;
+  int bc = 0;
+  long int tmp = 0;
 
   struct extra_descr_data *new_descr;
 
