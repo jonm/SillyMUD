@@ -654,12 +654,12 @@ struct index_data *generate_indices(FILE *fl, int *top)
   
   rewind(fl);
   
-  for (;;)	{
-    if (fgets(buf, sizeof(buf), fl)) 	{
-      if (*buf == '#')       	{
-	if (!i)						 /* first cell */
+  for (;;) {
+    if (fgets(buf, sizeof(buf), fl)) {
+      if (*buf == '#') {
+	if (!i)	{					 /* first cell */
 	  CREATE(index, struct index_data, bc);
-	else
+	} else {
 	  if (i >= bc) {
 	    if (!(index = (struct index_data*) 
 		realloc(index, (i + 50) * sizeof(struct index_data)))) {
@@ -668,6 +668,7 @@ struct index_data *generate_indices(FILE *fl, int *top)
 	    } 
             bc += 50;
           }
+	}
 	sscanf(buf, "#%d", &index[i].virtual);
 	index[i].pos = ftell(fl);
 	index[i].number = 0;
@@ -679,12 +680,12 @@ struct index_data *generate_indices(FILE *fl, int *top)
 	if (*buf == '$')	/* EOF */
 	  break;
       }
-    }    else      {
-	fprintf(stderr,"generate indices");
-	assert(0);
+    } else {
+      fprintf(stderr,"generate indices");
+      assert(0);
     }
   }
-  *top = i - 2;
+  *top = i - 1;
   return(index);
 }
 
@@ -735,8 +736,8 @@ void completely_cleanout_room(struct room_data *rp)
 void load_one_room(FILE *fl, struct room_data *rp)
 {
   char chk[50];
-  int   bc=0;
-  long int	tmp;
+  int bc = 0;
+  long int tmp = 0;
 
   struct extra_descr_data *new_descr;
 
@@ -2377,12 +2378,14 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
   st->points.armor   = 100;
   st->points.hitroll =  0;
   st->points.damroll =  0;
-  
+
+  memset(st->title, 0, sizeof(st->title));
   if (GET_TITLE(ch))
     strcpy(st->title, GET_TITLE(ch));
   else
     *st->title = '\0';
-  
+
+  memset(st->description, 0, sizeof(st->description));
   if (ch->player.description)
     strcpy(st->description, ch->player.description);
   else
@@ -2393,7 +2396,8 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
   
   for (i = 0; i <= MAX_SKILLS - 1; i++)
     st->skills[i] = ch->skills[i];
-  
+
+  memset(st->name, 0, sizeof(st->name));
   strcpy(st->name, GET_NAME(ch) );
   
   for(i = 0; i <= 4; i++)
@@ -2485,14 +2489,16 @@ void save_char(struct char_data *ch, sh_int load_room)
     top_of_p_file++;
   }  else
     strcpy(mode, "r+");
-  
+
+  memset(&st, 0, sizeof(st));
   if (!tmp)
     char_to_store(ch, &st);
   else
     char_to_store(tmp, &st);
   
   st.load_room = load_room;
-  
+
+  memset(st.pwd, 0, sizeof(st.pwd));
   strcpy(st.pwd, ch->desc->pwd);
   
   if (!(fl = fopen(PLAYER_FILE, mode)))	{
@@ -2501,7 +2507,7 @@ void save_char(struct char_data *ch, sh_int load_room)
   }
   
   if (!expand)
-    fseek(fl, ch->desc->pos * sizeof(struct char_file_u), 0);
+    fseek(fl, ch->desc->pos * sizeof(struct char_file_u), SEEK_SET);
   
   fwrite(&st, sizeof(struct char_file_u), 1, fl);
   
@@ -2570,7 +2576,6 @@ char *fread_string(FILE *f1)
 /* release memory allocated for a char struct */
 void free_char(struct char_data *ch)
 {
-  struct affected_type *af;
   int i;
 
   free(GET_NAME(ch));
@@ -2595,8 +2600,9 @@ void free_char(struct char_data *ch)
     free(ch->specials.A_list);
   }
 
-  for (af = ch->affected; af; af = af->next) 
-    affect_remove(ch, af);
+  while(ch->affected) {
+    affect_remove(ch, ch->affected);
+  }
 
   if (ch->skills)
     free(ch->skills);
@@ -2867,7 +2873,7 @@ void reset_char(struct char_data *ch)
 /* clear ALL the working variables of a char and do NOT free any space alloc'ed*/
 void clear_char(struct char_data *ch)
 {
-	memset(ch, '\0', sizeof(struct char_data));
+	memset(ch, 0, sizeof(struct char_data));
 
 	ch->in_room = NOWHERE;
 	ch->specials.was_in_room = NOWHERE;

@@ -536,6 +536,7 @@ void die(struct char_data *ch)
   char buf[80];
   int fraction;
   struct descriptor_data *fd;
+  int onelife;
    
   /* need at least 1/fraction worth of exp for the minimum needed for */
   /* the pc's current level, or else you lose a level.  If all three  */
@@ -617,8 +618,9 @@ void die(struct char_data *ch)
   DeleteHatreds(ch);
   DeleteFears(ch);
 
-  if (IS_SET(ch->specials.affected_by2, AFF2_ONE_LIFER) &&
-      !IS_IMMORTAL(ch)) {
+  onelife = IS_SET(ch->specials.affected_by2, AFF2_ONE_LIFER);
+
+  if (onelife && !IS_IMMORTAL(ch)) {
     send_to_char("ack, you're dead\n\r", ch);
 
     for (i = 0; i <= top_of_p_table; i++)	{
@@ -632,7 +634,7 @@ void die(struct char_data *ch)
 
   raw_kill(ch);
 
-  if (IS_SET(ch->specials.affected_by2, AFF2_ONE_LIFER)) {
+  if (onelife) {
     close_socket(fd);
   }
 
