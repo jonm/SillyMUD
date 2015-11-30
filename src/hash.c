@@ -63,7 +63,7 @@ void _hash_enter(struct hash_header *ht, int key, void *data)
 				 (ht->klistsize*=2));
   }
   for (i=ht->klistlen; i>=0; i--) {
-    if (ht->keylist[i-1]<key) {
+    if (i == 0 || ht->keylist[i-1]<key) {
       ht->keylist[i] = key;
       break;
     }
