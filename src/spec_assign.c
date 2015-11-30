@@ -5,7 +5,9 @@
 */
 #include "config.h"
 
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "protos.h"
 
@@ -1091,33 +1093,50 @@ void assign_mobiles()
 	assign_the_shopkeepers();
 }
 
-
+struct object_proc {
+  int virtual_obj_num;
+  int (*func)();
+};
+static struct object_proc obj_procs[] = {
+  { 15, SlotMachine },
+  { 29, warpstone },
+  { 30, scraps },
+  { 23, jive_box },
+  { 31, portal },
+  { 3092, board },
+  { 3093, board },
+  { 3094, board },
+  { 3095, board },
+  { 3096, board },
+  { 3097, board },
+  { 3098, board },
+  { 3099, board },
+  { 25102, board },
+  { 21122, nodrop },
+  { 21130, YouthPotion },
+#if EGO
+  { 40000, BitterBlade },
+#endif
+  { -1, NULL }
+};
 
 /* assign special procedures to objects */
-void assign_objects()
-{
-        obj_index[real_object(15)].func = SlotMachine;
-	obj_index[real_object(29)].func = warpstone;
-        obj_index[real_object(30)].func = scraps;
-	obj_index[real_object(23)].func = jive_box;
-	obj_index[real_object(31)].func = portal;
-	obj_index[real_object(3092)].func = board;
-	obj_index[real_object(3093)].func = board;
-	obj_index[real_object(3094)].func = board;
-	obj_index[real_object(3095)].func = board;
-	obj_index[real_object(3096)].func = board;
-	obj_index[real_object(3097)].func = board;
-	obj_index[real_object(3098)].func = board;
-	obj_index[real_object(3099)].func = board;
-	obj_index[real_object(25102)].func = board;
-	obj_index[real_object(21122)].func = nodrop;
-	obj_index[real_object(21130)].func = soap;
-	obj_index[real_object(22698)].func = YouthPotion;
-#if EGO
-	obj_index[real_object(40000)].func = BitterBlade;
-#endif
-
-
+void assign_objects() {
+  int i = 0;
+  while(obj_procs[i].virtual_obj_num > 0) {
+    int real_obj_num = real_object(obj_procs[i].virtual_obj_num);
+    if (real_obj_num >= 0 && real_obj_num <= top_of_objt) {
+      obj_index[real_obj_num].func = obj_procs[i].func;
+    } else {
+      const char *fmt = "***WARNING***: assigning special proc to non-existent object %d";
+      char *buf;
+      buf = (char *)malloc(strlen(fmt) + 20);
+      sprintf(buf, fmt, obj_procs[i].virtual_obj_num);
+      log_msg(buf);
+      free(buf);
+    }
+    i++;
+  }
 }
 
 
