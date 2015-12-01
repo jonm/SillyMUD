@@ -299,7 +299,7 @@
 #endif
 
 #define SPRINTF(str, ...)                       \
-  (sizeof(str) > 8 ?                            \
+  (sizeof(str) > SIZEOF_VOID_P ?                \
    snprintf(str, sizeof(str), __VA_ARGS__) :    \
    sprintf(str, __VA_ARGS__))
 
