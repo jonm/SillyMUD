@@ -4965,7 +4965,7 @@ int nodrop(struct char_data *ch, int cmd, char *arg,
   else {
     strcpy(buf,obj_name);
     name = buf;
-    if(!(num = get_number(&name))) return(FALSE);
+    if(!(num = get_number(name))) return(FALSE);
   }
 
   /* Look in the room first, in get case */
