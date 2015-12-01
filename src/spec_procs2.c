@@ -358,7 +358,7 @@ int Summoner(struct char_data *ch, int cmd, char * UNUSED(arg),
           if (i->op_ch) {  /* if there is a char_ptr */
 	    targ = i->op_ch;
 	    if (IS_PC(targ)) {
-	      sprintf(buf, "You hate %s\n\r", targ->player.name);
+	      SPRINTF(buf, "You hate %s\n\r", targ->player.name);
 	      send_to_char(buf, ch);
 	      break;
 	    }
@@ -389,7 +389,7 @@ int Summoner(struct char_data *ch, int cmd, char * UNUSED(arg),
       }
       if (targ->in_room == ch->in_room) {
 	 if (NumCharmedFollowersInRoom(ch) > 0) {
-	   sprintf(buf, "followers kill %s", GET_NAME(targ));
+	   SPRINTF(buf, "followers kill %s", GET_NAME(targ));
 	   do_order(ch, buf, 0);
 	 }
          hit(ch, targ, 0);
@@ -487,7 +487,7 @@ int jive_box(struct char_data *ch, int cmd, char *arg,
                  break;
        case 19:  half_chop(arg, tmp, buf);
                  invert(buf, buf2);
-                 sprintf(buf3, "%s %s", tmp, buf);
+                 SPRINTF(buf3, "%s %s", tmp, buf);
                  do_tell(ch, buf3, cmd);
                  return(TRUE);
                  break;
@@ -679,11 +679,11 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
 	char buf[200];
 
 	if (!vict->specials.fighting) {
-	  sprintf(buf, "%s kill %s", 
+	  SPRINTF(buf, "%s kill %s", 
 		  GET_NAME(vict), GET_NAME(ch->specials.fighting));
 	  do_order(ch, buf, 0);
 	} else {
-	  sprintf(buf, "%s remove all", GET_NAME(vict));
+	  SPRINTF(buf, "%s remove all", GET_NAME(vict));
 	  do_order(ch, buf, 0);
 	}
       }
@@ -1160,7 +1160,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
   case TAUGHT_BY_ETTIN:
     break;
   default:
-    sprintf(buf,"Teacher() attempted to be called with %d(mob#) as teacher.",
+    SPRINTF(buf,"Teacher() attempted to be called with %d(mob#) as teacher.",
 	    teacher);
     log_msg(buf);
     return(FALSE);
@@ -1174,7 +1174,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
       send_to_char("You can practice any of these skills:\n\r", ch);
       for(i=0; *spells[i] != '\n'; i++) {
         if (skill_info[i+1].taught_by & teacher) {
-          sprintf(buf, "%-30s %s\n\r", spells[i],
+          SPRINTF(buf, "%-30s %s\n\r", spells[i],
                   how_good(ch->skills[i+1].learned));
           send_to_char(buf, ch);
         }
@@ -1182,7 +1182,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
       return(TRUE);
     } else {
       number = old_search_block(arg,0,strlen(arg),spells,FALSE);
-      sprintf(buf, "The %s says ",say_str);
+      SPRINTF(buf, "The %s says ",say_str);
       send_to_char (buf,ch);
       if (number == -1) {
         send_to_char("'I do not know of this skill.'\n\r", ch);
@@ -1249,7 +1249,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
       return(TRUE);
     }
 
-    sprintf(buf,"\'That will be %d coins.'\n\rThe %s says ",
+    SPRINTF(buf,"\'That will be %d coins.'\n\rThe %s says ",
 	    charge,say_str);
     
     send_to_char(buf,ch);
@@ -1381,7 +1381,7 @@ int RepairGuy( struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
 	    act("$N decides $S doesn't like you.", FALSE, ch, 0, vict,TO_CHAR);
 	    send_to_char("You are charged double!\n\r",ch);
 	  }
-	  sprintf(buf, "You give $N %d coins.",cost);
+	  SPRINTF(buf, "You give $N %d coins.",cost);
 	  act(buf,TRUE,ch,0,vict,TO_CHAR);
 	  act("$n gives some money to $N.",TRUE,ch,obj,vict,TO_ROOM);
 
@@ -1463,7 +1463,7 @@ int RepairGuy( struct char_data *ch, int cmd, char *arg, struct char_data *mob, 
 	} else {
 	  GET_GOLD(ch) -= cost;
 	  
-	  sprintf(buf, "You give $N %d coins.",cost);
+	  SPRINTF(buf, "You give $N %d coins.",cost);
 	  act(buf,TRUE,ch,0,vict,TO_CHAR);
 	  act("$n gives some money to $N.",TRUE,ch,obj,vict,TO_ROOM);
 	  
@@ -2121,19 +2121,19 @@ void  Submit(struct char_data *ch, struct char_data *t)
 
   switch(number(1,5)) {
   case 1:
-    sprintf(buf, "bow %s", GET_NAME(t));
+    SPRINTF(buf, "bow %s", GET_NAME(t));
     command_interpreter(ch, buf);
     break;
   case 2:
-    sprintf(buf, "smile %s", GET_NAME(t));
+    SPRINTF(buf, "smile %s", GET_NAME(t));
     command_interpreter(ch, buf);
     break;
   case 3:
-    sprintf(buf, "wink %s", GET_NAME(t));
+    SPRINTF(buf, "wink %s", GET_NAME(t));
     command_interpreter(ch, buf);
     break;
   case 4:
-    sprintf(buf, "wave %s", GET_NAME(t));
+    SPRINTF(buf, "wave %s", GET_NAME(t));
     command_interpreter(ch, buf);
     break;
   default:
@@ -2165,9 +2165,9 @@ void  SayHello(struct char_data *ch, struct char_data *t)
     break;
   case 4:
     if (t->player.sex == SEX_FEMALE)
-      sprintf(buf, "Make way!  Make way for the lady %s!", GET_NAME(t));
+      SPRINTF(buf, "Make way!  Make way for the lady %s!", GET_NAME(t));
     else
-      sprintf(buf, "Make way!  Make way for the lord %s!", GET_NAME(t));
+      SPRINTF(buf, "Make way!  Make way for the lord %s!", GET_NAME(t));
     do_say(ch, buf, 0);
     break;
   case 5:
@@ -2184,13 +2184,13 @@ void  SayHello(struct char_data *ch, struct char_data *t)
     break;
   case 9:
     if (time_info.hours > 6 && time_info.hours < 12) 
-      sprintf(buf, "Good morning, %s", GET_NAME(t));
+      SPRINTF(buf, "Good morning, %s", GET_NAME(t));
     else if (time_info.hours >=12 && time_info.hours < 20)
-      sprintf(buf, "Good afternoon, %s", GET_NAME(t));
+      SPRINTF(buf, "Good afternoon, %s", GET_NAME(t));
     else if (time_info.hours >= 20 && time_info.hours <= 24)
-      sprintf(buf, "Good evening, %s", GET_NAME(t));
+      SPRINTF(buf, "Good evening, %s", GET_NAME(t));
     else 
-      sprintf(buf, "Up for a midnight stroll, %s?\n", GET_NAME(t));
+      SPRINTF(buf, "Up for a midnight stroll, %s?\n", GET_NAME(t));
     do_say(ch, buf, 0);
     break;
   case 10:{
@@ -2205,21 +2205,21 @@ void  SayHello(struct char_data *ch, struct char_data *t)
     
     switch(weather_info.sky) {
     case SKY_CLOUDLESS:
-      sprintf(buf, "Lovely weather we're having this %s, isn't it, %s.",
+      SPRINTF(buf, "Lovely weather we're having this %s, isn't it, %s.",
 	      buf2, GET_NAME(t));
     case SKY_CLOUDY:
-      sprintf(buf, "Nice %s to go for a walk, %s.", buf2, GET_NAME(t));
+      SPRINTF(buf, "Nice %s to go for a walk, %s.", buf2, GET_NAME(t));
       break;
     case SKY_RAINING:
-      sprintf(buf, "I hope %s's rain clears up.. don't you %s?", buf2,
+      SPRINTF(buf, "I hope %s's rain clears up.. don't you %s?", buf2,
 	      GET_NAME(t));
       break;
     case SKY_LIGHTNING:
-      sprintf(buf, "How can you be out on such a miserable %s, %s!",
+      SPRINTF(buf, "How can you be out on such a miserable %s, %s!",
 	      buf2, GET_NAME(t));
       break;
     default:
-      sprintf(buf, "Such a pleasant %s, don't you think?", buf2);
+      SPRINTF(buf, "Such a pleasant %s, don't you think?", buf2);
       break;
     }
     do_say(ch, buf, 0);
@@ -2572,7 +2572,7 @@ int BreathWeapon(struct char_data *ch, int cmd, char * UNUSED(arg),
       ;
     
     if (scan->vnum < 0) {
-      sprintf(buf, "monster %s tries to breath, but isn't listed.",
+      SPRINTF(buf, "monster %s tries to breath, but isn't listed.",
 	      ch->player.short_descr);
       log_msg(buf);
       return FALSE;
@@ -2582,7 +2582,7 @@ int BreathWeapon(struct char_data *ch, int cmd, char * UNUSED(arg),
       ;
     
     if (count<1) {
-      sprintf(buf, "monster %s has no breath weapons",
+      SPRINTF(buf, "monster %s has no breath weapons",
 	      ch->player.short_descr);
       log_msg(buf);
       return FALSE;
@@ -3403,16 +3403,16 @@ int DragonHunterLeader(struct char_data *ch, int UNUSED(cmd),
                 for(i = real_roomp(ch->in_room)->people; i; i = i->next_in_room) {
                    if(IS_MOB(i) && (mob_index[i->nr].virtual == WHO_TO_CALL)) {
                      (*mob_index[i->nr].func)(i, 0, "", ch, EVENT_FOLLOW);
-                     sprintf(buf, "%d.%s", count, GET_NAME(i));
+                     SPRINTF(buf, "%d.%s", count, GET_NAME(i));
                      do_group(ch, buf, 0);
                      count++;
 		   }
                    else if((i->master) && (i->master == ch) && (GetMaxLevel(i) > 10)) {
-                     sprintf(buf, "%s", GET_NAME(i));
+                     SPRINTF(buf, "%s", GET_NAME(i));
                      do_group(ch, buf, 0);
 		   }
                   else if((i->master) && (i->master == ch)) {
-                     sprintf(buf, "%s You're too little! Get Lost!", GET_NAME(i));
+                     SPRINTF(buf, "%s You're too little! Get Lost!", GET_NAME(i));
                      do_tell(ch, buf, 0);
 		   }
 		 }
@@ -3581,7 +3581,7 @@ int SlotMachine(struct char_data *ch, int cmd, char * UNUSED(arg),
     case 5:
     case 6:
     case 7:  i[c] = 0;
-             sprintf(buf, "Slot %d: Lemon\n\r", c);
+             SPRINTF(buf, "Slot %d: Lemon\n\r", c);
              send_to_char(buf, ch);
                  break;
     case 8:
@@ -3591,7 +3591,7 @@ int SlotMachine(struct char_data *ch, int cmd, char * UNUSED(arg),
     case 12:
     case 13:
     case 14: i[c] = 1;
-             sprintf(buf, "Slot %d: Orange\n\r", c);
+             SPRINTF(buf, "Slot %d: Orange\n\r", c);
              send_to_char(buf, ch);
                  break;
     case 15:
@@ -3600,7 +3600,7 @@ int SlotMachine(struct char_data *ch, int cmd, char * UNUSED(arg),
     case 18:
     case 19:
     case 20: i[c] = 2;
-             sprintf(buf, "Slot %d: Banana\n\r", c);
+             SPRINTF(buf, "Slot %d: Banana\n\r", c);
              send_to_char(buf, ch);
                  break;
     case 21:
@@ -3608,16 +3608,16 @@ int SlotMachine(struct char_data *ch, int cmd, char * UNUSED(arg),
     case 23:
     case 24:
     case 25: i[c] = 3;
-             sprintf(buf, "Slot %d: Peach\n\r", c);
+             SPRINTF(buf, "Slot %d: Peach\n\r", c);
              send_to_char(buf, ch);
                  break;
     case 26:
     case 27: i[c] = 4;
-             sprintf(buf, "Slot %d: Bar\n\r", c);
+             SPRINTF(buf, "Slot %d: Bar\n\r", c);
              send_to_char(buf, ch);
                  break;
     case 28: i[c] = 5;
-             sprintf(buf, "Slot %d: Gold\n\r", c);
+             SPRINTF(buf, "Slot %d: Gold\n\r", c);
              send_to_char(buf, ch);
                  break;
     }
@@ -3646,7 +3646,7 @@ int SlotMachine(struct char_data *ch, int cmd, char * UNUSED(arg),
     if(ind > jackpot)
       ind = jackpot; /* Can only win as much as there is */
  
-   sprintf(buf, "You have won %d coins!\n\r", ind);
+   SPRINTF(buf, "You have won %d coins!\n\r", ind);
    send_to_char(buf, ch);
  
    GET_GOLD(ch) += ind;

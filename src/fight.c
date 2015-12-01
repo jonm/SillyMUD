@@ -269,7 +269,7 @@ void stop_fighting(struct char_data *ch)
   
   if (!ch->specials.fighting) {
     char buf[300];
-    sprintf(buf, "%s not fighting at invocation of stop_fighting",
+    SPRINTF(buf, "%s not fighting at invocation of stop_fighting",
 	    GET_NAME(ch));
     return;
   }
@@ -351,14 +351,14 @@ void make_corpse(struct char_data *ch)
   corpse->in_room = NOWHERE;
   
   if (!IS_NPC(ch) || (!IsUndead(ch))) {
-    sprintf(buf, "corpse %s",ch->player.name);
+    SPRINTF(buf, "corpse %s",ch->player.name);
     corpse->name = strdup(buf);
     
-    sprintf(buf, "The corpse of %s is lying here.", 
+    SPRINTF(buf, "The corpse of %s is lying here.", 
 	    (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)));
     corpse->description = strdup(buf);
     
-    sprintf(buf, "the corpse of %s",
+    SPRINTF(buf, "the corpse of %s",
 	    (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)));
     corpse->short_description = strdup(buf);
     
@@ -602,7 +602,7 @@ void die(struct char_data *ch)
                      ch);
         send_to_char("Your next death will result in the loss of a level,\n\r",
                      ch);
-        sprintf(buf,"unless you get at least %d more exp points.\n\r",
+        SPRINTF(buf,"unless you get at least %d more exp points.\n\r",
                 (titles[i][(int)GET_LEVEL(ch, i)].exp/fraction) - GET_EXP(ch));
         send_to_char(buf,ch);
       }
@@ -696,7 +696,7 @@ void group_gain(struct char_data *ch, struct char_data *victim)
 
       RatioExp(k, victim, total);
 
-      sprintf(buf,"You receive your share of %d experience.", total);
+      SPRINTF(buf,"You receive your share of %d experience.", total);
       act(buf, FALSE, k, 0, 0, TO_CHAR);
       gain_exp(k,total);
       change_alignment(k, victim);
@@ -717,7 +717,7 @@ void group_gain(struct char_data *ch, struct char_data *victim)
 
 	if (IS_PC(f->follower)) {
 	  total = RatioExp(f->follower, victim, total);
-	  sprintf(buf,"You receive your share of %d experience.", total);
+	  SPRINTF(buf,"You receive your share of %d experience.", total);
 	  act(buf, FALSE, f->follower,0,0,TO_CHAR);
 	  gain_exp(f->follower,  total);
 	
@@ -727,14 +727,14 @@ void group_gain(struct char_data *ch, struct char_data *victim)
 	    total = RatioExp(f->follower->master, victim, total);
 	    if (f->follower->master->in_room ==
 		f->follower->in_room) {
-	      sprintf(buf,"You receive $N's share of %d experience.", total);
+	      SPRINTF(buf,"You receive $N's share of %d experience.", total);
 	      act(buf, FALSE, f->follower->master,0,f->follower,TO_CHAR);
 	      gain_exp(f->follower->master,  total);
 	      change_alignment(f->follower, victim);
 	    }
 	  } else {
 	    total = RatioExp(f->follower, victim, total);
-	    sprintf(buf,"You receive your share of %d experience.", total);
+	    SPRINTF(buf,"You receive your share of %d experience.", total);
 	    act(buf, FALSE, f->follower,0,0,TO_CHAR);
 	    gain_exp(f->follower,  total);
 	    
@@ -895,7 +895,7 @@ int DamCheckDeny(struct char_data *ch, struct char_data *victim, int type)
   rp = real_roomp(ch->in_room);
   if (rp && (rp->room_flags&PEACEFUL) && type!=SPELL_POISON && 
       type!=SPELL_HEAT_STUFF) {
-    sprintf(buf, "damage(,,,%d) called in PEACEFUL room", type);
+    SPRINTF(buf, "damage(,,,%d) called in PEACEFUL room", type);
     log_msg(buf);
     return(TRUE); /* true, they are denied from fighting */
   }
@@ -1216,7 +1216,7 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
           mula = GET_GOLD(victim);
           GET_GOLD(victim)=0;
           GET_GOLD(ch) += mula;
-          sprintf(buf, "You loot %d gold from the body of %s.\n\r", mula, victim->player.short_descr);
+          SPRINTF(buf, "You loot %d gold from the body of %s.\n\r", mula, victim->player.short_descr);
           send_to_char(buf, ch);
           gotsome = TRUE;
         }
@@ -1227,7 +1227,7 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
       if (IS_AFFECTED(ch, AFF_GROUP)) {
 	group_gain(ch, victim);
         if((ch->specials.split) && gotsome) {
-          sprintf(buf, "split %d", mula);
+          SPRINTF(buf, "split %d", mula);
           command_interpreter(ch, buf);
         }
       } else {
@@ -1245,25 +1245,25 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
     if (IS_PC(victim)) {
       if (victim->in_room > -1) {
 	if (IS_NPC(ch)&&!IS_SET(ch->specials.act, ACT_POLYSELF)) {
-	   sprintf(buf, "%s killed by %s at %s",
+	   SPRINTF(buf, "%s killed by %s at %s",
 		GET_NAME(victim), ch->player.short_descr,
 		(real_roomp(victim->in_room))->name);
 
 	} else {
 	   if ((IS_GOOD(ch) && !IS_EVIL(victim))  ||
 	       (IS_EVIL(ch) && IS_NEUTRAL(victim))) {
-	     sprintf(buf, "%s killed by %s at %s -- <Player kill, Illegal>",
+	     SPRINTF(buf, "%s killed by %s at %s -- <Player kill, Illegal>",
 		     GET_NAME(victim), ch->player.name, 
 		     (real_roomp(victim->in_room))->name);
 	   } else {
-	     sprintf(buf, "%s killed by %s at %s",
+	     SPRINTF(buf, "%s killed by %s at %s",
 		     GET_NAME(victim), GET_NAME(ch),
 		     (real_roomp(victim->in_room))->name);
 	   }
 
 	}
       } else {
-	sprintf(buf, "%s killed by %s at Nowhere.",
+	SPRINTF(buf, "%s killed by %s at Nowhere.",
 		GET_NAME(victim),
 		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)));
       }
@@ -1277,7 +1277,7 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
       if (IS_SET(victim->specials.act, ACT_SPEC)) {
 	if (mob_index[victim->nr].func) {
 	  if (mob_index[victim->nr].func == shop_keeper) {
-	    sprintf(buf, "%s (shopkeeper) killed by %s\n",
+	    SPRINTF(buf, "%s (shopkeeper) killed by %s\n",
 		    GET_NAME(victim), GET_NAME(ch));
 	    log_sev(buf, 6);
 	  }
@@ -1369,7 +1369,7 @@ void AreaDamage(struct char_data *ch, int dam, int attacktype,
 	if(i == -1)
 	  MakeScrap(ch, obj);
 	else if(i != 0) {
-	  sprintf(buf, "%s is %s.\n\r",obj->short_description,
+	  SPRINTF(buf, "%s is %s.\n\r",obj->short_description,
 		  ItemDamType[dam_type-1]);
 	  send_to_room(buf, ch->in_room);
 	  if (DamageItem(obj, i)) {
@@ -1466,7 +1466,7 @@ int damage(struct char_data *ch, struct char_data *victim,
       attacktype!=SPELL_POISON /* poison is allowed */
       ) {
     char	buf[MAX_INPUT_LENGTH];
-    sprintf(buf, "damage(,,,%d) called in PEACEFUL room", attacktype);
+    SPRINTF(buf, "damage(,,,%d) called in PEACEFUL room", attacktype);
     log_msg(buf);
     return;
   }
@@ -1666,12 +1666,12 @@ int damage(struct char_data *ch, struct char_data *victim,
       }
     if (!IS_NPC(victim)) {
       if (victim->in_room > -1) {
-	sprintf(buf, "%s killed by %s at %s",
+	SPRINTF(buf, "%s killed by %s at %s",
 		GET_NAME(victim),
 		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)),
 		(real_roomp(victim->in_room))->name);
       } else {
-	sprintf(buf, "%s killed by %s at Nowhere.",
+	SPRINTF(buf, "%s killed by %s at Nowhere.",
 		GET_NAME(victim),
 		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)));
       }
@@ -1779,14 +1779,14 @@ int HitCheckDeny(struct char_data *ch, struct char_data *victim) {
 
   rp = real_roomp(ch->in_room);
   if (rp && rp->room_flags&PEACEFUL && PeacefulWorks) {
-    sprintf(buf, "hit() called in PEACEFUL room");
+    SPRINTF(buf, "hit() called in PEACEFUL room");
     log_msg(buf);
     stop_fighting(ch);
     return(TRUE);
   }
   
   if (ch->in_room != victim->in_room) {
-    sprintf(buf, "NOT in same room when fighting : %s, %s", ch->player.name, victim->player.name);
+    SPRINTF(buf, "NOT in same room when fighting : %s, %s", ch->player.name, victim->player.name);
     log_msg(buf);
     stop_fighting(ch);
     return(TRUE);
@@ -2279,7 +2279,7 @@ int GetBackstabMult(struct char_data *ch, struct char_data *v)
   }
 
   if(!our_skill) {
-    sprintf(buf, "Warning, race %d was unaccounted for in GetBackstabMult()",
+    SPRINTF(buf, "Warning, race %d was unaccounted for in GetBackstabMult()",
 	    GET_RACE(v));
     log_msg(buf);
     return(mult);
@@ -2320,7 +2320,7 @@ void HitVictim(struct char_data *ch, struct char_data *v, int dam,
       int tmp;
 
       tmp = GetBackstabMult(ch, v);
-      sprintf(buf, "BS multiplier for %dth level char is %d.", GetMaxLevel(ch),
+      SPRINTF(buf, "BS multiplier for %dth level char is %d.", GetMaxLevel(ch),
 	      tmp);
       log_msg(buf);
       dam *= tmp;
@@ -2446,7 +2446,7 @@ void perform_violence() {
     rp = real_roomp(ch->in_room);
     if (rp && rp->room_flags&PEACEFUL) {
       char	buf[MAX_INPUT_LENGTH];
-      sprintf(buf,"perform_violence() found %s fighting in a PEACEFUL room.",
+      SPRINTF(buf,"perform_violence() found %s fighting in a PEACEFUL room.",
 	      ch->player.name);
       stop_fighting(ch);
       log_msg(buf);
@@ -2908,7 +2908,7 @@ void BreakLifeSaverObj( struct char_data *ch)
          *  break the object.
          */
 
-	 sprintf(buf,"%s shatters with a blinding flash of light!\n\r", 
+	 SPRINTF(buf,"%s shatters with a blinding flash of light!\n\r", 
 		 ch->equipment[found]->name);
 	 send_to_char(buf, ch);
 	 if ((o = unequip_char(ch, found)) != NULL) {
@@ -2929,7 +2929,7 @@ int BrittleCheck(struct char_data *ch, int dam)
   if (ch->equipment[WIELD]) {
     if (IS_OBJ_STAT(ch->equipment[WIELD], ITEM_BRITTLE)) {
        if ((obj = unequip_char(ch,WIELD))!=NULL) {
-	 sprintf(buf, "%s shatters.\n\r", obj->short_description);
+	 SPRINTF(buf, "%s shatters.\n\r", obj->short_description);
 	 send_to_char(buf, ch);
 	 MakeScrap(ch, obj);
          return(TRUE);
@@ -3049,7 +3049,7 @@ int DamageOneItem( struct char_data *ch, int dam_type, struct obj_data *obj)
   if (num == -1) {  /* destroy object*/
     return(TRUE);
   } else if (num != 0) {
-    sprintf(buf, "%s is %s.\n\r",obj->short_description, 
+    SPRINTF(buf, "%s is %s.\n\r",obj->short_description, 
 	    ItemDamType[dam_type-1]);
     send_to_char(buf,ch);
     if (DamageItem(obj, num)) {
@@ -3085,7 +3085,7 @@ void MakeScrap( struct char_data *ch, struct obj_data *obj)
     
     t = read_object(30, VIRTUAL);
     
-    sprintf(buf, "Scraps from %s lie in a pile here.", 
+    SPRINTF(buf, "Scraps from %s lie in a pile here.", 
 	    obj->short_description);
     
     free(t->description);

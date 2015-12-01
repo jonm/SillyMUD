@@ -67,7 +67,7 @@ void another_hour(int mode)
 	strcpy(moon, "new");
       }
       switch_light(MOON_RISE);
-      sprintf(buf,"The %s moon slowly rises from the western horizon.\n\r",moon);
+      SPRINTF(buf,"The %s moon slowly rises from the western horizon.\n\r",moon);
       send_to_outdoor(buf);
       if((moontype > 16) && (moontype < 22)) {
 	gLightLevel++;   /* brighter during these moons */

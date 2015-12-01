@@ -36,21 +36,21 @@ void do_say(struct char_data *ch, char *argument, int UNUSED(cmd))
     send_to_char("Yes, but WHAT do you want to say?\n\r", ch);
   else {
     if (IS_NPC(ch)||(IS_SET(ch->specials.act, PLR_ECHO))) {
-      sprintf(buf,"You say '%s'\n\r", argument);
+      SPRINTF(buf,"You say '%s'\n\r", argument);
       send_to_char(buf, ch);
     }
 
     if(GET_RACE(ch) == RACE_OGRE) {
       ogre_garble(argument, buf2, ch);
-      sprintf(buf, "$n says '%s'", buf2);
+      SPRINTF(buf, "$n says '%s'", buf2);
     } else if( GET_RACE(ch) == RACE_DRAAGDIM ) {
       rat_garble(argument, buf2, ch);
-      sprintf(buf, "$n says '%s'", buf2);
+      SPRINTF(buf, "$n says '%s'", buf2);
     } else if(GET_RACE(ch) == RACE_HALFORC) {
       half_orc_garble(argument, buf2, ch);
-      sprintf(buf, "$n says '%s'", buf2);
+      SPRINTF(buf, "$n says '%s'", buf2);
     } else {
-      sprintf(buf,"$n says '%s'", argument);
+      SPRINTF(buf,"$n says '%s'", argument);
     }
     act(buf,FALSE,ch,0,0,TO_ROOM);
   }
@@ -94,21 +94,21 @@ void do_shout(struct char_data *ch, char *argument, int UNUSED(cmd))
     send_to_char("Shout? Yes! Fine! Shout we must, but WHAT??\n\r", ch);
   else	{
     if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-      sprintf(buf1,"You shout '%s'\n\r", argument);
+      SPRINTF(buf1,"You shout '%s'\n\r", argument);
       send_to_char(buf1, ch);
     }
 
     if(GET_RACE(ch) == RACE_DRAAGDIM) {
       rat_garble(argument, buf2, ch);
-      sprintf(buf1, "$n shouts '%s'", buf2);
+      SPRINTF(buf1, "$n shouts '%s'", buf2);
     } else if(GET_RACE(ch) == RACE_HALFORC) {
       half_orc_garble(argument, buf2, ch);
-      sprintf(buf1, "$n shouts '%s'", buf2);
+      SPRINTF(buf1, "$n shouts '%s'", buf2);
     } else if(GET_RACE(ch) == RACE_OGRE) {
       ogre_garble(argument, buf2, ch);
-      sprintf(buf1, "$n shouts '%s'", buf2);
+      SPRINTF(buf1, "$n shouts '%s'", buf2);
     } else {
-      sprintf(buf1, "$n shouts '%s'", argument);
+      SPRINTF(buf1, "$n shouts '%s'", argument);
     }
 
     act("$n lifts up $s head and shouts loudly", TRUE, ch, 0, 0, TO_ROOM);
@@ -138,10 +138,10 @@ void do_commune(struct char_data *ch, char *argument, int UNUSED(cmd))
     send_to_char("Communing among the gods is fine, but WHAT?\n\r",ch);
   else {
     if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-      sprintf(buf1,"You think '%s'\n\r", argument);
+      SPRINTF(buf1,"You think '%s'\n\r", argument);
       send_to_char(buf1, ch);
     }
-    sprintf(buf1, "$n thinks '%s'", argument);
+    SPRINTF(buf1, "$n thinks '%s'", argument);
     
     for (i = descriptor_list; i; i = i->next)
       if (i->character != ch && !i->connected && !IS_NPC(i->character) &&
@@ -187,22 +187,22 @@ void do_tell(struct char_data *ch, char *argument, int UNUSED(cmd))
     return;
   
   if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) { 
-    sprintf(buf,"You tell %s '%s'\n\r",
+    SPRINTF(buf,"You tell %s '%s'\n\r",
 	 (IS_NPC(vict) ? vict->player.short_descr : GET_NAME(vict)), message);
     send_to_char(buf, ch);
   }
 
   if(GET_RACE(ch) == RACE_DRAAGDIM) {
     rat_garble(message, buf2, ch);
-    sprintf(buf,"$n tells you '%s'", buf2);
+    SPRINTF(buf,"$n tells you '%s'", buf2);
   } else if(GET_RACE(ch) == RACE_HALFORC) {
     half_orc_garble(message, buf2, ch);
-    sprintf(buf,"$n tells you '%s'", buf2);
+    SPRINTF(buf,"$n tells you '%s'", buf2);
   } else if(GET_RACE(ch) == RACE_OGRE) {
     ogre_garble(message, buf2, ch);
-    sprintf(buf,"$n tells you '%s'", buf2);
+    SPRINTF(buf,"$n tells you '%s'", buf2);
   } else {
-    sprintf(buf,"$n tells you '%s'", message);
+    SPRINTF(buf,"$n tells you '%s'", message);
   }
   act(buf, TRUE, ch, 0, vict, TO_VICT);
   /* send_to_char(buf, vict); */
@@ -233,10 +233,10 @@ void do_whisper(struct char_data *ch, char *argument, int UNUSED(cmd))
     if (check_soundproof(vict))
       return;
     
-    sprintf(buf,"$n whispers to you, '%s'",message);
+    SPRINTF(buf,"$n whispers to you, '%s'",message);
     act(buf, FALSE, ch, 0, vict, TO_VICT);
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      sprintf(buf,"You whisper to %s, '%s'\n\r",
+      SPRINTF(buf,"You whisper to %s, '%s'\n\r",
 	      (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
       send_to_char(buf, ch);
     }
@@ -267,11 +267,11 @@ void do_ask(struct char_data *ch, char *argument, int UNUSED(cmd))
 	if (check_soundproof(vict))
 	  return;
 
-    sprintf(buf,"$n asks you '%s'",message);
+    SPRINTF(buf,"$n asks you '%s'",message);
     act(buf, FALSE, ch, 0, vict, TO_VICT);
     
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      sprintf(buf,"You ask %s, '%s'\n\r",
+      SPRINTF(buf,"You ask %s, '%s'\n\r",
 	    (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
       send_to_char(buf, ch);
     }
@@ -304,12 +304,12 @@ void do_write(struct char_data *ch, char *argument, int UNUSED(cmd))
       return;
   }
   if (!(paper = get_obj_in_list_vis(ch, papername, ch->carrying)))	{
-	  sprintf(buf, "You have no %s.\n\r", papername);
+	  SPRINTF(buf, "You have no %s.\n\r", papername);
 	  send_to_char(buf, ch);
 	  return;
    }
    if (!(pen = get_obj_in_list_vis(ch, penname, ch->carrying)))	{
-	  sprintf(buf, "You have no %s.\n\r", papername);
+	  SPRINTF(buf, "You have no %s.\n\r", papername);
 	  send_to_char(buf, ch);
 	  return;
     }
@@ -449,7 +449,7 @@ void do_sign(struct char_data *ch, char *argument, int UNUSED(cmd))
       buf2 is now the "corrected" string.
       */
 
-    sprintf(buf,"$n signs '%s'", buf2);
+    SPRINTF(buf,"$n signs '%s'", buf2);
 
     for (t = rp->people;t;t=t->next_in_room) {
       if (t != ch) {
@@ -463,7 +463,7 @@ void do_sign(struct char_data *ch, char *argument, int UNUSED(cmd))
     }
 
     if (IS_NPC(ch)||(IS_SET(ch->specials.act, PLR_ECHO))) {
-      sprintf(buf,"You sign '%s'\n\r", argument + i);
+      SPRINTF(buf,"You sign '%s'\n\r", argument + i);
       send_to_char(buf, ch);
     }
   }

@@ -195,7 +195,7 @@ void board_write_msg(struct char_data *ch, char *arg, int bnum) {
   ct = time(0);
   tmstr = (char *)asctime(localtime(&ct));
   *(tmstr + strlen(tmstr) - 1) = '\0';
-  sprintf(buf,"%.10s",tmstr);
+  SPRINTF(buf,"%.10s",tmstr);
   curr_msg->date = (char *)malloc(strlen(buf)+1);
   strcpy(curr_msg->date, buf);
   send_to_char("Write your message. Terminate with a @.\n\r\n\r", ch);
@@ -286,12 +286,13 @@ int board_remove_msg(struct char_data *ch, char *arg, int bnum) {
   curr_board->number--;
 
   send_to_char("Message removed.\n\r", ch);
-  sprintf(buf, "%s just removed message %d.", ch->player.name, tmessage);
+  SPRINTF(buf, "%s just removed message %d.", ch->player.name, tmessage);
 
   /* Removal message also repaired */
 
   act(buf, FALSE, ch, 0, 0, TO_ROOM);
-  sprintf((buf+strlen(buf)-1)," from board %d.",bnum);
+  buf[strlen(buf)-1] = '\0';
+  SAPPENDF(buf, " from board %d.",bnum);
   log_msg(buf);  /* Message removals now logged. */
 
   board_save_board(bnum);
@@ -382,7 +383,7 @@ void board_load_board() {
     boards[bnum].number = -1;
     the_file = fopen(save_file[bnum], "r");
     if (!the_file) {
-      sprintf(buf,"Can't open message file for board %d.\n\r",bnum);
+      SPRINTF(buf,"Can't open message file for board %d.\n\r",bnum);
       log_msg(buf);
       continue;
     }
@@ -449,13 +450,13 @@ int board_display_msg(struct char_data *ch, char *arg, int bnum)
 
   curr_msg = &curr_board->msg[tmessage];
 
-  sprintf(buffer, "Message %2d (%s): %-15s -- %s", tmessage, curr_msg->date, curr_msg->author, curr_msg->title );
-  sprintf(buffer + strlen(buffer), "\n\r----------\n\r%s", (curr_msg->text?curr_msg->text:"(null)"));
+  SPRINTF(buffer, "Message %2d (%s): %-15s -- %s", tmessage, curr_msg->date, curr_msg->author, curr_msg->title );
+  SAPPENDF(buffer, "\n\r----------\n\r%s", (curr_msg->text?curr_msg->text:"(null)"));
   page_string(ch->desc, buffer, 1);
   return(1);
 
 /*
-  sprintf(buf, "$n reads message %d titled : %s.",tmessage, curr_msg->title);
+  SPRINTF(buf, "$n reads message %d titled : %s.",tmessage, curr_msg->title);
   act(buf, TRUE, ch, 0, 0, TO_ROOM);
 */
 }
@@ -487,14 +488,14 @@ int board_show_board(struct char_data *ch, char *arg, int bnum)
   if (boards[bnum].number == -1)
     strcat(buf, "The board is empty.\n\r");
   else {
-    sprintf(buf + strlen(buf), "There are %d messages on the board.\n\r",
+    SAPPENDF(buf, "There are %d messages on the board.\n\r",
 	    curr_board->number);
-    sprintf(buf + strlen(buf), "\n\rBoard Topic:\n\r%s------------\n\r",curr_board->msg[0].text);
+    SAPPENDF(buf, "\n\rBoard Topic:\n\r%s------------\n\r",curr_board->msg[0].text);
     for ( i = 1 ; i <= curr_board->number ; i++ ) 
 /*      if (((GET_MAX_LEVEL(ch) < min_read_level[bnum]) &&
            (strcmp(ch->name, curr_board->msg[i].author))) ||
           (GET_MAX_LEVEL(ch) >= min_read_level[bnum]))  */
-       sprintf(buf + strlen(buf), "%-2d : %-15s (%s) -- %s\n\r", i , 
+      SAPPENDF(buf, "%-2d : %-15s (%s) -- %s\n\r", i , 
                curr_board->msg[i].author, curr_board->msg[i].date,
                curr_board->msg[i].title);
   }
@@ -534,14 +535,14 @@ int board_check_locks (int bnum, struct char_data *ch) {
   /* Check for link-death of lock holder */
 
   if (!board_lock[bnum].locked_for->desc) {
-    sprintf(buf,"You push %s aside and approach the board.\n\r",board_lock[bnum].locked_for->player.name);
+    SPRINTF(buf,"You push %s aside and approach the board.\n\r",board_lock[bnum].locked_for->player.name);
     send_to_char(buf, ch);
   }
 
   /* Else see if lock holder is still in write-string mode */
 
   else if (board_lock[bnum].locked_for->desc->str) { /* Lock still holding */
-    sprintf(buf,"You try to approach the board but %s blocks your way.\n\r",board_lock[bnum].locked_for->player.name);
+    SPRINTF(buf,"You try to approach the board but %s blocks your way.\n\r",board_lock[bnum].locked_for->player.name);
     send_to_char(buf, ch);
     return (1);
   }

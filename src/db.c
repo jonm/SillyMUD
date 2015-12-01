@@ -294,7 +294,7 @@ void reset_time()
 		}
 	}
 
-	sprintf(buf,"   Current Gametime: %dH %dD %dM %dY.",
+	SPRINTF(buf,"   Current Gametime: %dH %dD %dM %dY.",
 	        time_info.hours, time_info.day,
 	        time_info.month, time_info.year);
 	log_msg(buf);
@@ -390,7 +390,7 @@ void build_player_index()
 		   LOWER(*(dummy.name + i))) != '\0'; i++);
 
       for (i = 0; i <= 5; i++) if (dummy.level[i] >= 51) {
-	sprintf(buf,"GOD: %s, Levels [%d][%d][%d][%d][%d][%d]",dummy.name,
+	SPRINTF(buf,"GOD: %s, Levels [%d][%d][%d][%d][%d][%d]",dummy.name,
 		dummy.level[0],dummy.level[1],dummy.level[2],dummy.level[3],
 		dummy.level[4],dummy.level[5]);
 	log_msg(buf);
@@ -420,8 +420,8 @@ void build_player_index()
 
   log_msg("Began Wizlist Generation.");
 
-  sprintf(wizlist, "\033[2J\033[0;0H\n\r\n\r");
-  sprintf(buf, "-* Creator and Supreme Being [%d/1] *-\n\r",list_wiz.number[10]);
+  SPRINTF(wizlist, "\033[2J\033[0;0H\n\r\n\r");
+  SPRINTF(buf, "-* Creator and Supreme Being [%d/1] *-\n\r",list_wiz.number[10]);
 
   
   center = (38 - (int) (str_len(buf)/2));
@@ -433,7 +433,7 @@ void build_player_index()
 
 
   for(i = 0; i < list_wiz.number[10]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[10].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[10].stuff[i].name,
              list_wiz.lookup[10].stuff[i].title);
 
      center = 38 - (int) (str_len(buf)/2);
@@ -445,7 +445,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
   log_msg("Creator Generated.");
 
-  sprintf(buf, "-* Designers/Administrators [%d/2] *-\n\r", list_wiz.number[9]);
+  SPRINTF(buf, "-* Designers/Administrators [%d/2] *-\n\r", list_wiz.number[9]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -453,7 +453,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[9]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[9].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[9].stuff[i].name,
              list_wiz.lookup[9].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -463,7 +463,7 @@ void build_player_index()
 
   strcat(wizlist, "\n\r\n\r");
 
-  sprintf(buf, "-* Implementors [%d/5] *-\n\r", list_wiz.number[8]);
+  SPRINTF(buf, "-* Implementors [%d/5] *-\n\r", list_wiz.number[8]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -471,7 +471,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[8]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[8].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[8].stuff[i].name,
              list_wiz.lookup[8].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -482,7 +482,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
   log_msg("Implementors Generated.");
 
-  sprintf(buf, "-* Gods of Final Judgement [%d/6] *-\n\r", list_wiz.number[7]);
+  SPRINTF(buf, "-* Gods of Final Judgement [%d/6] *-\n\r", list_wiz.number[7]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -490,7 +490,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[7]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[7].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[7].stuff[i].name,
              list_wiz.lookup[7].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -501,7 +501,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
   log_msg("Gods of Final Judgement Generated.");
 
-  sprintf(buf, "-* Gods of Judgement [%d/8] *-\n\r", list_wiz.number[6]);
+  SPRINTF(buf, "-* Gods of Judgement [%d/8] *-\n\r", list_wiz.number[6]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -509,7 +509,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[6]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[6].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[6].stuff[i].name,
              list_wiz.lookup[6].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -520,7 +520,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
 
 
-  sprintf(buf, "-* Greater Gods [%d/10] *-\n\r", list_wiz.number[5]);
+  SPRINTF(buf, "-* Greater Gods [%d/10] *-\n\r", list_wiz.number[5]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -528,7 +528,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[5]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[5].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[5].stuff[i].name,
              list_wiz.lookup[5].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -539,7 +539,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
 
 
-  sprintf(buf, "-* Gods [%d/12] *-\n\r", list_wiz.number[4]);
+  SPRINTF(buf, "-* Gods [%d/12] *-\n\r", list_wiz.number[4]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -547,7 +547,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[4]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[4].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[4].stuff[i].name,
              list_wiz.lookup[4].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -558,7 +558,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
 
 
-  sprintf(buf, "-* Demi-Gods [%d/14] *-\n\r", list_wiz.number[3]);
+  SPRINTF(buf, "-* Demi-Gods [%d/14] *-\n\r", list_wiz.number[3]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -566,7 +566,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[3]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[3].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[3].stuff[i].name,
              list_wiz.lookup[3].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -577,7 +577,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
 
 
-  sprintf(buf, "-* Saints [%d/30] *-\n\r", list_wiz.number[2]);
+  SPRINTF(buf, "-* Saints [%d/30] *-\n\r", list_wiz.number[2]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -585,7 +585,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[2]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[2].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[2].stuff[i].name,
              list_wiz.lookup[2].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -596,7 +596,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
 
 
-  sprintf(buf, "-* Immortals of Creation [%d/50] *-\n\r", list_wiz.number[1]);
+  SPRINTF(buf, "-* Immortals of Creation [%d/50] *-\n\r", list_wiz.number[1]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -604,7 +604,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[1]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[1].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[1].stuff[i].name,
              list_wiz.lookup[1].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -615,7 +615,7 @@ void build_player_index()
   strcat(wizlist, "\n\r\n\r");
 
 
-  sprintf(buf, "-* Immortals [%d/~] *-\n\r", list_wiz.number[0]);
+  SPRINTF(buf, "-* Immortals [%d/~] *-\n\r", list_wiz.number[0]);
   center = 38 - (int) (str_len(buf)/2);
 
   for(i = 0; i <= center; i++)
@@ -623,7 +623,7 @@ void build_player_index()
   strcat(wizlist, buf);
 
   for(i = 0; i < list_wiz.number[0]; i++) {
-     sprintf(buf, "%s %s\n\r", list_wiz.lookup[0].stuff[i].name,
+     SPRINTF(buf, "%s %s\n\r", list_wiz.lookup[0].stuff[i].name,
              list_wiz.lookup[0].stuff[i].title);
      center = 38 - (int) (str_len(buf)/2);
      for(j = 0; j <= center; j++)
@@ -635,7 +635,7 @@ void build_player_index()
   max = 0;
   for(i = 0; i <= 9; i++)
     max += list_wiz.number[i];
-  sprintf(buf, "Total Gods: %d\n\r\n\r", max);
+  SPRINTF(buf, "Total Gods: %d\n\r\n\r", max);
   strcat(wizlist, buf);
 
   return;
@@ -861,7 +861,7 @@ void load_one_room(FILE *fl, struct room_data *rp)
        FILE *fp;
        char buf[255];
 
-       sprintf(buf, "world/%d", rp->number);
+       SPRINTF(buf, "world/%d", rp->number);
        fp = fopen(buf, "r");
        if(fp) {
           saved_rooms[number_of_saved_rooms] = rp->number;
@@ -872,7 +872,7 @@ void load_one_room(FILE *fl, struct room_data *rp)
 #endif
       return;
     default:
-      sprintf(buf,"unknown auxiliary code `%s' in room load of #%d",
+      SPRINTF(buf,"unknown auxiliary code `%s' in room load of #%d",
 	      chk, rp->number);
       log_msg(buf);
       break;
@@ -1001,7 +1001,7 @@ void setup_dir(FILE *fl, int room, int dir)
 
 
 #define LOG_ZONE_ERROR(ch, type, zone, cmd) {\
-	sprintf(buf, "error in zone %s cmd %d (%c) resolving %s number", \
+	SPRINTF(buf, "error in zone %s cmd %d (%c) resolving %s number", \
 		zone_table[zone].name, cmd, ch, type); \
 		  log_msg(buf); \
 		  }
@@ -1201,7 +1201,7 @@ struct char_data *read_mobile(int nr, int type)
   i = nr;
   if (type == VIRTUAL)
     if ((nr = real_mobile(nr)) < 0)	{
-      sprintf(buf, "Mobile (V) %d does not exist in database.", i);
+      SPRINTF(buf, "Mobile (V) %d does not exist in database.", i);
       return(0);
     }
   
@@ -1600,7 +1600,7 @@ struct char_data *read_mobile(int nr, int type)
   for(i = 0; i < top_of_scripts; i++) {
     if(script_data[i].virtual == mob_index[nr].virtual) {
       SET_BIT(mob->specials.act, ACT_SCRIPT);
-      /* sprintf(buffer, "Setting SCRIPT bit for mobile %s, file %s.", GET_NAME(mob), script_data[i].filename);
+      /* SPRINTF(buffer, "Setting SCRIPT bit for mobile %s, file %s.", GET_NAME(mob), script_data[i].filename);
 	 log_msg(buffer); */
       mob->script = i;
       break;
@@ -1627,7 +1627,7 @@ struct char_data *read_mobile(int nr, int type)
 
   if (mob->points.gold > GET_LEVEL(mob, WARRIOR_LEVEL_IND)*1500) {
     char buf[200];
-    sprintf(buf, "%s has gold > level * 1500 (%d)", mob->player.short_descr,
+    SPRINTF(buf, "%s has gold > level * 1500 (%d)", mob->player.short_descr,
 	    mob->points.gold);
     log_msg(buf);
   }
@@ -1686,7 +1686,7 @@ struct obj_data *read_object(int nr, int type)
     nr = real_object(nr);
   }
   if (nr<0 || nr>top_of_objt) {
-    sprintf(buf, "Object (V) %d does not exist in database.", i);
+    SPRINTF(buf, "Object (V) %d does not exist in database.", i);
     return(0);
   }
   
@@ -1917,7 +1917,7 @@ void reset_zone(int zone)
     done = 1;
 #if SAVE_WORLD
     for (i=0;i<30000;i+=1000) {
-      sprintf(buf, "world/mobs.%d", i);
+      SPRINTF(buf, "world/mobs.%d", i);
       fl = fopen(buf, "r");
       if(!fl) {
 	log_msg("Unable to load scratch zone file for update.");
@@ -1938,7 +1938,7 @@ void reset_zone(int zone)
     s = zone_table[zone].name;
     d = (zone ? (zone_table[zone - 1].top + 1) : 0);
     e = zone_table[zone].top;
-    sprintf(buf, "Run time initialization of zone %s, rooms (%d-%d)",
+    SPRINTF(buf, "Run time initialization of zone %s, rooms (%d-%d)",
 	    s, d, e);
     log_msg(buf);
 
@@ -2026,7 +2026,7 @@ void reset_zone(int zone)
 		last_cmd = 0;
 	    }
 	  } else if ((obj = read_object(ZCMD.arg1, REAL)) != NULL) {
-	    sprintf(buf, "Error finding room #%d", ZCMD.arg3);
+	    SPRINTF(buf, "Error finding room #%d", ZCMD.arg3);
 	    log_msg(buf);
 	    last_cmd = 1;
 	  }  else {
@@ -2081,7 +2081,7 @@ void reset_zone(int zone)
 	  if (!mob->equipment[ZCMD.arg3]) {
 	    equip_char(mob, obj, ZCMD.arg3);
 	  } else {
-	    sprintf(buf, "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n", zone, cmd_no, 
+	    SPRINTF(buf, "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n", zone, cmd_no, 
 		    obj_index[ZCMD.arg1].virtual, mob_index[mob->nr].virtual, ZCMD.arg3);
 	    log_sev(buf, 6);
 	  }
@@ -2117,7 +2117,7 @@ void reset_zone(int zone)
 	break;
 	
       default:
-	sprintf(buf, "Undefd cmd [%c] in reset table; zone %d cmd %d.",
+	SPRINTF(buf, "Undefd cmd [%c] in reset table; zone %d cmd %d.",
 		ZCMD.command,zone, cmd_no);
 	log_msg(buf);
 	break;
@@ -2800,11 +2800,11 @@ void reset_char(struct char_data *ch)
   }
   
   if (GET_BANK(ch) > GetMaxLevel(ch)*100000) {
-    sprintf(buf, "%s has %d coins in bank.", GET_NAME(ch), GET_BANK(ch));
+    SPRINTF(buf, "%s has %d coins in bank.", GET_NAME(ch), GET_BANK(ch));
     log_msg(buf);
   }
   if (GET_GOLD(ch) > GetMaxLevel(ch)*100000) {
-    sprintf(buf, "%s has %d coins.", GET_NAME(ch), GET_GOLD(ch));
+    SPRINTF(buf, "%s has %d coins.", GET_NAME(ch), GET_GOLD(ch));
     log_msg(buf);
   }
 
@@ -3153,7 +3153,7 @@ void reboot_text(struct char_data *ch, char * UNUSED(arg), int UNUSED(cmd)) {
     for(i = 0; i < top_of_scripts; i++) {
       if(script_data[i].virtual == mob_index[p->nr].virtual) {
 	SET_BIT(p->specials.act, ACT_SCRIPT);
-	sprintf(buffer, "Setting SCRIPT bit for mobile %s, file %s.", GET_NAME(p), script_data[i].filename);
+	SPRINTF(buffer, "Setting SCRIPT bit for mobile %s, file %s.", GET_NAME(p), script_data[i].filename);
 	log_msg(buffer);
 	p->script = i;
 	break;
@@ -3214,15 +3214,15 @@ void InitScripts()
       char garbage[4];
       strncpy(garbage, buf, 3);
       garbage[3] = '\0';
-      sprintf(buf,"%s read in, garbage.", garbage);
+      SPRINTF(buf,"%s read in, garbage.", garbage);
       log_msg(buf);
     }
 
     sscanf(buf, "%s %d", buf2, &i);
 
-    sprintf(buf, "scripts/%s", buf2);
+    SPRINTF(buf, "scripts/%s", buf2);
     if(!(f2 = fopen(buf, "r"))) {
-       sprintf(buf, "Unable to open script \"%s\" for reading.", buf2);
+       SPRINTF(buf, "Unable to open script \"%s\" for reading.", buf2);
        log_msg(buf);
      }
 
@@ -3255,7 +3255,7 @@ void InitScripts()
        script_data[top_of_scripts].virtual = i;
        script_data[top_of_scripts].filename = (char *) malloc((strlen(buf2) + 1) * sizeof(char));
        strcpy(script_data[top_of_scripts].filename, buf2);
-       sprintf(buf, "Script %s assigned to mobile %d.", buf2, i);
+       SPRINTF(buf, "Script %s assigned to mobile %d.", buf2, i);
        log_msg(buf);
        top_of_scripts++;
        fclose(f2);
@@ -3263,9 +3263,9 @@ void InitScripts()
   }
 
   if(top_of_scripts)
-     sprintf(buf, "%d scripts assigned.", top_of_scripts);
+     SPRINTF(buf, "%d scripts assigned.", top_of_scripts);
   else
-     sprintf(buf, "No scripts found to assign.");
+     SPRINTF(buf, "No scripts found to assign.");
   log_msg(buf);
 
   fclose(f1);
@@ -3316,7 +3316,7 @@ void SaveTheWorld()
 
   if (ctl == 30000) ctl = 0;
     
-  sprintf(buf, "world/mobs.%d", ctl);
+  SPRINTF(buf, "world/mobs.%d", ctl);
   fp = (FILE *)fopen(buf, "w");  /* append */
   
   if (!fp) {
@@ -3497,7 +3497,7 @@ void ReadTextZone( FILE *fl)
 	      last_cmd = 0;
 	    }
 	  } else if ((obj = read_object(i, VIRTUAL)) != NULL) {
-	    sprintf(buf, "Error finding room #%d", k);
+	    SPRINTF(buf, "Error finding room #%d", k);
 	    log_msg(buf);
 	    last_cmd = 1;
 	  }  else {
@@ -3557,7 +3557,7 @@ void ReadTextZone( FILE *fl)
 	  if (!mob->equipment[k]) {
 	    equip_char(mob, obj, k);
 	  } else {
-	    sprintf(buf,"eq error - zone %d, cmd %d, item %d, mob %d, loc %d", 
+	    SPRINTF(buf,"eq error - zone %d, cmd %d, item %d, mob %d, loc %d", 
 		    zone, 1, obj_index[i].virtual, 
 		    mob_index[mob->nr].virtual, k);
 	    log_sev(buf, 6);
@@ -3625,13 +3625,13 @@ int VerifyMob(struct char_data *ch)
   /* check to see that the mob falls within certain parameters */
 
   if (ch->specials.damnodice < 0) {
-    sprintf(buf, "%s's number of damage dice is negative\n",
+    SPRINTF(buf, "%s's number of damage dice is negative\n",
             ch->player.name);
     log_sev(buf, 6);
   }
 
   if (ch->specials.damsizedice < 0) {
-    sprintf(buf, "%s's size of damage dice is negative\n",
+    SPRINTF(buf, "%s's size of damage dice is negative\n",
             ch->player.name);
     log_sev(buf, 6);
   }
@@ -3672,7 +3672,7 @@ void clean_playerfile()
        num_processed++;
        grunt.AXE = FALSE;
        if(!str_cmp(grunt.dummy.name,"111111")) {
-	 sprintf(buf,"%s was deleted (111111 name hopefully).",
+	 SPRINTF(buf,"%s was deleted (111111 name hopefully).",
 		 grunt.dummy.name);
 	 log_msg(buf);
 	 ones++;
@@ -3694,14 +3694,14 @@ void clean_playerfile()
            if(timeH-grunt.dummy.last_logon > (long) j*(SECS_PER_REAL_DAY*30)){
 	     num_deleted++;
              grunt.AXE = TRUE;	
-	     sprintf(buf,"%s deleted after %d months of inactivity.",
+	     SPRINTF(buf,"%s deleted after %d months of inactivity.",
 		     grunt.dummy.name,j);
 	     log_msg(buf);
            }
          } else if(max > LOW_IMMORTAL) {
            if(timeH-grunt.dummy.last_logon > (long) SECS_PER_REAL_DAY*30) {
 	     num_demoted++;
-             sprintf(buf,"%s demoted from %d to %d due to inactivity.",
+             SPRINTF(buf,"%s demoted from %d to %d due to inactivity.",
                      grunt.dummy.name,max,max-1);
 	     log_msg(buf);
              grunt.dummy.last_logon = timeH; /* so it doesn't happen twice */
@@ -3718,17 +3718,17 @@ void clean_playerfile()
      }
   }
 
-  sprintf(buf,"-- %d characters were processed.", num_processed);
+  SPRINTF(buf,"-- %d characters were processed.", num_processed);
   log_msg(buf);
-  sprintf(buf,"-- %d characters were deleted.  ", num_deleted);
+  SPRINTF(buf,"-- %d characters were deleted.  ", num_deleted);
   log_msg(buf);
-  sprintf(buf,"-- %d of these were allread deleted. (11111s)", ones);
+  SPRINTF(buf,"-- %d of these were allread deleted. (11111s)", ones);
   log_msg(buf);
-  sprintf(buf,"-- %d gods were demoted due to inactivity.", num_demoted);
+  SPRINTF(buf,"-- %d gods were demoted due to inactivity.", num_demoted);
   log_msg(buf);
-  sprintf(buf,"mv %s %s.bak", PLAYER_FILE, PLAYER_FILE);
+  SPRINTF(buf,"mv %s %s.bak", PLAYER_FILE, PLAYER_FILE);
   system(buf);
-  sprintf(buf,"mv temp %s", PLAYER_FILE);
+  SPRINTF(buf,"mv temp %s", PLAYER_FILE);
   system(buf);
   log_msg("Cleaning done.");
 
@@ -3746,7 +3746,7 @@ void ensure_file_exists(const char *path) {
       char *buf;
       const char *fmt = "Creating empty file \"%s\"";
       buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
-      sprintf(buf, fmt, path);
+      SPRINTF(buf, fmt, path);
       log_msg(buf);
       free(buf);
     }
@@ -3754,7 +3754,7 @@ void ensure_file_exists(const char *path) {
       char *buf;
       const char *fmt = "ensure_file_exists(%s)(open)";
       buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
-      sprintf(buf, fmt, path);
+      SPRINTF(buf, fmt, path);
       perror(buf);
       free(buf);
       exit(-1);
@@ -3764,7 +3764,7 @@ void ensure_file_exists(const char *path) {
     char *buf;
     const char *fmt = "ensure_file_exists(%s)(stat)";
     buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
-    sprintf(buf, fmt, path);
+    SPRINTF(buf, fmt, path);
     perror(buf);
     free(buf);
     exit(-1);

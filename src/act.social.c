@@ -225,7 +225,7 @@ void do_insult(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 			send_to_char("Can't hear you!\n\r", ch);
 		} else {
 			if(victim != ch) { 
-				sprintf(buf, "You insult %s.\n\r",GET_NAME(victim) );
+				SPRINTF(buf, "You insult %s.\n\r",GET_NAME(victim) );
 				send_to_char(buf,ch);
 
 				switch(random()%3) {

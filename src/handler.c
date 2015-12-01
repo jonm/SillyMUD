@@ -620,7 +620,7 @@ void char_from_room(struct char_data *ch)
   
   rp = real_roomp(ch->in_room);
   if (rp==NULL) {
-    sprintf(buf, "ERROR: char_from_room: %s was not in a valid room (%d)",
+    SPRINTF(buf, "ERROR: char_from_room: %s was not in a valid room (%d)",
 	    (!IS_NPC(ch) ? (ch)->player.name : (ch)->player.short_descr),
 	    ch->in_room);
     log_msg(buf);
@@ -636,7 +636,7 @@ void char_from_room(struct char_data *ch)
     if (i)
       i->next_in_room = ch->next_in_room;
     else {
-      sprintf(buf, "SHIT, %s was not in people list of his room %d!",
+      SPRINTF(buf, "SHIT, %s was not in people list of his room %d!",
 	      (!IS_NPC(ch) ? (ch)->player.name : (ch)->player.short_descr),
 	      ch->in_room);
       log_msg(buf);
@@ -1241,17 +1241,17 @@ void obj_from_obj(struct obj_data *obj)
   char buf[100];
 
   if (obj->carried_by) {
-    sprintf(buf, "%s carried by %s in obj_from_obj\n", obj->name,
+    SPRINTF(buf, "%s carried by %s in obj_from_obj\n", obj->name,
 	    obj->carried_by->player.name);
     log_msg(buf);
   }
   if (obj->equipped_by) {
-    sprintf(buf, "%s equipped by %s in obj_from_obj\n", obj->name,
+    SPRINTF(buf, "%s equipped by %s in obj_from_obj\n", obj->name,
 	    obj->equipped_by->player.name);
     log_msg(buf);
   }
   if (obj->in_room != NOWHERE) {
-    sprintf(buf, "%s in room %d in obj_from_obj\n", obj->name,
+    SPRINTF(buf, "%s in room %d in obj_from_obj\n", obj->name,
 	    obj->in_room);
     log_msg(buf);
   }
@@ -1818,19 +1818,19 @@ struct obj_data *create_money( int amount )
     
     new_descr->keyword = strdup("coins gold");
     if(amount<10) {
-      sprintf(buf,"There are %d coins.",amount);
+      SPRINTF(buf,"There are %d coins.",amount);
       new_descr->description = strdup(buf);
     } 
     else if (amount<100) {
-      sprintf(buf,"There is about %d coins.",10*(amount/10));
+      SPRINTF(buf,"There is about %d coins.",10*(amount/10));
       new_descr->description = strdup(buf);
     }
     else if (amount<1000) {
-      sprintf(buf,"It looks like something round %d coins.",100*(amount/100));
+      SPRINTF(buf,"It looks like something round %d coins.",100*(amount/100));
       new_descr->description = strdup(buf);
     }
     else if (amount<100000) {
-      sprintf(buf,"You guess there is %d coins.",1000*((amount/1000)+ number(0,(amount/1000))));
+      SPRINTF(buf,"You guess there is %d coins.",1000*((amount/1000)+ number(0,(amount/1000))));
       new_descr->description = strdup(buf);
     }
     else 

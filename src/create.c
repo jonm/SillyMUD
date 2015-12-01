@@ -81,22 +81,22 @@ void ChangeRoomFlags(struct room_data *rp, struct char_data *ch, char *arg, int 
        SET_BIT(rp->room_flags, i);
   }
  
- sprintf(buf, VT_HOMECLR);
+ SPRINTF(buf, VT_HOMECLR);
  send_to_char(buf, ch);
- sprintf(buf, "Room Flags:");
+ SPRINTF(buf, "Room Flags:");
  send_to_char(buf, ch);
  
  row = 0;
  for(i = 0; i < 14; i++) {
-    sprintf(buf, VT_CURSPOS, row + 4, ((i & 1) ? 45 : 5));
+    SPRINTF(buf, VT_CURSPOS, row + 4, ((i & 1) ? 45 : 5));
     if(i & 1)
        row++;
     send_to_char(buf, ch);
-    sprintf(buf, "%-2d [%s] %s", i + 1, ((rp->room_flags & (1<<i)) ? "X" : " "), room_bits[i]);
+    SPRINTF(buf, "%-2d [%s] %s", i + 1, ((rp->room_flags & (1<<i)) ? "X" : " "), room_bits[i]);
     send_to_char(buf, ch);
   }
  
- sprintf(buf, VT_CURSPOS, 20, 1);
+ SPRINTF(buf, VT_CURSPOS, 20, 1);
  send_to_char(buf, ch);
  send_to_char("Select the number to toggle, <C/R> to return to main menu.\n\r--> ", ch);
 }
@@ -141,19 +141,19 @@ void UpdateRoomMenu(struct char_data *ch)
  rp = real_roomp(ch->in_room);
  
  send_to_char(VT_HOMECLR, ch);
- sprintf(buf, VT_CURSPOS, 1, 1);
+ SPRINTF(buf, VT_CURSPOS, 1, 1);
  send_to_char(buf, ch);
- sprintf(buf, "Room Name: %s", rp->name);
+ SPRINTF(buf, "Room Name: %s", rp->name);
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, 1, 40);
+ SPRINTF(buf, VT_CURSPOS, 1, 40);
  send_to_char(buf, ch);
- sprintf(buf, "Number: %d", rp->number);
+ SPRINTF(buf, "Number: %d", rp->number);
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, 1, 60);
+ SPRINTF(buf, VT_CURSPOS, 1, 60);
  send_to_char(buf, ch);
- sprintf(buf, "Sector Type: %s", sector_types[rp->sector_type]);
+ SPRINTF(buf, "Sector Type: %s", sector_types[rp->sector_type]);
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, 3, 1);
+ SPRINTF(buf, VT_CURSPOS, 3, 1);
  send_to_char(buf, ch);
  send_to_char("Menu:\n\r", ch);
  send_to_char(edit_menu, ch);
@@ -252,10 +252,10 @@ void ChangeRoomName(struct room_data *rp, struct char_data *ch, char *arg, int t
     return;
  }
  
- sprintf(buf, VT_HOMECLR);
+ SPRINTF(buf, VT_HOMECLR);
  send_to_char(buf, ch);
  
- sprintf(buf, "Current Room Name: %s", rp->name);
+ SPRINTF(buf, "Current Room Name: %s", rp->name);
  send_to_char(buf, ch);
  send_to_char("\n\r\n\rNew Room Name: ", ch);
  
@@ -272,10 +272,10 @@ void ChangeRoomDesc(struct room_data *rp, struct char_data *ch,
     return;
  }
  
- sprintf(buf, VT_HOMECLR);
+ SPRINTF(buf, VT_HOMECLR);
  send_to_char(buf, ch);
  
- sprintf(buf, "Current Room Description:\n\r");
+ SPRINTF(buf, "Current Room Description:\n\r");
  send_to_char(buf, ch);
  send_to_char(rp->description, ch);
  send_to_char("\n\r\n\rNew Room Description:\n\r", ch);
@@ -335,22 +335,22 @@ void ChangeRoomType(struct room_data *rp, struct char_data *ch, char *arg, int t
     }
    }
  
- sprintf(buf, VT_HOMECLR);
+ SPRINTF(buf, VT_HOMECLR);
  send_to_char(buf, ch);
- sprintf(buf, "Sector Type: %s", sector_types[rp->sector_type]);
+ SPRINTF(buf, "Sector Type: %s", sector_types[rp->sector_type]);
  send_to_char(buf, ch);
  
  row = 0;
  for(i = 0; i < 12; i++) {
-    sprintf(buf, VT_CURSPOS, row + 4, ((i & 1) ? 45 : 5));
+    SPRINTF(buf, VT_CURSPOS, row + 4, ((i & 1) ? 45 : 5));
     if(i & 1)
        row++;
     send_to_char(buf, ch);
-    sprintf(buf, "%-2d %s", i + 1, sector_types[i]);
+    SPRINTF(buf, "%-2d %s", i + 1, sector_types[i]);
     send_to_char(buf, ch);
   }
  
- sprintf(buf, VT_CURSPOS, 20, 1);
+ SPRINTF(buf, VT_CURSPOS, 20, 1);
  send_to_char(buf, ch);
  send_to_char("Select the number to set to, <C/R> to return to main menu.\n\r--> ", ch);
 }
@@ -411,13 +411,13 @@ void ChangeExitDir(struct room_data *rp, struct char_data *ch, char *arg, int ty
  
  
  send_to_char(VT_HOMECLR, ch);
- sprintf(buf, "Room Name: %s", rp->name);
+ SPRINTF(buf, "Room Name: %s", rp->name);
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, 1, 40);
+ SPRINTF(buf, VT_CURSPOS, 1, 40);
  send_to_char(buf, ch);
- sprintf(buf, "Room Number: %d", rp->number);
+ SPRINTF(buf, "Room Number: %d", rp->number);
  send_to_char(buf, ch);
- sprintf(buf, VT_CURSPOS, 4, 1);
+ SPRINTF(buf, VT_CURSPOS, 4, 1);
  send_to_char(buf, ch);
  send_to_char(exit_menu, ch);
  send_to_char("--> ", ch);
@@ -485,23 +485,23 @@ void AddExitToRoom(struct room_data *rp, struct char_data *ch, char *arg, int ty
     rp->dir_option[dir]->exit_info = 0;
  }
  
- sprintf(buf, VT_HOMECLR);
+ SPRINTF(buf, VT_HOMECLR);
  send_to_char(buf, ch);
- sprintf(buf, "Exit Flags:");
+ SPRINTF(buf, "Exit Flags:");
  send_to_char(buf, ch);
  
  row = 0;
  for(i = 0; i < 7; i++) {
-    sprintf(buf, VT_CURSPOS, row + 4, ((i & 1) ? 45 : 5));
+    SPRINTF(buf, VT_CURSPOS, row + 4, ((i & 1) ? 45 : 5));
     if(i & 1)
        row++;
     send_to_char(buf, ch);
-    sprintf(buf, "%-2d [%s] %s", i + 1, ((rp->dir_option[dir]->exit_info & (1<<i)) ? "X" : " "), 
+    SPRINTF(buf, "%-2d [%s] %s", i + 1, ((rp->dir_option[dir]->exit_info & (1<<i)) ? "X" : " "), 
             exit_bits[i]);
     send_to_char(buf, ch);
   }
  
- sprintf(buf, VT_CURSPOS, 20, 1);
+ SPRINTF(buf, VT_CURSPOS, 20, 1);
  send_to_char(buf, ch);
  send_to_char("Select the number to toggle, <C/R> to return to continue.\n\r--> ", ch);
 }

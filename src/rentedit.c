@@ -99,7 +99,7 @@ void main (int argc,char *argv[])
       for(i=0;grunt.name[i] != '\0' && i < 25;i++)
 	grunt.name[i] = tolower(grunt.name[i]);
       
-      sprintf(RentFileName,"%s%s",RENTDIR,grunt.name);
+      SPRINTF(RentFileName,"%s%s",RENTDIR,grunt.name);
       /*       printf("%s",RentFileName); */
 
       if((rf=fopen(RentFileName,"r"))==NULL)

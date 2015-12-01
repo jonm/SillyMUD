@@ -1081,7 +1081,7 @@ void assign_mobiles()
   for (i=0; specials[i].vnum>=0; i++) {
     rnum = real_mobile(specials[i].vnum);
     if (rnum<0) {
-      sprintf(buf, "mobile_assign: Mobile %d not found in database.",
+      SPRINTF(buf, "mobile_assign: Mobile %d not found in database.",
 	      specials[i].vnum);
       log_msg(buf);
     } else {
@@ -1131,7 +1131,7 @@ void assign_objects() {
       const char *fmt = "***WARNING***: assigning special proc to non-existent object %d";
       char *buf;
       buf = (char *)malloc(strlen(fmt) + 20);
-      sprintf(buf, fmt, obj_procs[i].virtual_obj_num);
+      SPRINTF(buf, fmt, obj_procs[i].virtual_obj_num);
       log_msg(buf);
       free(buf);
     }
@@ -1182,7 +1182,7 @@ void assign_rooms()
   for (i=0; specials[i].vnum>=0; i++) {
     rp = real_roomp(specials[i].vnum);
     if (rp==NULL) {
-      sprintf(buf,"assign_rooms: room %d unknown",specials[i].vnum);
+      SPRINTF(buf,"assign_rooms: room %d unknown",specials[i].vnum);
       log_msg(buf);
     } else
       rp->funct = specials[i].proc;

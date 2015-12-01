@@ -4,6 +4,7 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 #include "config.h"
+#include "utils.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -15,10 +16,10 @@ int SecCheck(char *arg, char *site)
  char buf[255], buf2[255];
  FILE *f1;
 
- sprintf(buf, "security/%s", arg);
+ SPRINTF(buf, "security/%s", arg);
 
  if(!(f1 = fopen(buf, "rt"))) {
-    sprintf(buf, "Unable to open security file for %s.", arg);
+    SPRINTF(buf, "Unable to open security file for %s.", arg);
     log_msg(buf);
     return(-1);
   }
@@ -27,7 +28,7 @@ int SecCheck(char *arg, char *site)
  fclose(f1);
 
  if(!*buf2) {
-    sprintf(buf, "Security file for %s empty.", arg);
+    SPRINTF(buf, "Security file for %s empty.", arg);
     log_msg(buf);
     return(-1);
   }
@@ -38,7 +39,7 @@ int SecCheck(char *arg, char *site)
  if(!(strncmp(site, buf2, strlen(buf2)))) {
     return(1);
   }
-    sprintf(buf, "Site %s and %s don't match for %s. Booting.", site, buf2, arg);
+    SPRINTF(buf, "Site %s and %s don't match for %s. Booting.", site, buf2, arg);
      log_msg(buf);
 
  return(0);

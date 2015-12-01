@@ -49,7 +49,7 @@ void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   level = GET_LEVEL(ch, DRUID_LEVEL_IND) ;
 
   level = (level ? level : GetMaxLevel(ch)); /* for vampires */
-  sprintf(buf,"Level %d thing doing a changeform.",level);
+  SPRINTF(buf,"Level %d thing doing a changeform.",level);
   log_msg(buf);
 
   one_argument(argument,buf);
@@ -61,7 +61,7 @@ void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char("     ", ch);
       for(mobn=1;  LAST_DRUID_MOB+1 >= mobn && level >= DruidList[mobn].level;
 	  mobn++) {
-	sprintf(buf,"%2d - %-15s ",DruidList[mobn].level,DruidList[mobn].name);
+	SPRINTF(buf,"%2d - %-15s ",DruidList[mobn].level,DruidList[mobn].name);
 	if(!(mobn%3))
 	  strcat(buf,"\n\r     ");
 	send_to_char(buf, ch);

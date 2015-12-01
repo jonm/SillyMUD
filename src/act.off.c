@@ -299,7 +299,7 @@ void do_order(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     if (victim) {
 	if (check_soundproof(victim))
 	  return;
-      sprintf(buf, "$N orders you to '%s'", message);
+      SPRINTF(buf, "$N orders you to '%s'", message);
       act(buf, FALSE, victim, 0, ch, TO_CHAR);
       act("$n gives $N an order.", FALSE, ch, 0, victim, TO_ROOM);
       
@@ -333,7 +333,7 @@ void do_order(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	command_interpreter(victim, message);
       }
     } else {  /* This is order "followers" */
-      sprintf(buf, "$n issues the order '%s'.", message);
+      SPRINTF(buf, "$n issues the order '%s'.", message);
       act(buf, FALSE, ch, 0, victim, TO_ROOM);
       
       org_room = ch->in_room;
@@ -373,7 +373,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   if(IS_PC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)) {
     if((ch->desc->wait)>1) {      /* Someone is in a wait state */
       send_to_char("Your head is still spinning too much to flee!\n\r", ch);
-      sprintf(buf, "You must wait %d pulses\n\r", ch->desc->wait);
+      SPRINTF(buf, "You must wait %d pulses\n\r", ch->desc->wait);
       send_to_char(buf, ch);
       return;
     }
@@ -389,10 +389,10 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
          send_to_char("Please choose a flee setting of 1 to 5 rooms.\n\r", ch);
          return;
        }
-       sprintf(buf2,"You used to flee %d rooms when you ran away.\n\r",ch->specials.flee);
+       SPRINTF(buf2,"You used to flee %d rooms when you ran away.\n\r",ch->specials.flee);
        send_to_char(buf2,ch);
        ch->specials.flee = nmbr;
-       sprintf(buf2,"You will NOW flee %d rooms when you run away.\n\r",ch->specials.flee);
+       SPRINTF(buf2,"You will NOW flee %d rooms when you run away.\n\r",ch->specials.flee);
        send_to_char(buf2,ch);
        return;
     }
@@ -1169,7 +1169,7 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         REMOVE_BIT(ch->specials.act, PLR_WIMPY);
       send_to_char("Ok, you are no longer a wimp...\n\r",ch);
       ch->specials.pct = pct;
-      sprintf(buf2,"And you will now get your BLEEDING message at %d%% of max hitpoints.\n\r",ch->specials.pct);
+      SPRINTF(buf2,"And you will now get your BLEEDING message at %d%% of max hitpoints.\n\r",ch->specials.pct);
       send_to_char(buf2,ch);
     }
     else {
@@ -1178,7 +1178,7 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       else
         REMOVE_BIT(ch->specials.act, PLR_WIMPY);
       send_to_char("Ok, you are no longer a wimp...\n\r",ch);
-      sprintf(buf2,"However, you will still get your BLEEDING message at %d%% of max hitpoints.\n\r",ch->specials.pct);
+      SPRINTF(buf2,"However, you will still get your BLEEDING message at %d%% of max hitpoints.\n\r",ch->specials.pct);
       send_to_char(buf2,ch);
     }
   } else {
@@ -1192,15 +1192,15 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         send_to_char("Please choose a value between 1 and 50.\n\r",ch);
         return;
       }
-      sprintf(buf2,"Your wimpy percentage WAS %d%%.\n\r",ch->specials.pct);
+      SPRINTF(buf2,"Your wimpy percentage WAS %d%%.\n\r",ch->specials.pct);
       send_to_char(buf2,ch);
       ch->specials.pct = pct;
-      sprintf(buf2,"Your wimpy percentage has now been set to %d%%.\n\r",
+      SPRINTF(buf2,"Your wimpy percentage has now been set to %d%%.\n\r",
 	      ch->specials.pct);
       send_to_char(buf2,ch);
     }
     else {
-      sprintf(buf2,"Your wimpy percentage remains at %d%%.\n\r",
+      SPRINTF(buf2,"Your wimpy percentage remains at %d%%.\n\r",
 	      ch->specials.pct);
       send_to_char(buf2,ch);
     }
@@ -1254,7 +1254,7 @@ void do_breath(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       ;
     
     if (count<1) {
-      sprintf(buf, "monster %s has no breath weapons",
+      SPRINTF(buf, "monster %s has no breath weapons",
 	      ch->player.short_descr);
       log_msg(buf);
       send_to_char("Hey, why don't you have any breath weapons!?\n\r",ch);

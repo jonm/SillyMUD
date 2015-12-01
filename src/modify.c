@@ -1078,7 +1078,7 @@ void gr(int s)
   if (((ld = load()) >= 6) || (txt = nogames()) || slow_death)
     {
       if (ld >= 6)	{
-	  sprintf(buf, "The system load is greater than 6.0 (%d)\n\r", ld);
+	  SPRINTF(buf, "The system load is greater than 6.0 (%d)\n\r", ld);
 	  send_to_all(buf);
 	}
       else if (slow_death)

@@ -806,7 +806,7 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 
   /* do some fiddling with the strings */
   buf = (char *)malloc(strlen(GET_NAME(mob)) + strlen(GET_NAME(ch)) + 2);
-  sprintf(buf, "%s %s", GET_NAME(ch), GET_NAME(mob));
+  SPRINTF(buf, "%s %s", GET_NAME(ch), GET_NAME(mob));
 
 #if TITAN
 #else
@@ -818,7 +818,7 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
   GET_NAME(mob) = buf;
   buf = (char *)malloc(strlen(mob->player.short_descr) 
 		       + strlen(GET_NAME(ch)) + 2);
-  sprintf(buf, "%s %s", GET_NAME(ch), mob->player.short_descr);
+  SPRINTF(buf, "%s %s", GET_NAME(ch), mob->player.short_descr);
 
 #if TITAN
   if (mob->player.short_descr)
@@ -827,7 +827,7 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
   mob->player.short_descr = buf;
 
   buf = (char *)malloc(strlen(mob->player.short_descr)+12);
-  sprintf(buf, "%s is here\n\r", mob->player.short_descr);
+  SPRINTF(buf, "%s is here\n\r", mob->player.short_descr);
 
 #if TITAN
 #else
@@ -1476,7 +1476,7 @@ void spell_animate_dead(byte level, struct char_data *ch,
   /*
     set up descriptions and such
     */ 
-  sprintf(buf,"%s is here, slowly animating\n\r",corpse->short_description);
+  SPRINTF(buf,"%s is here, slowly animating\n\r",corpse->short_description);
   mob->player.long_descr = strdup(buf);
   
   /*
@@ -1512,23 +1512,23 @@ void spell_know_alignment(byte UNUSED(level), struct char_data *ch,
    ap = GET_ALIGNMENT(victim);
    
    if (ap > 700) 
-      sprintf(buf,"%s has an aura as white as the driven snow.\n\r",name);
+      SPRINTF(buf,"%s has an aura as white as the driven snow.\n\r",name);
    else if (ap > 350)
-      sprintf(buf, "%s is of excellent moral character.\n\r",name);
+      SPRINTF(buf, "%s is of excellent moral character.\n\r",name);
    else if (ap > 100)
-      sprintf(buf, "%s is often kind and thoughtful.\n\r",name);
+      SPRINTF(buf, "%s is often kind and thoughtful.\n\r",name);
    else if (ap > 25)
-      sprintf(buf, "%s isn't a bad sort...\n\r",name);
+      SPRINTF(buf, "%s isn't a bad sort...\n\r",name);
    else if (ap > -25)
-      sprintf(buf, "%s doesn't seem to have a firm moral commitment\n\r",name);
+      SPRINTF(buf, "%s doesn't seem to have a firm moral commitment\n\r",name);
    else if (ap > -100)
-    sprintf(buf, "%s isn't the worst you've come across\n\r",name);
+    SPRINTF(buf, "%s isn't the worst you've come across\n\r",name);
    else if (ap > -350)
-    sprintf(buf, "%s could be a little nicer, but who couldn't?\n\r",name);
+    SPRINTF(buf, "%s could be a little nicer, but who couldn't?\n\r",name);
    else if (ap > -700)
-    sprintf(buf, "%s probably just had a bad childhood\n\r",name);
+    SPRINTF(buf, "%s probably just had a bad childhood\n\r",name);
    else 
-     sprintf(buf,"I'd rather just not say anything at all about %s\n\r",name);
+     SPRINTF(buf,"I'd rather just not say anything at all about %s\n\r",name);
 
    send_to_char(buf,ch);
    

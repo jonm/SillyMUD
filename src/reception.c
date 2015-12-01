@@ -41,7 +41,7 @@ int add_obj_cost(struct char_data *ch, struct char_data *re,
       cost->total_cost += temp;
       if (re) {
 #if  0
-	sprintf(buf, "%30s : %d coins/day\n\r", obj->short_description, temp);
+	SPRINTF(buf, "%30s : %d coins/day\n\r", obj->short_description, temp);
 	send_to_char(buf, ch);
 #endif	
       }
@@ -110,7 +110,7 @@ bool recep_offer(struct char_data *ch,	struct char_data *receptionist,
   
   if (cost->no_carried > MAX_OBJ_SAVE) {
     if (receptionist) {
-      sprintf(buf,"$n tells you 'Sorry, but I can't store more than %d items.",
+      SPRINTF(buf,"$n tells you 'Sorry, but I can't store more than %d items.",
 	      MAX_OBJ_SAVE);
       act(buf,FALSE,receptionist,0,ch,TO_VICT);
     }
@@ -126,7 +126,7 @@ bool recep_offer(struct char_data *ch,	struct char_data *receptionist,
   
   if (receptionist) {
 
-    sprintf(buf, "$n tells you 'It will cost you %d coins per day'",
+    SPRINTF(buf, "$n tells you 'It will cost you %d coins per day'",
 	    cost->total_cost);
     act(buf,FALSE,receptionist,0,ch,TO_VICT);
   
@@ -163,7 +163,7 @@ void update_file(struct char_data *ch, struct obj_file_u *st)
 
     */
   write_char_extra(ch);
-  sprintf(buf, "rent/%s", lower(ch->player.name));
+  SPRINTF(buf, "rent/%s", lower(ch->player.name));
   ensure_rent_directory();
 #if 0
   for(p=buf;*p && *p != ' ';p++);
@@ -252,7 +252,7 @@ void load_char_objs(struct char_data *ch)
   load_char_extra(ch);
 
   
-  sprintf(buf, "rent/%s", lower(ch->player.name));
+  SPRINTF(buf, "rent/%s", lower(ch->player.name));
 
   
   /* r+b is for Binary Reading/Writing */
@@ -302,9 +302,9 @@ void load_char_objs(struct char_data *ch)
       timegold = (int) ((st.total_cost*((float)time(0) - st.last_update)) / 
 			(SECS_PER_REAL_DAY));
 #endif
-      sprintf(buf, "Char ran up charges of %g gold in rent", timegold);
+      SPRINTF(buf, "Char ran up charges of %g gold in rent", timegold);
       log_msg(buf);
-      sprintf(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
+      SPRINTF(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
       send_to_char(buf, ch);
       GET_GOLD(ch) -= timegold;
       found = TRUE;    
@@ -365,7 +365,7 @@ void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st)
       if (obj->name)
          strcpy(oe->name, obj->name);
       else {
-	sprintf(buf, "object %d has no name!", obj_index[obj->item_number].virtual);
+	SPRINTF(buf, "object %d has no name!", obj_index[obj->item_number].virtual);
 	log_msg(buf);
 	
       }
@@ -410,7 +410,7 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
   if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER)) {
 #if NODUPLICATES
 #else
-    sprintf(buf, "You're told: '%s is just old junk, I'll throw it away for you.'\n\r", obj->short_description);
+    SPRINTF(buf, "You're told: '%s is just old junk, I'll throw it away for you.'\n\r", obj->short_description);
     send_to_char(buf, ch);
 #endif
   } else if (obj->obj_flags.cost_per_day < 0) {
@@ -418,7 +418,7 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
 #if NODUPLICATES
 #else
     if(ch != NULL) {
-      sprintf(buf, "You're told: '%s is just old junk, I'll throw it away for you.'\n\r", obj->short_description);
+      SPRINTF(buf, "You're told: '%s is just old junk, I'll throw it away for you.'\n\r", obj->short_description);
       send_to_char(buf, ch);
     }
 #endif
@@ -459,7 +459,7 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
   st.number = 0;
   st.gold_left = GET_GOLD(ch);
 
-  sprintf(buf, "saving %s:%d", fname(ch->player.name), GET_GOLD(ch));
+  SPRINTF(buf, "saving %s:%d", fname(ch->player.name), GET_GOLD(ch));
   slog(buf);
 
   st.total_cost = cost->total_cost;
@@ -506,17 +506,17 @@ void update_obj_file()
   }
   
   for (i=0; i<= top_of_p_table; i++) {
-    sprintf(buf, "rent/%s", lower(player_table[i].name));
+    SPRINTF(buf, "rent/%s", lower(player_table[i].name));
     /* r+b is for Binary Reading/Writing */
     if ((fl = fopen(buf, "r+b")) != NULL) {
 
       if (ReadObjs(fl, &st)) {
 	if (str_cmp(st.owner, player_table[i].name) != 0) {
-       sprintf(buf, "Ack!  Wrong person written into object file! (%s/%s)", st.owner, player_table[i].name);
+       SPRINTF(buf, "Ack!  Wrong person written into object file! (%s/%s)", st.owner, player_table[i].name);
 	  log_msg(buf);
 	  abort();
 	} else {
-	  sprintf(buf, "   Processing %s[%ld].", st.owner, i);
+	  SPRINTF(buf, "   Processing %s[%ld].", st.owner, i);
 	  log_msg(buf);
 	  days_passed = ((time(0) - st.last_update) / SECS_PER_REAL_DAY);
 	  secs_lost = ((time(0) - st.last_update) % SECS_PER_REAL_DAY);
@@ -529,7 +529,7 @@ void update_obj_file()
 	    ch_st.load_room = NOWHERE;
 	    st.last_update = time(0)+3600;  /* one hour grace period */
 
-	    sprintf(buf, "   Deautorenting %s", st.owner);
+	    SPRINTF(buf, "   Deautorenting %s", st.owner);
 	    log_msg(buf);
 
 #if LIMITED_ITEMS
@@ -551,7 +551,7 @@ void update_obj_file()
 	      
 	      if ((st.total_cost*days_passed) > st.gold_left) {
 		
-		sprintf(buf, "   Dumping %s from object file.", ch_st.name);
+		SPRINTF(buf, "   Dumping %s from object file.", ch_st.name);
 		log_msg(buf);
 		
 		ch_st.points.gold = 0;
@@ -565,7 +565,7 @@ void update_obj_file()
 		
 	      } else {
 		
-		sprintf(buf, "   Updating %s", st.owner);
+		SPRINTF(buf, "   Updating %s", st.owner);
 		log_msg(buf);
 		st.gold_left  -= (st.total_cost*days_passed);
 		st.last_update = time(0)-secs_lost;
@@ -584,7 +584,7 @@ void update_obj_file()
 #if LIMITED_ITEMS
 	      CountLimitedItems(&st);
 #endif
-	      sprintf(buf, "  same day update on %s", st.owner);
+	      SPRINTF(buf, "  same day update on %s", st.owner);
 	      log_msg(buf);
 #if 0
 	      rewind(fl);
@@ -644,7 +644,7 @@ void PrintLimitedItems() {
   char buf[200];
   for (i=0;i<=top_of_objt;i++) {
     if (obj_index[i].number > 0) {
-      sprintf(buf, "item> %d [%d]", obj_index[i].virtual, obj_index[i].number);
+      SPRINTF(buf, "item> %d [%d]", obj_index[i].virtual, obj_index[i].number);
       log_msg(buf);
     }
   }
@@ -822,7 +822,7 @@ void ZeroRent( char *n)
 
   ensure_rent_directory();
 
-  sprintf(buf, "rent/%s", lower(n));
+  SPRINTF(buf, "rent/%s", lower(n));
 
   if (!(fl = fopen(buf, "w"))) {
     perror("saving PC's objects");
@@ -905,7 +905,7 @@ void load_char_extra(struct char_data *ch)
   char *p, *s, *chk;
   int n;
 
-  sprintf(buf, "rent/%s.aux", GET_NAME(ch));
+  SPRINTF(buf, "rent/%s.aux", GET_NAME(ch));
 
   /*
     open the file.. read in the lines, use them as the aliases and
@@ -949,7 +949,7 @@ void load_char_extra(struct char_data *ch)
 	    s[strlen(s)]= '\0';
 	    n = atoi(p);
 	    if (n >=0 && n <= 9) {  /* set up alias */
-	      sprintf(tmp, "%d %s", n, s+1);
+	      SPRINTF(tmp, "%d %s", n, s+1);
 	      do_alias(ch, tmp, 260);
 	    }
 	  }
@@ -968,7 +968,7 @@ void write_char_extra( struct char_data *ch)
   char buf[80];
   int i;
 
-  sprintf(buf, "rent/%s.aux", GET_NAME(ch));
+  SPRINTF(buf, "rent/%s.aux", GET_NAME(ch));
 
   /*
     open the file.. read in the lines, use them as the aliases and
@@ -1065,7 +1065,7 @@ void load_room_objs(int room)
   struct obj_file_u st;
   char buf[200];
   
-  sprintf(buf, "world/%d", room);
+  SPRINTF(buf, "world/%d", room);
 
   
   /* r+b is for Binary Reading/Writing */
@@ -1100,7 +1100,7 @@ void save_room(int room)
  rm = real_roomp(room);
 
  obj = rm->contents;
- sprintf(buf, "world/%d", room);
+ SPRINTF(buf, "world/%d", room);
  st.number = 0;
 
  if(obj) {
@@ -1114,7 +1114,7 @@ void save_room(int room)
 
    rewind(f1);
    obj_to_store(obj, &st, NULL, 0);
-   sprintf(buf, "Room %d", room);
+   SPRINTF(buf, "Room %d", room);
    strcpy(st.owner, buf);
    st.gold_left = 0;
    st.total_cost = 0;

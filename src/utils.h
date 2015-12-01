@@ -9,8 +9,6 @@
 
 #include "config.h"
 
-int CAN_SEE(struct char_data *s, struct char_data *o);
-
 #if DEBUG
 
 #define free(obj) fprintf(stderr, "freeing %d\n", sizeof(*obj));\
@@ -262,8 +260,6 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 
 #define EXIT(ch, door)  (real_roomp((ch)->in_room)->dir_option[door])
 
-int exit_ok(struct room_direction_data *, struct room_data **);
-
 #define CAN_GO(ch, door) (EXIT(ch,door)&&real_roomp(EXIT(ch,door)->to_room) \
                           && !IS_SET(EXIT(ch, door)->exit_info, EX_CLOSED))
 
@@ -301,3 +297,12 @@ int exit_ok(struct room_direction_data *, struct room_data **);
 			RACE_MFLAYER)
 
 #endif
+
+#define SPRINTF(str, ...)                       \
+  (sizeof(str) > SIZEOF_VOID_P ?                \
+   snprintf(str, sizeof(str), __VA_ARGS__) :    \
+   sprintf(str, __VA_ARGS__))
+
+#define SAPPENDF(str, ...)                                          \
+  snprintf(str+strlen(str), sizeof(str)-strlen(str) - 1, __VA_ARGS__)
+

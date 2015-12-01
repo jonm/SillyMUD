@@ -109,14 +109,14 @@ void do_junk(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
   }
   if (count > 1) {
-    sprintf(buf, "You junk %s (%d).\n\r", arg, count);
+    SPRINTF(buf, "You junk %s (%d).\n\r", arg, count);
     act(buf, 1, ch, 0, 0, TO_CHAR);
-    sprintf(buf, "$n junks %s.\n\r", arg);
+    SPRINTF(buf, "$n junks %s.\n\r", arg);
     act(buf, 1, ch, 0, 0, TO_ROOM);
   } else if (count == 1) {
-    sprintf(buf, "You junk %s \n\r", arg);
+    SPRINTF(buf, "You junk %s \n\r", arg);
     act(buf, 1, ch, 0, 0, TO_CHAR);
-    sprintf(buf, "$n junks %s.\n\r", arg);
+    SPRINTF(buf, "$n junks %s.\n\r", arg);
     act(buf, 1, ch, 0, 0, TO_ROOM);
   } else {
     send_to_char("You don't have anything like that\n\r", ch);
@@ -156,7 +156,7 @@ void do_title(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char("Line too long, truncated\n", ch);
       *(argument + 151) = '\0';
     }
-    sprintf(buf, "Your title has been set to : <%s>\n\r", argument);
+    SPRINTF(buf, "Your title has been set to : <%s>\n\r", argument);
     send_to_char(buf, ch);
     free(ch->player.title);
     ch->player.title = strdup(argument);
@@ -178,7 +178,7 @@ void do_quit(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   
   if (GET_POS(ch) < POSITION_STUNNED) {
     send_to_char("You die before your time!\n\r", ch);
-    sprintf(buf, "%s dies via quit.", GET_NAME(ch));
+    SPRINTF(buf, "%s dies via quit.", GET_NAME(ch));
     log_msg(buf);
     die(ch);    
     return;
@@ -435,7 +435,7 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   
   if(GetMaxLevel(victim) > 50) {
     send_to_char("Steal from a God?!?  Oh the thought!\n\r", ch);
-    sprintf(buf, "BUG NOTE: %s tried to steal from GOD %s", GET_NAME(ch), GET_NAME(victim));
+    SPRINTF(buf, "BUG NOTE: %s tried to steal from GOD %s", GET_NAME(ch), GET_NAME(victim));
     log_msg(buf);
     return;
   }
@@ -549,7 +549,7 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       if (gold > 0) {
 	GET_GOLD(ch) += gold;
 	GET_GOLD(victim) -= gold;
-	sprintf(buf, "Bingo! You got %d gold coins.\n\r", gold);
+	SPRINTF(buf, "Bingo! You got %d gold coins.\n\r", gold);
 	send_to_char(buf, ch);
 	if (IS_PC(ch) && IS_PC(victim))
 	  GET_ALIGNMENT(ch)-=20;
@@ -561,7 +561,7 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   
   if (ohoh && IS_NPC(victim) && AWAKE(victim)) {
     if (IS_SET(victim->specials.act, ACT_NICE_THIEF)) {
-      sprintf(buf, "%s is a bloody thief.", GET_NAME(ch));
+      SPRINTF(buf, "%s is a bloody thief.", GET_NAME(ch));
       do_shout(victim, buf, 0);
       do_say(victim, "Don't you ever do that again!", 0);
     } else {
@@ -607,7 +607,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	send_to_char("You have the following intrinsic spell abilities:\n\r",ch);
 	for(i=0; *spells[i] != '\n' && i < (MAX_EXIST_SPELL+1); i++)
 	  if(IsIntrinsic(ch,i+1)) {
-	    sprintf(buf,"%-30s %s \n\r",spells[i],
+	    SPRINTF(buf,"%-30s %s \n\r",spells[i],
 		    how_good(ch->skills[i+1].learned));
 	    if (strlen(buf)+strlen(buffer) > (MAX_STRING_LENGTH*2)-2)
 	      break;
@@ -621,7 +621,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	for(i=0; *spells[i] != '\n'; i++)
 	  if (skill_info[i+1].spell_pointer && (ch->skills[i+1].learned ||
 						IsIntrinsic(ch, i+1))) {
-	    sprintf(buf,"[%-3d] %-25s %s",
+	    SPRINTF(buf,"[%-3d] %-25s %s",
 		    (skill_info[i+1].min_level[MIN_LEVEL_MAGIC] < 
 		     skill_info[i+1].min_level[MIN_LEVEL_CLERIC] ? 
 		     skill_info[i+1].min_level[MIN_LEVEL_MAGIC] : 
@@ -646,7 +646,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
         if (!skill_info[i+1].spell_pointer && 
 	    ( IS_SET(ch->player.class, skill_info[i+1].class_use) ||
 	     IsIntrinsic(ch,i+1))) {
-          sprintf(buf,"%-30s %s \n\r",spells[i],
+          SPRINTF(buf,"%-30s %s \n\r",spells[i],
                   how_good(ch->skills[i+1].learned));
           if (strlen(buf)+strlen(buffer) > (MAX_STRING_LENGTH*2)-2)
             break;
@@ -669,7 +669,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
       send_to_char("You have knowledge of these skills:\n\r", ch);
       for(i=0; *spells[i] != '\n' && i < (MAX_EXIST_SPELL+1); i++)
 	if (!skill_info[i+1].spell_pointer && ch->skills[i+1].learned) {
-	  sprintf(buf,"%-30s %s \n\r",spells[i],
+	  SPRINTF(buf,"%-30s %s \n\r",spells[i],
 		  how_good(ch->skills[i+1].learned));
 	  if (strlen(buf)+strlen(buffer) > (MAX_STRING_LENGTH*2)-2)
 	    break;
@@ -690,7 +690,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
       send_to_char("You have knowledge of these skills:\n\r", ch);
       for(i=0; *spells[i] != '\n' && i < (MAX_EXIST_SPELL+1); i++)
 	if (!skill_info[i+1].spell_pointer && ch->skills[i+1].learned) {
-	  sprintf(buf,"%-30s %s \n\r",spells[i],
+	  SPRINTF(buf,"%-30s %s \n\r",spells[i],
 		  how_good(ch->skills[i+1].learned));
 	  if (strlen(buf)+strlen(buffer) > (MAX_STRING_LENGTH*2)-2)
 	    break;
@@ -712,7 +712,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	if (skill_info[i+1].spell_pointer &&
 	    (skill_info[i+1].min_level[MIN_LEVEL_MAGIC] <=
 	     GET_LEVEL(ch,MAGE_LEVEL_IND))) {
-	  sprintf(buf,"[%d] %s %s \n\r",
+	  SPRINTF(buf,"[%d] %s %s \n\r",
                   skill_info[i+1].min_level[MIN_LEVEL_MAGIC],
 		  spells[i],how_good(ch->skills[i+1].learned));
 	  if (strlen(buf)+strlen(buffer) > (MAX_STRING_LENGTH*2)-2)
@@ -738,7 +738,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	if (skill_info[i+1].spell_pointer &&
 	    (skill_info[i+1].min_level[MIN_LEVEL_CLERIC] <=
 	     GET_LEVEL(ch,CLERIC_LEVEL_IND))){
-	  sprintf(buf,"[%d] %s %s \n\r",
+	  SPRINTF(buf,"[%d] %s %s \n\r",
                   skill_info[i+1].min_level[MIN_LEVEL_CLERIC],
 		  spells[i],how_good(ch->skills[i+1].learned));
 	  if (strlen(buf)+strlen(buffer) > (MAX_STRING_LENGTH*2)-2)
@@ -763,7 +763,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	if (skill_info[i+1].spell_pointer &&
 	    (skill_info[i+1].min_level[MIN_LEVEL_DRUID] <=
 	     GET_LEVEL(ch, DRUID_LEVEL_IND))){
-	  sprintf(buf,"[%d] %s %s \n\r",
+	  SPRINTF(buf,"[%d] %s %s \n\r",
 		  skill_info[i+1].min_level[MIN_LEVEL_DRUID],
 		  spells[i],how_good(ch->skills[i+1].learned));
 	  if (strlen(buf)+strlen(buffer) > MAX_STRING_LENGTH-2)
@@ -785,7 +785,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
     send_to_char("You have knowledge of these skills:\n\r", ch);
     for(i=0; *spells[i] != '\n' && i < (MAX_EXIST_SPELL+1); i++)
       if (!skill_info[i+1].spell_pointer && ch->skills[i+1].learned) {
-	sprintf(buf,"%-30s %s \n\r",spells[i],
+	SPRINTF(buf,"%-30s %s \n\r",spells[i],
 		how_good(ch->skills[i+1].learned));
 	if (strlen(buf)+strlen(buffer) > (MAX_STRING_LENGTH*2)-2)
 	  break;
@@ -828,7 +828,7 @@ void do_idea(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
   
-  sprintf(str, "**%s: %s\n", GET_NAME(ch), argument);
+  SPRINTF(str, "**%s: %s\n", GET_NAME(ch), argument);
   
   fputs(str, fl);
   fclose(fl);
@@ -857,7 +857,7 @@ void do_typo(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
   
-  sprintf(str, "**%s[%d]: %s\n",
+  SPRINTF(str, "**%s[%d]: %s\n",
 	  GET_NAME(ch), ch->in_room, argument);
   fputs(str, fl);
   fclose(fl);
@@ -887,7 +887,7 @@ void do_bug(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
   
-  sprintf(str, "**%s[%d]: %s\n",
+  SPRINTF(str, "**%s[%d]: %s\n",
 	  GET_NAME(ch), ch->in_room, argument);
   fputs(str, fl);
   fclose(fl);
@@ -991,7 +991,7 @@ void do_group(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	k = ch;
       
       if (IS_AFFECTED(k, AFF_GROUP)) {
-	sprintf(buf, "     $N (Head of group) HP:%s MV:%s",
+	SPRINTF(buf, "     $N (Head of group) HP:%s MV:%s",
 		Condition(k), Tiredness(k));
 	act(buf,FALSE,ch, 0, k, TO_CHAR);
 	
@@ -999,7 +999,7 @@ void do_group(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       
       for(f=k->followers; f; f=f->next)
 	if (IS_AFFECTED(f->follower, AFF_GROUP)) {
-	  sprintf(buf, "     $N  \tHP:%s MV:%s",
+	  SPRINTF(buf, "     $N  \tHP:%s MV:%s",
 		  Condition(f->follower), Tiredness(f->follower));
 	  act(buf,FALSE,ch, 0, f->follower, TO_CHAR);
 	}
@@ -1279,7 +1279,7 @@ void do_use(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     char_from_room(f);
     char_to_room(f, 3);
     obj_to_char(f->link, ch);
-    sprintf(buf, "You now have %s.\n", f->link->short_description);
+    SPRINTF(buf, "You now have %s.\n", f->link->short_description);
     send_to_char(buf, ch);
     return;
   }
@@ -1371,7 +1371,7 @@ void do_use(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     
     
     if(number(1,26) == 20) { /* One in 20 chance of it destroying itself */
-      sprintf(buf, "%s shudders and shakes, finally cracking into a million pieces.\n", stick->short_description);
+      SPRINTF(buf, "%s shudders and shakes, finally cracking into a million pieces.\n", stick->short_description);
       send_to_char(buf, ch);
       stick = unequip_char(ch, HOLD);
       char_from_room(stick->link);
@@ -1384,7 +1384,7 @@ void do_use(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
     stick = unequip_char(ch, HOLD);
     act("$p starts to shudder an shake in $n's hands.", FALSE, ch, stick, 0, TO_ROOM);
-    sprintf(buf, "%s shakes in your hands and grows into %s.\n", stick->short_description, stick->link->player.short_descr);
+    SPRINTF(buf, "%s shakes in your hands and grows into %s.\n", stick->short_description, stick->link->player.short_descr);
     send_to_char(buf, ch);
     SET_BIT(stick->link->specials.affected_by, AFF_CHARM);
     char_from_room(stick->link);
@@ -1463,7 +1463,7 @@ void do_alias(struct char_data *ch, char *arg, int cmd)
       if (ch->specials.A_list) {
 	for(i=0;i<10;i++) {
 	  if (ch->specials.A_list->com[i]) {
-	    sprintf(buf,"[%d] %s\n\r",i, ch->specials.A_list->com[i]);
+	    SPRINTF(buf,"[%d] %s\n\r",i, ch->specials.A_list->com[i]);
 	    send_to_char(buf,ch);
 	  }
 	}
@@ -1533,7 +1533,7 @@ void do_alias(struct char_data *ch, char *arg, int cmd)
       if (GET_ALIAS(ch, num)) {
 	strcpy(buf, GET_ALIAS(ch, num));
 	if (*arg) {
-	  sprintf(buf2,"%s%s",buf,arg);
+	  SPRINTF(buf2,"%s%s",buf,arg);
 	  command_interpreter(ch, buf2);
 	} else {
 	  command_interpreter(ch, buf);
@@ -1706,14 +1706,14 @@ void do_split(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       if (k->in_room == ch->in_room) {
 	GET_GOLD(k) += share;
 	num -= share;
-	sprintf(buf, "$N gives you %d gold", share);
+	SPRINTF(buf, "$N gives you %d gold", share);
 	act(buf, 0, k, 0, ch, TO_CHAR);
       }
     } else {
       k = ch;
       GET_GOLD(k) += share;
       num -= share;
-      sprintf(buf, "You keep %d gold\n\r", share);
+      SPRINTF(buf, "You keep %d gold\n\r", share);
       send_to_char(buf, ch);
     }
     
@@ -1721,12 +1721,12 @@ void do_split(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       if (IS_AFFECTED(f->follower, AFF_GROUP)) {
 	if (f->follower->in_room == ch->in_room) {
 	  if (f->follower != ch) {
-	    sprintf(buf, "$N gives you %d gold", share);
+	    SPRINTF(buf, "$N gives you %d gold", share);
 	    act(buf, 0, f->follower, 0, ch, TO_CHAR);
-	    sprintf(buf, "You give $N %d gold", share);
+	    SPRINTF(buf, "You give $N %d gold", share);
 	    act(buf, 0, ch, 0, f->follower, TO_CHAR);
 	  } else {
-	    sprintf(buf, "You keep %d gold\n\r", share);
+	    SPRINTF(buf, "You keep %d gold\n\r", share);
 	    send_to_char(buf, ch);	  
 	  }
 	  GET_GOLD(f->follower) += share;
@@ -1736,7 +1736,7 @@ void do_split(struct char_data *ch, char *arg, int UNUSED(cmd)) {
     
     /* give rest to ch */
     GET_GOLD(ch) += num;
-    sprintf(buf, "And you keep the %d gold left over.\n\r", num);
+    SPRINTF(buf, "And you keep the %d gold left over.\n\r", num);
     send_to_char(buf, ch);	  
     
     
@@ -1817,20 +1817,20 @@ void do_donate(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
   }
   if (count > 1) {
-    sprintf(buf, "You donate %s (%d).\n\r", arg, count);
+    SPRINTF(buf, "You donate %s (%d).\n\r", arg, count);
     act(buf, 1, ch, 0, 0, TO_CHAR);
-    sprintf(buf, "$n donates %s.\n\r", arg);
+    SPRINTF(buf, "$n donates %s.\n\r", arg);
     act(buf, 1, ch, 0, 0, TO_ROOM);
-    sprintf(buf, "%s has just donated %s.\n\r", GET_NAME(ch), arg);
+    SPRINTF(buf, "%s has just donated %s.\n\r", GET_NAME(ch), arg);
     send_to_room(buf, 99);
     act("Thank you for your most generous donation.",
         FALSE, ch, 0, 0, TO_CHAR);
   } else if (count == 1) {
-    sprintf(buf, "You donate %s \n\r", arg);
+    SPRINTF(buf, "You donate %s \n\r", arg);
     act(buf, 1, ch, 0, 0, TO_CHAR);
-    sprintf(buf, "$n donates %s.\n\r", arg);
+    SPRINTF(buf, "$n donates %s.\n\r", arg);
     act(buf, 1, ch, 0, 0, TO_ROOM);
-    sprintf(buf, "%s has just donated %s.\n\r", GET_NAME(ch), arg);
+    SPRINTF(buf, "%s has just donated %s.\n\r", GET_NAME(ch), arg);
     send_to_room(buf, 99);
     act("Thank you for your most generous donation.",
         FALSE, ch, 0, 0, TO_CHAR);

@@ -198,10 +198,10 @@ void Zwrite (FILE *fp, char cmd, int tf, int arg1, int arg2, int arg3,
    char buf[100];
 
    if (*desc) {
-     sprintf(buf, "%c %d %d %d %d   ; %s\n", cmd, tf, arg1, arg2, arg3, desc);
+     SPRINTF(buf, "%c %d %d %d %d   ; %s\n", cmd, tf, arg1, arg2, arg3, desc);
      fputs(buf, fp);
    } else {
-     sprintf(buf, "%c %d %d %d %d\n", cmd, tf, arg1, arg2, arg3); 
+     SPRINTF(buf, "%c %d %d %d %d\n", cmd, tf, arg1, arg2, arg3); 
      fputs(buf, fp);
    }
 }
@@ -226,7 +226,7 @@ FILE *MakeZoneFile( struct char_data *c)
   char buf[256];
   FILE *fp;
 
-  sprintf(buf, "zone/%s.zon", GET_NAME(c));
+  SPRINTF(buf, "zone/%s.zon", GET_NAME(c));
 
   if ((fp = fopen(buf, "w")) != NULL)
     return(fp);
@@ -360,7 +360,7 @@ void log_sev(char *str,int sev)
   
   
   if (str)
-    sprintf(buf,"/* %s */\n\r",str);
+    SPRINTF(buf,"/* %s */\n\r",str);
   for (i = descriptor_list; i; i = i->next)
     if ((!i->connected) && (GetMaxLevel(i->character)>=LOW_IMMORTAL) &&
 	(i->character->specials.sev <= sev) &&
@@ -695,7 +695,7 @@ int sab;
 char buf[200];
 
    if (exp_flags > 100) { 
-     sprintf(buf, "Exp flags on %s are > 100 (%d)", GET_NAME(mob), exp_flags);
+     SPRINTF(buf, "Exp flags on %s are > 100 (%d)", GET_NAME(mob), exp_flags);
      log_msg(buf);
    }
 
@@ -989,7 +989,7 @@ void down_river( int pulse )
 			    IS_SET(ch->specials.act, PLR_NOHASSLE)) {
 			   send_to_char("The waters swirl beneath your feet.\n\r",ch);
 			 } else {
-			   sprintf(buf, "You drift %s...\n\r", dirs[rd]);
+			   SPRINTF(buf, "You drift %s...\n\r", dirs[rd]);
 			   send_to_char(buf,ch);
 			   if (RIDDEN(ch))
 			     send_to_char(buf,RIDDEN(ch));
@@ -1034,7 +1034,7 @@ void RoomSave(struct char_data *ch, int start, int end)
    struct room_direction_data	*rdd;
 
 
-   sprintf(fn, "rooms/%s", ch->player.name);
+   SPRINTF(fn, "rooms/%s", ch->player.name);
    if ((fp = fopen(fn,"w")) == NULL) {
      send_to_char("Can't write to disk now..try later \n\r",ch);
      return;
@@ -1226,7 +1226,7 @@ void RoomLoad( struct char_data *ch, int start, int end)
   char buf[80];
   struct room_data *rp, dummy;
 
-  sprintf(buf, "rooms/%s", ch->player.name);
+  SPRINTF(buf, "rooms/%s", ch->player.name);
   if ((fp = fopen(buf,"r")) == NULL) {
     send_to_char("You don't appear to have an area...\n\r",ch);
     return;
@@ -1624,7 +1624,7 @@ return;
    ch->old_room = ch->in_room;
 #if 0
     if (GetMaxLevel(tch) >= IMMORTAL) {
-        sprintf(buf, ">>%s is hunting you from %s\n\r", 
+        SPRINTF(buf, ">>%s is hunting you from %s\n\r", 
        	   (ch->player.short_descr[0]?ch->player.short_descr:"(null)"),
        	   (real_roomp(ch->in_room)->name[0]?real_roomp(ch->in_room)->name:"(null)"));
         send_to_char(buf, tch);
@@ -2149,7 +2149,7 @@ void RiverPulseStuff(int pulse)
 			if (ch->specials.fighting) {
 			  stop_fighting(ch);
 			}
-			sprintf(buf, "You drift %s...\n\r", dirs[rd]);
+			SPRINTF(buf, "You drift %s...\n\r", dirs[rd]);
 			send_to_char(buf,ch);
 			if (RIDDEN(ch))
 			  send_to_char(buf,RIDDEN(ch));
@@ -2205,7 +2205,7 @@ void RiverPulseStuff(int pulse)
 	    /*
 	     * snore 
 	     */	 
-	    sprintf(buffer, "%s snores loudly.\n\r", 
+	    SPRINTF(buffer, "%s snores loudly.\n\r", 
 		    ch->player.short_descr);
 	    MakeNoise(ch->in_room, buffer, 
 		      "You hear a loud snore nearby.\n\r");

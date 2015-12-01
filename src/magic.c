@@ -1303,22 +1303,22 @@ void spell_locate_object(byte level, struct char_data *ch,
     if (isname(name, i->name)) {
       if(i->carried_by) {
 	if (strlen(PERS(i->carried_by, ch))>0) {
-          sprintf(buf2,"%s carried by %s.\n\r",
+          SPRINTF(buf2,"%s carried by %s.\n\r",
 		  i->short_description,PERS(i->carried_by,ch));
           strcat(buf, buf2);
 	}
       } else if(i->equipped_by) {
 	if (strlen(PERS(i->equipped_by, ch))>0) {
-          sprintf(buf2,"%s equipped by %s.\n\r",
+          SPRINTF(buf2,"%s equipped by %s.\n\r",
 		  i->short_description,PERS(i->equipped_by,ch));
           strcat(buf, buf2);
 	}
       } else if (i->in_obj) {
-	sprintf(buf2,"%s in %s.\n\r",i->short_description,
+	SPRINTF(buf2,"%s in %s.\n\r",i->short_description,
 		i->in_obj->short_description);
 	strcat(buf, buf2);
       } else {
-	sprintf(buf2,"%s in %s.\n\r",i->short_description,
+	SPRINTF(buf2,"%s in %s.\n\r",i->short_description,
 		(i->in_room == NOWHERE ? "use but uncertain." : real_roomp(i->in_room)->name));
 	strcat(buf, buf2);
 	j--;
@@ -1842,7 +1842,7 @@ void RawSummon( struct char_data *v, struct char_data *c)
   
   act("$n arrives suddenly.",TRUE,v,0,0,TO_ROOM);
   
-  sprintf(buf, "%s has summoned you!\n\r", (IS_NPC(c)?c->player.short_descr:GET_NAME(c)));
+  SPRINTF(buf, "%s has summoned you!\n\r", (IS_NPC(c)?c->player.short_descr:GET_NAME(c)));
   send_to_char(buf, v);
   do_look(v,"",15);
   
@@ -2105,12 +2105,12 @@ void spell_identify(byte level, struct char_data *ch,
   if (obj) {
     send_to_char("You feel informed:\n\r", ch);
     
-    sprintf(buf, "Object '%s', Item type: ", obj->name);
+    SPRINTF(buf, "Object '%s', Item type: ", obj->name);
     sprinttype(GET_ITEM_TYPE(obj),item_types,buf2);
     strcat(buf,buf2); strcat(buf,"\n\r");
     send_to_char(buf, ch);
     
-    sprintf(buf, "This item\'s ego is of %s proportions.\n\r",
+    SPRINTF(buf, "This item\'s ego is of %s proportions.\n\r",
 	    EgoDesc(GET_OBJ_EGO(obj)));
     send_to_char(buf, ch);
 
@@ -2126,7 +2126,7 @@ void spell_identify(byte level, struct char_data *ch,
     strcat(buf,"\n\r");
     send_to_char(buf,ch);
     
-    sprintf(buf,"Weight: %d\n\r",
+    SPRINTF(buf,"Weight: %d\n\r",
 	    obj->obj_flags.weight); 
     send_to_char(buf, ch);
 
@@ -2135,7 +2135,7 @@ void spell_identify(byte level, struct char_data *ch,
       
     case ITEM_SCROLL : 
     case ITEM_POTION :
-      sprintf(buf, "Level %d spells of:\n\r",	obj->obj_flags.value[0]);
+      SPRINTF(buf, "Level %d spells of:\n\r",	obj->obj_flags.value[0]);
       send_to_char(buf, ch);
       if (obj->obj_flags.value[1] >= 1) {
 	sprinttype(obj->obj_flags.value[1]-1,spells,buf);
@@ -2156,12 +2156,12 @@ void spell_identify(byte level, struct char_data *ch,
       
     case ITEM_WAND : 
     case ITEM_STAFF : 
-      sprintf(buf, "Has %d chages, with %d charges left.\n\r",
+      SPRINTF(buf, "Has %d chages, with %d charges left.\n\r",
 	      obj->obj_flags.value[1],
 	      obj->obj_flags.value[2]);
       send_to_char(buf, ch);
       
-      sprintf(buf, "Level %d spell of:\n\r",	obj->obj_flags.value[0]);
+      SPRINTF(buf, "Level %d spell of:\n\r",	obj->obj_flags.value[0]);
       send_to_char(buf, ch);
       
       if (obj->obj_flags.value[3] >= 1) {
@@ -2172,14 +2172,14 @@ void spell_identify(byte level, struct char_data *ch,
       break;
       
     case ITEM_WEAPON :
-      sprintf(buf, "Damage Dice is '%dD%d'\n\r",
+      SPRINTF(buf, "Damage Dice is '%dD%d'\n\r",
 	      obj->obj_flags.value[1],
 	      obj->obj_flags.value[2]);
       send_to_char(buf, ch);
       break;
       
     case ITEM_ARMOR :
-      sprintf(buf, "AC-apply is %d\n\r",
+      SPRINTF(buf, "AC-apply is %d\n\r",
 	      obj->obj_flags.value[0]);
       send_to_char(buf, ch);
       break;
@@ -2197,7 +2197,7 @@ void spell_identify(byte level, struct char_data *ch,
 	}
 	
 	sprinttype(obj->affected[i].location,apply_types,buf2);
-	sprintf(buf,"    Affects : %s By ", buf2);
+	SPRINTF(buf,"    Affects : %s By ", buf2);
 	send_to_char(buf,ch);
 	switch(obj->affected[i].location) {
 	case APPLY_M_IMMUNE:
@@ -2207,11 +2207,11 @@ void spell_identify(byte level, struct char_data *ch,
 	   strcat(buf2,"\n\r");
 	   break;
 	case APPLY_ATTACKS:
-	   sprintf(buf2,"%lu\n\r", obj->affected[i].modifier/10);
+	   SPRINTF(buf2,"%lu\n\r", obj->affected[i].modifier/10);
 	   break;
         case APPLY_WEAPON_SPELL:
 	case APPLY_EAT_SPELL:
-	   sprintf(buf2,"%s\n\r", spells[obj->affected[i].modifier-1]);
+	   SPRINTF(buf2,"%s\n\r", spells[obj->affected[i].modifier-1]);
 	   break;
 	case APPLY_SPELL:
 	   sprintbit(obj->affected[i].modifier,affected_bits, buf2);
@@ -2219,7 +2219,7 @@ void spell_identify(byte level, struct char_data *ch,
 	   break;
 
 	 default:
-	   sprintf(buf2,"%lu\n\r", obj->affected[i].modifier);
+	   SPRINTF(buf2,"%lu\n\r", obj->affected[i].modifier);
 	   break;
 	}
 	send_to_char(buf2,ch);
@@ -2233,21 +2233,21 @@ void spell_identify(byte level, struct char_data *ch,
       struct time_info_data ma;
 
       age2(victim, &ma);
-      sprintf(buf,"%d Years,  %d Months,  %d Days,  %d Hours old.\n\r",
+      SPRINTF(buf,"%d Years,  %d Months,  %d Days,  %d Hours old.\n\r",
 	      ma.year, ma.month,
 	      ma.day, ma.hours);
       send_to_char(buf,ch);
       
-      sprintf(buf,"Height %dcm  Weight %dpounds \n\r",
+      SPRINTF(buf,"Height %dcm  Weight %dpounds \n\r",
 	      GET_HEIGHT(victim), GET_WEIGHT(victim));
       send_to_char(buf,ch);
       
-      sprintf(buf,"Armor Class %d\n\r",victim->points.armor);
+      SPRINTF(buf,"Armor Class %d\n\r",victim->points.armor);
       send_to_char(buf,ch);
 
       if (level > 30) {
 
-	sprintf(buf,"Str %d/%d, Int %d, Wis %d, Dex %d, Con %d, Ch %d\n\r",
+	SPRINTF(buf,"Str %d/%d, Int %d, Wis %d, Dex %d, Con %d, Ch %d\n\r",
 	GET_STR(victim), GET_ADD(victim),
 	GET_INT(victim),
 	GET_WIS(victim),

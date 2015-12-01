@@ -78,7 +78,7 @@ int ValidMove( struct char_data *ch, int cmd)
     if (exitp->keyword) {
       if (!IS_SET(exitp->exit_info, EX_SECRET) &&
 	  (strcmp(fname(exitp->keyword), "secret"))) {
-          sprintf(tmp, "The %s seems to be closed.\n\r",
+          SPRINTF(tmp, "The %s seems to be closed.\n\r",
 	      fname(exitp->keyword));
           send_to_char(tmp, ch);
           return(FALSE);
@@ -497,25 +497,25 @@ void DisplayMove( struct char_data *ch, int dir, int was_in, int total)
 	if (!IS_AFFECTED(ch, AFF_SILENCE) || number(0,2)) {
 	  if (total > 1) {
 	    if (IS_NPC(ch)) {
-	      sprintf(tmp,"%s %s %s. [%d]\n\r",ch->player.short_descr,how,
+	      SPRINTF(tmp,"%s %s %s. [%d]\n\r",ch->player.short_descr,how,
 		      dirs[dir], total);
 	    } else {
-	      sprintf(tmp,"%s %s %s. [%d]\n\r",GET_NAME(ch),how,dirs[dir],
+	      SPRINTF(tmp,"%s %s %s. [%d]\n\r",GET_NAME(ch),how,dirs[dir],
 		      total);
 	    }
 	  } else {
 	    if (IS_NPC(ch)) {
 	      if (MOUNTED(ch)) {
-		sprintf(tmp,"%s leaves %s, riding on %s\n\r",ch->player.short_descr, dirs[dir], MOUNTED(ch)->player.short_descr);
+		SPRINTF(tmp,"%s leaves %s, riding on %s\n\r",ch->player.short_descr, dirs[dir], MOUNTED(ch)->player.short_descr);
 	      } else {
-		sprintf(tmp,"%s %s %s.\n\r",ch->player.short_descr,how,
+		SPRINTF(tmp,"%s %s %s.\n\r",ch->player.short_descr,how,
 			dirs[dir]);
 	      }
 	    } else {
 	      if (MOUNTED(ch)) {
-		sprintf(tmp,"%s leaves %s, riding on %s\n\r",GET_NAME(ch), dirs[dir], MOUNTED(ch)->player.short_descr);
+		SPRINTF(tmp,"%s leaves %s, riding on %s\n\r",GET_NAME(ch), dirs[dir], MOUNTED(ch)->player.short_descr);
 	      } else {
-		sprintf(tmp,"%s %s %s.\n\r",GET_NAME(ch),how,dirs[dir]);
+		SPRINTF(tmp,"%s %s %s.\n\r",GET_NAME(ch),how,dirs[dir]);
 	      }
 	    }
 	  }
@@ -535,62 +535,63 @@ void DisplayMove( struct char_data *ch, int dir, int was_in, int total)
 	if (dir < 4) {
 	  if (total == 1) {
 	    if (MOUNTED(ch)) {
-	      sprintf(tmp, "%s from the %s, riding on %s", 
+	      SPRINTF(tmp, "%s from the %s, riding on %s", 
 		      PERS(ch, tmp_ch),dirs[rev_dir[dir]], 
 		      PERS(MOUNTED(ch), tmp_ch));
 	    } else {
-	      sprintf(tmp, "%s %s from the %s.", 
+	      SPRINTF(tmp, "%s %s from the %s.", 
 		      PERS(ch, tmp_ch),how,dirs[rev_dir[dir]]);
 	    }
 	  } else {
-	      sprintf(tmp, "%s %s from the %s.", 
+	      SPRINTF(tmp, "%s %s from the %s.", 
 		      PERS(ch, tmp_ch),how,dirs[rev_dir[dir]]);
 	  }
 	} else if (dir == 4) {
 	  if (total == 1) {
 	    if (MOUNTED(ch)) {
-	      sprintf(tmp, "%s has arrived from below, riding on %s", 
+	      SPRINTF(tmp, "%s has arrived from below, riding on %s", 
 		      PERS(ch, tmp_ch), 
 		      PERS(MOUNTED(ch), tmp_ch));
 	    } else {
-	      sprintf(tmp, "%s %s from below.", 
+	      SPRINTF(tmp, "%s %s from below.", 
 		      PERS(ch, tmp_ch),how);
 	    }
 	  } else {
-	    sprintf(tmp, "%s %s from below.", 
+	    SPRINTF(tmp, "%s %s from below.", 
 		    PERS(ch, tmp_ch),how);
 	  }
 	} else if (dir == 5) {
 	  if (total == 1) {
 	    if (MOUNTED(ch)) {
-	      sprintf(tmp, "%s has arrived from above, riding on %s", 
+	      SPRINTF(tmp, "%s has arrived from above, riding on %s", 
 		      PERS(ch, tmp_ch), 
 		      PERS(MOUNTED(ch), tmp_ch));
 	    } else {
-	      sprintf(tmp, "%s %s from above", 
+	      SPRINTF(tmp, "%s %s from above", 
 		      PERS(ch, tmp_ch),how);
 	    }
 	  } else {
-	    sprintf(tmp, "%s %s from above.", 
+	    SPRINTF(tmp, "%s %s from above.", 
 		    PERS(ch, tmp_ch),how);
 	  }
 	} else {
 	  if (total == 1) {
 	    if (MOUNTED(ch)) {
-	      sprintf(tmp, "%s has arrived from somewhere, riding on %s", 
+	      SPRINTF(tmp, "%s has arrived from somewhere, riding on %s", 
 		      PERS(ch, tmp_ch), 
 		      PERS(MOUNTED(ch), tmp_ch));
 	    } else {
-	      sprintf(tmp, "%s has arrived from somewhere.", 
+	      SPRINTF(tmp, "%s has arrived from somewhere.", 
 		      PERS(ch, tmp_ch));
 	    }
 	  } else {
-	    sprintf(tmp, "%s has arrived from somewhere.", 
+	    SPRINTF(tmp, "%s has arrived from somewhere.", 
 		    PERS(ch, tmp_ch));
 	  }
 	}
 	if (total > 1) {
-	  sprintf(tmp+strlen(tmp), " [%d]", total);
+	  snprintf(tmp+strlen(tmp), sizeof(tmp) - strlen(tmp) - 1,
+               " [%d]", total);
 	}
 	strcat(tmp, "\n\r");
 	send_to_char(tmp, tmp_ch);
@@ -655,7 +656,7 @@ int find_door(struct char_data *ch, char *type, char *dir)
 	  send_to_char("Thats a direction, not a portal.\n\r", ch);
 	  return(-1);
 	}
-	sprintf(buf, "I see no %s there.\n\r", type);
+	SPRINTF(buf, "I see no %s there.\n\r", type);
 	send_to_char(buf, ch);
 	return(-1);
       }
@@ -664,7 +665,7 @@ int find_door(struct char_data *ch, char *type, char *dir)
 	send_to_char("Thats a direction, not a portal.\n\r", ch);
 	return(-1);
       }
-      sprintf(buf, "I see no %s there.\n\r", type);
+      SPRINTF(buf, "I see no %s there.\n\r", type);
       send_to_char(buf, ch);
       return(-1);
     }
@@ -681,7 +682,7 @@ int find_door(struct char_data *ch, char *type, char *dir)
 	return(-1);
       }
     }
-    sprintf(buf, "I see no %s here.\n\r", type);
+    SPRINTF(buf, "I see no %s here.\n\r", type);
     send_to_char(buf, ch);
     return(-1);
   }
@@ -697,7 +698,7 @@ void open_door(struct char_data *ch, int dir)
   
   rp = real_roomp(ch->in_room);
   if (rp==NULL) {
-    sprintf(buf, "NULL rp in open_door() for %s.", PERS(ch,ch));
+    SPRINTF(buf, "NULL rp in open_door() for %s.", PERS(ch,ch));
     log_msg(buf);
   }
   
@@ -707,7 +708,7 @@ void open_door(struct char_data *ch, int dir)
   if (exitp->keyword) {
     if (strcmp(fname(exitp->keyword), "secret") &&
 	(!IS_SET(exitp->exit_info, EX_SECRET))) {
-      sprintf(buf, "$n opens the %s", fname(exitp->keyword));
+      SPRINTF(buf, "$n opens the %s", fname(exitp->keyword));
       act(buf, FALSE, ch, 0, 0, TO_ROOM);
     } else {
       act("$n reveals a hidden passage!", FALSE, ch, 0, 0, TO_ROOM);
@@ -721,7 +722,7 @@ void open_door(struct char_data *ch, int dir)
       (back->to_room == ch->in_room))    {
       REMOVE_BIT(back->exit_info, EX_CLOSED);
       if (back->keyword && (strcmp("secret", fname(back->keyword))))	{
-	sprintf(buf, "The %s is opened from the other side.\n\r",
+	SPRINTF(buf, "The %s is opened from the other side.\n\r",
 		fname(back->keyword));
 	send_to_room(buf, exitp->to_room);
       } else {
@@ -740,7 +741,7 @@ void raw_open_door(struct char_data *ch, int dir)
   
   rp = real_roomp(ch->in_room);
   if (rp==NULL) {
-    sprintf(buf, "NULL rp in open_door() for %s.", PERS(ch,ch));
+    SPRINTF(buf, "NULL rp in open_door() for %s.", PERS(ch,ch));
     log_msg(buf);
   }
   
@@ -753,7 +754,7 @@ void raw_open_door(struct char_data *ch, int dir)
       (back->to_room == ch->in_room))    {
       REMOVE_BIT(back->exit_info, EX_CLOSED);
       if (back->keyword && (strcmp("secret", fname(back->keyword))))	{
-	sprintf(buf, "The %s is opened from the other side.\n\r",
+	SPRINTF(buf, "The %s is opened from the other side.\n\r",
 		fname(back->keyword));
 	send_to_room(buf, exitp->to_room);
       } else {
@@ -861,7 +862,7 @@ void do_close(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	  (back->to_room == ch->in_room) ) {
 	SET_BIT(back->exit_info, EX_CLOSED);
 	if (back->keyword)    {	      
-	  sprintf(buf, "The %s closes quietly.\n\r", back->keyword);
+	  SPRINTF(buf, "The %s closes quietly.\n\r", back->keyword);
 	  send_to_room(buf, exitp->to_room);
 	}
 	else
@@ -903,7 +904,7 @@ void raw_unlock_door( struct char_data *ch,
       back->to_room == ch->in_room) {
     REMOVE_BIT(back->exit_info, EX_LOCKED);
   } else {
-    sprintf(buf, "Inconsistent door locks in rooms %d->%d", 
+    SPRINTF(buf, "Inconsistent door locks in rooms %d->%d", 
 	    ch->in_room, exitp->to_room);
     log_msg(buf);
   }
@@ -924,7 +925,7 @@ void raw_lock_door( struct char_data *ch,
       back->to_room == ch->in_room) {
     SET_BIT(back->exit_info, EX_LOCKED);
   } else {
-    sprintf(buf, "Inconsistent door locks in rooms %d->%d", 
+    SPRINTF(buf, "Inconsistent door locks in rooms %d->%d", 
 	    ch->in_room, exitp->to_room);
     log_msg(buf);
   }
@@ -1151,7 +1152,7 @@ void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	do_move(ch, "", ++door);
 	return;
       }
-    sprintf(tmp, "There is no %s here.\n\r", buf);
+    SPRINTF(tmp, "There is no %s here.\n\r", buf);
     send_to_char(tmp, ch);
   } else if (IS_SET(real_roomp(ch->in_room)->room_flags, INDOORS)) {
     send_to_char("You are already indoors.\n\r", ch);

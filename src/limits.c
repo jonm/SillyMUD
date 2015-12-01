@@ -35,9 +35,9 @@ char *ClassTitles(struct char_data *ch)
       if (GET_LEVEL(ch, i)) {
 	count++;
 	if (count > 1) {
-	  sprintf(buf + strlen(buf), "/%s",GET_CLASS_TITLE(ch, i,GET_LEVEL(ch,i)));
+	  SAPPENDF(buf, "/%s",GET_CLASS_TITLE(ch, i,GET_LEVEL(ch,i)));
 	} else {
-	  sprintf(buf, "%s", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)));
+	  SPRINTF(buf, "%s", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)));
 	}
       }
     }
@@ -622,7 +622,7 @@ void set_title(struct char_data *ch)
   
   char buf[256];
   
-  sprintf(buf, 
+  SPRINTF(buf, 
      "the %s %s", RaceName[ch->race], ClassTitles(ch));
   
   if (GET_TITLE(ch)) {
@@ -647,7 +647,7 @@ void gain_exp(struct char_data *ch, int gain)
     if (ch->master->in_room == ch->in_room) {
       if (gain > 1) {
 	gain/=2;
-	sprintf(buf, "you gain $N's share of %d exp", gain);
+	SPRINTF(buf, "you gain $N's share of %d exp", gain);
 	act(buf, 0, ch->master, 0, ch, TO_CHAR);
 	gain_exp(ch->master, gain);
       }
@@ -683,7 +683,7 @@ void gain_exp(struct char_data *ch, int gain)
 	    } else if (GET_EXP(ch) >= titles[i][GET_LEVEL(ch,i)+1].exp) {
 	      /* do nothing..this is cool */
 	    } else if (GET_EXP(ch)+gain >= titles[i][GET_LEVEL(ch,i)+1].exp) {
-	      sprintf(buf, "You have gained enough to be a(n) %s\n\r", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)+1));
+	      SPRINTF(buf, "You have gained enough to be a(n) %s\n\r", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)+1));
 	      send_to_char(buf, ch);
 	      send_to_char("You must return to a guild to earn the level\n\r",ch);
 	      if (GET_EXP(ch)+gain >= titles[i][GET_LEVEL(ch,i)+2].exp) {
