@@ -9,8 +9,6 @@
 
 #include "config.h"
 
-int CAN_SEE(struct char_data *s, struct char_data *o);
-
 #if DEBUG
 
 #define free(obj) fprintf(stderr, "freeing %d\n", sizeof(*obj));\
@@ -261,8 +259,6 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 			isname("corpse", (obj)->name))
 
 #define EXIT(ch, door)  (real_roomp((ch)->in_room)->dir_option[door])
-
-int exit_ok(struct room_direction_data *, struct room_data **);
 
 #define CAN_GO(ch, door) (EXIT(ch,door)&&real_roomp(EXIT(ch,door)->to_room) \
                           && !IS_SET(EXIT(ch, door)->exit_info, EX_CLOSED))
