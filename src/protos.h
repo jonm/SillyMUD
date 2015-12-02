@@ -546,7 +546,6 @@ int apply_ac(struct char_data *ch, int eq_pos);
 void equip_char(struct char_data *ch, struct obj_data *obj, int pos);
 int GiveMinStrToWield(struct obj_data *obj, struct char_data *ch);
 struct obj_data *unequip_char(struct char_data *ch, int pos);
-int get_number(char **name);
 struct obj_data *get_obj_in_list(char *name, struct obj_data *list);
 struct obj_data *get_obj_in_list_num(int num, struct obj_data *list);
 struct obj_data *get_obj(char *name);

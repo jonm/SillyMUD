@@ -2175,7 +2175,7 @@ void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   
   if (isdigit(*name)) {
     nameonly = name;
-    count = number = get_number(&nameonly);
+    count = number = get_number(nameonly);
   } else {
     count = number = 0;
   }

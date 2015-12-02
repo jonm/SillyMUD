@@ -16,5 +16,7 @@
 #define FIND_OBJ_WORLD    16
 #define FIND_OBJ_EQUIP    32
 
+extern int get_number(char *name);
+
 #endif
 
