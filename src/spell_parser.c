@@ -55,13 +55,13 @@ extern struct weather_data weather_info;
 extern int sf_where[];
 
 /*  internal procedures */
-void SpellWearOffSoon(int s, struct char_data *ch);
+void spell_wear_offSoon(int s, struct char_data *ch);
 void check_drowning(struct char_data *ch);
 int check_falling(struct char_data *ch);
 int IsIntrinsic(struct char_data *ch, int spl);
 int CastIntrinsic(struct char_data *ch, int spl);
 void check_decharm(struct char_data *ch);
-void SpellWearOff(int s, struct char_data *ch);
+void spell_wear_off(int s, struct char_data *ch);
 void forget(struct char_data *ch, int spl);
 
 /* struct spell_info_type spell_info[MAX_SPL_LIST]; */
@@ -476,7 +476,7 @@ void affect_update(int pulse) {
         af->duration--;
 
         if (af->duration == 1 && af->location != APPLY_INTRINSIC) {
-          SpellWearOffSoon(af->type, i);
+          spell_wear_offSoon(af->type, i);
         }
 
       }
@@ -489,7 +489,7 @@ void affect_update(int pulse) {
             k = af->type;
 
             if (af->location != APPLY_INTRINSIC)
-              SpellWearOff(k, i);
+              spell_wear_off(k, i);
             affect_remove(i, af);
 
           }
@@ -1913,7 +1913,7 @@ void assign_spell_pointers() {
 }
 
 
-void SpellWearOffSoon(int s, struct char_data *ch) {
+void spell_wear_offSoon(int s, struct char_data *ch) {
 
   if (s > MAX_SKILLS + 10)
     return;
@@ -1930,7 +1930,7 @@ void SpellWearOffSoon(int s, struct char_data *ch) {
 }
 
 
-void SpellWearOff(int s, struct char_data *ch) {
+void spell_wear_off(int s, struct char_data *ch) {
 
   if (s > MAX_SKILLS + 10)
     return;

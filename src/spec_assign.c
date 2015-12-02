@@ -723,7 +723,7 @@ void assign_mobiles() {
 **  Forest of Rhowyn
 */
 
-    {13901, ThrowerMob},
+    {13901, thrower_mob},
 
 /*
 **  Quikland
@@ -782,8 +782,8 @@ void assign_mobiles() {
     {3025, guild_guard},
     {3026, guild_guard},
     {3027, guild_guard},
-    {3070, RepairGuy},
-    {3071, RepairGuy},
+    {3070, repair_guy},
+    {3071, repair_guy},
     {3069, MidgaardCityguard},  /* post guard */
     {3068, ninja_master},
     {3073, loremaster},
@@ -929,7 +929,7 @@ void assign_mobiles() {
     {20009, magic_user},        /* quasit         */
     {20014, magic_user},        /* Arachnos        */
     {20015, magic_user},        /* Ki Rin          */
-    {20011, OldHag},            /* hermit (hey, DM wrote it!) */
+    {20011, old_hag},            /* hermit (hey, DM wrote it!) */
     {20002, BreathWeapon},      /* Yevaud */
     {20017, BreathWeapon},      /* Elder  */
     {20016, BreathWeapon},      /* Baby   */

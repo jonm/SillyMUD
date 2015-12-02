@@ -4792,7 +4792,7 @@ void ThrowChar(struct char_data *ch, struct char_data *v, int dir) {
   }
 }
 
-int ThrowerMob(struct char_data *ch, int cmd, char *UNUSED(arg),
+int thrower_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
                struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
 

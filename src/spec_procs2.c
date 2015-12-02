@@ -1185,7 +1185,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
       }
       charge = get_max_level(ch) * 100;
 
-      if (DoIHateYou(ch))
+      if (do_i_hate_you(ch))
         charge *= 2;
     }
 
@@ -1273,7 +1273,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
 
 
 
-int RepairGuy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int repair_guy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
               int type) {
   char obj_name[80], vict_name[80], buf[MAX_INPUT_LENGTH];
   int cost, ave;
@@ -1285,7 +1285,7 @@ int RepairGuy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   if (!AWAKE(ch))
     return (FALSE);
 
-  rep_guy = RepairGuy;
+  rep_guy = repair_guy;
 
   if (IS_NPC(ch)) {
     if (cmd == 72) {
@@ -1359,7 +1359,7 @@ int RepairGuy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         cost *= (obj->obj_flags.value[1] - obj->obj_flags.value[0]);
         if (get_max_level(vict) > 25)     /* super repair guy */
           cost *= 2;
-        if (DoIHateYou(ch))
+        if (do_i_hate_you(ch))
           cost *= 2;
 
         if (cost > GET_GOLD(ch)) {
@@ -1377,7 +1377,7 @@ int RepairGuy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         else {
           GET_GOLD(ch) -= cost;
 
-          if (DoIHateYou(ch)) {
+          if (do_i_hate_you(ch)) {
             act("$N decides $S doesn't like you.", FALSE, ch, 0, vict,
                 TO_CHAR);
             send_to_char("You are charged double!\n\r", ch);
@@ -2700,7 +2700,7 @@ void DruidTree(struct char_data *ch) {
 
 }
 
-void DruidMob(struct char_data *ch) {
+void druid_mob(struct char_data *ch) {
 
   act("$n utters the words 'lagomorph'", FALSE, ch, 0, 0, TO_ROOM);
   act("$n takes on the form and shape of a huge lion", FALSE, ch, 0, 0,
@@ -2859,7 +2859,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
           return (FALSE);
         }
         if (ch->mult_att < 2 && level > 10 && !number(0, 8)) {
-          DruidMob(ch);
+          druid_mob(ch);
           return (FALSE);
         }
         /* summoning */

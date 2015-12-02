@@ -180,7 +180,7 @@ void shopping_buy(char *arg, struct char_data *ch,
   if (cost < 1)
     cost = 1;
 
-  if (DoIHateYou(ch))           /* we are prejudice against certain races */
+  if (do_i_hate_you(ch))           /* we are prejudice against certain races */
     cost *= 2;
 
   if (GET_GOLD(ch) < (int)(num * cost)) {
@@ -308,7 +308,7 @@ void shopping_sell(char *arg, struct char_data *ch,
   cost =
     (temp1->obj_flags.cost * mult) * (shop_index[shop_nr].profit_sell * perc);
 
-  if (DoIHateYou(ch) && cost)
+  if (do_i_hate_you(ch) && cost)
     cost /= 2;
 
   if (cost < 1)
@@ -442,7 +442,7 @@ void shopping_value(char *arg, struct char_data *ch,
   cost = (temp1->obj_flags.cost * mult) *
     (shop_index[shop_nr].profit_sell * perc);
 
-  if (DoIHateYou(ch))
+  if (do_i_hate_you(ch))
     cost /= 2;
 
   SPRINTF(buf, "%s I'll give you %d gold coins for that!",
@@ -502,7 +502,7 @@ void shopping_list(char *UNUSED(arg), struct char_data *ch,
         if (cost < 1)
           cost = 1;
 
-        if (DoIHateYou(ch))     /* we are prejudice against certain races */
+        if (do_i_hate_you(ch))     /* we are prejudice against certain races */
           cost *= 2;
 
         if (temp1->obj_flags.type_flag != ITEM_DRINKCON) {
@@ -590,7 +590,7 @@ int shop_keeper(struct char_data *ch, int cmd, char *arg, char *UNUSED(mob),
     }
   }
 
-  if (DoIHateYou(ch) && number(0, 3) == 2) {
+  if (do_i_hate_you(ch) && number(0, 3) == 2) {
     act("$n sneers at you.", TRUE, keeper, 0, ch, TO_VICT);
     act("$n sneers at $N.", TRUE, keeper, 0, ch, TO_NOTVICT);
   }
@@ -730,7 +730,7 @@ void assign_the_shopkeepers() {
 }
 
 
-int DoIHateYou(struct char_data *v) {
+int do_i_hate_you(struct char_data *v) {
   switch (GET_RACE(v)) {
   case RACE_ORC:
   case RACE_UNDEAD:

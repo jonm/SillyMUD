@@ -1137,7 +1137,7 @@ void shopping_kill(char *arg, struct char_data *ch,
 int shop_keeper(struct char_data *ch, int cmd, char *arg, char *mob, int type);
 void boot_the_shops();
 void assign_the_shopkeepers();
-int DoIHateYou(struct char_data *v);
+int do_i_hate_you(struct char_data *v);
 
 /* From signals.c */
 
@@ -1347,7 +1347,7 @@ int CaravanGuildGuard(struct char_data *ch, int cmd, char *arg,
 int StatTeller(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
                int type);
 void ThrowChar(struct char_data *ch, struct char_data *v, int dir);
-int ThrowerMob(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int thrower_mob(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
                int type);
 int Tyrannosaurus_swallower(struct char_data *ch, int cmd, char *arg,
                             struct char_data *mob, int type);
@@ -1403,7 +1403,7 @@ int ninja_master(struct char_data *ch, int cmd, char *arg,
                  struct char_data *mob, int type);
 int ettin(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
-int RepairGuy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int repair_guy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
               int type);
 int Samah(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
@@ -1456,7 +1456,7 @@ int Demon(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 void DruidHeal(struct char_data *ch, int level);
 void DruidTree(struct char_data *ch);
-void DruidMob(struct char_data *ch);
+void druid_mob(struct char_data *ch);
 int DruidChallenger(struct char_data *ch, int cmd, char *arg,
                     struct char_data *mob, int type);
 int MonkChallenger(struct char_data *ch, int cmd, char *arg,
@@ -1525,7 +1525,7 @@ int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
                int type);
 int entering_turbo_lift(struct char_data *ch, int cmd, char *arg,
                         struct room_data *rp, int type);
-int OldHag(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int old_hag(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
            int type);
 /* From spell_parser.c */
 
@@ -1544,8 +1544,8 @@ bool ImpSaveSpell(struct char_data *ch, sh_int save_type, int mod);
 char *skip_spaces(char *string);
 void do_cast(struct char_data *ch, char *argument, int cmd);
 void assign_spell_pointers();
-void SpellWearOffSoon(int s, struct char_data *ch);
-void SpellWearOff(int s, struct char_data *ch);
+void spell_wear_offSoon(int s, struct char_data *ch);
+void spell_wear_off(int s, struct char_data *ch);
 void check_decharm(struct char_data *ch);
 int check_falling(struct char_data *ch);
 void check_drowning(struct char_data *ch);

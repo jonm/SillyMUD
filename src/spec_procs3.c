@@ -1,4 +1,3 @@
-
 /*
   SillyMUD Distribution V1.1b             (c) 1993 SillyMUD Developement
  
@@ -949,7 +948,7 @@ char *scroll_text[] = {
 #define MAX_SCROLL     18       /* Max of scrolls */
 #define SCROLL_OBJ     87       /* Scroll to load */
 
-int OldHag(struct char_data *UNUSED(ch), int UNUSED(cmd), char *UNUSED(arg),
+int old_hag(struct char_data *UNUSED(ch), int UNUSED(cmd), char *UNUSED(arg),
            struct char_data *mob, int UNUSED(type)) {
   /* Mob is always passed as the mobile, no matter what */
   /* So we'll intercept the first call here, no matter  */
