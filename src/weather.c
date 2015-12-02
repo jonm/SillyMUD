@@ -443,9 +443,9 @@ void GlobalSunProblemCheck(bool light) {
         if (SUNPROBLEM(i->character)) {
           if (!IS_AFFECTED2(i->character, AFF2_SUN_BLIND)) {
             if (light)
-              SunBlind(i->character);
+              sun_blind(i->character);
             else
-              RemoveSunBlind(i->character);
+              remove_sun_blind(i->character);
           }
         }
       }
@@ -458,17 +458,17 @@ void SunProblemCheck(struct char_data *ch) {
     if ((time_info.hours > 5 && time_info.hours < 18) &&
         (OUTSIDE(ch) && !IS_SET(real_roomp(ch->in_room)->room_flags, DARK))) {
       if (!IS_AFFECTED2(ch, AFF2_SUN_BLIND)) {
-        SunBlind(ch);
+        sun_blind(ch);
       }
     }
     else if (IS_AFFECTED2(ch, AFF2_SUN_BLIND)) {
-      RemoveSunBlind(ch);
+      remove_sun_blind(ch);
     }
   }
 }
 
 
-void SunBlind(struct char_data *ch) {
+void sun_blind(struct char_data *ch) {
   struct affected_type af;
 
   if (GetMaxLevel(ch) >= LOW_IMMORTAL)
@@ -502,7 +502,7 @@ void SunBlind(struct char_data *ch) {
   affect_to_char(ch, &af);
 }
 
-void RemoveSunBlind(struct char_data *ch) {
+void remove_sun_blind(struct char_data *ch) {
   struct affected_type af;
 
   if (GetMaxLevel(ch) >= LOW_IMMORTAL)

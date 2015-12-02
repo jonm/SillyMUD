@@ -2061,8 +2061,8 @@ void weather_change();
 void ChangeWeather(int change);
 void GetMonth(int month);
 void switch_light(byte why);
-void RemoveSunBlind(struct char_data *ch);
-void SunBlind(struct char_data *ch);
+void remove_sun_blind(struct char_data *ch);
+void sun_blind(struct char_data *ch);
 void SunProblemCheck(struct char_data *ch);
 void GlobalSunProblemCheck(bool light);
 
