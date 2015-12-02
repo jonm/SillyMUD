@@ -596,7 +596,8 @@ void affect_update( int pulse )
 	  }
 	}
       } else {
-	if (obj_index[j->item_number].func) {
+	if (j->item_number > 0 && j->item_number <= top_of_objt &&
+	    obj_index[j->item_number].func) {
 	  (*obj_index[j->item_number].func)(0, 0, 0, j, PULSE_TICK);
 	}
       }
