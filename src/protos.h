@@ -1105,7 +1105,7 @@ void PrintLimitedItems();
 int receptionist(struct char_data *ch, int cmd, char *arg,
                  struct char_data *mob, int type);
 void zero_rent(struct char_data *ch);
-void ZeroRent(char *n);
+void zero_rent_by_name(char *n);
 int ReadObjs(FILE * fl, struct obj_file_u *st);
 void WriteObjs(FILE * fl, struct obj_file_u *st);
 void load_char_extra(struct char_data *ch);

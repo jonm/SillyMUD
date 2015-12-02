@@ -313,7 +313,7 @@ void load_char_objs(struct char_data *ch) {
   if (found)
     obj_store_to_char(ch, &st);
   else {
-    ZeroRent(GET_NAME(ch));
+    zero_rent_by_name(GET_NAME(ch));
   }
 
   /* Save char, to avoid strange data if crashing */
@@ -557,7 +557,7 @@ void update_obj_file() {
                 fwrite(&ch_st, sizeof(struct char_file_u), 1, char_file);
 
                 fclose(fl);
-                ZeroRent(ch_st.name);
+                zero_rent_by_name(ch_st.name);
 
               }
               else {
@@ -796,11 +796,11 @@ void zero_rent(struct char_data *ch) {
   if (IS_NPC(ch))
     return;
 
-  ZeroRent(GET_NAME(ch));
+  zero_rent_by_name(GET_NAME(ch));
 
 }
 
-void ZeroRent(char *n) {
+void zero_rent_by_name(char *n) {
   FILE *fl;
   char buf[200];
 
