@@ -2295,19 +2295,16 @@ void *Mymalloc( long size)
   return(malloc(size));
 }
 
-void SpaceForSkills(struct char_data *ch)
-{
+void SpaceForSkills(struct char_data *ch) {
 
   /*
     create space for the skills for some mobile or character.
   */
-
-
-  ch->skills = (struct char_skill_data *)malloc(MAX_SKILLS*sizeof(struct char_skill_data));
-
-  if (ch->skills == 0)
+  size_t sz = MAX_SKILLS * sizeof(struct char_skill_data);
+  ch->skills = (struct char_skill_data *)malloc(sz);
+  if (ch->skills == NULL)
     assert(0);
-
+  memset(ch->skills, 0, sz);
 }
 
 int CountLims(struct obj_data *obj)
