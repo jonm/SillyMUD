@@ -19,4 +19,3 @@
 extern int get_number(char *name);
 
 #endif
-

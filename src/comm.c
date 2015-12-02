@@ -25,10 +25,10 @@
 
 #include "protos.h"
 
-#define DFLT_PORT 4000        /* default port */
+#define DFLT_PORT 4000          /* default port */
 #define MAX_NAME_LENGTH 15
 #define MAX_HOSTNAME   256
-#define OPT_USEC 250000       /* time delay corresponding to 4 passes/sec */
+#define OPT_USEC 250000         /* time delay corresponding to 4 passes/sec */
 
 #define STATE(d) ((d)->connected)
 
@@ -37,66 +37,63 @@ extern char *sector_types[];
 
 /* extern struct char_data *character_list; */
 #if HASH
-extern struct hash_header room_db;	  /* In db.c */
+extern struct hash_header room_db;      /* In db.c */
 #else
-extern struct room_data *room_db;	  /* In db.c */
+extern struct room_data *room_db;       /* In db.c */
 #endif
 
-extern int top_of_world;            /* In db.c */
-extern struct time_info_data time_info;  /* In db.c */
+extern int top_of_world;        /* In db.c */
+extern struct time_info_data time_info; /* In db.c */
 extern char help[];
 extern char login[];
 extern char *room_bits[];
 
 struct descriptor_data *descriptor_list, *next_to_process;
 
-int lawful = 0;		/* work like the game regulator */
-int slow_death = 0;     /* Shut her down, Martha, she's sucking mud */
-int mudshutdown = 0;       /* clean shutdown */
-int should_reboot = 0;         /* reboot the game after a shutdown */
-int no_specials = 0;    /* Suppress ass. of special routines */
-long Uptime;            /* time that the game has been up */
+int lawful = 0;                 /* work like the game regulator */
+int slow_death = 0;             /* Shut her down, Martha, she's sucking mud */
+int mudshutdown = 0;            /* clean shutdown */
+int should_reboot = 0;          /* reboot the game after a shutdown */
+int no_specials = 0;            /* Suppress ass. of special routines */
+long Uptime;                    /* time that the game has been up */
 
 
 int pulse;
 
 #if SITELOCK
-char hostlist[MAX_BAN_HOSTS][30];  /* list of sites to ban           */
+char hostlist[MAX_BAN_HOSTS][30];       /* list of sites to ban           */
 int numberhosts;
 #endif
 
 int maxdesc, avail_descs;
-int tics = 0;        /* for extern checkpointing */
+int tics = 0;                   /* for extern checkpointing */
 
 
 /* *********************************************************************
 *  main game loop and related stuff				       *
 ********************************************************************* */
 
-int __main ()
-{
-  return(1);
+int __main() {
+  return (1);
 }
 
 /* jdb code - added to try to handle all the different ways the connections
    can die, and try to keep these 'invalid' sockets from getting to select
 */
 
-void close_socket_fd( int desc)
-{
+void close_socket_fd(int desc) {
   struct descriptor_data *d;
   extern struct descriptor_data *descriptor_list;
 
-  for (d = descriptor_list;d;d=d->next) {
+  for (d = descriptor_list; d; d = d->next) {
     if (d->descriptor == desc) {
       close_socket(d);
     }
   }
 }
 
-int real_main (int argc, char **argv)
-{
-  int port, pos=1;
+int real_main(int argc, char **argv) {
+  int port, pos = 1;
   char buf[512], *dir;
 
   extern int WizLock;
@@ -106,7 +103,7 @@ int real_main (int argc, char **argv)
 #endif
 
 
-  
+
   port = DFLT_PORT;
   dir = DEFAULT_LIBDIR;
 #ifdef sun
@@ -114,29 +111,29 @@ int real_main (int argc, char **argv)
 **  this block sets the max # of connections.  
 **  # of files = 128, so #of players approx = 110
 */
-   res = getrlimit(RLIMIT_NOFILE, &rl);
-   rl.rlim_cur = 128;
-   res = setrlimit(RLIMIT_NOFILE, &rl);
+  res = getrlimit(RLIMIT_NOFILE, &rl);
+  rl.rlim_cur = 128;
+  res = setrlimit(RLIMIT_NOFILE, &rl);
 #endif
 
-#if DEBUG  
+#if DEBUG
   malloc_debug(0);
 #endif
 
-  while ((pos < argc) && (*(argv[pos]) == '-'))	{
-    switch (*(argv[pos] + 1))  {
+  while ((pos < argc) && (*(argv[pos]) == '-')) {
+    switch (*(argv[pos] + 1)) {
     case 'l':
       lawful = 1;
       log_msg("Lawful mode selected.");
       break;
     case 'd':
       if (*(argv[pos] + 2))
-	dir = argv[pos] + 2;
+        dir = argv[pos] + 2;
       else if (++pos < argc)
-	dir = argv[pos];
-      else   	{
-	log_msg("Directory arg expected after option -d.");
-	assert(0);
+        dir = argv[pos];
+      else {
+        log_msg("Directory arg expected after option -d.");
+        assert(0);
       }
       break;
     case 's':
@@ -144,54 +141,54 @@ int real_main (int argc, char **argv)
       log_msg("Suppressing assignment of special routines.");
       break;
     default:
-      SPRINTF(buf, "Unknown option -% in argument string.",
-	      *(argv[pos] + 1));
+      SPRINTF(buf, "Unknown option -% in argument string.", *(argv[pos] + 1));
       log_msg(buf);
       break;
     }
     pos++;
   }
-  
+
   if (pos < argc) {
     if (!isdigit(*argv[pos])) {
-      fprintf(stderr, "Usage: %s [-l] [-s] [-d pathname] [ port # ]\n", 
-	      argv[0]);
+      fprintf(stderr, "Usage: %s [-l] [-s] [-d pathname] [ port # ]\n",
+              argv[0]);
       assert(0);
-    }  else {
-      if ((port = atoi(argv[pos])) <= 1024)  {
-	printf("Illegal port #\n");
-	assert(0);
+    }
+    else {
+      if ((port = atoi(argv[pos])) <= 1024) {
+        printf("Illegal port #\n");
+        assert(0);
       }
     }
   }
-  
+
   Uptime = time(0);
-  
+
   SPRINTF(buf, "Running game on port %d.", port);
   log_msg(buf);
-  
-  if (chdir(dir) < 0)	{
+
+  if (chdir(dir) < 0) {
     perror("chdir");
     assert(0);
   }
-  
+
   SPRINTF(buf, "Using %s as data directory.", dir);
   log_msg(buf);
-  
+
   srandom(time(0));
   WizLock = FALSE;
 
 #if SITELOCK
   log_msg("Blanking denied hosts.");
-  for(a = 0 ; a<= MAX_BAN_HOSTS ; a++) 
-    strcpy(hostlist[a]," \0\0\0\0");
+  for (a = 0; a <= MAX_BAN_HOSTS; a++)
+    strcpy(hostlist[a], " \0\0\0\0");
   numberhosts = 0;
 #if LOCKGROVE
   log_msg("Locking out Host: oak.grove.iup.edu.");
-  strcpy(hostlist[0],"oak.grove.iup.edu");
-  numberhosts = 1; 
+  strcpy(hostlist[0], "oak.grove.iup.edu");
+  numberhosts = 1;
   log_msg("Locking out Host: everest.rutgers.edu.");
-  strcpy(hostlist[1],"everest.rutgers.edu");
+  strcpy(hostlist[1], "everest.rutgers.edu");
   numberhosts = 2;
 #endif /* LOCKGROVE */
 #endif
@@ -202,7 +199,7 @@ int real_main (int argc, char **argv)
   close(0);
 
   run_the_game(port);
-  return(0);
+  return (0);
 }
 
 
@@ -211,45 +208,46 @@ int real_main (int argc, char **argv)
 
 
 /* Init sockets, run game, and cleanup sockets */
-void run_the_game(int port)
-{
-  int s; 
-  PROFILE(extern etext();)
-    
-    void signal_setup(void);
+void run_the_game(int port) {
+  int s;
+  PROFILE(extern etext();
+    )
+
+  void signal_setup(void);
   int load(void);
-  
-  PROFILE(monstartup((int) 2, etext);)
-    
+
+  PROFILE(monstartup((int)2, etext);
+    )
+
     descriptor_list = NULL;
-  
+
   log_msg("Signal trapping.");
   signal_setup();
-  
+
   log_msg("Opening mother connection.");
   s = init_socket(port);
-  
-  if (lawful && load() >= 6)
-    {
-      log_msg("System load too high at startup.");
-      coma(1);
-    }
-  
-  boot_db();
-  
-  log_msg("Entering game loop.");
-  
-  game_loop(s);
-  
-  close_sockets(s); 
-  
-  PROFILE(monitor(0);)
-    
-  if (should_reboot)  {
-    log_msg("Rebooting.");
-    assert(52);           /* what's so great about HHGTTG, anyhow? */
+
+  if (lawful && load() >= 6) {
+    log_msg("System load too high at startup.");
+    coma(1);
   }
-  
+
+  boot_db();
+
+  log_msg("Entering game loop.");
+
+  game_loop(s);
+
+  close_sockets(s);
+
+  PROFILE(monitor(0);
+    )
+
+    if (should_reboot) {
+    log_msg("Rebooting.");
+    assert(52);                 /* what's so great about HHGTTG, anyhow? */
+  }
+
   log_msg("Normal termination of game.");
 }
 
@@ -259,8 +257,7 @@ void run_the_game(int port)
 
 
 /* Accept new connects, relay commands, and call 'heartbeat-functs' */
-void game_loop(int s)
-{
+void game_loop(int s) {
   fd_set input_set, output_set, exc_set;
   struct timeval last_time, now, timespent, timeout, null_time;
   static struct timeval opt_time;
@@ -277,17 +274,17 @@ void game_loop(int s)
   extern struct descriptor_data *descriptor_list;
   extern int pulse;
   extern int maxdesc;
-  
+
   null_time.tv_sec = 0;
   null_time.tv_usec = 0;
-  
+
   opt_time.tv_usec = OPT_USEC;  /* Init time values */
   opt_time.tv_sec = 0;
   gettimeofday(&last_time, NULL);
-  
+
   maxdesc = s;
   /* !! Change if more needed !! */
-  avail_descs = getdtablesize() -2;
+  avail_descs = getdtablesize() - 2;
 
 #ifdef HAVE_SIGPROCMASK
   sigemptyset(&sigmask);
@@ -303,11 +300,11 @@ void game_loop(int s)
 #else
   mask = sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
     sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
-      sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP);
+    sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP);
 #endif
-  
+
   /* Main loop */
-  while (!mudshutdown)  {
+  while (!mudshutdown) {
 
     /* Check what's happening out there */
 
@@ -316,21 +313,21 @@ void game_loop(int s)
     FD_ZERO(&exc_set);
 
     FD_SET(s, &input_set);
-    
+
 #if TITAN
     maxdesc = 0;
     if (cap < 20)
       cap = 20;
-    for (point = descriptor_list; point; point = point->next)  {
+    for (point = descriptor_list; point; point = point->next) {
 
-      if (point->descriptor <= cap && point->descriptor >= cap-20) {
-	FD_SET(point->descriptor, &input_set);
-	FD_SET(point->descriptor, &exc_set);
-	FD_SET(point->descriptor, &output_set);
+      if (point->descriptor <= cap && point->descriptor >= cap - 20) {
+        FD_SET(point->descriptor, &input_set);
+        FD_SET(point->descriptor, &exc_set);
+        FD_SET(point->descriptor, &output_set);
       }
 
       if (maxdesc < point->descriptor)
-	maxdesc = point->descriptor;
+        maxdesc = point->descriptor;
     }
 
     if (cap > maxdesc)
@@ -338,13 +335,13 @@ void game_loop(int s)
     else
       cap += 20;
 #else
-    for (point = descriptor_list; point; point = point->next)  {
+    for (point = descriptor_list; point; point = point->next) {
       FD_SET(point->descriptor, &input_set);
       FD_SET(point->descriptor, &exc_set);
       FD_SET(point->descriptor, &output_set);
-      
+
       if (maxdesc < point->descriptor)
-	maxdesc = point->descriptor;
+        maxdesc = point->descriptor;
     }
 #endif
 
@@ -361,247 +358,249 @@ void game_loop(int s)
 
 #ifdef HAVE_SIGPROCMASK
     sigprocmask(SIG_SETMASK, &sigmask, NULL);
-#else    
+#else
     sigsetmask(mask);
 #endif
 
-    if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) 
-	< 0)   	{
+    if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time)
+        < 0) {
       perror("Select poll");
 /* one of the descriptors is broken... */
-      for (point = descriptor_list; point; point = next_point)  {
-	next_point = point->next;
-	write_to_descriptor(point->descriptor, "\n\r");
+      for (point = descriptor_list; point; point = next_point) {
+        next_point = point->next;
+        write_to_descriptor(point->descriptor, "\n\r");
       }
     }
 
     if (select(0, (fd_set *) 0, (fd_set *) 0, (fd_set *) 0, &timeout) < 0) {
       perror("Select sleep");
-      /*assert(0);*/
+      /*assert(0); */
     }
 
 #ifdef HAVE_SIGPROCMASK
     sigemptyset(&sigmask);
     sigprocmask(SIG_SETMASK, &sigmask, NULL);
-#else    
+#else
     sigsetmask(0);
 #endif
-    
+
     /* Respond to whatever might be happening */
-    
+
     /* New connection? */
     if (FD_ISSET(s, &input_set))
       if (new_descriptor(s) < 0) {
-	perror("New connection");
+        perror("New connection");
       }
 
     /* kick out the freaky folks */
-    for (point = descriptor_list; point; point = next_point)  {
-      next_point = point->next;   
-      if (FD_ISSET(point->descriptor, &exc_set))  {
-	FD_CLR(point->descriptor, &input_set);
-	FD_CLR(point->descriptor, &output_set);
-	close_socket(point);
+    for (point = descriptor_list; point; point = next_point) {
+      next_point = point->next;
+      if (FD_ISSET(point->descriptor, &exc_set)) {
+        FD_CLR(point->descriptor, &input_set);
+        FD_CLR(point->descriptor, &output_set);
+        close_socket(point);
       }
     }
-    
-    for (point = descriptor_list; point; point = next_point)  {
+
+    for (point = descriptor_list; point; point = next_point) {
       next_point = point->next;
       if (FD_ISSET(point->descriptor, &input_set))
-	if (process_input(point) < 0) 
-	  close_socket(point);
+        if (process_input(point) < 0)
+          close_socket(point);
     }
-    
+
     /* process_commands; */
-    for (point = descriptor_list; point; point = next_to_process){
+    for (point = descriptor_list; point; point = next_to_process) {
       next_to_process = point->next;
-      
-      if ((--(point->wait) <= 0) && get_from_q(&point->input, comm))	{
-	  if (point->character && point->connected == CON_PLYNG &&
-	      point->character->specials.was_in_room !=	NOWHERE) {
-      
-	      point->character->specials.was_in_room = NOWHERE;
-	      act("$n has returned.",	TRUE, point->character, 0, 0, TO_ROOM);
-	    }
-	  
-	  point->wait = 1;
-	  if (point->character)
-	    point->character->specials.timer = 0;
-	  point->prompt_mode = 1;
-	  
-	  if (point->str)
-	    string_add(point, comm);
-	  else if (!point->connected) {
-	    if (point->showstr_point)
-	      show_string(point, comm);
-	    else
-	      command_interpreter(point->character, comm);
-          }
-          else if(point->connected == CON_EDITING)
-            RoomEdit(point->character, comm);
-	  else 
-	    nanny(point, comm); 
-	}
+
+      if ((--(point->wait) <= 0) && get_from_q(&point->input, comm)) {
+        if (point->character && point->connected == CON_PLYNG &&
+            point->character->specials.was_in_room != NOWHERE) {
+
+          point->character->specials.was_in_room = NOWHERE;
+          act("$n has returned.", TRUE, point->character, 0, 0, TO_ROOM);
+        }
+
+        point->wait = 1;
+        if (point->character)
+          point->character->specials.timer = 0;
+        point->prompt_mode = 1;
+
+        if (point->str)
+          string_add(point, comm);
+        else if (!point->connected) {
+          if (point->showstr_point)
+            show_string(point, comm);
+          else
+            command_interpreter(point->character, comm);
+        }
+        else if (point->connected == CON_EDITING)
+          RoomEdit(point->character, comm);
+        else
+          nanny(point, comm);
+      }
     }
-    
+
     /* either they are out of the game */
     /* or they want a prompt.          */
-    
+
     for (point = descriptor_list; point; point = next_point) {
-	next_point = point->next;
-	if (FD_ISSET(point->descriptor, &output_set) && point->output.head) {
-	  if (process_output(point) < 0) {
-	    close_socket(point);
-	  } else {
-	    point->prompt_mode = 1;
-	  }
-	}
+      next_point = point->next;
+      if (FD_ISSET(point->descriptor, &output_set) && point->output.head) {
+        if (process_output(point) < 0) {
+          close_socket(point);
+        }
+        else {
+          point->prompt_mode = 1;
+        }
       }
-    
+    }
+
     /* give the people some prompts  */
     for (point = descriptor_list; point; point = point->next)
       if (point->prompt_mode) {
-	if (point->str)
-	  write_to_descriptor(point->descriptor, "-> ");
-	else if (!point->connected) {
-	  if (point->showstr_point) {
-	    write_to_descriptor(point->descriptor,
-				"[Return to continue/Q to quit]");
-	  } else { 
-	    struct char_data *ch;
-	    ch = point->character;
+        if (point->str)
+          write_to_descriptor(point->descriptor, "-> ");
+        else if (!point->connected) {
+          if (point->showstr_point) {
+            write_to_descriptor(point->descriptor,
+                                "[Return to continue/Q to quit]");
+          }
+          else {
+            struct char_data *ch;
+            ch = point->character;
 
-            if(point->character->term == VT100) {
-	      int update = 0;
- 
-	      if(GET_MOVE(ch) != ch->last.move) {
-		SET_BIT(update, INFO_MOVE);
-		ch->last.move = GET_MOVE(ch);
-	      }
-	      if(GET_MAX_MOVE(ch) != ch->last.mmove) {
-		SET_BIT(update, INFO_MOVE);
-		ch->last.mmove = GET_MAX_MOVE(ch);
-	      }
-	      if(GET_HIT(ch) != ch->last.hit) {
-		SET_BIT(update, INFO_HP);
-		ch->last.hit = GET_HIT(ch);
-	      }
-	      if(GET_MAX_HIT(ch) != ch->last.mhit) {
-		SET_BIT(update, INFO_HP);
-		ch->last.mhit = GET_MAX_HIT(ch);
-	      }
-	      if(GET_MANA(ch) != ch->last.mana) {
-		SET_BIT(update, INFO_MANA);
-		ch->last.mana = GET_MANA(ch);
-	      }
-	      if(GET_MAX_MANA(ch) != ch->last.mmana) {
-		SET_BIT(update, INFO_MANA);
-		ch->last.mmana = GET_MAX_MANA(ch);
-	      }
-	      if(GET_GOLD(ch) != ch->last.gold) {
-		SET_BIT(update, INFO_GOLD);
-		ch->last.gold = GET_GOLD(ch);
-	      }
-	      if(GET_EXP(ch) != ch->last.exp) {
-		SET_BIT(update, INFO_EXP);
-		ch->last.exp = GET_EXP(ch);
-	      }
-	      
-	      if(update)
-		UpdateScreen(ch, update);
-	    }
+            if (point->character->term == VT100) {
+              int update = 0;
 
-	    if (point->character->term != VT100) {
-	      if (IS_IMMORTAL(point->character)) {
-		rm = real_roomp(point->character->in_room);
-		if (!rm) {
-		  char_to_room(point->character, 0);
-		  rm = real_roomp(point->character->in_room);
-		}
+              if (GET_MOVE(ch) != ch->last.move) {
+                SET_BIT(update, INFO_MOVE);
+                ch->last.move = GET_MOVE(ch);
+              }
+              if (GET_MAX_MOVE(ch) != ch->last.mmove) {
+                SET_BIT(update, INFO_MOVE);
+                ch->last.mmove = GET_MAX_MOVE(ch);
+              }
+              if (GET_HIT(ch) != ch->last.hit) {
+                SET_BIT(update, INFO_HP);
+                ch->last.hit = GET_HIT(ch);
+              }
+              if (GET_MAX_HIT(ch) != ch->last.mhit) {
+                SET_BIT(update, INFO_HP);
+                ch->last.mhit = GET_MAX_HIT(ch);
+              }
+              if (GET_MANA(ch) != ch->last.mana) {
+                SET_BIT(update, INFO_MANA);
+                ch->last.mana = GET_MANA(ch);
+              }
+              if (GET_MAX_MANA(ch) != ch->last.mmana) {
+                SET_BIT(update, INFO_MANA);
+                ch->last.mmana = GET_MAX_MANA(ch);
+              }
+              if (GET_GOLD(ch) != ch->last.gold) {
+                SET_BIT(update, INFO_GOLD);
+                ch->last.gold = GET_GOLD(ch);
+              }
+              if (GET_EXP(ch) != ch->last.exp) {
+                SET_BIT(update, INFO_EXP);
+                ch->last.exp = GET_EXP(ch);
+              }
 
-		if(IS_SET(ch->specials.prompt, PROMPT_R)) {
-		  SPRINTF(promptbuf,"<Rm: %d ", rm->number);
-		  write_to_descriptor(point->descriptor, promptbuf);
-		}
-                if(IS_SET(ch->specials.prompt, PROMPT_S)) {
-		  sprinttype(rm->sector_type,sector_types,promptbuf);
-		  write_to_descriptor(point->descriptor, promptbuf);
-		  write_to_descriptor(point->descriptor, " ");
-		}
-                if(IS_SET(ch->specials.prompt, PROMPT_F)) {
-		  sprintbit((unsigned long)rm->room_flags,room_bits,promptbuf);
-		  write_to_descriptor(point->descriptor, promptbuf);
-		}
-		SPRINTF(promptbuf, "> ");
-		write_to_descriptor(point->descriptor, promptbuf);
-	      } else {
-		if(IS_SET(ch->specials.prompt, PROMPT_H)) {
-		  SPRINTF(promptbuf,"H:%d ",
-			  point->character->points.hit);
-		  write_to_descriptor(point->descriptor, promptbuf);
-		}
-		if(IS_SET(ch->specials.prompt, PROMPT_M)) {
-		  SPRINTF(promptbuf,"M:%d ",
-			  point->character->points.mana);
-		  write_to_descriptor(point->descriptor, promptbuf);
-		}
-		if(IS_SET(ch->specials.prompt, PROMPT_V)) {
-		  SPRINTF(promptbuf,"V:%d ",
-			  point->character->points.move);
-		  write_to_descriptor(point->descriptor, promptbuf);
-		}
-		SPRINTF(promptbuf, "> ");
-		write_to_descriptor(point->descriptor, promptbuf);
-	      }
-	    } else {
-	      SPRINTF(promptbuf, "> ");
-	      write_to_descriptor(point->descriptor, promptbuf);
-	    }
-	  }
-	}
-	point->prompt_mode = 0;
+              if (update)
+                UpdateScreen(ch, update);
+            }
+
+            if (point->character->term != VT100) {
+              if (IS_IMMORTAL(point->character)) {
+                rm = real_roomp(point->character->in_room);
+                if (!rm) {
+                  char_to_room(point->character, 0);
+                  rm = real_roomp(point->character->in_room);
+                }
+
+                if (IS_SET(ch->specials.prompt, PROMPT_R)) {
+                  SPRINTF(promptbuf, "<Rm: %d ", rm->number);
+                  write_to_descriptor(point->descriptor, promptbuf);
+                }
+                if (IS_SET(ch->specials.prompt, PROMPT_S)) {
+                  sprinttype(rm->sector_type, sector_types, promptbuf);
+                  write_to_descriptor(point->descriptor, promptbuf);
+                  write_to_descriptor(point->descriptor, " ");
+                }
+                if (IS_SET(ch->specials.prompt, PROMPT_F)) {
+                  sprintbit((unsigned long)rm->room_flags, room_bits,
+                            promptbuf);
+                  write_to_descriptor(point->descriptor, promptbuf);
+                }
+                SPRINTF(promptbuf, "> ");
+                write_to_descriptor(point->descriptor, promptbuf);
+              }
+              else {
+                if (IS_SET(ch->specials.prompt, PROMPT_H)) {
+                  SPRINTF(promptbuf, "H:%d ", point->character->points.hit);
+                  write_to_descriptor(point->descriptor, promptbuf);
+                }
+                if (IS_SET(ch->specials.prompt, PROMPT_M)) {
+                  SPRINTF(promptbuf, "M:%d ", point->character->points.mana);
+                  write_to_descriptor(point->descriptor, promptbuf);
+                }
+                if (IS_SET(ch->specials.prompt, PROMPT_V)) {
+                  SPRINTF(promptbuf, "V:%d ", point->character->points.move);
+                  write_to_descriptor(point->descriptor, promptbuf);
+                }
+                SPRINTF(promptbuf, "> ");
+                write_to_descriptor(point->descriptor, promptbuf);
+              }
+            }
+            else {
+              SPRINTF(promptbuf, "> ");
+              write_to_descriptor(point->descriptor, promptbuf);
+            }
+          }
+        }
+        point->prompt_mode = 0;
       }
-    
-    
+
+
     /* handle heartbeat stuff */
     /* Note: pulse now changes every 1/4 sec  */
-    
+
     pulse++;
-    
-    if (!(pulse % PULSE_ZONE))  {
+
+    if (!(pulse % PULSE_ZONE)) {
       zone_update();
       if (lawful)
-	gr(s);
+        gr(s);
     }
-    
-    
+
+
     if (!(pulse % PULSE_RIVER)) {
       RiverPulseStuff(pulse);
     }
-    
+
     if (!(pulse % PULSE_TELEPORT)) {
       TeleportPulseStuff(pulse);
     }
-    
+
     if (!(pulse % PULSE_VIOLENCE))
       perform_violence();
-    
-    
-    if (!(pulse % (SECS_PER_MUD_HOUR*4))){
+
+
+    if (!(pulse % (SECS_PER_MUD_HOUR * 4))) {
       weather_and_time(1);
-      affect_update(pulse);  /* things have been sped up by combining */
-      if ( time_info.hours == 1 )
-	update_time();
+      affect_update(pulse);     /* things have been sped up by combining */
+      if (time_info.hours == 1)
+        update_time();
     }
-    
+
     if (pulse >= 2400) {
       pulse = 0;
       if (lawful)
-	night_watchman();
+        night_watchman();
       check_reboot();
     }
-    
-    tics++;        /* tics since last checkpoint signal */
+
+    tics++;                     /* tics since last checkpoint signal */
   }
 }
 
@@ -617,36 +616,34 @@ void game_loop(int s)
 
 
 
-int get_from_q(struct txt_q *queue, char *dest)
-{
-	struct txt_block *tmp;
+int get_from_q(struct txt_q *queue, char *dest) {
+  struct txt_block *tmp;
 
- 	/* Q empty? */
-	if (!queue->head)
-		return(0);
+  /* Q empty? */
+  if (!queue->head)
+    return (0);
 
-	if (!dest) {
-	  log_sev("Sending message to null destination.", 5);
-	  return(0);
-	}
+  if (!dest) {
+    log_sev("Sending message to null destination.", 5);
+    return (0);
+  }
 
-	tmp = queue->head;
-	if (dest && queue->head->text) {
-	    strcpy(dest, queue->head->text);
-	}
-	queue->head = queue->head->next;
+  tmp = queue->head;
+  if (dest && queue->head->text) {
+    strcpy(dest, queue->head->text);
+  }
+  queue->head = queue->head->next;
 
-	free(tmp->text);
-	free(tmp);
+  free(tmp->text);
+  free(tmp);
 
-	return(1);
+  return (1);
 }
 
 
 
 
-void write_to_q(char *txt, struct txt_q *queue)
-{
+void write_to_q(char *txt, struct txt_q *queue) {
   struct txt_block *new;
   int strl;
 
@@ -662,43 +659,41 @@ void write_to_q(char *txt, struct txt_q *queue)
     free(new);
     return;
   }
-  
+
   new->text = (char *)strdup(txt);
 
   new->next = NULL;
 
   /* Q empty? */
-  if (!queue->head)  {
+  if (!queue->head) {
     queue->head = queue->tail = new;
-  } else	{
+  }
+  else {
     queue->tail->next = new;
     queue->tail = new;
   }
 }
-		
 
 
 
 
 
 
-struct timeval timediff(struct timeval *a, struct timeval *b)
-{
-	struct timeval rslt, tmp;
 
-	tmp = *a;
+struct timeval timediff(struct timeval *a, struct timeval *b) {
+  struct timeval rslt, tmp;
 
-	if ((rslt.tv_usec = tmp.tv_usec - b->tv_usec) < 0)
-	{
-		rslt.tv_usec += 1000000;
-		--(tmp.tv_sec);
-	}
-	if ((rslt.tv_sec = tmp.tv_sec - b->tv_sec) < 0)
-	{
-		rslt.tv_usec = 0;
-		rslt.tv_sec =0;
-	}
-	return(rslt);
+  tmp = *a;
+
+  if ((rslt.tv_usec = tmp.tv_usec - b->tv_usec) < 0) {
+    rslt.tv_usec += 1000000;
+    --(tmp.tv_sec);
+  }
+  if ((rslt.tv_sec = tmp.tv_sec - b->tv_sec) < 0) {
+    rslt.tv_usec = 0;
+    rslt.tv_sec = 0;
+  }
+  return (rslt);
 }
 
 
@@ -707,12 +702,11 @@ struct timeval timediff(struct timeval *a, struct timeval *b)
 
 
 /* Empty the queues before closing connection */
-void flush_queues(struct descriptor_data *d)
-{
-	char dummy[MAX_STRING_LENGTH];
+void flush_queues(struct descriptor_data *d) {
+  char dummy[MAX_STRING_LENGTH];
 
-	while (get_from_q(&d->output, dummy));
-	while (get_from_q(&d->input, dummy));
+  while (get_from_q(&d->output, dummy));
+  while (get_from_q(&d->input, dummy));
 }
 
 
@@ -723,71 +717,67 @@ void flush_queues(struct descriptor_data *d)
 /* ******************************************************************
 *  socket handling							 *
 ****************************************************************** */
-int init_socket(int port)
-{
-	int s;
-	struct sockaddr_in sa;
-	struct linger ld;
-	int optval = 1;
+int init_socket(int port) {
+  int s;
+  struct sockaddr_in sa;
+  struct linger ld;
+  int optval = 1;
 
-	bzero(&sa, sizeof(struct sockaddr_in));
-	sa.sin_family = AF_INET;
-	sa.sin_port	= htons(port);
-	s = socket(AF_INET, SOCK_STREAM, 0);
-	if (s < 0) 	{
-		perror("Init-socket");
-		assert(0);
- 	}
-	if (setsockopt (s, SOL_SOCKET, SO_REUSEADDR,
-			&optval, sizeof(optval)) < 0) {
-		perror ("setsockopt REUSEADDR");
-		exit (1);
-	}
+  bzero(&sa, sizeof(struct sockaddr_in));
+  sa.sin_family = AF_INET;
+  sa.sin_port = htons(port);
+  s = socket(AF_INET, SOCK_STREAM, 0);
+  if (s < 0) {
+    perror("Init-socket");
+    assert(0);
+  }
+  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) {
+    perror("setsockopt REUSEADDR");
+    exit(1);
+  }
 
-	ld.l_onoff = 1;
-	ld.l_linger = 100;
-	if (setsockopt(s, SOL_SOCKET, SO_LINGER, &ld, sizeof(ld)) < 0)	{
-		perror("setsockopt LINGER");
-		assert(0);
-	}
+  ld.l_onoff = 1;
+  ld.l_linger = 100;
+  if (setsockopt(s, SOL_SOCKET, SO_LINGER, &ld, sizeof(ld)) < 0) {
+    perror("setsockopt LINGER");
+    assert(0);
+  }
 
-	if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
-	    perror("bind");
-	    exit(0);
-	}
+  if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
+    perror("bind");
+    exit(0);
+  }
 
-	listen(s, 5);
-	return(s);
+  listen(s, 5);
+  return (s);
 }
 
 
 
 
 
-int new_connection(int s)
-{
+int new_connection(int s) {
   struct sockaddr_in isa;
 #ifdef sun
-   struct sockaddr peer;
+  struct sockaddr peer;
 #endif
   socklen_t i;
   int t;
-  
+
   i = sizeof(isa);
   /*
-  getsockname(s, &isa, &i);
-  */
-  
-  if ((t = accept(s, (struct sockaddr *)&isa, &i)) < 0){
+     getsockname(s, &isa, &i);
+   */
+
+  if ((t = accept(s, (struct sockaddr *)&isa, &i)) < 0) {
     perror("Accept");
-    return(-1);
+    return (-1);
   }
   nonblock(t);
-  return(t);
+  return (t);
 }
 
-int new_descriptor(int s)
-{
+int new_descriptor(int s) {
 
   int desc;
   struct descriptor_data *newd;
@@ -798,62 +788,63 @@ int new_descriptor(int s)
 #endif
   struct sockaddr_in sock;
   char buf[200];
-  
+
   if ((desc = new_connection(s)) < 0)
     return (-1);
-  
-  
+
+
   if ((desc + 1) >= 64) {
 
     struct descriptor_data *d;
 
     write_to_descriptor(desc, "Sorry.. The game is full. Try again later\n\r");
     close(desc);
-    
+
     for (d = descriptor_list; d; d = d->next) {
       if (!d->character)
-	close_socket(d);
+        close_socket(d);
     }
-    return(0);
+    return (0);
   }
-  else
-    if (desc > maxdesc)
-      maxdesc = desc;
-  
+  else if (desc > maxdesc)
+    maxdesc = desc;
+
   CREATE(newd, struct descriptor_data, 1);
 
   *newd->host = '\0';
   /* find info */
   size = sizeof(sock);
-  if (getpeername(desc, (struct sockaddr *) &sock, &size) < 0)    {
+  if (getpeername(desc, (struct sockaddr *)&sock, &size) < 0) {
     perror("getpeername");
     *newd->host = '\0';
   }
-  
-  if(*newd->host == '\0') {
+
+  if (*newd->host == '\0') {
 #ifndef sun
-    if ((long) strncpy(newd->host, inet_ntoa(sock.sin_addr), 49) > 0)  {
+    if ((long)strncpy(newd->host, inet_ntoa(sock.sin_addr), 49) > 0) {
       *(newd->host + 49) = '\0';
-      SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc, maxdesc);
-      log_sev(buf,3);
+      SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
+              maxdesc);
+      log_sev(buf, 3);
     }
 #else
     strcpy(newd->host, (char *)inet_ntoa(&sock.sin_addr));
-    SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc, maxdesc);
-    log_sev(buf,3);
+    SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
+            maxdesc);
+    log_sev(buf, 3);
 #endif
   }
 
   /* init desc data */
   newd->descriptor = desc;
-  newd->connected  = CON_NME;
+  newd->connected = CON_NME;
   newd->wait = 1;
   newd->prompt_mode = 0;
   *newd->buf = '\0';
   newd->str = 0;
   newd->showstr_head = 0;
   newd->showstr_point = 0;
-  *newd->last_input= '\0';
+  *newd->last_input = '\0';
   newd->output.head = NULL;
   newd->input.head = NULL;
   newd->next = descriptor_list;
@@ -861,184 +852,185 @@ int new_descriptor(int s)
   newd->original = 0;
   newd->snoop.snooping = 0;
   newd->snoop.snoop_by = 0;
-  
+
   /* prepend to list */
-  
+
   descriptor_list = newd;
-  
+
   SEND_TO_Q(login, newd);
   SEND_TO_Q("What is thy name? ", newd);
 
-  return(0);
+  return (0);
 }
 
 
 
 
-int process_output(struct descriptor_data *t)
-{
+int process_output(struct descriptor_data *t) {
   char i[MAX_STRING_LENGTH + MAX_STRING_LENGTH];
-  
+
   if (!t->prompt_mode && !t->connected)
     if (write_to_descriptor(t->descriptor, "\n\r") < 0)
-      return(-1);
-  
-  
+      return (-1);
+
+
   /* Cycle thru output queue */
-  while (get_from_q(&t->output, i))	{  
+  while (get_from_q(&t->output, i)) {
     if ((t->snoop.snoop_by) && (t->snoop.snoop_by->desc)) {
-      write_to_q("% ",&t->snoop.snoop_by->desc->output);
-      write_to_q(i,&t->snoop.snoop_by->desc->output);
+      write_to_q("% ", &t->snoop.snoop_by->desc->output);
+      write_to_q(i, &t->snoop.snoop_by->desc->output);
     }
     if (write_to_descriptor(t->descriptor, i))
-      return(-1);
+      return (-1);
   }
-  
-  if (!t->connected && !(t->character && !IS_NPC(t->character) && 
-	 IS_SET(t->character->specials.act, PLR_COMPACT)))
+
+  if (!t->connected && !(t->character && !IS_NPC(t->character) &&
+                         IS_SET(t->character->specials.act, PLR_COMPACT)))
     if (write_to_descriptor(t->descriptor, "\n\r") < 0)
-      return(-1);
-  
-  return(1);
+      return (-1);
+
+  return (1);
 }
 
 
-int write_to_descriptor(int desc, char *txt)
-{
+int write_to_descriptor(int desc, char *txt) {
   int sofar, thisround, total;
-  
+
   total = strlen(txt);
   sofar = 0;
-  
+
   do {
-      thisround = write(desc, txt + sofar, total - sofar);
-      if (thisround < 0)	{
-	  if (errno == EWOULDBLOCK)
-	    break;
-	  perror("Write to socket");
-	  close_socket_fd(desc);
-	  return(-1);
-	}
-      sofar += thisround;
-  } 
+    thisround = write(desc, txt + sofar, total - sofar);
+    if (thisround < 0) {
+      if (errno == EWOULDBLOCK)
+        break;
+      perror("Write to socket");
+      close_socket_fd(desc);
+      return (-1);
+    }
+    sofar += thisround;
+  }
   while (sofar < total);
-  
-  return(0);
+
+  return (0);
 }
 
 
 
 
 
-int process_input(struct descriptor_data *t)
-{
+int process_input(struct descriptor_data *t) {
   int sofar, thisround, begin, squelch, i, k, flag;
-  char tmp[MAX_INPUT_LENGTH+2], buffer[MAX_INPUT_LENGTH + 60];
-  
+  char tmp[MAX_INPUT_LENGTH + 2], buffer[MAX_INPUT_LENGTH + 60];
+
   sofar = 0;
   flag = 0;
   begin = strlen(t->buf);
-  
+
   /* Read in some stuff */
-  do  {
-    if ((thisround = read(t->descriptor, t->buf + begin + sofar, 
-			  MAX_STRING_LENGTH - (begin + sofar) - 1)) > 0) {
+  do {
+    if ((thisround = read(t->descriptor, t->buf + begin + sofar,
+                          MAX_STRING_LENGTH - (begin + sofar) - 1)) > 0) {
       sofar += thisround;
-    } else {
+    }
+    else {
       if (thisround < 0) {
-	if (errno != EWOULDBLOCK) {
-	  perror("Read1 - ERROR");
-	  return(-1);
-	} else {
-	  break;
-	}
-      } else {
-	log_msg("EOF encountered on socket read.");
-	return(-1);
+        if (errno != EWOULDBLOCK) {
+          perror("Read1 - ERROR");
+          return (-1);
+        }
+        else {
+          break;
+        }
+      }
+      else {
+        log_msg("EOF encountered on socket read.");
+        return (-1);
       }
     }
-  } while (!ISNEWL(*(t->buf + begin + sofar - 1)));	
-  
+  } while (!ISNEWL(*(t->buf + begin + sofar - 1)));
+
   *(t->buf + begin + sofar) = 0;
-  
+
   /* if no newline is contained in input, return without proc'ing */
   for (i = begin; !ISNEWL(*(t->buf + i)); i++)
     if (!*(t->buf + i))
-      return(0);
-  
+      return (0);
+
   /* input contains 1 or more newlines; process the stuff */
-  for (i = 0, k = 0; *(t->buf + i);)	{
-    if (!ISNEWL(*(t->buf + i)) && !(flag=(k>=(MAX_INPUT_LENGTH - 2))))
-      if (*(t->buf + i) == '\b') {	 /* backspace */
-	if (k) { /* more than one char ? */
-	  if (*(tmp + --k) == '$')
-	    k--;				
-	  i++;
-	} else {
-	  i++;  /* no or just one char.. Skip backsp */
-	}
-      } else {
-	if (isascii(*(t->buf + i)) && isprint(*(t->buf + i))) {
-	  /* 
-	    trans char, double for '$' (printf)	
-	    */
-	  if ((*(tmp + k) = *(t->buf + i)) == '$')
-	    *(tmp + ++k) = '$';
-	  k++;
-	  i++;
-	} else {
-	  i++;
-	}
-      } else 	{
-	*(tmp + k) = 0;
-	if(*tmp == '!')
-	  strcpy(tmp,t->last_input);
-	else
-	  strcpy(t->last_input,tmp);
-	
-	write_to_q(tmp, &t->input);
-	
-	if ((t->snoop.snoop_by) && (t->snoop.snoop_by->desc)){
-	  write_to_q("% ",&t->snoop.snoop_by->desc->output);
-	  write_to_q(tmp,&t->snoop.snoop_by->desc->output);
-	  write_to_q("\n\r",&t->snoop.snoop_by->desc->output);
-	}
-	
-	if (flag) {
-	  SPRINTF(buffer, 
-		  "Line too long. Truncated to:\n\r%s\n\r", tmp);
-	  if (write_to_descriptor(t->descriptor, buffer) < 0)
-	    return(-1);
-	  
-	  /* skip the rest of the line */
-	  for (; !ISNEWL(*(t->buf + i)); i++);
-	}
-	
-	/* find end of entry */
-	for (; ISNEWL(*(t->buf + i)); i++);
-	
-	/* squelch the entry from the buffer */
-	for (squelch = 0;; squelch++)
-	  if ((*(t->buf + squelch) = 
-	       *(t->buf + i + squelch)) == '\0')
-	    break;
-	k = 0;
-	i = 0;
+  for (i = 0, k = 0; *(t->buf + i);) {
+    if (!ISNEWL(*(t->buf + i)) && !(flag = (k >= (MAX_INPUT_LENGTH - 2))))
+      if (*(t->buf + i) == '\b') {      /* backspace */
+        if (k) {                /* more than one char ? */
+          if (*(tmp + --k) == '$')
+            k--;
+          i++;
+        }
+        else {
+          i++;                  /* no or just one char.. Skip backsp */
+        }
       }
+      else {
+        if (isascii(*(t->buf + i)) && isprint(*(t->buf + i))) {
+          /* 
+             trans char, double for '$' (printf)        
+           */
+          if ((*(tmp + k) = *(t->buf + i)) == '$')
+            *(tmp + ++k) = '$';
+          k++;
+          i++;
+        }
+        else {
+          i++;
+        }
+      }
+    else {
+      *(tmp + k) = 0;
+      if (*tmp == '!')
+        strcpy(tmp, t->last_input);
+      else
+        strcpy(t->last_input, tmp);
+
+      write_to_q(tmp, &t->input);
+
+      if ((t->snoop.snoop_by) && (t->snoop.snoop_by->desc)) {
+        write_to_q("% ", &t->snoop.snoop_by->desc->output);
+        write_to_q(tmp, &t->snoop.snoop_by->desc->output);
+        write_to_q("\n\r", &t->snoop.snoop_by->desc->output);
+      }
+
+      if (flag) {
+        SPRINTF(buffer, "Line too long. Truncated to:\n\r%s\n\r", tmp);
+        if (write_to_descriptor(t->descriptor, buffer) < 0)
+          return (-1);
+
+        /* skip the rest of the line */
+        for (; !ISNEWL(*(t->buf + i)); i++);
+      }
+
+      /* find end of entry */
+      for (; ISNEWL(*(t->buf + i)); i++);
+
+      /* squelch the entry from the buffer */
+      for (squelch = 0;; squelch++)
+        if ((*(t->buf + squelch) = *(t->buf + i + squelch)) == '\0')
+          break;
+      k = 0;
+      i = 0;
+    }
   }
-  return(1);
+  return (1);
 }
 
 
 
 
-void close_sockets(int s)
-{
+void close_sockets(int s) {
   log_msg("Closing all sockets.");
-  
+
   while (descriptor_list)
     close_socket(descriptor_list);
-  
+
   close(s);
 }
 
@@ -1046,85 +1038,86 @@ void close_sockets(int s)
 
 
 
-void close_socket(struct descriptor_data *d)
-{
+void close_socket(struct descriptor_data *d) {
   struct descriptor_data *tmp;
   char buf[100];
   struct txt_block *txt, *txt2;
 
   void do_save(struct char_data *ch, char *argument, int cmd);
-  
-  if (!d) return;
-  
+
+  if (!d)
+    return;
+
   close(d->descriptor);
   flush_queues(d);
   if (d->descriptor == maxdesc)
     --maxdesc;
-  
+
   /* Forget snooping */
   if (d->snoop.snooping)
     d->snoop.snooping->desc->snoop.snoop_by = 0;
-  
-  if (d->snoop.snoop_by)		{
-    send_to_char("Your victim is no longer among us.\n\r",d->snoop.snoop_by);
+
+  if (d->snoop.snoop_by) {
+    send_to_char("Your victim is no longer among us.\n\r", d->snoop.snoop_by);
     d->snoop.snoop_by->desc->snoop.snooping = 0;
   }
-  
+
   if (d->character)
-    if (d->connected == CON_PLYNG) 	{
-       do_save(d->character, "", 0);
+    if (d->connected == CON_PLYNG) {
+      do_save(d->character, "", 0);
       act("$n has lost $s link.", TRUE, d->character, 0, 0, TO_ROOM);
       SPRINTF(buf, "Closing link to: %s.", GET_NAME(d->character));
       log_msg(buf);
-      if (IS_NPC(d->character)) { /* poly, or switched god */
-	if (d->character->desc)
-	  d->character->orig = d->character->desc->original;
+      if (IS_NPC(d->character)) {       /* poly, or switched god */
+        if (d->character->desc)
+          d->character->orig = d->character->desc->original;
       }
       d->character->desc = 0;
       d->character->invis_level = LOW_IMMORTAL;
 
       if (!IS_AFFECTED(d->character, AFF_CHARM)) {
-	if (d->character->master) {
-	  stop_follower(d->character);
-	}
+        if (d->character->master) {
+          stop_follower(d->character);
+        }
       }
 
-    } else {
+    }
+    else {
       if (GET_NAME(d->character)) {
-	SPRINTF(buf, "Losing player: %s.", GET_NAME(d->character));
-	log_msg(buf);
+        SPRINTF(buf, "Losing player: %s.", GET_NAME(d->character));
+        log_msg(buf);
       }
       free_char(d->character);
     }
   else
     log_msg("Losing descriptor without char.");
-  
-  
-  if (next_to_process == d)    	/* to avoid crashing the process loop */
-    next_to_process = next_to_process->next;   
-  
-  if (d == descriptor_list) /* this is the head of the list */
+
+
+  if (next_to_process == d)     /* to avoid crashing the process loop */
+    next_to_process = next_to_process->next;
+
+  if (d == descriptor_list)     /* this is the head of the list */
     descriptor_list = descriptor_list->next;
-  else  /* This is somewhere inside the list */    {
+  else {                        /* This is somewhere inside the list */
+
     /* Locate the previous element */
-    for (tmp = descriptor_list; tmp && (tmp->next != d); 
-	 tmp = tmp->next);
-    
+    for (tmp = descriptor_list; tmp && (tmp->next != d); tmp = tmp->next);
+
     if (tmp)
       tmp->next = d->next;
     else {
       /* die a slow death you motherfucking piece of shit machine */
       /* :-) */
-      
+
     }
   }
   /*
-    free the input and output queues.
+     free the input and output queues.
    */
 
   txt = d->output.head;
 
-  while(txt) {
+  while (txt) {
     if (txt->text) {
       free(txt->text);
       txt2 = txt;
@@ -1135,7 +1128,7 @@ void close_socket(struct descriptor_data *d)
 
   txt = d->input.head;
 
-  while(txt) {
+  while (txt) {
     if (txt->text) {
       free(txt->next);
       txt2 = txt;
@@ -1151,9 +1144,8 @@ void close_socket(struct descriptor_data *d)
 
 
 
-void nonblock(int s)
-{
-  if (fcntl(s, F_SETFL, FNDELAY) == -1)    {
+void nonblock(int s) {
+  if (fcntl(s, F_SETFL, FNDELAY) == -1) {
     perror("Noblock");
     assert(0);
   }
@@ -1173,24 +1165,22 @@ Please try again later.\n\r\n\
 
 
 /* sleep while the load is too high */
-void coma(int s)
-{
+void coma(int s) {
   fd_set input_set;
-  static struct timeval timeout =
-    {
-      60, 
-      0
-      };
+  static struct timeval timeout = {
+    60,
+    0
+  };
   int conn;
-  
+
   int workhours(void);
   int load(void);
 #ifdef HAVE_SIGPROCMASK
   sigset_t sigmask;
 #endif
-  
+
   log_msg("Entering comatose state.");
-  
+
 #ifdef HAVE_SIGPROCMASK
   sigemptyset(&sigmask);
   sigaddset(&sigmask, SIGUSR1);
@@ -1205,46 +1195,46 @@ void coma(int s)
   sigprocmask(SIG_SETMASK, &sigmask, NULL);
 #else
   sigsetmask(sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
-	     sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
-	     sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP));
+             sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
+             sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP));
 #endif
-  
+
   while (descriptor_list)
     close_socket(descriptor_list);
-  
+
   FD_ZERO(&input_set);
   do {
     FD_SET(s, &input_set);
-    if (select(64, &input_set, 0, 0, &timeout) < 0){
+    if (select(64, &input_set, 0, 0, &timeout) < 0) {
       perror("coma select");
       assert(0);
     }
-    if (FD_ISSET(s, &input_set))	{
-      if (load() < 6){
-	log_msg("Leaving coma with visitor.");
+    if (FD_ISSET(s, &input_set)) {
+      if (load() < 6) {
+        log_msg("Leaving coma with visitor.");
 #ifdef HAVE_SIGPROCMASK
-	sigemptyset(&sigmask);
-	sigprocmask(SIG_SETMASK, &sigmask, NULL);
+        sigemptyset(&sigmask);
+        sigprocmask(SIG_SETMASK, &sigmask, NULL);
 #else
-	sigsetmask(0);
+        sigsetmask(0);
 #endif
-	return;
+        return;
       }
-      if ((conn = new_connection(s)) >= 0)     {
-	write_to_descriptor(conn, COMA_SIGN);
-	sleep(2);
-	close(conn);
+      if ((conn = new_connection(s)) >= 0) {
+        write_to_descriptor(conn, COMA_SIGN);
+        sleep(2);
+        close(conn);
       }
-    }			
-    
+    }
+
     tics = 1;
-    if (workhours())  {
+    if (workhours()) {
       log_msg("Working hours collision during coma. Exit.");
       assert(0);
     }
   }
   while (load() >= 6);
-  
+
   log_msg("Leaving coma.");
 #ifdef HAVE_SIGPROCMASK
   sigemptyset(&sigmask);
@@ -1262,47 +1252,42 @@ void coma(int s)
 
 
 
-void send_to_char(char *messg, struct char_data *ch)
-{
+void send_to_char(char *messg, struct char_data *ch) {
   if (ch)
-     if (ch->desc && messg)
-       	write_to_q(messg, &ch->desc->output);
+    if (ch->desc && messg)
+      write_to_q(messg, &ch->desc->output);
 }
 
 
-void save_all()
-{
+void save_all() {
   struct descriptor_data *i;
-  
+
   for (i = descriptor_list; i; i = i->next)
     if (i->character)
-      save_char(i->character,AUTO_RENT);
+      save_char(i->character, AUTO_RENT);
 }
 
-void send_to_all(char *messg)
-{
+void send_to_all(char *messg) {
   struct descriptor_data *i;
-  
+
   if (messg)
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected)
-	write_to_q(messg, &i->output);
+        write_to_q(messg, &i->output);
 }
 
 
-void send_to_outdoor(char *messg)
-{
+void send_to_outdoor(char *messg) {
   struct descriptor_data *i;
-  
+
   if (messg)
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected)
-	if (OUTSIDE(i->character) )
-	  write_to_q(messg, &i->output);
+        if (OUTSIDE(i->character))
+          write_to_q(messg, &i->output);
 }
 
-void send_to_desert(char *messg)
-{
+void send_to_desert(char *messg) {
   struct descriptor_data *i;
   struct room_data *rp;
   extern struct zone_data *zone_table;
@@ -1310,21 +1295,20 @@ void send_to_desert(char *messg)
   if (messg) {
     for (i = descriptor_list; i; i = i->next) {
       if (!i->connected) {
-	if (OUTSIDE(i->character)) {
-	  if ((rp = real_roomp(i->character->in_room))!=NULL) {
-	    if (IS_SET(zone_table[rp->zone].reset_mode, ZONE_DESERT) ||
-		rp->sector_type == SECT_DESERT) {
-	      write_to_q(messg, &i->output);
-	    }
-	  }
-	}
+        if (OUTSIDE(i->character)) {
+          if ((rp = real_roomp(i->character->in_room)) != NULL) {
+            if (IS_SET(zone_table[rp->zone].reset_mode, ZONE_DESERT) ||
+                rp->sector_type == SECT_DESERT) {
+              write_to_q(messg, &i->output);
+            }
+          }
+        }
       }
     }
   }
 }
 
-void send_to_out_other(char *messg)
-{
+void send_to_out_other(char *messg) {
   struct descriptor_data *i;
   struct room_data *rp;
   extern struct zone_data *zone_table;
@@ -1332,23 +1316,22 @@ void send_to_out_other(char *messg)
   if (messg) {
     for (i = descriptor_list; i; i = i->next) {
       if (!i->connected) {
-	if (OUTSIDE(i->character)) {
-	  if ((rp = real_roomp(i->character->in_room))!=NULL) {
-	    if (!IS_SET(zone_table[rp->zone].reset_mode, ZONE_DESERT) &&
-	        !IS_SET(zone_table[rp->zone].reset_mode, ZONE_ARCTIC) &&
-		rp->sector_type != SECT_DESERT) {
-	      write_to_q(messg, &i->output);
-	    }
-	  }
-	}
+        if (OUTSIDE(i->character)) {
+          if ((rp = real_roomp(i->character->in_room)) != NULL) {
+            if (!IS_SET(zone_table[rp->zone].reset_mode, ZONE_DESERT) &&
+                !IS_SET(zone_table[rp->zone].reset_mode, ZONE_ARCTIC) &&
+                rp->sector_type != SECT_DESERT) {
+              write_to_q(messg, &i->output);
+            }
+          }
+        }
       }
     }
   }
 }
 
 
-void send_to_arctic(char *messg)
-{
+void send_to_arctic(char *messg) {
   struct descriptor_data *i;
   struct room_data *rp;
   extern struct zone_data *zone_table;
@@ -1356,76 +1339,71 @@ void send_to_arctic(char *messg)
   if (messg) {
     for (i = descriptor_list; i; i = i->next) {
       if (!i->connected) {
-	if (OUTSIDE(i->character)) {
-	  if ((rp = real_roomp(i->character->in_room))!=NULL) {
-	    if (IS_SET(zone_table[rp->zone].reset_mode, ZONE_ARCTIC)) {
-	      write_to_q(messg, &i->output);
-	    }
-	  }
-	}
+        if (OUTSIDE(i->character)) {
+          if ((rp = real_roomp(i->character->in_room)) != NULL) {
+            if (IS_SET(zone_table[rp->zone].reset_mode, ZONE_ARCTIC)) {
+              write_to_q(messg, &i->output);
+            }
+          }
+        }
       }
     }
   }
 }
 
 
-void send_to_except(char *messg, struct char_data *ch)
-{
+void send_to_except(char *messg, struct char_data *ch) {
   struct descriptor_data *i;
-  
+
   if (messg)
     for (i = descriptor_list; i; i = i->next)
       if (ch->desc != i && !i->connected)
-	write_to_q(messg, &i->output);
+        write_to_q(messg, &i->output);
 }
 
 
-void send_to_zone(char *messg, struct char_data *ch)
-{
+void send_to_zone(char *messg, struct char_data *ch) {
   struct descriptor_data *i;
-  
+
   if (messg)
     for (i = descriptor_list; i; i = i->next)
       if (ch->desc != i && !i->connected)
-	if (real_roomp(i->character->in_room)->zone == 
-	    real_roomp(ch->in_room)->zone)
-	  write_to_q(messg, &i->output);
+        if (real_roomp(i->character->in_room)->zone ==
+            real_roomp(ch->in_room)->zone)
+          write_to_q(messg, &i->output);
 }
 
 
 
-void send_to_room(char *messg, int room)
-{
+void send_to_room(char *messg, int room) {
   struct char_data *i;
-  
+
   if (messg)
     for (i = real_roomp(room)->people; i; i = i->next_in_room)
       if (i->desc)
-	write_to_q(messg, &i->desc->output);
+        write_to_q(messg, &i->desc->output);
 }
 
 
 
 
-void send_to_room_except(char *messg, int room, struct char_data *ch)
-{
+void send_to_room_except(char *messg, int room, struct char_data *ch) {
   struct char_data *i;
-  
+
   if (messg)
     for (i = real_roomp(room)->people; i; i = i->next_in_room)
       if (i != ch && i->desc)
-	write_to_q(messg, &i->desc->output);
+        write_to_q(messg, &i->desc->output);
 }
 
 void send_to_room_except_two
-  (char *messg, int room, struct char_data *ch1, struct char_data *ch2)
-{
+  (char *messg, int room, struct char_data *ch1, struct char_data *ch2) {
   struct char_data *i;
-  
+
   if (messg)
     for (i = real_roomp(room)->people; i; i = i->next_in_room)
       if (i != ch1 && i != ch2 && i->desc)
-	write_to_q(messg, &i->desc->output);
+        write_to_q(messg, &i->desc->output);
 }
 
 
@@ -1434,86 +1412,103 @@ void send_to_room_except_two
 
 
 void act(char *str, int hide_invisible, struct char_data *ch,
-	 struct obj_data *obj, void *vict_obj, int type)
-{
+         struct obj_data *obj, void *vict_obj, int type) {
   register char *strp, *point, *i;
   struct char_data *to;
   char buf[MAX_STRING_LENGTH];
-  
+
   if (!str)
     return;
   if (!*str)
     return;
-  
+
   if (ch->in_room <= -1)
-    return;  /* can't do it. in room -1 */
-  
+    return;                     /* can't do it. in room -1 */
+
   if (type == TO_VICT)
-    to = (struct char_data *) vict_obj;
+    to = (struct char_data *)vict_obj;
   else if (type == TO_CHAR)
     to = ch;
   else
     to = real_roomp(ch->in_room)->people;
-  
-  for (; to; to = to->next_in_room)	{
-    if (to->desc && ((to != ch) || (type == TO_CHAR)) &&  
-	(CAN_SEE(to, ch) || !hide_invisible) && AWAKE(to) &&
-	!((type == TO_NOTVICT)&&(to==(struct char_data *) vict_obj))){
+
+  for (; to; to = to->next_in_room) {
+    if (to->desc && ((to != ch) || (type == TO_CHAR)) &&
+        (CAN_SEE(to, ch) || !hide_invisible) && AWAKE(to) &&
+        !((type == TO_NOTVICT) && (to == (struct char_data *)vict_obj))) {
       for (strp = str, point = buf;;)
-	if (*strp == '$') {
-	  switch (*(++strp)) {
-	  case 'n': i = PERS(ch, to); 
-	    break;
-	  case 'N': i = PERS((struct char_data *) vict_obj, to); 
-	    break;
-	  case 'm': i = HMHR(ch); 
-	    break;
-	  case 'M': i = HMHR((struct char_data *) vict_obj); 
-	    break;
-	  case 's': i = HSHR(ch); 
-	    break;
-	  case 'S': i = HSHR((struct char_data *) vict_obj); 
-	    break;
-	  case 'e': i = HSSH(ch); 
-	    break;
-	  case 'E': i = HSSH((struct char_data *) vict_obj); 
-	    break;
-	  case 'o': i = OBJN(obj, to); 
-	    break;
-	  case 'O': i = OBJN((struct obj_data *) vict_obj, to); 
-	    break;
-	  case 'p': i = OBJS(obj, to); 
-	    break;
-	  case 'P': i = OBJS((struct obj_data *) vict_obj, to); 
-	    break;
-	  case 'a': i = SANA(obj); 
-	    break;
-	  case 'A': i = SANA((struct obj_data *) vict_obj); 
-	    break;
-	  case 'T': i = (char *) vict_obj; 
-	    break;
-	  case 'F': i = fname((char *) vict_obj); 
-	    break;
-	  case '$': i = "$"; 
-	    break;
-	  default:
-	    log_msg("Illegal $-code to act():");
-	    log_msg(str);
-	    break;
-	  }
-	  
-	  while ((*point = *(i++)) != '\0')
-	    ++point;
-	  
-	  ++strp;
-	  
-	}	else if (!(*(point++) = *(strp++)))
-	  break;
-      
+        if (*strp == '$') {
+          switch (*(++strp)) {
+          case 'n':
+            i = PERS(ch, to);
+            break;
+          case 'N':
+            i = PERS((struct char_data *)vict_obj, to);
+            break;
+          case 'm':
+            i = HMHR(ch);
+            break;
+          case 'M':
+            i = HMHR((struct char_data *)vict_obj);
+            break;
+          case 's':
+            i = HSHR(ch);
+            break;
+          case 'S':
+            i = HSHR((struct char_data *)vict_obj);
+            break;
+          case 'e':
+            i = HSSH(ch);
+            break;
+          case 'E':
+            i = HSSH((struct char_data *)vict_obj);
+            break;
+          case 'o':
+            i = OBJN(obj, to);
+            break;
+          case 'O':
+            i = OBJN((struct obj_data *)vict_obj, to);
+            break;
+          case 'p':
+            i = OBJS(obj, to);
+            break;
+          case 'P':
+            i = OBJS((struct obj_data *)vict_obj, to);
+            break;
+          case 'a':
+            i = SANA(obj);
+            break;
+          case 'A':
+            i = SANA((struct obj_data *)vict_obj);
+            break;
+          case 'T':
+            i = (char *)vict_obj;
+            break;
+          case 'F':
+            i = fname((char *)vict_obj);
+            break;
+          case '$':
+            i = "$";
+            break;
+          default:
+            log_msg("Illegal $-code to act():");
+            log_msg(str);
+            break;
+          }
+
+          while ((*point = *(i++)) != '\0')
+            ++point;
+
+          ++strp;
+
+        }
+        else if (!(*(point++) = *(strp++)))
+          break;
+
       *(--point) = '\n';
       *(++point) = '\r';
       *(++point) = '\0';
-      
+
       write_to_q(CAP(buf), &to->desc->output);
     }
     if ((type == TO_VICT) || (type == TO_CHAR))
@@ -1521,8 +1516,7 @@ void act(char *str, int hide_invisible, struct char_data *ch,
   }
 }
 
-void raw_force_all( char *to_force)
-{
+void raw_force_all(char *to_force) {
   struct descriptor_data *i;
   char buf[400];
 
@@ -1535,14 +1529,13 @@ void raw_force_all( char *to_force)
 }
 
 
-void UpdateScreen(struct char_data *ch, int update)
-{
- char buf[255];
- int size;
- 
- size = ch->size;
+void UpdateScreen(struct char_data *ch, int update) {
+  char buf[255];
+  int size;
 
- if(IS_SET(update, INFO_MANA)) {
+  size = ch->size;
+
+  if (IS_SET(update, INFO_MANA)) {
     SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
     SPRINTF(buf, VT_CURSPOS, size - 2, 7);
@@ -1556,8 +1549,8 @@ void UpdateScreen(struct char_data *ch, int update)
     SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
- 
- if(IS_SET(update, INFO_MOVE)) {
+
+  if (IS_SET(update, INFO_MOVE)) {
     SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
     SPRINTF(buf, VT_CURSPOS, size - 3, 58);
@@ -1571,8 +1564,8 @@ void UpdateScreen(struct char_data *ch, int update)
     SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
- 
- if(IS_SET(update, INFO_HP)) {
+
+  if (IS_SET(update, INFO_HP)) {
     SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
     SPRINTF(buf, VT_CURSPOS, size - 3, 13);
@@ -1586,8 +1579,8 @@ void UpdateScreen(struct char_data *ch, int update)
     SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
- 
- if(IS_SET(update, INFO_GOLD)) {
+
+  if (IS_SET(update, INFO_GOLD)) {
     SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
     SPRINTF(buf, VT_CURSPOS, size - 2, 47);
@@ -1601,8 +1594,8 @@ void UpdateScreen(struct char_data *ch, int update)
     SPRINTF(buf, VT_CURREST);
     write_to_descriptor(ch->desc->descriptor, buf);
   }
- 
- if(IS_SET(update, INFO_EXP)) {
+
+  if (IS_SET(update, INFO_EXP)) {
     SPRINTF(buf, VT_CURSAVE);
     write_to_descriptor(ch->desc->descriptor, buf);
     SPRINTF(buf, VT_CURSPOS, size - 1, 20);
@@ -1617,75 +1610,75 @@ void UpdateScreen(struct char_data *ch, int update)
     write_to_descriptor(ch->desc->descriptor, buf);
   }
 }
- 
- 
-void InitScreen(struct char_data *ch)
-{
- char buf[255];
- int size;
 
- size = ch->size; 
- SPRINTF(buf, VT_HOMECLR);
- send_to_char(buf, ch);
- SPRINTF(buf, VT_MARGSET, 0, size - 5);
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 4, 1);
- send_to_char(buf, ch);
- SPRINTF(buf, "-===========================================================================-");
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 3, 1);
- send_to_char(buf, ch);
- SPRINTF(buf, "Hit Points: ");
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 3, 40);
- send_to_char(buf, ch);
- SPRINTF(buf, "Movement Points: ");
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 2, 1);
- send_to_char(buf, ch);
- SPRINTF(buf, "Mana: ");
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 2, 40);
- send_to_char(buf, ch);
- SPRINTF(buf, "Gold: ");
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 1, 1);
- send_to_char(buf, ch);
- SPRINTF(buf, "Experience Points: ");
- send_to_char(buf, ch);
- 
- ch->last.mana = GET_MANA(ch);
- ch->last.mmana = GET_MAX_MANA(ch);
- ch->last.hit = GET_HIT(ch);
- ch->last.mhit = GET_MAX_HIT(ch);
- ch->last.move = GET_MOVE(ch);
- ch->last.mmove = GET_MAX_MOVE(ch);
- ch->last.exp = GET_EXP(ch);
- ch->last.gold = GET_GOLD(ch);
- 
- /* Update all of the info parts */
- SPRINTF(buf, VT_CURSPOS, size - 3, 13);
- send_to_char(buf, ch);
- SPRINTF(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 3, 58);
- send_to_char(buf, ch);
- SPRINTF(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 2, 7);
- send_to_char(buf, ch);
- SPRINTF(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 2, 47);
- send_to_char(buf, ch);
- SPRINTF(buf, "%d", GET_GOLD(ch));
- send_to_char(buf, ch);
- SPRINTF(buf, VT_CURSPOS, size - 1, 20);
- send_to_char(buf, ch);
- SPRINTF(buf, "%d", GET_EXP(ch));
- send_to_char(buf, ch);
 
- SPRINTF(buf, VT_CURSPOS, 0, 0);
- send_to_char(buf, ch);
+void InitScreen(struct char_data *ch) {
+  char buf[255];
+  int size;
+
+  size = ch->size;
+  SPRINTF(buf, VT_HOMECLR);
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_MARGSET, 0, size - 5);
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 4, 1);
+  send_to_char(buf, ch);
+  SPRINTF(buf,
+          "-===========================================================================-");
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 3, 1);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "Hit Points: ");
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 3, 40);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "Movement Points: ");
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 2, 1);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "Mana: ");
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 2, 40);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "Gold: ");
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 1, 1);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "Experience Points: ");
+  send_to_char(buf, ch);
+
+  ch->last.mana = GET_MANA(ch);
+  ch->last.mmana = GET_MAX_MANA(ch);
+  ch->last.hit = GET_HIT(ch);
+  ch->last.mhit = GET_MAX_HIT(ch);
+  ch->last.move = GET_MOVE(ch);
+  ch->last.mmove = GET_MAX_MOVE(ch);
+  ch->last.exp = GET_EXP(ch);
+  ch->last.gold = GET_GOLD(ch);
+
+  /* Update all of the info parts */
+  SPRINTF(buf, VT_CURSPOS, size - 3, 13);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 3, 58);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 2, 7);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 2, 47);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "%d", GET_GOLD(ch));
+  send_to_char(buf, ch);
+  SPRINTF(buf, VT_CURSPOS, size - 1, 20);
+  send_to_char(buf, ch);
+  SPRINTF(buf, "%d", GET_EXP(ch));
+  send_to_char(buf, ch);
+
+  SPRINTF(buf, VT_CURSPOS, 0, 0);
+  send_to_char(buf, ch);
 
 }

@@ -12,7 +12,7 @@
 #define MAX_BUF_LENGTH              240
 
 #define TYPE_UNDEFINED               -1
-#define SPELL_RESERVED_DBC            0  /* SKILL NUMBER ZERO */
+#define SPELL_RESERVED_DBC            0 /* SKILL NUMBER ZERO */
 #define SPELL_ARMOR                   1 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_TELEPORT                2 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_BLESS                   3 /* Reserved Skill[] DO NOT CHANGE */
@@ -98,15 +98,15 @@
 #define SPELL_METEOR_SWARM           71
 #define SPELL_ICE_STORM              72
 #define SPELL_SHIELD                 73
-#define SPELL_MON_SUM_1              74  /* done */
+#define SPELL_MON_SUM_1              74 /* done */
 #define SPELL_MON_SUM_2              75
 #define SPELL_MON_SUM_3              76
 #define SPELL_MON_SUM_4              77
 #define SPELL_MON_SUM_5              78
 #define SPELL_MON_SUM_6              79
-#define SPELL_MON_SUM_7              80  /* done  */
+#define SPELL_MON_SUM_7              80 /* done  */
 #define SPELL_FIRESHIELD             81
-#define SPELL_CHARM_MONSTER          82 
+#define SPELL_CHARM_MONSTER          82
 #define SPELL_CURE_SERIOUS           83
 #define SPELL_CAUSE_SERIOUS          84
 #define SPELL_REFRESH                85
@@ -160,7 +160,7 @@
 #define SPELL_ANIMAL_GROWTH         125
 #define SPELL_INSECT_GROWTH         126
 #define SPELL_CREEPING_DEATH        127
-#define SPELL_COMMUNE               128  /* whatzone*/
+#define SPELL_COMMUNE               128 /* whatzone */
 
 #define SPELL_ANIMAL_SUM_1          129
 #define SPELL_ANIMAL_SUM_2          130
@@ -178,7 +178,7 @@
 
 #define SPELL_ANIMATE_ROCK          140
 #define SPELL_TREE_TRAVEL           141
-#define SPELL_TRAVELLING            142  /* faster move outdoors */
+#define SPELL_TRAVELLING            142 /* faster move outdoors */
 #define SPELL_ANIMAL_FRIENDSHIP     143
 #define SPELL_INVIS_TO_ANIMALS      144
 #define SPELL_SLOW_POISON           145
@@ -210,12 +210,12 @@
 
 /* room spell like deal */
 
-#define SPELL_BLADE_BARRIER        
+#define SPELL_BLADE_BARRIER
 
 /* maybe */
-#define SPELL_SUMMON_OBJ            
+#define SPELL_SUMMON_OBJ
 
-#define SKILL_DUAL_WIELD             169  /* */
+#define SKILL_DUAL_WIELD             169        /* */
 
 #define SKILL_FIRST_AID              170
 #define SKILL_SIGN                   171
@@ -246,7 +246,7 @@
 #define SKILL_CONS_OTHER             196
 #define SKILL_DISGUISE               197
 #define SKILL_CLIMB                  198
-#define SKILL_INSET                  199  /* skill at insetting stones */
+#define SKILL_INSET                  199        /* skill at insetting stones */
 
 /* breaths occupy 200 to 205 in spello, so for consistency.. 206 is next */
 
@@ -262,14 +262,14 @@
 #define SPELL_RESIST_SLASH           215
 #define SPELL_RESIST_BLUNT           216
 #define SKILL_BREWING                217
-#define SPELL_SUN_BLIND              218 /* just to keep handler.c happy */
+#define SPELL_SUN_BLIND              218        /* just to keep handler.c happy */
 #define SKILL_BERSERK                219
 #define SKILL_PALM                   220
 #define SKILL_PEEK                   221
 #define SKILL_CONS_INSECT            222
 #define SKILL_CONS_AVIAN             223
 
-#define MAX_EXIST_SPELL              223   /* move this and change it */
+#define MAX_EXIST_SPELL              223        /* move this and change it */
 
 #define FIRST_BREATH_WEAPON	     400
 #define SPELL_GEYSER                 400
@@ -289,11 +289,11 @@
 #define TYPE_BLUDGEON                407
 #define TYPE_PIERCE                  408
 #define TYPE_SLASH                   409
-#define TYPE_WHIP                    410   
-#define TYPE_CLAW                    411  
-#define TYPE_BITE                    412  
-#define TYPE_STING                   413  
-#define TYPE_CRUSH                   414  
+#define TYPE_WHIP                    410
+#define TYPE_CLAW                    411
+#define TYPE_BITE                    412
+#define TYPE_STING                   413
+#define TYPE_CRUSH                   414
 #define TYPE_CLEAVE                  415
 #define TYPE_STAB                    416
 #define TYPE_SMASH                   417
@@ -327,29 +327,29 @@
 #define TAR_CHAR_WORLD	 (1<< 2)
 #define TAR_FIGHT_SELF	 (1<< 3)
 #define TAR_FIGHT_VICT	 (1<< 4)
-#define TAR_SELF_ONLY	 (1<< 5) /* Only a check, use with ei. TAR_CHAR_ROOM */
-#define TAR_SELF_NONO	 (1<< 6) /* Only a check, use with ei. TAR_CHAR_ROOM */
+#define TAR_SELF_ONLY	 (1<< 5)        /* Only a check, use with ei. TAR_CHAR_ROOM */
+#define TAR_SELF_NONO	 (1<< 6)        /* Only a check, use with ei. TAR_CHAR_ROOM */
 #define TAR_OBJ_INV	 (1<< 7)
 #define TAR_OBJ_ROOM	 (1<< 8)
 #define TAR_OBJ_WORLD	 (1<< 9)
 #define TAR_OBJ_EQUIP	 (1<<10)
 #define TAR_NAME	 (1<<11)
 #define TAR_VIOLENT	 (1<<12)
-#define TAR_ROOM         (1<<13)  /* spells which target the room  */
+#define TAR_ROOM         (1<<13)        /* spells which target the room  */
 
-struct spell_info_type
-{
-	void (*spell_pointer) 
-               (byte level, struct char_data *ch, char *arg, int type,
-	        struct char_data *tar_ch, struct obj_data *tar_obj);
-	byte minimum_position;  /* Position for caster 			*/
-	ubyte min_usesmana;     /* Amount of mana used by a spell	 */
-	byte beats;             /* Heartbeats until ready for next */
+struct spell_info_type {
+  void (*spell_pointer)
+   
+    (byte level, struct char_data * ch, char *arg, int type,
+     struct char_data * tar_ch, struct obj_data * tar_obj);
+  byte minimum_position;        /* Position for caster                  */
+  ubyte min_usesmana;           /* Amount of mana used by a spell        */
+  byte beats;                   /* Heartbeats until ready for next */
 
-        byte min_level[MIN_LEVEL_NUM]; /* Each entry will hold min level */
+  byte min_level[MIN_LEVEL_NUM];        /* Each entry will hold min level */
 
-	sh_int targets;         /* See below for use with TAR_XXX  */
-        sh_int spellfail;       /* modifier for spell failure      */
+  sh_int targets;               /* See below for use with TAR_XXX  */
+  sh_int spellfail;             /* modifier for spell failure      */
 };
 
 /* Possible Targets:

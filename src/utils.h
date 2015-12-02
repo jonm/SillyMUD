@@ -24,7 +24,7 @@
 
 #define UPPER(c) (((c)>='a'  && (c) <= 'z') ? ((c)+('A'-'a')) : (c) )
 
-#define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r') 
+#define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r')
 
 #define IS_WEAPON(o) (o->obj_flags.type_flag == ITEM_WEAPON)
 
@@ -87,7 +87,7 @@
 	(((ch)->player.sex == 1) ? "he" : "she") : "it")
 
 #define HMHR(ch) ((ch)->player.sex ? 					\
-	(((ch)->player.sex == 1) ? "him" : "her") : "it")	
+	(((ch)->player.sex == 1) ? "him" : "her") : "it")
 
 #define ANA(obj) (index("aeiouyAEIOUY", *(obj)->name) ? "An" : "A")
 
@@ -285,4 +285,3 @@
 
 #define SAPPENDF(str, ...)                                          \
   snprintf(str+strlen(str), sizeof(str)-strlen(str) - 1, __VA_ARGS__)
-
