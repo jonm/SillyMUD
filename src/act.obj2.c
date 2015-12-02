@@ -208,7 +208,8 @@ void do_eat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
 
-  if ((temp->obj_flags.type_flag != ITEM_FOOD) && (get_max_level(ch) < DEMIGOD)) {
+  if ((temp->obj_flags.type_flag != ITEM_FOOD)
+      && (get_max_level(ch) < DEMIGOD)) {
     act("Your stomach refuses to eat that!?!", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }

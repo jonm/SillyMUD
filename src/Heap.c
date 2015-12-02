@@ -14,7 +14,7 @@
 
 #include "protos.h"
 
-void smart_str_cpy(char *s1, const char *s2) {    /* ignore trailing spaces and \n */
+void smart_str_cpy(char *s1, const char *s2) {  /* ignore trailing spaces and \n */
   int i;
 
   i = strlen(s2);

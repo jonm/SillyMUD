@@ -31,7 +31,7 @@ void mobile_guardian(struct char_data *ch) {
     if ((!ch->master) || (!IS_AFFECTED(ch, AFF_CHARM)))
       return;
     if (ch->master->specials.fighting) {
-      /**/ for (i = 0; i < 10 && !found; i++) {
+       /**/ for (i = 0; i < 10 && !found; i++) {
         targ = FindAnAttacker(ch->master);
         if (targ)
           found = TRUE;

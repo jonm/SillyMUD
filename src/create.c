@@ -376,7 +376,7 @@ void ChangeRoomType(struct room_data *rp, struct char_data *ch, char *arg,
 
 
 void change_exit_dir(struct room_data *rp, struct char_data *ch, char *arg,
-                   int type) {
+                     int type) {
   int update;
   char buf[1024];
 

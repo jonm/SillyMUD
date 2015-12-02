@@ -48,7 +48,7 @@ void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   level = GET_LEVEL(ch, DRUID_LEVEL_IND);
 
-  level = (level ? level : get_max_level(ch));    /* for vampires */
+  level = (level ? level : get_max_level(ch));  /* for vampires */
   SPRINTF(buf, "Level %d thing doing a changeform.", level);
   log_msg(buf);
 
@@ -345,7 +345,7 @@ void VampireBite(struct char_data *ch, struct char_data *v) {
     /* for str diff of 8, 27%, if 10 level dif., 37%, chance averages 62% */
     /* NOTE: This is the chance for the vampire to keep ahold of v */
 
-    if (get_max_level(ch) < get_max_level(v) - 5)   /* life seemed too easy */
+    if (get_max_level(ch) < get_max_level(v) - 5)       /* life seemed too easy */
       chance += 25;
 
     if (chance > number(1, 100)) {

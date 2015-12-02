@@ -1325,8 +1325,8 @@ void spell_locate_object(byte level, struct char_data *ch,
       else {
         SPRINTF(buf2, "%s in %s.\n\r", i->short_description,
                 (i->in_room ==
-                 NOWHERE ? "use but uncertain." : real_roomp(i->in_room)->
-                 name));
+                 NOWHERE ? "use but uncertain." : real_roomp(i->
+                                                             in_room)->name));
         strcat(buf, buf2);
         j--;
       }

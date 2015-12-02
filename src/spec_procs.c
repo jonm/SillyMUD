@@ -2416,7 +2416,7 @@ int AbbarachDragon(struct char_data *ch, int cmd, char *arg,
     }
   }
   else {
-    return (BreathWeapon(ch, cmd, arg, mob, type));
+    return (breath_weapon_mob(ch, cmd, arg, mob, type));
   }
   return (FALSE);
 }
@@ -4528,7 +4528,7 @@ int magic_user2(struct char_data *ch, int cmd, char *UNUSED(arg),
   if (!vict)
     return (FALSE);
 
-  lspell = number(0, get_max_level(ch));  /* gen number from 0 to level */
+  lspell = number(0, get_max_level(ch));        /* gen number from 0 to level */
 
   if (lspell < 1)
     lspell = 1;
@@ -4793,7 +4793,7 @@ void ThrowChar(struct char_data *ch, struct char_data *v, int dir) {
 }
 
 int thrower_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
-               struct char_data *UNUSED(mob), int UNUSED(type)) {
+                struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
 
   /*

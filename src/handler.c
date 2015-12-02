@@ -1640,8 +1640,7 @@ struct char_data *get_char_room_vis(struct char_data *ch, char *name) {
 /* get a character from anywhere in the world, doesn't care much about
    being in the same room... */
 struct char_data *get_char_vis_world(struct char_data *ch, char *name,
-                                     int *count)
-{
+                                     int *count) {
   struct char_data *i;
   int j, number;
   char tmpname[MAX_INPUT_LENGTH];

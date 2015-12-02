@@ -623,8 +623,8 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
               act
                 ("$n utters the words 'Here's a penny, go buy a brain, and give me the change'",
                  1, ch, 0, 0, TO_ROOM);
-              cast_feeblemind(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
-                              0);
+              cast_feeblemind(get_max_level(ch), ch, "", SPELL_TYPE_SPELL,
+                              vict, 0);
               return (FALSE);
             }
             /* well, spells failed or not needed, let's kick someone :) */
@@ -949,7 +949,7 @@ char *scroll_text[] = {
 #define SCROLL_OBJ     87       /* Scroll to load */
 
 int old_hag(struct char_data *UNUSED(ch), int UNUSED(cmd), char *UNUSED(arg),
-           struct char_data *mob, int UNUSED(type)) {
+            struct char_data *mob, int UNUSED(type)) {
   /* Mob is always passed as the mobile, no matter what */
   /* So we'll intercept the first call here, no matter  */
   /* What it is, that way we can make sure something's  */

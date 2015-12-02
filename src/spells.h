@@ -339,6 +339,7 @@
 
 struct spell_info_type {
   void (*spell_pointer)
+
    
     (byte level, struct char_data * ch, char *arg, int type,
      struct char_data * tar_ch, struct obj_data * tar_obj);

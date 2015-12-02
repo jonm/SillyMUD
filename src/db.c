@@ -1590,7 +1590,7 @@ struct char_data *read_mobile(int nr, int type) {
     }
   }
 
-  verify_mob(mob);               /* check it for acceptability */
+  verify_mob(mob);              /* check it for acceptability */
 
   /* tell the spec_proc (if there is one) that we've been born */
   /*  if(mob_index[nr].func)
@@ -1988,8 +1988,9 @@ void reset_zone(int zone) {
 
           if (GET_RACE(mob) > RACE_GNOME)
             if (!strchr(zone_table[ZCMD.arg1].races, GET_RACE(mob))) {
-              zone_table[ZCMD.arg1].
-                races[strlen(zone_table[ZCMD.arg1].races)] = GET_RACE(mob);
+              zone_table[ZCMD.
+                         arg1].races[strlen(zone_table[ZCMD.arg1].races)] =
+                GET_RACE(mob);
             }
         }
         break;

@@ -898,7 +898,8 @@ int DamCheckDeny(struct char_data *ch, struct char_data *victim, int type) {
 
 }
 
-int dam_details_ok(struct char_data *ch, struct char_data *v, int dam, int type) {
+int dam_details_ok(struct char_data *ch, struct char_data *v, int dam,
+                   int type) {
 
   if (dam < 0)
     return (FALSE);
@@ -1739,7 +1740,7 @@ void MissVictim(struct char_data *ch, struct char_data *v, int type,
 
 
 int get_weapon_dam(struct char_data *ch, struct char_data *v,
-                 struct obj_data *wielded) {
+                   struct obj_data *wielded) {
   int dam, j;
   struct obj_data *obj;
   extern struct str_app_type str_app[];

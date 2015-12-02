@@ -87,7 +87,7 @@ int CAN_SEE(struct char_data *s, struct char_data *o) {
   if (IS_IMMORTAL(s))
     return (TRUE);
 
-  if (o->invis_level > get_max_level(s))  /* change this if you want multiple */
+  if (o->invis_level > get_max_level(s))        /* change this if you want multiple */
     return FALSE;               /* levels of invis.                 */
 
   if (IS_AFFECTED(s, AFF_TRUE_SIGHT))
@@ -972,8 +972,8 @@ void down_river(int pulse) {
                   if ((real_roomp(ch->in_room))->dir_option[rd]) {
                     obj_from_room(obj_object);
                     obj_to_room(obj_object,
-                                (real_roomp(ch->in_room))->dir_option[rd]->
-                                to_room);
+                                (real_roomp(ch->in_room))->
+                                dir_option[rd]->to_room);
                   }
                 }
 /*
@@ -1003,8 +1003,8 @@ void down_river(int pulse) {
                       if (RIDDEN(ch)) {
                         char_from_room(RIDDEN(ch));
                         char_to_room(RIDDEN(ch),
-                                     (real_roomp(or))->dir_option[rd]->
-                                     to_room);
+                                     (real_roomp(or))->
+                                     dir_option[rd]->to_room);
                       }
                       char_to_room(ch,
                                    (real_roomp(or))->dir_option[rd]->to_room);
@@ -2099,8 +2099,8 @@ void RiverPulseStuff(int pulse) {
                     if ((real_roomp(ch->in_room))->dir_option[rd]) {
                       obj_from_room(obj_object);
                       obj_to_room(obj_object,
-                                  (real_roomp(ch->in_room))->dir_option[rd]->
-                                  to_room);
+                                  (real_roomp(ch->in_room))->
+                                  dir_option[rd]->to_room);
                     }
                   }
                   /*
@@ -2132,12 +2132,12 @@ void RiverPulseStuff(int pulse) {
                           if (RIDDEN(ch)) {
                             char_from_room(RIDDEN(ch));
                             char_to_room(RIDDEN(ch),
-                                         (real_roomp(or))->dir_option[rd]->
-                                         to_room);
+                                         (real_roomp(or))->
+                                         dir_option[rd]->to_room);
                           }
                           char_to_room(ch,
-                                       (real_roomp(or))->dir_option[rd]->
-                                       to_room);
+                                       (real_roomp(or))->
+                                       dir_option[rd]->to_room);
                           do_look(ch, "\0", 15);
                           if (RIDDEN(ch)) {
                             do_look(RIDDEN(ch), "\0", 15);
@@ -2482,7 +2482,8 @@ void SetRacialStuff(struct char_data *mob) {
   case RACE_GOD:
   case RACE_TREE:
   case RACE_TYTAN:
-    mob->player.weight = MAX(500, get_max_level(mob) * get_max_level(mob) * 10);
+    mob->player.weight =
+      MAX(500, get_max_level(mob) * get_max_level(mob) * 10);
     mob->player.height = get_max_level(mob) / 2 * 100;
     break;
 

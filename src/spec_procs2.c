@@ -534,9 +534,9 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   if (!vict)
     return (FALSE);
 
-  lspell = number(0, get_max_level(ch));  /* gen number from 0 to level */
+  lspell = number(0, get_max_level(ch));        /* gen number from 0 to level */
   if (!IS_PC(ch)) {
-    lspell += get_max_level(ch) / 5;      /* weight it towards the upper levels of 
+    lspell += get_max_level(ch) / 5;    /* weight it towards the upper levels of 
                                            the mage's range */
   }
   lspell = MIN(get_max_level(ch), lspell);
@@ -745,7 +745,8 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 4:
     case 5:
       act("$n utters the words 'ZZZZzzzzzzTTTT'.", 1, ch, 0, 0, TO_ROOM);
-      cast_shocking_grasp(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_shocking_grasp(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                          0);
       break;
     case 6:
     case 7:
@@ -757,7 +758,8 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       }
       else {
         act("$n utters the words 'Fwoosh!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_burning_hands(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_burning_hands(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                           0);
         break;
       }
     case 9:
@@ -800,12 +802,14 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 29:
       if (ch->attackers <= 2) {
         act("$n utters the words 'Look! A rainbow!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_colour_spray(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_colour_spray(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                          0);
         break;
       }
       else {
         act("$n utters the words 'Get the sensation!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_cone_of_cold(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_cone_of_cold(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                          0);
         break;
       }
     case 30:
@@ -825,13 +829,15 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 41:
       if (IS_EVIL(ch)) {
         act("$n utters the words 'slllrrrrrrpppp'.", 1, ch, 0, 0, TO_ROOM);
-        cast_energy_drain(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_energy_drain(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                          0);
         break;
       }
     default:
       if (ch->attackers <= 2) {
         act("$n utters the words 'frag'.", 1, ch, 0, 0, TO_ROOM);
-        cast_meteor_swarm(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_meteor_swarm(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                          0);
         break;
       }
       else {
@@ -947,7 +953,8 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
         (number(0, 5) == 0)) {
       act("$n whistles.", 1, ch, 0, 0, TO_ROOM);
       act("$n utters the words 'Here Lightning!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_call_lightning(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_call_lightning(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                          0);
       return (TRUE);
     }
 
@@ -988,7 +995,8 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
       {
         if (!IS_SET(vict->M_immune, IMM_FIRE)) {
           act("$n utters the words 'Burn Baby Burn'.", 1, ch, 0, 0, TO_ROOM);
-          cast_flamestrike(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+          cast_flamestrike(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                           0);
         }
         else if (IS_AFFECTED(vict, AFF_SANCTUARY) &&
                  (get_max_level(ch) > get_max_level(vict))) {
@@ -1274,7 +1282,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
 
 
 int repair_guy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type) {
+               int type) {
   char obj_name[80], vict_name[80], buf[MAX_INPUT_LENGTH];
   int cost, ave;
   struct char_data *vict;
@@ -1357,7 +1365,7 @@ int repair_guy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         cost /= obj->obj_flags.value[1];
         /* then cost = difference between value[0] and [1] */
         cost *= (obj->obj_flags.value[1] - obj->obj_flags.value[0]);
-        if (get_max_level(vict) > 25)     /* super repair guy */
+        if (get_max_level(vict) > 25)   /* super repair guy */
           cost *= 2;
         if (do_i_hate_you(ch))
           cost *= 2;
@@ -2001,11 +2009,12 @@ int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
            Dunno how it will turn out.. but hopefully it should be ok.
          */
         if (obj_index
-            [real_object(QuestList[Class][(int)GET_LEVEL(ch, Class)].item)].
-            number > 5 && GET_LEVEL(ch, Class) < 40)
+            [real_object
+             (QuestList[Class][(int)GET_LEVEL(ch, Class)].item)].number > 5
+            && GET_LEVEL(ch, Class) < 40)
           obj_index[real_object
-                    (QuestList[Class][(int)GET_LEVEL(ch, Class)].item)].
-            number = 0;
+                    (QuestList[Class][(int)GET_LEVEL(ch, Class)].
+                     item)].number = 0;
         return (FALSE);
       }
     }
@@ -2615,8 +2624,8 @@ struct breather breath_monsters[] = {
   {-1, -1, NULL},
 };
 
-int BreathWeapon(struct char_data *ch, int cmd, char *UNUSED(arg),
-                 struct char_data *UNUSED(mob), int UNUSED(type)) {
+int breath_weapon_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
+                      struct char_data *UNUSED(mob), int UNUSED(type)) {
   char buf[MAX_STRING_LENGTH];
   struct breather *scan;
   int count;
@@ -2750,7 +2759,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (TRUE);
   }
 
-  if (number(0, 101) > get_max_level(ch) + 40)    /* they 'failed' */
+  if (number(0, 101) > get_max_level(ch) + 40)  /* they 'failed' */
     return (TRUE);
 
   if (!ch->specials.fighting) {
@@ -2811,7 +2820,8 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
       if (get_max_level(ch) >= get_max_level(vict)) {
         act("$n utters the words 'use instaway instant magic remover'",
             1, ch, 0, 0, TO_ROOM);
-        cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                          0);
         return (TRUE);
       }
     }
@@ -2832,7 +2842,8 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
       for (i = 0; i < MAX_WEAR; i++) {
         if (vict->equipment[i]) {
           act("$n utters the words 'barbecue?'", 1, ch, 0, 0, TO_ROOM);
-          cast_warp_weapon(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+          cast_warp_weapon(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
+                           0);
           return (FALSE);
         }
       }
@@ -3468,7 +3479,8 @@ int DragonHunterLeader(struct char_data *ch, int UNUSED(cmd),
               do_group(ch, buf, 0);
               count++;
             }
-            else if ((i->master) && (i->master == ch) && (get_max_level(i) > 10)) {
+            else if ((i->master) && (i->master == ch)
+                     && (get_max_level(i) > 10)) {
               SPRINTF(buf, "%s", GET_NAME(i));
               do_group(ch, buf, 0);
             }

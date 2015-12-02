@@ -180,7 +180,7 @@ void shopping_buy(char *arg, struct char_data *ch,
   if (cost < 1)
     cost = 1;
 
-  if (do_i_hate_you(ch))           /* we are prejudice against certain races */
+  if (do_i_hate_you(ch))        /* we are prejudice against certain races */
     cost *= 2;
 
   if (GET_GOLD(ch) < (int)(num * cost)) {
@@ -502,7 +502,7 @@ void shopping_list(char *UNUSED(arg), struct char_data *ch,
         if (cost < 1)
           cost = 1;
 
-        if (do_i_hate_you(ch))     /* we are prejudice against certain races */
+        if (do_i_hate_you(ch))  /* we are prejudice against certain races */
           cost *= 2;
 
         if (temp1->obj_flags.type_flag != ITEM_DRINKCON) {

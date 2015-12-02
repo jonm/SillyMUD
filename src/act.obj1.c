@@ -712,7 +712,8 @@ void do_give(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char("Sorry, you can't do that!\n\r", ch);
       return;
     }
-    if ((GET_GOLD(ch) < amount) && (IS_NPC(ch) || (get_max_level(ch) < DEMIGOD))) {
+    if ((GET_GOLD(ch) < amount)
+        && (IS_NPC(ch) || (get_max_level(ch) < DEMIGOD))) {
       send_to_char("You haven't got that many coins!\n\r", ch);
       return;
     }

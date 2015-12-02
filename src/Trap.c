@@ -119,7 +119,8 @@ void find_trap_damage(struct char_data *v, struct obj_data *i) {
 
 }
 
-void trap_damage(struct char_data *v, int damtype, int amnt, struct obj_data *t) {
+void trap_damage(struct char_data *v, int damtype, int amnt,
+                 struct obj_data *t) {
   char buf[132];
 
   amnt = SkipImmortals(v, amnt);

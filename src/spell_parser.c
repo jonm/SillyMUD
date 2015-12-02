@@ -894,11 +894,10 @@ bool saves_spell(struct char_data *ch, sh_int save_type) {
 
   if (!IS_NPC(ch)) {
 
-    save +=
-      saving_throws[BestMagicClass(ch)][save_type][(int)
-                                                   GET_LEVEL(ch,
-                                                             BestMagicClass
-                                                             (ch))];
+    save += saving_throws[BestMagicClass(ch)][save_type][(int)
+                                                         GET_LEVEL(ch,
+                                                                   BestMagicClass
+                                                                   (ch))];
     if (get_max_level(ch) > MAX_MORT)
       return (TRUE);
   }

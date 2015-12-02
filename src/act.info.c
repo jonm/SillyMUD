@@ -607,8 +607,8 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode) {
 
     if (RIDDEN(i)) {
       SPRINTF(buffer, "$n is ridden by %s",
-              IS_NPC(RIDDEN(i)) ? RIDDEN(i)->player.
-              short_descr : GET_NAME(RIDDEN(i)));
+              IS_NPC(RIDDEN(i)) ? RIDDEN(i)->
+              player.short_descr : GET_NAME(RIDDEN(i)));
       act(buffer, FALSE, i, 0, ch, TO_VICT);
     }
 
@@ -1105,9 +1105,10 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           else {
             send_to_char("You see nothing special.\n\r", ch);
           }
-          if (exitp && exitp->to_room
-              && (!IS_SET(exitp->exit_info, EX_ISDOOR)
-                  || (!IS_SET(exitp->exit_info, EX_CLOSED)))) {
+          if (exitp && exitp->to_room && (!IS_SET(exitp->exit_info, EX_ISDOOR)
+                                          ||
+                                          (!IS_SET
+                                           (exitp->exit_info, EX_CLOSED)))) {
             if (IS_AFFECTED(ch, AFF_SCRYING) || IS_IMMORTAL(ch)) {
               struct room_data *rp;
               SPRINTF(buffer, "You look %swards.\n\r", dirs[keyword_no]);
@@ -1208,8 +1209,8 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             /* Extra description in room?? */
             if (!found) {
               tmp_desc = find_ex_description(arg2,
-                                             real_roomp(ch->in_room)->
-                                             ex_description);
+                                             real_roomp(ch->
+                                                        in_room)->ex_description);
               if (tmp_desc) {
                 page_string(ch->desc, tmp_desc, 0);
                 return;
@@ -1224,8 +1225,9 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
                 if (ch->equipment[j]) {
                   if (CAN_SEE_OBJ(ch, ch->equipment[j])) {
                     tmp_desc = find_ex_description(arg2,
-                                                   ch->equipment[j]->
-                                                   ex_description);
+                                                   ch->
+                                                   equipment
+                                                   [j]->ex_description);
                     if (tmp_desc) {
                       page_string(ch->desc, tmp_desc, 1);
                       found = TRUE;
@@ -2019,8 +2021,8 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
                     }
                   case 't':{
                       SPRINTF(tempbuf, " %-16s ",
-                              (person->player.title ? person->player.
-                               title : "(null)"));
+                              (person->player.title ? person->
+                               player.title : "(null)"));
                       strcat(buf, tempbuf);
                       break;
                     }
@@ -2049,8 +2051,8 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
               }
               else {
                 SPRINTF(buf, "%s %s\n\r", GET_NAME(person),
-                        (person->player.title ? person->player.
-                         title : "(null)"));
+                        (person->player.title ? person->
+                         player.title : "(null)"));
                 send_to_char(buf, ch);
               }
             }
@@ -2301,10 +2303,9 @@ void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   for (i = character_list; i; i = i->next)
     if (isname(name, i->player.name) && CAN_SEE(ch, i)) {
-      if ((i->in_room != NOWHERE) &&
-          ((get_max_level(ch) >= LOW_IMMORTAL)
-           || (real_roomp(i->in_room)->zone ==
-               real_roomp(ch->in_room)->zone))) {
+      if ((i->in_room != NOWHERE) && ((get_max_level(ch) >= LOW_IMMORTAL)
+                                      || (real_roomp(i->in_room)->zone ==
+                                          real_roomp(ch->in_room)->zone))) {
         if (number == 0 || (--count) == 0) {
           if (number == 0) {
             SPRINTF(buf, "[%2d] ", ++count);    /* I love short circuiting :) */
@@ -2470,8 +2471,8 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             titles[class][i].exp,
             titles[class][i + 1].exp,
             (GET_SEX(ch) ==
-             SEX_FEMALE ? titles[class][i].title_f : titles[class][i].
-             title_m));
+             SEX_FEMALE ? titles[class][i].
+             title_f : titles[class][i].title_m));
 
     send_to_char(buf, ch);
   }
@@ -2909,7 +2910,7 @@ void do_attribute(struct char_data *ch, char *UNUSED(argument),
   send_to_char(buf, ch);
 
   if ((get_max_level(ch) > 15) || (HasClass(ch, CLASS_MAGIC_USER) ||
-                                 HasClass(ch, CLASS_MONK))) {
+                                   HasClass(ch, CLASS_MONK))) {
     if ((GET_STR(ch) == 18) && (HasClass(ch, CLASS_WARRIOR))) {
       SPRINTF(buf,
               "You have %d/%d STR, %d INT, %d WIS, %d DEX, %d CON, %d CHR\n\r",
@@ -3428,7 +3429,7 @@ int MobLevBonus(struct char_data *ch) {
 
   if (mob_index[ch->nr].func == magic_user)
     t += 5;
-  if (mob_index[ch->nr].func == BreathWeapon)
+  if (mob_index[ch->nr].func == breath_weapon_mob)
     t += 7;
   if (mob_index[ch->nr].func == fighter)
     t += 3;

@@ -620,8 +620,7 @@ int find_path(int in_room, int (*predicate) (), void *c_data,
               hash_enter(&x_room, tmp_room,
                          ((PTR_SZ_INT) hash_find(&x_room, q_head->room_nr) ==
                           -1) ? (void *)((long)(i + 1)) : hash_find(&x_room,
-                                                                    q_head->
-                                                                    room_nr));
+                                                                    q_head->room_nr));
             }
           }
           else {

@@ -69,7 +69,7 @@ int CheckForGetTrap(struct char_data *ch, struct obj_data *i);
 int TriggerTrap(struct char_data *ch, struct obj_data *i);
 void find_trap_damage(struct char_data *v, struct obj_data *i);
 void trap_damage(struct char_data *v, int damtype, int amnt,
-                struct obj_data *t);
+                 struct obj_data *t);
 void trap_dam(struct char_data *v, int damtype, int amnt, struct obj_data *t);
 void TrapTeleport(struct char_data *v);
 void TrapSleep(struct char_data *v);
@@ -474,7 +474,8 @@ char *replace_string(char *str, char *weapon, char *weapon_s);
 void dam_message(int dam, struct char_data *ch, struct char_data *victim,
                  int w_type);
 int DamCheckDeny(struct char_data *ch, struct char_data *victim, int type);
-int dam_details_ok(struct char_data *ch, struct char_data *v, int dam, int type);
+int dam_details_ok(struct char_data *ch, struct char_data *v, int dam,
+                   int type);
 int SetCharFighting(struct char_data *ch, struct char_data *v);
 int SetVictFighting(struct char_data *ch, struct char_data *v);
 int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type);
@@ -494,7 +495,7 @@ int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco);
 void MissVictim(struct char_data *ch, struct char_data *v, int type,
                 int w_type, int (*dam_func) ());
 int get_weapon_dam(struct char_data *ch, struct char_data *v,
-                 struct obj_data *wielded);
+                   struct obj_data *wielded);
 int GetBackstabMult(struct char_data *ch, struct char_data *v);
 void HitVictim(struct char_data *ch, struct char_data *v, int dam,
                int type, int w_type, int (*dam_func) ());
@@ -1347,8 +1348,8 @@ int CaravanGuildGuard(struct char_data *ch, int cmd, char *arg,
 int StatTeller(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
                int type);
 void ThrowChar(struct char_data *ch, struct char_data *v, int dir);
-int thrower_mob(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
+int thrower_mob(struct char_data *ch, int cmd, char *arg,
+                struct char_data *mob, int type);
 int Tyrannosaurus_swallower(struct char_data *ch, int cmd, char *arg,
                             struct char_data *mob, int type);
 int soap(struct char_data *ch, int cmd, char *arg, struct obj_data *tobj,
@@ -1404,7 +1405,7 @@ int ninja_master(struct char_data *ch, int cmd, char *arg,
 int ettin(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 int repair_guy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type);
+               int type);
 int Samah(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 int BitterBlade(struct char_data *ch, int cmd, char *arg,
@@ -1436,8 +1437,8 @@ void use_breath_weapon(struct char_data *ch, struct char_data *target,
                        int cost, void (*func) (byte, struct char_data *,
                                                char *, int, struct char_data *,
                                                struct obj_data *));
-int BreathWeapon(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
+int breath_weapon_mob(struct char_data *ch, int cmd, char *arg,
+                      struct char_data *mob, int type);
 int sailor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
            int type);
 int loremaster(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
@@ -1526,7 +1527,7 @@ int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
 int entering_turbo_lift(struct char_data *ch, int cmd, char *arg,
                         struct room_data *rp, int type);
 int old_hag(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
+            int type);
 /* From spell_parser.c */
 
 void spello(int nr, byte beat, byte pos, byte mlev, byte clev, byte dlev,
@@ -2080,7 +2081,7 @@ void ChangeRoomName(struct room_data *rp, struct char_data *ch, char *arg,
 void ChangeRoomType(struct room_data *rp, struct char_data *ch, char *arg,
                     int type);
 void change_exit_dir(struct room_data *rp, struct char_data *ch, char *arg,
-                   int type);
+                     int type);
 void ChangeExitNumber(struct room_data *rp, struct char_data *ch, char *arg,
                       int type);
 void ChangeKeyNumber(struct room_data *rp, struct char_data *ch, char *arg,

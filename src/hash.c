@@ -44,8 +44,7 @@ void destroy_hash_table(struct hash_header *ht, void (*gman) ()) {
 }
 
 
-void _hash_enter(struct hash_header *ht, int key, void *data)
-{                               /* precondition: there is no entry for <key> yet */
+void _hash_enter(struct hash_header *ht, int key, void *data) { /* precondition: there is no entry for <key> yet */
   struct hash_link *temp;
   int i;
 

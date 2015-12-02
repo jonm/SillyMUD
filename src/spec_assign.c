@@ -72,13 +72,13 @@ void assign_mobiles() {
     {226, fighter},             /* ogre */
     {236, ghoul},               /* ghast */
     {227, snake},               /* spider */
-    {230, BreathWeapon},        /* baby black */
+    {230, breath_weapon_mob},   /* baby black */
     {232, blink},               /* blink dog */
-    {233, BreathWeapon},        /* baby blue */
+    {233, breath_weapon_mob},   /* baby blue */
     {234, cleric},              /* cleric */
     {239, shadow},              /* shadow    */
     {240, snake},               /* toad      */
-    {243, BreathWeapon},        /* teenage white */
+    {243, breath_weapon_mob},   /* teenage white */
     {247, fighter},             /* minotaur */
     {251, CarrionCrawler},
     {261, fighter},
@@ -199,8 +199,8 @@ void assign_mobiles() {
     {9414, fighter},
     {9415, fighter},
     {9416, fido},
-    {9418, BreathWeapon},
-    {9419, BreathWeapon},
+    {9418, breath_weapon_mob},
+    {9419, breath_weapon_mob},
     {9420, fighter},
     {9421, fighter},
     {9424, StormGiant},
@@ -277,8 +277,8 @@ void assign_mobiles() {
     {6621, fighter},
     {6622, fighter},
     {6614, PrydainGuard},
-    {6609, BreathWeapon},
-    {6642, BreathWeapon},
+    {6609, breath_weapon_mob},
+    {6642, breath_weapon_mob},
     {6640, jugglernaut},
     {6612, magic_user},
     {6615, magic_user},
@@ -286,7 +286,7 @@ void assign_mobiles() {
     {6624, magic_user},
     {6637, magic_user},
     {6634, fighter},
-    {6635, BreathWeapon},
+    {6635, breath_weapon_mob},
     {6625, Demon},
     {6638, StatTeller},
 
@@ -310,7 +310,7 @@ void assign_mobiles() {
     {9216, fighter},
     {9213, CarrionCrawler},
     {9208, cleric},
-    {9217, BreathWeapon},
+    {9217, breath_weapon_mob},
     {9218, fighter},
 
 /*
@@ -450,10 +450,10 @@ void assign_mobiles() {
     {3661, SultanGuard},        /* wandering */
     {3662, SultanGuard},        /* not */
     {3682, SultanGuard},        /* royal */
-    {3670, BreathWeapon},       /* Cryohydra */
-    {3674, BreathWeapon},       /* Behir */
-    {3675, BreathWeapon},       /* Chimera */
-    {3676, BreathWeapon},       /* Couatl */
+    {3670, breath_weapon_mob},  /* Cryohydra */
+    {3674, breath_weapon_mob},  /* Behir */
+    {3675, breath_weapon_mob},  /* Chimera */
+    {3676, breath_weapon_mob},  /* Couatl */
     {3681, cleric},             /* High priest */
     {3689, NewThalosMayor},     /* Guess */
     {3644, fido},
@@ -475,7 +475,7 @@ void assign_mobiles() {
 /*
 **  Challenge
 */
-    {15858, BreathWeapon},
+    {15858, breath_weapon_mob},
     {15861, magic_user},
     {15862, magic_user},
     {15863, fighter},
@@ -485,7 +485,7 @@ void assign_mobiles() {
     {15866, magic_user},
     {15810, magic_user},
     {15880, fighter},
-    {15879, BreathWeapon},
+    {15879, breath_weapon_mob},
     {15873, magic_user},
     {15871, magic_user},
     {15852, fighter},
@@ -497,12 +497,12 @@ void assign_mobiles() {
 */
     {25000, magic_user},        /* Demi-lich  */
     {25001, Keftab},
-    {25009, BreathWeapon},      /* hydra */
+    {25009, breath_weapon_mob}, /* hydra */
     {25002, vampire},           /* Crimson */
     {25003, StormGiant},        /* MistDaemon */
     {25006, StormGiant},        /* Storm giant */
     {25014, StormGiant},        /* DeathKnight */
-    {25009, BreathWeapon},      /* hydra */
+    {25009, breath_weapon_mob}, /* hydra */
     {25017, AbyssGateKeeper},   /* Abyss Gate Keeper */
     {25013, fighter},           /* kalas */
     {25008, magic_user},        /* efreeti */
@@ -526,7 +526,7 @@ void assign_mobiles() {
     {25501, fighter},
     {25502, fighter},
     {25505, fighter},
-    {25504, BreathWeapon},
+    {25504, breath_weapon_mob},
     {25503, cleric},
 
 /*
@@ -663,7 +663,7 @@ void assign_mobiles() {
 **  Bay Isle
 */
     {16610, Demon},
-    {16620, BreathWeapon},
+    {16620, breath_weapon_mob},
     {16640, cleric},
     {16650, cleric},
 
@@ -799,7 +799,7 @@ void assign_mobiles() {
 **   Hammor's Stuff
 */
     {3900, eric_johnson}, {3901, andy_wilcox}, {3950, zombie_master},
-    {3952, BreathWeapon},
+    {3952, breath_weapon_mob},
 
 /* 
 **  MORIA 
@@ -825,11 +825,11 @@ void assign_mobiles() {
 */
     {6800, fighter},
     {6803, fighter},
-    {6801, BreathWeapon},
-    {6802, BreathWeapon},
+    {6801, breath_weapon_mob},
+    {6802, breath_weapon_mob},
     {6815, magic_user},
     {6821, snake},
-    {6824, BreathWeapon},
+    {6824, breath_weapon_mob},
     {6825, thief},
 
 /* 
@@ -839,7 +839,7 @@ void assign_mobiles() {
     {7006, snake},
     {7008, snake},
     {7042, magic_user},         /* naga       */
-    {7040, BreathWeapon},       /* Red    */
+    {7040, breath_weapon_mob},  /* Red    */
     {7041, magic_user},         /* sea hag    */
     {7045, ettin},              /* berserk teacher */
     {7200, magic_user},         /* mindflayer */
@@ -854,7 +854,7 @@ void assign_mobiles() {
     {6111, magic_user},         /* tree */
     {6113, snake},
     {6114, snake},
-    {6112, BreathWeapon},       /* green */
+    {6112, breath_weapon_mob},  /* green */
     {6910, magic_user},
 
 /*
@@ -865,7 +865,7 @@ void assign_mobiles() {
     {5003, snake},              /* scorpion    */
     {5004, snake},              /* purple worm  */
     {5014, cleric},             /* myconoid */
-    {5005, BreathWeapon},       /* brass */
+    {5005, breath_weapon_mob},  /* brass */
 
 /*
 **  Drow (edition 1)
@@ -929,10 +929,10 @@ void assign_mobiles() {
     {20009, magic_user},        /* quasit         */
     {20014, magic_user},        /* Arachnos        */
     {20015, magic_user},        /* Ki Rin          */
-    {20011, old_hag},            /* hermit (hey, DM wrote it!) */
-    {20002, BreathWeapon},      /* Yevaud */
-    {20017, BreathWeapon},      /* Elder  */
-    {20016, BreathWeapon},      /* Baby   */
+    {20011, old_hag},           /* hermit (hey, DM wrote it!) */
+    {20002, breath_weapon_mob}, /* Yevaud */
+    {20017, breath_weapon_mob}, /* Elder  */
+    {20016, breath_weapon_mob}, /* Baby   */
     {20012, fighter},           /* donjonkeeper */
 
 /*
