@@ -696,7 +696,7 @@ int MobFriend(struct char_data *ch, struct char_data *f) {
   return (FALSE);
 }
 
-void PulseMobiles(int type) {
+void pulse_mobiles(int type) {
   register struct char_data *ch;
 
   for (ch = character_list; ch; ch = ch->next)

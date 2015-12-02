@@ -3897,7 +3897,7 @@ int DwarvenMiners(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
 
     ch->generic++;
     if (ch->generic == 30) {    /* strike over, back to work */
-      PulseMobiles(EVENT_END_STRIKE);
+      pulse_mobiles(EVENT_END_STRIKE);
       if (ch->specials.position == POSITION_SITTING) {
         do_emote(ch, "is off strike.", 0);
         do_stand(ch, "", 0);
@@ -3939,7 +3939,7 @@ int DwarvenMiners(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
     if (number(1, 6) != 5)
       return (FALSE);           /* 1 in 6 chance of striking this week */
 
-    PulseMobiles(EVENT_DWARVES_STRIKE);
+    pulse_mobiles(EVENT_DWARVES_STRIKE);
     gevent = DWARVES_STRIKE;
     switch (number(1, 5)) {     /*severity */
     case 1:

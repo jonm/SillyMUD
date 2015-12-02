@@ -122,7 +122,7 @@ void another_hour(int mode) {
       case 20:
       case 27:
       case 34:
-        PulseMobiles(EVENT_WEEK);
+        pulse_mobiles(EVENT_WEEK);
         break;
       }
       /* check the season */
@@ -135,8 +135,8 @@ void another_hour(int mode) {
       if (time_info.day > 34) {
         time_info.day = 0;
         time_info.month++;
-        GetMonth(time_info.month);
-        PulseMobiles(EVENT_MONTH);
+        get_month(time_info.month);
+        pulse_mobiles(EVENT_MONTH);
 
         if (time_info.month > 16) {
           time_info.month = 0;
@@ -271,11 +271,11 @@ void weather_change() {
     }
   }
 
-  ChangeWeather(change);
+  change_weather(change);
 
 }
 
-void ChangeWeather(int change) {
+void change_weather(int change) {
 
   if (change < 0)
     change = 0;
@@ -366,7 +366,7 @@ void ChangeWeather(int change) {
   }
 }
 
-void GetMonth(int month) {
+void get_month(int month) {
   if (month < 0)
     return;
 
@@ -381,15 +381,15 @@ void GetMonth(int month) {
   }
   else if (month == 4) {
     send_to_outdoor(" The flowers start to bloom \n\r");
-    PulseMobiles(EVENT_SPRING);
+    pulse_mobiles(EVENT_SPRING);
   }
   else if (month == 8) {
     send_to_outdoor(" It is warm and humid. \n\r");
-    PulseMobiles(EVENT_SUMMER);
+    pulse_mobiles(EVENT_SUMMER);
   }
   else if (month == 12) {
     send_to_outdoor(" It starts to get a little windy \n\r");
-    PulseMobiles(EVENT_FALL);
+    pulse_mobiles(EVENT_FALL);
   }
   else if (month == 13) {
     send_to_outdoor(" The air is getting chilly \n\r");
@@ -402,7 +402,7 @@ void GetMonth(int month) {
   }
   else if (month == 16) {
     send_to_outdoor(" It is bitterly cold outside \n\r");
-    PulseMobiles(EVENT_WINTER);
+    pulse_mobiles(EVENT_WINTER);
   }
 }
 

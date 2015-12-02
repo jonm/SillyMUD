@@ -32,7 +32,7 @@ void clone_char(struct char_data *ch);
 bool saves_spell(struct char_data *ch, sh_int spell);
 void add_follower(struct char_data *ch, struct char_data *victim);
 char in_group(struct char_data *ch1, struct char_data *ch2);
-void ChangeWeather(int change);
+void change_weather(int change);
 void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp,
                      int door);
 int NoSummon(struct char_data *ch);

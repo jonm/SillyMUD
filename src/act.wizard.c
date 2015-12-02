@@ -3447,7 +3447,7 @@ void do_set_log(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   }
 }
 
-void PulseMobiles(int cmd);
+void pulse_mobiles(int cmd);
 
 void do_event(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   int i;
@@ -3459,7 +3459,7 @@ void do_event(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
   i = atoi(buf);
 
-  PulseMobiles(i);
+  pulse_mobiles(i);
 }
 
 void do_beep(struct char_data *ch, char *argument, int UNUSED(cmd)) {

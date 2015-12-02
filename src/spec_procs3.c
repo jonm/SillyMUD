@@ -689,7 +689,7 @@ int DeathRoom(int dt_room) {
   int whee, to_room;
   extern int top_of_world;
 
-  PulseMobiles(EVENT_DEATHROOM);
+  pulse_mobiles(EVENT_DEATHROOM);
 
   for (k = real_roomp(dt_room)->contents; k; k = real_roomp(dt_room)->contents) {
     whee = number(1, 9);        /* Yes, I don't trust randomness :) */
