@@ -613,11 +613,11 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             /* The escape has succeded. We'll be nice. */
             if (get_max_level(ch) > 3) {
               if (panic || !HasClass(ch, CLASS_WARRIOR)) {
-                loose = get_max_level(ch) + (GetSecMaxLev(ch) / 2) +
-                  (GetThirdMaxLev(ch) / 3);
+                loose = get_max_level(ch) + (get_sec_max_lev(ch) / 2) +
+                  (get_third_max_lev(ch) / 3);
                 loose -= get_max_level(ch->specials.fighting) +
-                  (GetSecMaxLev(ch->specials.fighting) / 2) +
-                  (GetThirdMaxLev(ch->specials.fighting) / 3);
+                  (get_sec_max_lev(ch->specials.fighting) / 2) +
+                  (get_third_max_lev(ch->specials.fighting) / 3);
                 loose *= get_max_level(ch);
               }
             }
@@ -837,11 +837,11 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           /* The escape has succeded. We'll be nice. */
           if (get_max_level(ch) > 3) {
             if (panic || !HasClass(ch, CLASS_WARRIOR)) {
-              loose = get_max_level(ch) + (GetSecMaxLev(ch) / 2) +
-                (GetThirdMaxLev(ch) / 3);
+              loose = get_max_level(ch) + (get_sec_max_lev(ch) / 2) +
+                (get_third_max_lev(ch) / 3);
               loose -= get_max_level(ch->specials.fighting) +
-                (GetSecMaxLev(ch->specials.fighting) / 2) +
-                (GetThirdMaxLev(ch->specials.fighting) / 3);
+                (get_sec_max_lev(ch->specials.fighting) / 2) +
+                (get_third_max_lev(ch->specials.fighting) / 3);
               loose *= get_max_level(ch);
             }
           }

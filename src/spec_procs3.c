@@ -707,7 +707,7 @@ int DeathRoom(int dt_room) {
           if ((IS_SET(room->room_flags, PRIVATE)) ||
               (IS_SET(room->room_flags, TUNNEL)) ||
               (IS_SET(room->room_flags, NO_SUM)) ||
-              (IS_SET(room->room_flags, NO_MAGIC)) || !IsOnPmp(to_room))
+              (IS_SET(room->room_flags, NO_MAGIC)) || !is_on_pmp(to_room))
             room = 0;
         }
       } while (!room);

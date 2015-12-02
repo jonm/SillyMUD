@@ -524,7 +524,7 @@ void spell_teleport(byte UNUSED(level), struct char_data *ch,
     }
   }
 
-  if (!IsOnPmp(victim->in_room)) {
+  if (!is_on_pmp(victim->in_room)) {
     send_to_char("You're on an extra-dimensional plane!\n\r", ch);
     return;
   }
@@ -537,7 +537,7 @@ void spell_teleport(byte UNUSED(level), struct char_data *ch,
       if ((IS_SET(room->room_flags, PRIVATE)) ||
           (IS_SET(room->room_flags, TUNNEL)) ||
           (IS_SET(room->room_flags, NO_SUM)) ||
-          (IS_SET(room->room_flags, NO_MAGIC)) || !IsOnPmp(to_room)) {
+          (IS_SET(room->room_flags, NO_MAGIC)) || !is_on_pmp(to_room)) {
         room = 0;
         try++;
       }
@@ -1708,7 +1708,7 @@ void spell_word_of_recall(byte UNUSED(level), struct char_data *UNUSED(ch),
     return;
   }
 
-  if (!IsOnPmp(victim->in_room)) {
+  if (!is_on_pmp(victim->in_room)) {
     send_to_char("You can't recall!, you're on a different plane!\n\r",
                  victim);
     return;

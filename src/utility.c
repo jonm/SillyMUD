@@ -193,14 +193,14 @@ void Zwrite(FILE * fp, char cmd, int tf, int arg1, int arg2, int arg3,
   }
 }
 
-void RecZwriteObj(FILE * fp, struct obj_data *o) {
+void rec_zwrite_obj(FILE * fp, struct obj_data *o) {
   struct obj_data *t;
 
   if (ITEM_TYPE(o) == ITEM_CONTAINER) {
     for (t = o->contains; t; t = t->next_content) {
       Zwrite(fp, 'P', 1, ObjVnum(t), obj_index[t->item_number].number,
              ObjVnum(o), t->short_description);
-      RecZwriteObj(fp, t);
+      rec_zwrite_obj(fp, t);
     }
   }
   else {
@@ -656,7 +656,7 @@ int getabunch(char *name, char *newname) {
 }
 
 
-int DetermineExp(struct char_data *mob, int exp_flags) {
+int determine_exp(struct char_data *mob, int exp_flags) {
 
   int base;
   int phit;
@@ -940,7 +940,7 @@ for simplicity, 1 exceptional ability is 2 special abilities
 }
 
 /*
-int  DetermineExp( struct char_data *mob, int exp_flags);
+int  determine_exp( struct char_data *mob, int exp_flags);
 char getall(char *name, char *newname);
 int getabunch(char *name, char  *newname);
 */
@@ -1856,14 +1856,14 @@ int HasObject(struct char_data *ch, int ob_num) {
 
   for (j = 0; j < MAX_WEAR; j++)
     if (ch->equipment[j])
-      found += RecCompObjNum(ch->equipment[j], ob_num);
+      found += rec_comp_obj_num(ch->equipment[j], ob_num);
 
   if (found > 0)
     return (TRUE);
 
   /* carrying  */
   for (i = ch->carrying; i; i = i->next_content)
-    found += RecCompObjNum(i, ob_num);
+    found += rec_comp_obj_num(i, ob_num);
 
   if (found > 0)
     return (TRUE);
@@ -1899,7 +1899,7 @@ struct char_data *char_holding(struct obj_data *obj) {
 }
 
 
-int RecCompObjNum(struct obj_data *o, int obj_num) {
+int rec_comp_obj_num(struct obj_data *o, int obj_num) {
 
   int total = 0;
   struct obj_data *i;
@@ -1909,7 +1909,7 @@ int RecCompObjNum(struct obj_data *o, int obj_num) {
 
   if (ITEM_TYPE(o) == ITEM_CONTAINER) {
     for (i = o->contains; i; i = i->next_content)
-      total += RecCompObjNum(i, obj_num);
+      total += rec_comp_obj_num(i, obj_num);
   }
   return (total);
 
@@ -2756,7 +2756,7 @@ void LearnFromMistake(struct char_data *ch, int sknum, int silent, int max) {
   }
 }
 
-int IsOnPmp(int room_nr) {
+int is_on_pmp(int room_nr) {
   extern struct zone_data *zone_table;
 
   if (real_roomp(room_nr)) {

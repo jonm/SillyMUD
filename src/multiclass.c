@@ -181,7 +181,7 @@ int BestMagicClass(struct char_data *ch) {
   return (1);
 }
 
-int GetSecMaxLev(struct char_data *ch) {
+int get_sec_max_lev(struct char_data *ch) {
   return (GetALevel(ch, 2));
 }
 
@@ -213,7 +213,7 @@ int GetALevel(struct char_data *ch, int which) {
   return (1);
 }
 
-int GetThirdMaxLev(struct char_data *ch) {
+int get_third_max_lev(struct char_data *ch) {
   return (GetALevel(ch, 3));
 }
 

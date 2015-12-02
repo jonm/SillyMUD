@@ -262,8 +262,8 @@
 #define IS_PC(ch) (!IS_NPC((ch)) || IS_SET((ch)->specials.act, ACT_POLYSELF))
 
 
-#define GET_AVE_LEVEL(ch) (get_max_level(ch)+(GetSecMaxLev(ch)/2)+\
-	  (GetThirdMaxLev(ch)/3))
+#define GET_AVE_LEVEL(ch) (get_max_level(ch)+(get_sec_max_lev(ch)/2)+\
+	  (get_third_max_lev(ch)/3))
 
 #define GET_ALIAS(ch, num) ((ch)->specials.A_list->com[(num)])
 

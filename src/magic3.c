@@ -2190,11 +2190,11 @@ void spell_teleport_wo_error(byte level, struct char_data *ch,
     return;
   }
 
-  if (!IsOnPmp(location)) {
+  if (!is_on_pmp(location)) {
     send_to_char("That place is on an extra-dimensional plane!\n", ch);
     return;
   }
-  if (!IsOnPmp(ch->in_room)) {
+  if (!is_on_pmp(ch->in_room)) {
     send_to_char("You're on an extra-dimensional plane!\n\r", ch);
     return;
   }
@@ -2274,12 +2274,12 @@ void spell_portal(byte level, struct char_data *ch,
     return;
   }
 
-  if (!IsOnPmp(ch->in_room)) {
+  if (!is_on_pmp(ch->in_room)) {
     send_to_char("You're on an extra-dimensional plane!\n\r", ch);
     return;
   }
 
-  if (!IsOnPmp(tmp_ch->in_room)) {
+  if (!is_on_pmp(tmp_ch->in_room)) {
     send_to_char("They're on an extra-dimensional plane!\n\r", ch);
     return;
   }

@@ -1383,7 +1383,7 @@ struct char_data *read_mobile(int nr, int type) {
       mob->points.gold = tmp;
       fscanf(mob_f, " %ld ", &tmp);
       if (tmp >= 0)
-        GET_EXP(mob) = (DetermineExp(mob, tmp) + mob->points.gold);
+        GET_EXP(mob) = (determine_exp(mob, tmp) + mob->points.gold);
       else
         GET_EXP(mob) = -tmp;
       fscanf(mob_f, " %ld ", &tmp);
@@ -1400,7 +1400,7 @@ struct char_data *read_mobile(int nr, int type) {
          this is where the new exp will come into play
        */
       fscanf(mob_f, " %ld \n", &tmp);
-      GET_EXP(mob) = (DetermineExp(mob, tmp) + mob->points.gold);
+      GET_EXP(mob) = (determine_exp(mob, tmp) + mob->points.gold);
     }
 
     fscanf(mob_f, " %ld ", &tmp);
@@ -3360,7 +3360,7 @@ void SaveTheWorld() {
                 arg3 = j;
                 strcpy(buf, p->equipment[j]->short_description);
                 Zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
-                RecZwriteObj(fp, p->equipment[j]);
+                rec_zwrite_obj(fp, p->equipment[j]);
               }
             }
           }
@@ -3372,7 +3372,7 @@ void SaveTheWorld() {
               arg3 = 0;
               strcpy(buf, o->short_description);
               Zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
-              RecZwriteObj(fp, o);
+              rec_zwrite_obj(fp, o);
             }
           }
         }

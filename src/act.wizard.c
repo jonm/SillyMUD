@@ -413,7 +413,7 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
                 arg3 = j;
                 strcpy(buf, p->equipment[j]->short_description);
                 Zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
-                RecZwriteObj(fp, p->equipment[j]);
+                rec_zwrite_obj(fp, p->equipment[j]);
               }
             }
           }
@@ -425,7 +425,7 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
               arg3 = 0;
               strcpy(buf, o->short_description);
               Zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
-              RecZwriteObj(fp, o);
+              rec_zwrite_obj(fp, o);
             }
           }
         }
@@ -441,7 +441,7 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
           arg3 = i;
           strcpy(buf, o->short_description);
           Zwrite(fp, cmd, 0, arg1, arg2, arg3, buf);
-          RecZwriteObj(fp, o);
+          rec_zwrite_obj(fp, o);
         }
       }
       /*
