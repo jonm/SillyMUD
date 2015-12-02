@@ -545,20 +545,19 @@ void affect_remove( struct char_data *ch, struct affected_type *af )
   affect_total(ch);
 }
 
-
-
 /* Call affect_remove with every spell of spelltype "skill" */
-void affect_from_char( struct char_data *ch, short skill)
-{
-  struct affected_type *hjp;
-  
-  for(hjp = ch->affected; hjp; hjp = hjp->next)
-    if (hjp->type == skill)
-      affect_remove( ch, hjp );
-  
+void affect_from_char( struct char_data *ch, short skill) {
+  struct affected_type *effect, *next_effect;
+
+  effect = ch->affected;
+  while(effect != NULL) {
+    next_effect = effect->next;
+    if (effect->type == skill) {
+      affect_remove(ch, effect);
+    }
+    effect = next_effect;
+  }
 }
-
-
 
 /* Return if a char is affected by a spell (SPELL_XXX), NULL indicates 
    not affected                                                        */
