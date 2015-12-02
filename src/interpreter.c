@@ -1746,7 +1746,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       break;
     }
     if (d->character->term != 0)
-      ScreenOff(d->character);
+      screen_off(d->character);
     SEND_TO_Q(MENU, d);
     STATE(d) = CON_SLCT;
     if (WizLock) {

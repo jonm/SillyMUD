@@ -147,7 +147,7 @@ void MobHunt(struct char_data *ch) {
               else if (IsAnimal(ch)) {
                 act("$n growls.", TRUE, ch, 0, 0, TO_ROOM);
               }
-              MobHit(ch, ch->specials.hunting, 0);
+              mob_hit(ch, ch->specials.hunting, 0);
               return;
             }
           }
@@ -340,7 +340,7 @@ void mobile_activity(struct char_data *ch) {
             else if (IsAnimal(ch)) {
               act("$n growls", TRUE, ch, 0, 0, TO_ROOM);
             }
-            MobHit(ch, tmp_ch, 0);
+            mob_hit(ch, tmp_ch, 0);
           }
           if (Hates(ch, tmp_ch) && Fears(ch, tmp_ch)) {
             RemHated(ch, tmp_ch);
@@ -403,7 +403,7 @@ void mobile_activity(struct char_data *ch) {
             act("$n growls impotently", TRUE, ch, 0, 0, TO_ROOM);
             return;
           }
-          MobHit(ch, tmp_ch, 0);
+          mob_hit(ch, tmp_ch, 0);
           k = 10;
         }
       }
@@ -418,7 +418,7 @@ void mobile_activity(struct char_data *ch) {
             act("$n growls impotently", TRUE, ch, 0, 0, TO_ROOM);
             return;
           }
-          MobHit(ch, tmp_ch, 0);
+          mob_hit(ch, tmp_ch, 0);
           k = 10;
         }
       }
@@ -625,7 +625,7 @@ int GetDamage(struct obj_data *w, struct char_data *ch) {
    */
   iave = ave;
   if (ch->specials.fighting) {
-    iave = PreProcDam(ch->specials.fighting, ITEM_TYPE(w), iave);
+    iave = pre_proc_dam(ch->specials.fighting, ITEM_TYPE(w), iave);
     iave = WeaponCheck(ch, ch->specials.fighting, ITEM_TYPE(w), iave);
   }
   return (iave);
@@ -665,7 +665,7 @@ int GetHandDamage(struct char_data *ch) {
    */
   iave = ave;
   if (ch->specials.fighting) {
-    iave = PreProcDam(ch->specials.fighting, TYPE_HIT, iave);
+    iave = pre_proc_dam(ch->specials.fighting, TYPE_HIT, iave);
     iave = WeaponCheck(ch, ch->specials.fighting, TYPE_HIT, iave);
   }
   return (iave);
@@ -921,7 +921,7 @@ void do_rts(char *UNUSED(arg), struct char_data *ch) {
   ch->commandp2 = 0;
 }
 
-void MobHit(struct char_data *ch, struct char_data *v, int type) {
+void mob_hit(struct char_data *ch, struct char_data *v, int type) {
   int base, percent, learned;
   struct obj_data *o;
 

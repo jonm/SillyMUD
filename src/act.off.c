@@ -481,7 +481,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             found = TRUE;
 
             if (RIDDEN(ch)) {
-              if ((die = MoveOne(RIDDEN(ch), attempt)) == 1) {
+              if ((die = move_one(RIDDEN(ch), attempt)) == 1) {
                 /* The escape has succeded */
                 send_to_char("You flee head over heels.\n\r", ch);
                 break;
@@ -496,7 +496,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
               }
             }
             else {
-              if ((die = MoveOne(ch, attempt)) == 1) {
+              if ((die = move_one(ch, attempt)) == 1) {
                 /* The escape has succeded */
                 send_to_char("You flee head over heels.\n\r", ch);
                 break;
@@ -600,10 +600,10 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             charm = FALSE;
 
           if (RIDDEN(ch)) {
-            die = MoveOne(RIDDEN(ch), attempt);
+            die = move_one(RIDDEN(ch), attempt);
           }
           else {
-            die = MoveOne(ch, attempt);
+            die = move_one(ch, attempt);
           }
 
           if (charm)
@@ -700,7 +700,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
             found = TRUE;
             if (RIDDEN(ch)) {
-              if ((die = MoveOne(RIDDEN(ch), attempt)) == 1) {
+              if ((die = move_one(RIDDEN(ch), attempt)) == 1) {
                 /* The escape has succeded */
                 send_to_char("You flee head over heels.\n\r", ch);
                 break;
@@ -715,7 +715,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
               }
             }
             else {
-              if ((die = MoveOne(ch, attempt)) == 1) {
+              if ((die = move_one(ch, attempt)) == 1) {
                 /* The escape has succeded */
                 send_to_char("You flee head over heels.\n\r", ch);
                 break;
@@ -756,7 +756,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);
 
           if (RIDDEN(ch)) {
-            if ((die = MoveOne(RIDDEN(ch), attempt)) == 1) {
+            if ((die = move_one(RIDDEN(ch), attempt)) == 1) {
               /* The escape has succeded */
               send_to_char("You flee head over heels.\n\r", ch);
               return;
@@ -769,7 +769,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             }
           }
           else {
-            if ((die = MoveOne(ch, attempt)) == 1) {
+            if ((die = move_one(ch, attempt)) == 1) {
               /* The escape has succeded */
               send_to_char("You flee head over heels.\n\r", ch);
               return;
@@ -824,10 +824,10 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           charm = FALSE;
 
         if (RIDDEN(ch)) {
-          die = MoveOne(RIDDEN(ch), attempt);
+          die = move_one(RIDDEN(ch), attempt);
         }
         else {
-          die = MoveOne(ch, attempt);
+          die = move_one(ch, attempt);
         }
 
         if (charm)

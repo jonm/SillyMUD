@@ -83,7 +83,7 @@ int number_of_saved_rooms = 0;
 extern struct descriptor_data *descriptor_list;
 
 /* internal function */
-int VerifyMob(struct char_data *ch);
+int verify_mob(struct char_data *ch);
 
 
 /*************************************************************************
@@ -1590,7 +1590,7 @@ struct char_data *read_mobile(int nr, int type) {
     }
   }
 
-  VerifyMob(mob);               /* check it for acceptability */
+  verify_mob(mob);               /* check it for acceptability */
 
   /* tell the spec_proc (if there is one) that we've been born */
   /*  if(mob_index[nr].func)
@@ -2670,7 +2670,7 @@ int file_to_string(char *name, char *buf) {
 }
 
 
-void ClearDeadBit(struct char_data *ch) {
+void clear_dead_bit(struct char_data *ch) {
 
   FILE *fl;
   struct char_file_u st;
@@ -2842,7 +2842,7 @@ void reset_char(struct char_data *ch) {
   clear out the 'dead' bit on characters
 */
   if (ch->desc)
-    ClearDeadBit(ch);
+    clear_dead_bit(ch);
 
 }
 
@@ -3608,7 +3608,7 @@ void BootFigurines() {
   fclose(f1);
 }
 
-int VerifyMob(struct char_data *ch) {
+int verify_mob(struct char_data *ch) {
   char buf[256];
   /* check to see that the mob falls within certain parameters */
 

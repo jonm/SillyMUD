@@ -1586,7 +1586,7 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
   t_desc = ch->desc;
 
   if (ch->term) {
-    ScreenOff(ch);
+    screen_off(ch);
     ch->term = 0;
   }
 

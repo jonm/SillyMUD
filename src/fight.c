@@ -91,7 +91,7 @@ void appear(struct char_data *ch) {
 
 
 
-int LevelMod(struct char_data *ch, struct char_data *v, int exp) {
+int level_mod(struct char_data *ch, struct char_data *v, int exp) {
   float ratio = 0.0;
   float fexp;
 
@@ -108,12 +108,12 @@ int LevelMod(struct char_data *ch, struct char_data *v, int exp) {
 
 }
 
-int RatioExp(struct char_data *ch, struct char_data *victim, int total) {
+int ratio_exp(struct char_data *ch, struct char_data *victim, int total) {
   if (!IS_SET(victim->specials.act, ACT_AGGRESSIVE) &&
       !IS_SET(victim->specials.act, ACT_META_AGG) &&
       !IS_AFFECTED(victim, AFF_CHARM))
     if (get_max_level(ch) > 20)
-      total = LevelMod(ch, victim, total);
+      total = level_mod(ch, victim, total);
 
   if ((IS_SET(victim->specials.act, ACT_AGGRESSIVE) ||
        IS_SET(victim->specials.act, ACT_META_AGG)) &&
@@ -714,7 +714,7 @@ void group_gain(struct char_data *ch, struct char_data *victim) {
     }
 
 
-    RatioExp(k, victim, total);
+    ratio_exp(k, victim, total);
 
     SPRINTF(buf, "You receive your share of %d experience.", total);
     act(buf, FALSE, k, 0, 0, TO_CHAR);
@@ -737,7 +737,7 @@ void group_gain(struct char_data *ch, struct char_data *victim) {
 
 
       if (IS_PC(f->follower)) {
-        total = RatioExp(f->follower, victim, total);
+        total = ratio_exp(f->follower, victim, total);
         SPRINTF(buf, "You receive your share of %d experience.", total);
         act(buf, FALSE, f->follower, 0, 0, TO_CHAR);
         gain_exp(f->follower, total);
@@ -746,7 +746,7 @@ void group_gain(struct char_data *ch, struct char_data *victim) {
       }
       else {
         if (f->follower->master && IS_AFFECTED(f->follower, AFF_CHARM)) {
-          total = RatioExp(f->follower->master, victim, total);
+          total = ratio_exp(f->follower->master, victim, total);
           if (f->follower->master->in_room == f->follower->in_room) {
             SPRINTF(buf, "You receive $N's share of %d experience.", total);
             act(buf, FALSE, f->follower->master, 0, f->follower, TO_CHAR);
@@ -755,7 +755,7 @@ void group_gain(struct char_data *ch, struct char_data *victim) {
           }
         }
         else {
-          total = RatioExp(f->follower, victim, total);
+          total = ratio_exp(f->follower, victim, total);
           SPRINTF(buf, "You receive your share of %d experience.", total);
           act(buf, FALSE, f->follower, 0, 0, TO_CHAR);
           gain_exp(f->follower, total);
@@ -967,7 +967,7 @@ int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type) {
     dam = MAX((int)(dam / 2), 0);       /* Max 1/2 damage when sanct'd */
   }
 
-  dam = PreProcDam(v, type, dam);
+  dam = pre_proc_dam(v, type, dam);
 
   if (dam > -1) {
     dam = WeaponCheck(ch, v, type, dam);
@@ -982,7 +982,7 @@ int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type) {
      */
     if (GET_HIT(v) - dam < 1) {
       if (IS_AFFECTED(v, AFF_LIFE_PROT)) {
-        BreakLifeSaverObj(v);
+        break_life_saver_obj(v);
         dam = 0;
         GET_HIT(ch) += (int)(GET_MAX_HIT(ch) / 8);
         REMOVE_BIT(ch->specials.affected_by, AFF_LIFE_PROT);
@@ -1738,7 +1738,7 @@ void MissVictim(struct char_data *ch, struct char_data *v, int type,
 }
 
 
-int GetWeaponDam(struct char_data *ch, struct char_data *v,
+int get_weapon_dam(struct char_data *ch, struct char_data *v,
                  struct obj_data *wielded) {
   int dam, j;
   struct obj_data *obj;
@@ -2037,7 +2037,7 @@ void root_hit(struct char_data *ch, struct char_data *victim, int type,
   thaco = CalcThaco(ch);
 
   if (HitOrMiss(ch, victim, thaco)) {
-    if ((dam = GetWeaponDam(ch, victim, wielded)) > 0) {
+    if ((dam = get_weapon_dam(ch, victim, wielded)) > 0) {
       HitVictim(ch, victim, dam, type, w_type, dam_func);
     }
     else {
@@ -2050,7 +2050,7 @@ void root_hit(struct char_data *ch, struct char_data *victim, int type,
 
 }
 
-void MissileHit(struct char_data *ch, struct char_data *victim, int type) {
+void missile_hit(struct char_data *ch, struct char_data *victim, int type) {
   root_hit(ch, victim, type, MissileDamage);
 }
 
@@ -2643,7 +2643,7 @@ struct char_data *FindAnyVictim(struct char_data *ch) {
 
 }
 
-void BreakLifeSaverObj(struct char_data *ch) {
+void break_life_saver_obj(struct char_data *ch) {
 
   int found = FALSE, i, j;
   char buf[200];
@@ -2700,7 +2700,7 @@ int BrittleCheck(struct char_data *ch, int dam) {
   return (FALSE);
 }
 
-int PreProcDam(struct char_data *ch, int type, int dam) {
+int pre_proc_dam(struct char_data *ch, int type, int dam) {
 
   unsigned Our_Bit;
 
@@ -3381,7 +3381,7 @@ void shoot(struct char_data *ch, struct char_data *victim) {
     /*
      **   fire the weapon.
      */
-    MissileHit(ch, victim, TYPE_UNDEFINED);
+    missile_hit(ch, victim, TYPE_UNDEFINED);
 
     GET_HITROLL(ch) -= tohit;
     GET_DAMROLL(ch) -= todam;

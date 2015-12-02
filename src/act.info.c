@@ -3366,7 +3366,7 @@ void do_display(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       return;
     }
     ch->term = 0;
-    ScreenOff(ch);
+    screen_off(ch);
     send_to_char("Display now turned off.\n\r", ch);
     return;
 
@@ -3390,7 +3390,7 @@ void do_display(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   }
 }
 
-void ScreenOff(struct char_data *ch) {
+void screen_off(struct char_data *ch) {
   char buf[255];
 
   SPRINTF(buf, VT_MARGSET, 0, ch->size - 1);
@@ -3414,7 +3414,7 @@ void do_resize(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   ch->size = i;
 
   if (ch->term == VT100) {
-    ScreenOff(ch);
+    screen_off(ch);
     InitScreen(ch);
   }
 

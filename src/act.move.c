@@ -372,7 +372,7 @@ int RawMove(struct char_data *ch, int dir) {
 }
 
 
-int MoveOne(struct char_data *ch, int dir) {
+int move_one(struct char_data *ch, int dir) {
   int was_in;
 
   was_in = ch->in_room;
@@ -476,11 +476,11 @@ void do_move(struct char_data *ch, char *argument, int cmd) {
 
 
   if (!ch->followers && !ch->master) {
-    MoveOne(ch, cmd);
+    move_one(ch, cmd);
   }
   else {
     if (!ch->followers) {
-      MoveOne(ch, cmd);
+      move_one(ch, cmd);
     }
     else {
       MoveGroup(ch, cmd);
@@ -492,7 +492,7 @@ void do_move(struct char_data *ch, char *argument, int cmd) {
 /*
   
   
-  MoveOne and MoveGroup print messages.  Raw move sends success or failure.
+  move_one and MoveGroup print messages.  Raw move sends success or failure.
   
   */
 

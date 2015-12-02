@@ -359,7 +359,7 @@ char *time_print(long et) {
 }
 
 /*
-int SearchForNameFromPos(char *arg, int pos)
+int search_for_name_from_pos(char *arg, int pos)
 {
  register int i;
 

@@ -92,11 +92,11 @@ int TriggerTrap(struct char_data *ch, struct obj_data *i) {
         GET_TRAP_CHARGES(i) -= 1;
         if (IS_SET(GET_TRAP_EFF(i), TRAP_EFF_ROOM)) {
           for (v = real_roomp(ch->in_room)->people; v; v = v->next_in_room) {
-            FindTrapDamage(v, i);
+            find_trap_damage(v, i);
           }
         }
         else {
-          FindTrapDamage(ch, i);
+          find_trap_damage(ch, i);
         }
         return (TRUE);
       }
@@ -105,21 +105,21 @@ int TriggerTrap(struct char_data *ch, struct obj_data *i) {
   return (FALSE);
 }
 
-void FindTrapDamage(struct char_data *v, struct obj_data *i) {
+void find_trap_damage(struct char_data *v, struct obj_data *i) {
 /*
    trap types < 0 are special
 */
 
   if (GET_TRAP_DAM_TYPE(i) >= 0) {
-    TrapDamage(v, GET_TRAP_DAM_TYPE(i), 3 * GET_TRAP_LEV(i), i);
+    trap_damage(v, GET_TRAP_DAM_TYPE(i), 3 * GET_TRAP_LEV(i), i);
   }
   else {
-    TrapDamage(v, GET_TRAP_DAM_TYPE(i), 0, i);
+    trap_damage(v, GET_TRAP_DAM_TYPE(i), 0, i);
   }
 
 }
 
-void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t) {
+void trap_damage(struct char_data *v, int damtype, int amnt, struct obj_data *t) {
   char buf[132];
 
   amnt = SkipImmortals(v, amnt);
@@ -130,7 +130,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t) 
   if (IS_AFFECTED(v, AFF_SANCTUARY))
     amnt = MAX((int)(amnt / 2), 0);     /* Max 1/2 damage when sanct'd */
 
-  amnt = PreProcDam(v, damtype, amnt);
+  amnt = pre_proc_dam(v, damtype, amnt);
 
   if (saves_spell(v, SAVING_PETRI))
     amnt = MAX((int)(amnt / 2), 0);
@@ -143,7 +143,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t) 
 
   update_pos(v);
 
-  TrapDam(v, damtype, amnt, t);
+  trap_dam(v, damtype, amnt, t);
 
   InformMess(v);
   if (GET_POS(v) == POSITION_DEAD) {
@@ -158,7 +158,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t) 
   }
 }
 
-void TrapDam(struct char_data *v, int damtype, int amnt, struct obj_data *t) {
+void trap_dam(struct char_data *v, int damtype, int amnt, struct obj_data *t) {
 
   char desc[20];
   char buf[132];

@@ -14,7 +14,7 @@
 
 #include "protos.h"
 
-void SmartStrCpy(char *s1, const char *s2) {    /* ignore trailing spaces and \n */
+void smart_str_cpy(char *s1, const char *s2) {    /* ignore trailing spaces and \n */
   int i;
 
   i = strlen(s2);
@@ -55,7 +55,7 @@ void StringHeap(char *string, struct StrHeap *Heap) {
       Heap->str = (struct StrHeapList *)malloc(sizeof(struct StrHeapList));
     }
     Heap->str[Heap->uniq].string = (char *)malloc(strlen(string) + 1);
-    SmartStrCpy(Heap->str[Heap->uniq].string, string);
+    smart_str_cpy(Heap->str[Heap->uniq].string, string);
     Heap->str[Heap->uniq].total = 1;
     Heap->uniq++;
   }

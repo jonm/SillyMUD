@@ -25,7 +25,7 @@
 
 /* From Heap.c */
 
-void SmartStrCpy(char *s1, const char *s2);
+void smart_str_cpy(char *s1, const char *s2);
 void StringHeap(char *string, struct StrHeap *Heap);
 struct StrHeap *InitHeap();
 void DisplayStringHeap(struct StrHeap *Heap, struct char_data *ch, int type,
@@ -67,10 +67,10 @@ int CheckForInsideTrap(struct char_data *ch, struct obj_data *i);
 int CheckForAnyTrap(struct char_data *ch, struct obj_data *i);
 int CheckForGetTrap(struct char_data *ch, struct obj_data *i);
 int TriggerTrap(struct char_data *ch, struct obj_data *i);
-void FindTrapDamage(struct char_data *v, struct obj_data *i);
-void TrapDamage(struct char_data *v, int damtype, int amnt,
+void find_trap_damage(struct char_data *v, struct obj_data *i);
+void trap_damage(struct char_data *v, int damtype, int amnt,
                 struct obj_data *t);
-void TrapDam(struct char_data *v, int damtype, int amnt, struct obj_data *t);
+void trap_dam(struct char_data *v, int damtype, int amnt, struct obj_data *t);
 void TrapTeleport(struct char_data *v);
 void TrapSleep(struct char_data *v);
 void InformMess(struct char_data *v);
@@ -111,7 +111,7 @@ void half_orc_garble(char *buf, char *buf2, struct char_data *ch);
 void ogre_garble(char *buf, char *buf2, struct char_data *ch);
 void do_fly(struct char_data *ch, char *argument, int cmd);
 void do_walk(struct char_data *ch, char *argument, int cmd);
-int MoveOne(struct char_data *ch, int dir);
+int move_one(struct char_data *ch, int dir);
 void DisplayOneMove(struct char_data *ch, int dir, int was_in);
 void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total);
 void DisplayMove(struct char_data *ch, int dir, int was_in, int total);
@@ -127,7 +127,7 @@ void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp,
 /* From act.info.c */
 
 void do_resize(struct char_data *ch, char *arg, int cmd);
-void ScreenOff(struct char_data *ch);
+void screen_off(struct char_data *ch);
 void do_display(struct char_data *ch, char *arg, int cmd);
 int singular(struct obj_data *o);
 void argument_split_2(char *argument, char *first_arg, char *second_arg);
@@ -431,7 +431,7 @@ char *fread_string(FILE * fl);
 void free_char(struct char_data *ch);
 void free_obj(struct obj_data *obj);
 int file_to_string(char *name, char *buf);
-void ClearDeadBit(struct char_data *ch);
+void clear_dead_bit(struct char_data *ch);
 void clean_playerfile();
 void reset_char(struct char_data *ch);
 void clear_char(struct char_data *ch);
@@ -457,8 +457,8 @@ int CheckKillFile(int virtual);
 /* From fight.c */
 
 void appear(struct char_data *ch);
-int LevelMod(struct char_data *ch, struct char_data *v, int exp);
-int RatioExp(struct char_data *ch, struct char_data *victim, int total);
+int level_mod(struct char_data *ch, struct char_data *v, int exp);
+int ratio_exp(struct char_data *ch, struct char_data *victim, int total);
 void load_messages();
 void update_pos(struct char_data *victim);
 int check_peaceful(struct char_data *ch, char *msg);
@@ -493,21 +493,21 @@ int CalcThaco(struct char_data *ch);
 int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco);
 void MissVictim(struct char_data *ch, struct char_data *v, int type,
                 int w_type, int (*dam_func) ());
-int GetWeaponDam(struct char_data *ch, struct char_data *v,
+int get_weapon_dam(struct char_data *ch, struct char_data *v,
                  struct obj_data *wielded);
 int GetBackstabMult(struct char_data *ch, struct char_data *v);
 void HitVictim(struct char_data *ch, struct char_data *v, int dam,
                int type, int w_type, int (*dam_func) ());
 void root_hit(struct char_data *ch, struct char_data *victim, int type,
               int (*dam_func) ());
-void MissileHit(struct char_data *ch, struct char_data *victim, int type);
+void missile_hit(struct char_data *ch, struct char_data *victim, int type);
 void hit(struct char_data *ch, struct char_data *victim, int type);
 void perform_violence(void);
 struct char_data *FindVictim(struct char_data *ch);
 struct char_data *FindAnyVictim(struct char_data *ch);
-void BreakLifeSaverObj(struct char_data *ch);
+void break_life_saver_obj(struct char_data *ch);
 int BrittleCheck(struct char_data *ch, int dam);
-int PreProcDam(struct char_data *ch, int type, int dam);
+int pre_proc_dam(struct char_data *ch, int type, int dam);
 int DamageOneItem(struct char_data *ch, int dam_type, struct obj_data *obj);
 void MakeScrap(struct char_data *ch, struct obj_data *obj);
 void DamageAllStuff(struct char_data *ch, int dam_type);
@@ -1046,7 +1046,7 @@ void do_act(char *arg, struct char_data *ch);
 void do_jmp(char *arg, struct char_data *ch);
 void do_jsr(char *arg, struct char_data *ch);
 void do_rts(char *arg, struct char_data *ch);
-void MobHit(struct char_data *, struct char_data *, int);
+void mob_hit(struct char_data *, struct char_data *, int);
 
 
 /* From modify.c */
@@ -2079,7 +2079,7 @@ void ChangeRoomName(struct room_data *rp, struct char_data *ch, char *arg,
                     int type);
 void ChangeRoomType(struct room_data *rp, struct char_data *ch, char *arg,
                     int type);
-void ChangeExitDir(struct room_data *rp, struct char_data *ch, char *arg,
+void change_exit_dir(struct room_data *rp, struct char_data *ch, char *arg,
                    int type);
 void ChangeExitNumber(struct room_data *rp, struct char_data *ch, char *arg,
                       int type);
