@@ -53,7 +53,7 @@ int ghost(struct char_data *ch, int cmd, char *UNUSED(arg),
   if (ch->specials.fighting && (ch->specials.fighting->in_room == ch->in_room)) {
     act("$n touches $N!", 1, ch, 0, ch->specials.fighting, TO_NOTVICT);
     act("$n touches you!", 1, ch, 0, ch->specials.fighting, TO_VICT);
-    cast_energy_drain(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL,
+    cast_energy_drain(get_max_level(ch), ch, "", SPELL_TYPE_SPELL,
                       ch->specials.fighting, 0);
 
     return TRUE;
@@ -71,8 +71,8 @@ int druid_protector(struct char_data *ch, int cmd, char *UNUSED(arg),
         b = 0;
         send_to_char("Basil Great Druid looks at you\n\r", ch);
         if ((ch->in_room == Bandits_Path) && (cmd == 1)) {
-          if ((BASIL_GATEKEEPER_MAX_LEVEL < GetMaxLevel(ch)) &&
-              (GetMaxLevel(ch) < LOW_IMMORTAL)) {
+          if ((BASIL_GATEKEEPER_MAX_LEVEL < get_max_level(ch)) &&
+              (get_max_level(ch) < LOW_IMMORTAL)) {
             if (!check_soundproof(ch)) {
               act("Basil the Great Druid tells you 'Begone Unbelievers!'",
                   TRUE, ch, 0, 0, TO_CHAR);
@@ -209,16 +209,16 @@ int Magic_Fountain(struct char_data *ch, int cmd, char *arg,
       cast_faerie_fire(Fountain_Level, ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     case 23:
-      cast_flamestrike(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_flamestrike(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     case 24:
-      cast_burning_hands(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_burning_hands(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     case 25:
-      cast_acid_blast(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_acid_blast(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     case 26:
-      cast_energy_drain(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_energy_drain(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
 
       /* And of course nothing */
@@ -247,7 +247,7 @@ int DruidAttackSpells(struct char_data *ch, struct char_data *vict, int level) {
   case 6:
   case 7:
     act("$n utters the words 'yow!'", 1, ch, 0, 0, TO_ROOM);
-    cast_cause_light(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+    cast_cause_light(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
     return (FALSE);
     break;
   case 8:
@@ -258,12 +258,12 @@ int DruidAttackSpells(struct char_data *ch, struct char_data *vict, int level) {
   case 13:
     if (!IS_SET(vict->M_immune, AFF_POISON) && !IS_AFFECTED(vict, AFF_POISON)) {
       act("$n utters the words 'yuk'", 1, ch, 0, 0, TO_ROOM);
-      cast_poison(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_poison(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (FALSE);
     }
     else {
       act("$n utters the words 'ouch'", 1, ch, 0, 0, TO_ROOM);
-      cast_cause_serious(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_cause_serious(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (FALSE);
     }
     break;
@@ -276,7 +276,7 @@ int DruidAttackSpells(struct char_data *ch, struct char_data *vict, int level) {
   case 20:
   case 21:
     act("$n utters the words 'OUCH!'", 1, ch, 0, 0, TO_ROOM);
-    cast_cause_critic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+    cast_cause_critic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
     return (FALSE);
   case 22:
   case 23:
@@ -303,18 +303,18 @@ int DruidAttackSpells(struct char_data *ch, struct char_data *vict, int level) {
   case 44:
     if (!IS_SET(vict->M_immune, IMM_FIRE)) {
       act("$n utters the words 'fwoosh'", 1, ch, 0, 0, TO_ROOM);
-      cast_firestorm(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_firestorm(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (FALSE);
     }
     else {
       act("$n utters the words 'OUCH!'", 1, ch, 0, 0, TO_ROOM);
-      cast_cause_critic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_cause_critic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (FALSE);
     }
     break;
   default:
     act("$n utters the words 'kazappapapapa'", 1, ch, 0, 0, TO_ROOM);
-    cast_chain_lightn(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+    cast_chain_lightn(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
     return (FALSE);
     break;
   }
@@ -376,16 +376,16 @@ int Summoner(struct char_data *ch, int cmd, char *UNUSED(arg),
     if (targ) {
       act("$n utters the words 'Your ass is mine!'.", 1, ch, 0, 0, TO_ROOM);
       if (EasySummon == 1) {
-        spell_summon(GetMaxLevel(ch), ch, targ, 0);
+        spell_summon(get_max_level(ch), ch, targ, 0);
       }
       else {
-        if (GetMaxLevel(ch) < 32) {
+        if (get_max_level(ch) < 32) {
           if (number(0, 10)) {
             do_say(ch, "Curses!  Foiled again!\n\r", 0);
             return (0);
           }
         }
-        spell_astral_walk(GetMaxLevel(ch), ch, targ, 0);
+        spell_astral_walk(get_max_level(ch), ch, targ, 0);
       }
       if (targ->in_room == ch->in_room) {
         if (NumCharmedFollowersInRoom(ch) > 0) {
@@ -481,7 +481,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
   if (!ch->specials.fighting && !IS_PC(ch)) {
     SET_BIT(ch->player.class, CLASS_MAGIC_USER);
-    if (GetMaxLevel(ch) < 25)
+    if (get_max_level(ch) < 25)
       return FALSE;
     else {
       if (!ch->desc) {
@@ -491,7 +491,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           if (NumCharmedFollowersInRoom(ch) < 5
               && IS_SET(ch->hatefield, HATE_CHAR)) {
             act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
-            cast_mon_sum7(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+            cast_mon_sum7(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
             do_order(ch, "followers guard on", 0);
             return (TRUE);
           }
@@ -534,12 +534,12 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   if (!vict)
     return (FALSE);
 
-  lspell = number(0, GetMaxLevel(ch));  /* gen number from 0 to level */
+  lspell = number(0, get_max_level(ch));  /* gen number from 0 to level */
   if (!IS_PC(ch)) {
-    lspell += GetMaxLevel(ch) / 5;      /* weight it towards the upper levels of 
+    lspell += get_max_level(ch) / 5;      /* weight it towards the upper levels of 
                                            the mage's range */
   }
-  lspell = MIN(GetMaxLevel(ch), lspell);
+  lspell = MIN(get_max_level(ch), lspell);
 
   /*
    **  check your own problems:
@@ -551,7 +551,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   if (IS_AFFECTED(ch, AFF_BLIND) && (lspell > 15)) {
     act("$n utters the words 'Let me see the light!'.",
         TRUE, ch, 0, 0, TO_ROOM);
-    cast_cure_blind(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+    cast_cure_blind(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
     return TRUE;
   }
 
@@ -559,19 +559,19 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     return (FALSE);
 
   if ((IS_AFFECTED(vict, AFF_SANCTUARY)) && (lspell > 10) &&
-      (GetMaxLevel(ch) > (GetMaxLevel(vict)))) {
+      (get_max_level(ch) > (get_max_level(vict)))) {
     act("$n utters the words 'Use MagicAway Instant Magic Remover'.",
         1, ch, 0, 0, TO_ROOM);
-    cast_dispel_magic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+    cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
     return (FALSE);
 
   }
 
   if ((IS_AFFECTED(vict, AFF_FIRESHIELD)) && (lspell > 10) &&
-      (GetMaxLevel(ch) > (GetMaxLevel(vict)))) {
+      (get_max_level(ch) > (get_max_level(vict)))) {
     act("$n utters the words 'Use MagicAway Instant Magic Remover'.",
         1, ch, 0, 0, TO_ROOM);
-    cast_dispel_magic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+    cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
     return (FALSE);
 
   }
@@ -585,10 +585,10 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
       vict = FindMobDiffZoneSameRace(ch);
       if (vict) {
-        spell_teleport_wo_error(GetMaxLevel(ch), ch, vict, 0);
+        spell_teleport_wo_error(get_max_level(ch), ch, vict, 0);
         return (TRUE);
       }
-      cast_teleport(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_teleport(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       return (FALSE);
     }
   }
@@ -597,7 +597,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     if ((GET_HIT(ch) < (GET_MAX_HIT(ch) / 4)) && (lspell > 15) &&
         (!IS_SET(ch->specials.act, ACT_AGGRESSIVE))) {
       act("$n utters the words 'Woah! I'm outta here!'", 1, ch, 0, 0, TO_ROOM);
-      cast_teleport(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_teleport(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       return (FALSE);
     }
   }
@@ -605,7 +605,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
   if (GET_HIT(ch) > (GET_MAX_HIT(ch) / 2) &&
       !IS_SET(ch->specials.act, ACT_AGGRESSIVE) &&
-      GetMaxLevel(vict) < GetMaxLevel(ch) && (number(0, 1))) {
+      get_max_level(vict) < get_max_level(ch) && (number(0, 1))) {
 
     /*
      **  Non-damaging case:
@@ -613,31 +613,31 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
     if (((lspell > 8) && (lspell < 50)) && (number(0, 6) == 0)) {
       act("$n utters the words 'Icky Sticky!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_web(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_web(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return TRUE;
     }
 
     if (((lspell > 5) && (lspell < 10)) && (number(0, 6) == 0)) {
       act("$n utters the words 'You wimp'.", 1, ch, 0, 0, TO_ROOM);
-      cast_weakness(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_weakness(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return TRUE;
     }
 
     if (((lspell > 5) && (lspell < 10)) && (number(0, 7) == 0)) {
       act("$n utters the words 'Bippety boppity Boom'.", 1, ch, 0, 0, TO_ROOM);
-      cast_armor(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_armor(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       return TRUE;
     }
 
     if (((lspell > 12) && (lspell < 20)) && (number(0, 7) == 0)) {
       act("$n utters the words '&#%^^@%*#'.", 1, ch, 0, 0, TO_ROOM);
-      cast_curse(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_curse(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return TRUE;
     }
 
     if (((lspell > 10) && (lspell < 20)) && (number(0, 5) == 0)) {
       act("$n utters the words 'yabba dabba do'.", 1, ch, 0, 0, TO_ROOM);
-      cast_blindness(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_blindness(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return TRUE;
     }
 
@@ -645,7 +645,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         (vict->specials.fighting != ch)) {
       act("$n utters the words 'You are getting sleepy'.",
           1, ch, 0, 0, TO_ROOM);
-      cast_charm_monster(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_charm_monster(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       if (IS_AFFECTED(vict, AFF_CHARM)) {
         char buf[200];
 
@@ -676,7 +676,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 9:
     case 10:
       act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_mon_sum1(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_mon_sum1(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       do_order(ch, "followers guard on", 0);
       return (TRUE);
       break;
@@ -684,14 +684,14 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 12:
     case 13:
       act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_mon_sum2(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_mon_sum2(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       do_order(ch, "followers guard on", 0);
       return (TRUE);
       break;
     case 14:
     case 15:
       act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_mon_sum3(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_mon_sum3(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       do_order(ch, "followers guard on", 0);
       return (TRUE);
       break;
@@ -699,7 +699,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 17:
     case 18:
       act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_mon_sum4(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_mon_sum4(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       do_order(ch, "followers guard on", 0);
       return (TRUE);
       break;
@@ -708,7 +708,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 21:
     case 22:
       act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_mon_sum5(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_mon_sum5(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       do_order(ch, "followers guard on", 0);
       return (TRUE);
       break;
@@ -716,14 +716,14 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 24:
     case 25:
       act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_mon_sum6(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_mon_sum6(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       do_order(ch, "followers guard on", 0);
       return (TRUE);
       break;
     case 26:
     default:
       act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_mon_sum7(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_mon_sum7(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       do_order(ch, "followers guard on", 0);
       return (TRUE);
       break;
@@ -739,50 +739,50 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 1:
     case 2:
       act("$n utters the words 'bang! bang! pow!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_magic_missile(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_magic_missile(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 3:
     case 4:
     case 5:
       act("$n utters the words 'ZZZZzzzzzzTTTT'.", 1, ch, 0, 0, TO_ROOM);
-      cast_shocking_grasp(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_shocking_grasp(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 6:
     case 7:
     case 8:
       if (ch->attackers <= 2) {
         act("$n utters the words 'Icky Sticky!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_web(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_web(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         break;
       }
       else {
         act("$n utters the words 'Fwoosh!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_burning_hands(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_burning_hands(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         break;
       }
     case 9:
     case 10:
       act("$n utters the words 'SPOOGE!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_acid_blast(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_acid_blast(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 11:
     case 12:
     case 13:
       if (ch->attackers <= 2) {
         act("$n utters the words 'KAZAP!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_lightning_bolt(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict,
+        cast_lightning_bolt(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
                             0);
         break;
       }
       else {
         act("$n utters the words 'Ice Ice Baby!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_ice_storm(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_ice_storm(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         break;
       }
     case 14:
     case 15:
       act("$n utters the words 'Ciao!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_teleport(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_teleport(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 16:
     case 17:
@@ -800,12 +800,12 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 29:
       if (ch->attackers <= 2) {
         act("$n utters the words 'Look! A rainbow!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_colour_spray(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_colour_spray(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         break;
       }
       else {
         act("$n utters the words 'Get the sensation!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_cone_of_cold(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_cone_of_cold(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         break;
       }
     case 30:
@@ -817,7 +817,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 36:
     case 37:
       act("$n utters the words 'Hasta la vista, Baby'.", 1, ch, 0, 0, TO_ROOM);
-      cast_fireball(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_fireball(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 38:
     case 39:
@@ -825,19 +825,19 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     case 41:
       if (IS_EVIL(ch)) {
         act("$n utters the words 'slllrrrrrrpppp'.", 1, ch, 0, 0, TO_ROOM);
-        cast_energy_drain(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_energy_drain(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         break;
       }
     default:
       if (ch->attackers <= 2) {
         act("$n utters the words 'frag'.", 1, ch, 0, 0, TO_ROOM);
-        cast_meteor_swarm(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_meteor_swarm(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         break;
       }
       else {
         act("$n utters the words 'Hasta la vista, Baby'.", 1, ch, 0, 0,
             TO_ROOM);
-        cast_fireball(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_fireball(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         break;
       }
     }
@@ -870,23 +870,23 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (!ch->specials.fighting) {
     if (GET_HIT(ch) < GET_MAX_HIT(ch) - 10) {
-      if ((lspell = GetMaxLevel(ch)) >= 20) {
+      if ((lspell = get_max_level(ch)) >= 20) {
         act("$n utters the words 'What a Rush!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_heal(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+        cast_heal(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       }
       else if (lspell > 12) {
         act("$n utters the words 'Woah! I feel GOOD! Heh.'.", 1, ch, 0, 0,
             TO_ROOM);
-        cast_cure_critic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+        cast_cure_critic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       }
       else if (lspell > 8) {
         act("$n utters the words 'I feel much better now!'.", 1, ch, 0, 0,
             TO_ROOM);
-        cast_cure_serious(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+        cast_cure_serious(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       }
       else {
         act("$n utters the words 'I feel good!'.", 1, ch, 0, 0, TO_ROOM);
-        cast_cure_light(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+        cast_cure_light(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       }
     }
   }
@@ -907,9 +907,9 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
      gen number from 0 to level 
    */
 
-  lspell = number(0, GetMaxLevel(ch));
-  lspell += GetMaxLevel(ch) / 5;
-  lspell = MIN(GetMaxLevel(ch), lspell);
+  lspell = number(0, get_max_level(ch));
+  lspell += get_max_level(ch) / 5;
+  lspell = MIN(get_max_level(ch), lspell);
 
   if (lspell < 1)
     lspell = 1;
@@ -920,10 +920,10 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
     act("$n utters the words 'Woah! I'm outta here!'", 1, ch, 0, 0, TO_ROOM);
     vict = FindMobDiffZoneSameRace(ch);
     if (vict) {
-      cast_astral_walk(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_astral_walk(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (TRUE);
     }
-    cast_teleport(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+    cast_teleport(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
     return (FALSE);
   }
 
@@ -947,7 +947,7 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
         (number(0, 5) == 0)) {
       act("$n whistles.", 1, ch, 0, 0, TO_ROOM);
       act("$n utters the words 'Here Lightning!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_call_lightning(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_call_lightning(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (TRUE);
     }
 
@@ -956,30 +956,30 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
     case 2:
     case 3:
       act("$n utters the words 'Moo ha ha!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_cause_light(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_cause_light(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 4:
     case 5:
     case 6:
       act("$n utters the words 'Hocus Pocus!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_blindness(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_blindness(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 7:
       act("$n utters the words 'Va-Voom!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_dispel_magic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 8:
       act("$n utters the words 'Urgle Blurg'.", 1, ch, 0, 0, TO_ROOM);
-      cast_poison(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_poison(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 9:
     case 10:
       act("$n utters the words 'Take That!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_cause_critic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_cause_critic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 11:
       act("$n utters the words 'Burn Baby Burn'.", 1, ch, 0, 0, TO_ROOM);
-      cast_flamestrike(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_flamestrike(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     case 13:
     case 14:
@@ -988,17 +988,17 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
       {
         if (!IS_SET(vict->M_immune, IMM_FIRE)) {
           act("$n utters the words 'Burn Baby Burn'.", 1, ch, 0, 0, TO_ROOM);
-          cast_flamestrike(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+          cast_flamestrike(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         }
         else if (IS_AFFECTED(vict, AFF_SANCTUARY) &&
-                 (GetMaxLevel(ch) > GetMaxLevel(vict))) {
+                 (get_max_level(ch) > get_max_level(vict))) {
           act("$n utters the words 'Va-Voom!'.", 1, ch, 0, 0, TO_ROOM);
-          cast_dispel_magic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict,
+          cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
                             0);
         }
         else {
           act("$n utters the words 'Take That!'.", 1, ch, 0, 0, TO_ROOM);
-          cast_cause_critic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict,
+          cast_cause_critic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
                             0);
         }
         break;
@@ -1009,7 +1009,7 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
     default:
       act("$n utters the words 'Hurts, doesn't it\?\?'.", 1, ch, 0, 0,
           TO_ROOM);
-      cast_harm(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_harm(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       break;
     }
 
@@ -1022,14 +1022,14 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
     if (IS_AFFECTED(ch, AFF_BLIND) && (lspell >= 4) & (number(0, 3) == 0)) {
       act("$n utters the words 'Praise <Deity Name>, I can SEE!'.", 1, ch, 0,
           0, TO_ROOM);
-      cast_cure_blind(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_cure_blind(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       return (TRUE);
     }
 
     if (IS_AFFECTED(ch, AFF_CURSE) && (lspell >= 6) && (number(0, 6) == 0)) {
       act("$n utters the words 'I'm rubber, you're glue.", 1, ch, 0, 0,
           TO_ROOM);
-      cast_remove_curse(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_remove_curse(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       return (TRUE);
     }
 
@@ -1037,7 +1037,7 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
       act
         ("$n utters the words 'Praise <Deity Name> I don't feel sick no more!'.",
          1, ch, 0, 0, TO_ROOM);
-      cast_remove_poison(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_remove_poison(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       return (TRUE);
     }
 
@@ -1046,13 +1046,13 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
     case 1:
     case 2:
       act("$n utters the words 'Abrazak'.", 1, ch, 0, 0, TO_ROOM);
-      cast_armor(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_armor(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     case 3:
     case 4:
     case 5:
       act("$n utters the words 'I feel good!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_cure_light(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_cure_light(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     case 6:
     case 7:
@@ -1061,7 +1061,7 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
     case 10:
       act("$n utters the words 'I feel much better now!'.", 1, ch, 0, 0,
           TO_ROOM);
-      cast_cure_serious(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_cure_serious(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     case 11:
     case 12:
@@ -1071,16 +1071,16 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
     case 16:
       act("$n utters the words 'Woah! I feel GOOD! Heh.'.", 1, ch, 0, 0,
           TO_ROOM);
-      cast_cure_critic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_cure_critic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     case 17:
     case 18:                   /* heal */
       act("$n utters the words 'What a Rush!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_heal(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_heal(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
     default:
       act("$n utters the words 'Oooh, pretty!'.", 1, ch, 0, 0, TO_ROOM);
-      cast_sanctuary(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_sanctuary(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       break;
 
     }
@@ -1183,7 +1183,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
         send_to_char("'I do not know of this skill.'\n\r", ch);
         return (TRUE);
       }
-      charge = GetMaxLevel(ch) * 100;
+      charge = get_max_level(ch) * 100;
 
       if (DoIHateYou(ch))
         charge *= 2;
@@ -1357,7 +1357,7 @@ int RepairGuy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         cost /= obj->obj_flags.value[1];
         /* then cost = difference between value[0] and [1] */
         cost *= (obj->obj_flags.value[1] - obj->obj_flags.value[0]);
-        if (GetMaxLevel(vict) > 25)     /* super repair guy */
+        if (get_max_level(vict) > 25)     /* super repair guy */
           cost *= 2;
         if (DoIHateYou(ch))
           cost *= 2;
@@ -1390,7 +1390,7 @@ int RepairGuy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           /* fix the armor */
           act("$N fiddles with $p.", TRUE, ch, obj, vict, TO_ROOM);
           act("$N fiddles with $p.", TRUE, ch, obj, vict, TO_CHAR);
-          if (GetMaxLevel(vict) > 25) {
+          if (get_max_level(vict) > 25) {
             obj->obj_flags.value[0] = obj->obj_flags.value[1];
           }
           else {
@@ -1423,7 +1423,7 @@ int RepairGuy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       }
     }
     else {
-      if (GetMaxLevel(vict) < 25 || (ITEM_TYPE(obj) != ITEM_WEAPON)) {
+      if (get_max_level(vict) < 25 || (ITEM_TYPE(obj) != ITEM_WEAPON)) {
         if (check_soundproof(ch)) {
           act("$N shakes $S head.\n\r", TRUE, ch, 0, vict, TO_ROOM);
           act("$N shakes $S head.\n\r", TRUE, ch, 0, vict, TO_CHAR);
@@ -1519,7 +1519,7 @@ int Samah(struct char_data *ch, int cmd, char *arg,
   if (cmd) {
 
     if (GET_RACE(ch) == RACE_SARTAN || GET_RACE(ch) == RACE_PATRYN ||
-        GetMaxLevel(ch) == LOKI)
+        get_max_level(ch) == LOKI)
       return (FALSE);
 
     Sammy = (struct char_data *)FindMobInRoomWithFunction(ch->in_room, Samah);
@@ -2288,7 +2288,7 @@ void GreetPeople(struct char_data *ch) {
     for (tch = real_roomp(ch->in_room)->people; tch; tch = tch->next_in_room) {
       if (!IS_NPC(tch) && !number(0, 8)) {
         if (tch) {
-          if (GetMaxLevel(tch) > GetMaxLevel(ch)) {
+          if (get_max_level(tch) > get_max_level(ch)) {
             Submit(ch, tch);
             SayHello(ch, tch);
             SET_BIT(ch->specials.act, ACT_GREET);
@@ -2384,7 +2384,7 @@ int GenericCityguardHateUndead(struct char_data *ch, int cmd, char *arg,
         SpaceForSkills(ch);
 
       if (!ch->skills[SKILL_RESCUE].learned)
-        ch->skills[SKILL_RESCUE].learned = GetMaxLevel(ch) * 3 + 30;
+        ch->skills[SKILL_RESCUE].learned = get_max_level(ch) * 3 + 30;
       do_rescue(ch, GET_NAME(evil->specials.fighting), 0);
     }
   }
@@ -2526,7 +2526,7 @@ void breath_weapon(struct char_data *ch, struct char_data *target,
     }
     else {
       victim = 1;
-      cast_fear(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, tmp, 0);
+      cast_fear(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, tmp, 0);
     }
   }
 
@@ -2540,7 +2540,7 @@ void breath_weapon(struct char_data *ch, struct char_data *target,
                                                                                            someone fled, I guess */
         )
         continue;
-      func(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, scan->ch, 0);
+      func(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, scan->ch, 0);
     }
     GET_MANA(ch) -= mana_cost;
   }
@@ -2668,16 +2668,16 @@ void DruidHeal(struct char_data *ch, int level) {
   if (level > 13) {
     act("$n utters the words 'Woah! I feel GOOD! Heh.'.",
         1, ch, 0, 0, TO_ROOM);
-    cast_cure_critic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+    cast_cure_critic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
   }
   else if (level > 8) {
     act("$n utters the words 'I feel much better now!'.",
         1, ch, 0, 0, TO_ROOM);
-    cast_cure_serious(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+    cast_cure_serious(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
   }
   else {
     act("$n utters the words 'I feel good!'.", 1, ch, 0, 0, TO_ROOM);
-    cast_cure_light(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+    cast_cure_light(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
   }
 }
 
@@ -2687,8 +2687,8 @@ void DruidTree(struct char_data *ch) {
   act("$n takes on the form and shape of a huge tree!", FALSE, ch, 0, 0,
       TO_ROOM);
   GET_RACE(ch) = RACE_TREE;
-  ch->points.max_hit = GetMaxLevel(ch) * 10;
-  ch->points.hit += GetMaxLevel(ch) * 5;
+  ch->points.max_hit = get_max_level(ch) * 10;
+  ch->points.hit += get_max_level(ch) * 5;
   free(ch->player.long_descr);
   free(ch->player.short_descr);
   ch->player.short_descr = (char *)strdup("The druid-tree");
@@ -2750,25 +2750,25 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (TRUE);
   }
 
-  if (number(0, 101) > GetMaxLevel(ch) + 40)    /* they 'failed' */
+  if (number(0, 101) > get_max_level(ch) + 40)    /* they 'failed' */
     return (TRUE);
 
   if (!ch->specials.fighting) {
-    level = number(1, GetMaxLevel(ch));
+    level = number(1, get_max_level(ch));
     if (GET_HIT(ch) < GET_MAX_HIT(ch)) {
       DruidHeal(ch, level);
       return (TRUE);
     }
     if (!ch->equipment[WIELD]) {
-      if (GetMaxLevel(ch) > 4) {
+      if (get_max_level(ch) > 4) {
         act("$n utters the words 'gimme a light'", 1, ch, 0, 0, TO_ROOM);
-        cast_flame_blade(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+        cast_flame_blade(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       }
       return (TRUE);
     }
     if (!affected_by_spell(ch, SPELL_BARKSKIN) && number(0, 1)) {
       act("$n utters the words 'woof woof'", 1, ch, 0, 0, TO_ROOM);
-      cast_barkskin(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+      cast_barkskin(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
       return (TRUE);
     }
 
@@ -2793,38 +2793,38 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
     if (!vict)
       return (FALSE);
 
-    level = number(1, GetMaxLevel(ch));
+    level = number(1, get_max_level(ch));
 
     if ((GET_HIT(ch) < GET_MAX_HIT(ch) / 2) && number(0, 1)) {
       DruidHeal(ch, level);
       return (TRUE);
     }
 
-    if (GetMaxLevel(ch) >= 20 && (!IS_AFFECTED(vict, AFF_SILENCE)) &&
+    if (get_max_level(ch) >= 20 && (!IS_AFFECTED(vict, AFF_SILENCE)) &&
         !number(0, 4)) {
       act("$n utters the words 'ssshhhh'", 1, ch, 0, 0, TO_ROOM);
-      cast_silence(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_silence(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (FALSE);
     }
 
     if (IS_AFFECTED(vict, AFF_FIRESHIELD) || IS_AFFECTED(vict, AFF_SANCTUARY)) {
-      if (GetMaxLevel(ch) >= GetMaxLevel(vict)) {
+      if (get_max_level(ch) >= get_max_level(vict)) {
         act("$n utters the words 'use instaway instant magic remover'",
             1, ch, 0, 0, TO_ROOM);
-        cast_dispel_magic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+        cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
         return (TRUE);
       }
     }
 
     if (IsUndead(vict) && !number(0, 2)) {
       act("$n utters the words 'see the light!'", 1, ch, 0, 0, TO_ROOM);
-      cast_sunray(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_sunray(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (FALSE);
     }
 
     if (vict->equipment[WIELD] && level > 19) {
       act("$n utters the words 'frogemoth'", 1, ch, 0, 0, TO_ROOM);
-      cast_warp_weapon(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_warp_weapon(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (FALSE);
     }
 
@@ -2832,7 +2832,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
       for (i = 0; i < MAX_WEAR; i++) {
         if (vict->equipment[i]) {
           act("$n utters the words 'barbecue?'", 1, ch, 0, 0, TO_ROOM);
-          cast_warp_weapon(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+          cast_warp_weapon(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
           return (FALSE);
         }
       }
@@ -2846,12 +2846,12 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
       if (rp->sector_type == SECT_FOREST) {
         if (level > 16 && !number(0, 5)) {
           act("$n utters the words 'briar'", 1, ch, 0, 0, TO_ROOM);
-          cast_entangle(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+          cast_entangle(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
           return (FALSE);
         }
         if (level >= 8 && !number(0, 3)) {
           act("$n utters the words 'snap!'", 1, ch, 0, 0, TO_ROOM);
-          cast_snare(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+          cast_snare(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
           return (FALSE);
         }
         if (level > 30 && ch->mult_att < 6 && !number(0, 8)) {
@@ -2866,26 +2866,26 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
         if (level > 30 && !number(0, 4)) {
           act("$n utters the words 'Where is my SERVANT!'", FALSE, ch, 0,
               0, TO_ROOM);
-          cast_fire_servant(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, 0, 0);
+          cast_fire_servant(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, 0, 0);
           return (FALSE);
           do_order(ch, "followers guard on", 0);
         }
         else {
           if (level > 10 && !number(0, 5)) {
             act("$n whistles", FALSE, ch, 0, 0, TO_ROOM);
-            cast_animal_summon_1(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL,
+            cast_animal_summon_1(get_max_level(ch), ch, "", SPELL_TYPE_SPELL,
                                  0, 0);
             return (FALSE);
           }
           if (level > 16 && !number(0, 5)) {
             act("$n whistles loudly", FALSE, ch, 0, 0, TO_ROOM);
-            cast_animal_summon_2(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL,
+            cast_animal_summon_2(get_max_level(ch), ch, "", SPELL_TYPE_SPELL,
                                  0, 0);
             return (FALSE);
           }
           if (level > 24 && !number(0, 5)) {
             act("$n whistles extremely loudly", FALSE, ch, 0, 0, TO_ROOM);
-            cast_animal_summon_3(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL,
+            cast_animal_summon_3(get_max_level(ch), ch, "", SPELL_TYPE_SPELL,
                                  0, 0);
             return (FALSE);
           }
@@ -2895,14 +2895,14 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
         if (!IS_SET(rp->room_flags, INDOORS)) {
           if (level > 8 && !number(0, 3)) {
             act("$n utters the words 'let it rain'", FALSE, ch, 0, 0, TO_ROOM);
-            cast_control_weather(GetMaxLevel(ch), ch, "worse",
+            cast_control_weather(get_max_level(ch), ch, "worse",
                                  SPELL_TYPE_SPELL, 0, 0);
             return (FALSE);
           }
           if (level > 15 && !number(0, 2)) {
             act("$n utters the words 'here lightning'", FALSE, ch, 0,
                 0, TO_ROOM);
-            cast_call_lightning(GetMaxLevel(ch), ch, "",
+            cast_call_lightning(get_max_level(ch), ch, "",
                                 SPELL_TYPE_SPELL, vict, 0);
             return (FALSE);
           }
@@ -3137,7 +3137,7 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
   }
   if (cmd == FLEE) {
     if (ch->specials.fighting) {
-      if (GetMaxLevel(ch->specials.fighting) > GetMaxLevel(ch)) {
+      if (get_max_level(ch->specials.fighting) > get_max_level(ch)) {
         char_from_room(ch);
         char_to_room(ch, rm - 1);
         me->river_speed = 0;
@@ -3162,7 +3162,7 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
       if (mob_index[ch->nr].virtual >= MONK_MOB &&
           mob_index[ch->nr].virtual <= MONK_MOB + 40) {
         if (ch->specials.fighting) {
-          if (GetMaxLevel(ch) + 2 < GetMaxLevel(ch->specials.fighting)) {
+          if (get_max_level(ch) + 2 < get_max_level(ch->specials.fighting)) {
             send_to_char("Who the hell are you?\n\r", ch->specials.fighting);
             send_to_char("Go home.\n\r", ch->specials.fighting);
             char_from_room(ch->specials.fighting);
@@ -3468,7 +3468,7 @@ int DragonHunterLeader(struct char_data *ch, int UNUSED(cmd),
               do_group(ch, buf, 0);
               count++;
             }
-            else if ((i->master) && (i->master == ch) && (GetMaxLevel(i) > 10)) {
+            else if ((i->master) && (i->master == ch) && (get_max_level(i) > 10)) {
               SPRINTF(buf, "%s", GET_NAME(i));
               do_group(ch, buf, 0);
             }

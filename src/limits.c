@@ -502,7 +502,7 @@ void advance_level(struct char_data *ch, int class) {
 
   ClassSpecificStuff(ch);
 
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL)
+  if (get_max_level(ch) >= LOW_IMMORTAL)
     for (i = 0; i < 3; i++)
       ch->specials.conditions[i] = -1;
 
@@ -522,9 +522,9 @@ void drop_level(struct char_data *ch, int class) {
   extern struct con_app_type con_app[];
 
 
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL)
+  if (get_max_level(ch) >= LOW_IMMORTAL)
     return;
-  if (GetMaxLevel(ch) == 1)
+  if (get_max_level(ch) == 1)
     return;
 
   add_hp = con_app[(int)GET_RCON(ch)].hitp;
@@ -672,7 +672,7 @@ void gain_exp(struct char_data *ch, int gain) {
     if (gain > 0) {
       gain /= HowManyClasses(ch);
 
-      if (GetMaxLevel(ch) == 1 && IS_PC(ch)) {
+      if (get_max_level(ch) == 1 && IS_PC(ch)) {
         gain *= 2;
       }
 

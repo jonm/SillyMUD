@@ -528,7 +528,7 @@ void KillTheOrcs(struct char_data *ch) {
 
   if (GET_RACE(ch) != RACE_DWARF)
     return;
-  if (GetMaxLevel(ch) < 10)
+  if (get_max_level(ch) < 10)
     return;
 
   for (tmp_victim = real_roomp(ch->in_room)->people; tmp_victim;

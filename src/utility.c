@@ -36,9 +36,9 @@ extern int RacialMax[][6];
 int EgoBladeSave(struct char_data *ch) {
   int total;
 
-  if (GetMaxLevel(ch) <= 10)
+  if (get_max_level(ch) <= 10)
     return (FALSE);
-  total = (GetMaxLevel(ch) + GET_STR(ch) + GET_CON(ch));
+  total = (get_max_level(ch) + GET_STR(ch) + GET_CON(ch));
   if (GET_HIT(ch) == 0)
     return (FALSE);
   total = total - (GET_MAX_HIT(ch) / GET_HIT(ch));
@@ -87,7 +87,7 @@ int CAN_SEE(struct char_data *s, struct char_data *o) {
   if (IS_IMMORTAL(s))
     return (TRUE);
 
-  if (o->invis_level > GetMaxLevel(s))  /* change this if you want multiple */
+  if (o->invis_level > get_max_level(s))  /* change this if you want multiple */
     return FALSE;               /* levels of invis.                 */
 
   if (IS_AFFECTED(s, AFF_TRUE_SIGHT))
@@ -341,7 +341,7 @@ void log_sev(char *str, int sev) {
   if (str)
     SPRINTF(buf, "/* %s */\n\r", str);
   for (i = descriptor_list; i; i = i->next)
-    if ((!i->connected) && (GetMaxLevel(i->character) >= LOW_IMMORTAL) &&
+    if ((!i->connected) && (get_max_level(i->character) >= LOW_IMMORTAL) &&
         (i->character->specials.sev <= sev) &&
         (!IS_SET(i->character->specials.act, PLR_NOSHOUT)))
       write_to_q(buf, &i->output);
@@ -673,10 +673,10 @@ reads in the monster, and adds the flags together
 for simplicity, 1 exceptional ability is 2 special abilities 
 */
 
-  if (GetMaxLevel(mob) < 0)
+  if (get_max_level(mob) < 0)
     return (1);
 
-  switch (GetMaxLevel(mob)) {
+  switch (get_max_level(mob)) {
 
   case 0:
     base = 5;
@@ -1015,7 +1015,7 @@ void down_river(int pulse) {
                       }
                     }
                     if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
-                        GetMaxLevel(ch) < LOW_IMMORTAL) {
+                        get_max_level(ch) < LOW_IMMORTAL) {
                       if (RIDDEN(ch))
                         NailThisSucker(RIDDEN(ch));
                       NailThisSucker(ch);
@@ -1558,7 +1558,7 @@ int IsGodly(struct char_data *ch) {
   if (GET_RACE(ch) == RACE_GOD)
     return (TRUE);
   if (GET_RACE(ch) == RACE_DEMON || GET_RACE(ch) == RACE_DEVIL)
-    if (GetMaxLevel(ch) >= 45)
+    if (get_max_level(ch) >= 45)
       return (TRUE);
   return (FALSE);
 }
@@ -1579,7 +1579,7 @@ void SetHunting(struct char_data *ch, struct char_data *tch) {
   return;
 #endif
 
-  persist = GetMaxLevel(ch);
+  persist = get_max_level(ch);
   persist *= (int)GET_ALIGNMENT(ch) / 100;
 
   if (persist < 0)
@@ -1689,24 +1689,24 @@ void MakeNiftyAttack(struct char_data *ch) {
   num = number(1, 4);
   if (num <= 2) {
     if (!ch->skills[SKILL_BASH].learned)
-      ch->skills[SKILL_BASH].learned = 10 + GetMaxLevel(ch) * 4;
+      ch->skills[SKILL_BASH].learned = 10 + get_max_level(ch) * 4;
     do_bash(ch, GET_NAME(ch->specials.fighting), 0);
   }
   else if (num == 3) {
     if (ch->equipment[WIELD]) {
       if (!ch->skills[SKILL_DISARM].learned)
-        ch->skills[SKILL_DISARM].learned = 10 + GetMaxLevel(ch) * 4;
+        ch->skills[SKILL_DISARM].learned = 10 + get_max_level(ch) * 4;
       do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
     }
     else {
       if (!ch->skills[SKILL_KICK].learned)
-        ch->skills[SKILL_KICK].learned = 10 + GetMaxLevel(ch) * 4;
+        ch->skills[SKILL_KICK].learned = 10 + get_max_level(ch) * 4;
       do_kick(ch, GET_NAME(ch->specials.fighting), 0);
     }
   }
   else {
     if (!ch->skills[SKILL_KICK].learned)
-      ch->skills[SKILL_KICK].learned = 10 + GetMaxLevel(ch) * 4;
+      ch->skills[SKILL_KICK].learned = 10 + get_max_level(ch) * 4;
     do_kick(ch, GET_NAME(ch->specials.fighting), 0);
   }
 }
@@ -1730,7 +1730,7 @@ void FighterMove(struct char_data *ch) {
       if (GET_RACE(friend) == (GET_RACE(ch))) {
         if (GET_HIT(friend) < GET_HIT(ch)) {
           if (!ch->skills[SKILL_RESCUE].learned)
-            ch->skills[SKILL_RESCUE].learned = GetMaxLevel(ch) * 3 + 30;
+            ch->skills[SKILL_RESCUE].learned = get_max_level(ch) * 3 + 30;
           do_rescue(ch, GET_NAME(friend), 0);
         }
         else {
@@ -1753,7 +1753,7 @@ void MonkMove(struct char_data *ch) {
 
   if (!ch->skills) {
     SpaceForSkills(ch);
-    ch->skills[SKILL_DODGE].learned = GetMaxLevel(ch) + 50;
+    ch->skills[SKILL_DODGE].learned = get_max_level(ch) + 50;
     SET_BIT(ch->player.class, CLASS_MONK);
   }
 
@@ -1762,7 +1762,7 @@ void MonkMove(struct char_data *ch) {
 
   if (GET_POS(ch) < POSITION_FIGHTING) {
     if (!ch->skills[SKILL_SPRING_LEAP].learned)
-      ch->skills[SKILL_SPRING_LEAP].learned = (GetMaxLevel(ch) * 3) / 2 + 25;
+      ch->skills[SKILL_SPRING_LEAP].learned = (get_max_level(ch) * 3) / 2 + 25;
     do_springleap(ch, GET_NAME(ch->specials.fighting), 0);
     return;
   }
@@ -1777,15 +1777,15 @@ void MonkMove(struct char_data *ch) {
 
     if (GET_HIT(ch) < GET_MAX_HIT(ch) / 20) {
       if (!ch->skills[SKILL_RETREAT].learned)
-        ch->skills[SKILL_RETREAT].learned = GetMaxLevel(ch) * 2 + 10;
+        ch->skills[SKILL_RETREAT].learned = get_max_level(ch) * 2 + 10;
       strcpy(buf, "flee");
       command_interpreter(ch, buf);
       return;
     }
     else {
 
-      if (GetMaxLevel(ch) > 30 && !number(0, 4)) {
-        if (GetMaxLevel(ch->specials.fighting) <= GetMaxLevel(ch)) {
+      if (get_max_level(ch) > 30 && !number(0, 4)) {
+        if (get_max_level(ch->specials.fighting) <= get_max_level(ch)) {
           if (GET_MAX_HIT(ch->specials.fighting) < 2 * GET_MAX_HIT(ch)) {
             if ((!affected_by_spell(ch->specials.fighting, SKILL_QUIV_PALM)) &&
                 (!affected_by_spell(ch, SKILL_QUIV_PALM)) &&
@@ -1794,7 +1794,7 @@ void MonkMove(struct char_data *ch) {
                   ch->in_room == 551) {
                 if (!ch->skills[SKILL_QUIV_PALM].learned && ch->in_room == 551)
                   ch->skills[SKILL_QUIV_PALM].learned =
-                    GetMaxLevel(ch) * 2 - 5;
+                    get_max_level(ch) * 2 - 5;
                 do_quivering_palm(ch, GET_NAME(ch->specials.fighting), 0);
                 return;
               }
@@ -1804,12 +1804,12 @@ void MonkMove(struct char_data *ch) {
       }
       if (ch->specials.fighting->equipment[WIELD]) {
         if (!ch->skills[SKILL_DISARM].learned)
-          ch->skills[SKILL_DISARM].learned = (GetMaxLevel(ch) * 3) / 2 + 25;
+          ch->skills[SKILL_DISARM].learned = (get_max_level(ch) * 3) / 2 + 25;
         do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
         return;
       }
       if (!ch->skills[SKILL_KICK].learned)
-        ch->skills[SKILL_KICK].learned = (GetMaxLevel(ch) * 3) / 2 + 25;
+        ch->skills[SKILL_KICK].learned = (get_max_level(ch) * 3) / 2 + 25;
       do_kick(ch, GET_NAME(ch->specials.fighting), 0);
     }
   }
@@ -1920,7 +1920,7 @@ void RestoreChar(struct char_data *ch) {
   GET_MANA(ch) = GET_MAX_MANA(ch);
   GET_HIT(ch) = GET_MAX_HIT(ch);
   GET_MOVE(ch) = GET_MAX_MOVE(ch);
-  if (GetMaxLevel(ch) < LOW_IMMORTAL) {
+  if (get_max_level(ch) < LOW_IMMORTAL) {
     GET_COND(ch, THIRST) = 24;
     GET_COND(ch, FULL) = 24;
   }
@@ -1947,7 +1947,7 @@ int CheckForBlockedMove(struct char_data *ch, int cmd, char *UNUSED(arg),
   strcpy(buf, "The guard humiliates you, and block your way.\n\r");
   strcpy(buf2, "The guard humiliates $n, and blocks $s way.");
 
-  if ((IS_NPC(ch) && (IS_POLICE(ch))) || (GetMaxLevel(ch) >= DEMIGOD) ||
+  if ((IS_NPC(ch) && (IS_POLICE(ch))) || (get_max_level(ch) >= DEMIGOD) ||
       (IS_AFFECTED(ch, AFF_SNEAK)))
     return (FALSE);
 
@@ -2145,7 +2145,7 @@ void RiverPulseStuff(int pulse) {
 
 
                           if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
-                              GetMaxLevel(ch) < LOW_IMMORTAL) {
+                              get_max_level(ch) < LOW_IMMORTAL) {
                             NailThisSucker(ch);
                             if (RIDDEN(ch))
                               NailThisSucker(RIDDEN(ch));
@@ -2457,33 +2457,33 @@ void SetRacialStuff(struct char_data *mob) {
   case RACE_ELEMENT:
   case RACE_PRIMATE:
   case RACE_GOLEM:
-    mob->player.weight = 10 + GetMaxLevel(mob) * GetMaxLevel(mob) * 2;
+    mob->player.weight = 10 + get_max_level(mob) * get_max_level(mob) * 2;
     mob->player.height = 20 + MIN(mob->player.weight, 600);
     break;
   case RACE_DRAGON:
-    mob->player.weight = MAX(60, GetMaxLevel(mob) * GetMaxLevel(mob) * 2);
+    mob->player.weight = MAX(60, get_max_level(mob) * get_max_level(mob) * 2);
     mob->player.height = 100 + MIN(mob->player.weight, 500);
     break;
   case RACE_BIRD:
   case RACE_PARASITE:
   case RACE_SLIME:
   case RACE_GHOST:
-    mob->player.weight = GetMaxLevel(mob) * (GetMaxLevel(mob) / 5);
-    mob->player.height = 10 * GetMaxLevel(mob);
+    mob->player.weight = get_max_level(mob) * (get_max_level(mob) / 5);
+    mob->player.height = 10 * get_max_level(mob);
     break;
   case RACE_TROLL:
   case RACE_GIANT:
   case RACE_DEMON:
   case RACE_DEVIL:
   case RACE_PLANAR:
-    mob->player.height = 200 + GetMaxLevel(mob) * 15;
+    mob->player.height = 200 + get_max_level(mob) * 15;
     mob->player.weight = (int)mob->player.height * 1.5;
     break;
   case RACE_GOD:
   case RACE_TREE:
   case RACE_TYTAN:
-    mob->player.weight = MAX(500, GetMaxLevel(mob) * GetMaxLevel(mob) * 10);
-    mob->player.height = GetMaxLevel(mob) / 2 * 100;
+    mob->player.weight = MAX(500, get_max_level(mob) * get_max_level(mob) * 10);
+    mob->player.height = get_max_level(mob) / 2 * 100;
     break;
 
   }
@@ -2618,12 +2618,12 @@ int MountEgoCheck(struct char_data *ch, struct char_data *horse) {
 
   if (GET_RACE(horse) == RACE_DRAGON) {
     if (ch->skills) {
-      drag_ego = GetMaxLevel(horse) * 2;
+      drag_ego = get_max_level(horse) * 2;
       if (IS_SET(horse->specials.act, ACT_AGGRESSIVE) ||
           IS_SET(horse->specials.act, ACT_META_AGG)) {
-        drag_ego += GetMaxLevel(horse);
+        drag_ego += get_max_level(horse);
       }
-      ride_ego = ch->skills[SKILL_RIDE].learned / 10 + GetMaxLevel(ch) / 2;
+      ride_ego = ch->skills[SKILL_RIDE].learned / 10 + get_max_level(ch) / 2;
       if (IS_AFFECTED(ch, AFF_DRAGON_RIDE)) {
         ride_ego += ((GET_INT(ch) + GET_WIS(ch)) / 2);
       }
@@ -2647,19 +2647,19 @@ int MountEgoCheck(struct char_data *ch, struct char_data *horse) {
 
     }
     else {
-      return (-GetMaxLevel(horse));
+      return (-get_max_level(horse));
     }
   }
   else {
     if (!ch->skills)
-      return (-GetMaxLevel(horse));
+      return (-get_max_level(horse));
 
-    drag_ego = GetMaxLevel(horse);
+    drag_ego = get_max_level(horse);
 
     if (drag_ego > 15)
       drag_ego *= 2;
 
-    ride_ego = ch->skills[SKILL_RIDE].learned / 10 + GetMaxLevel(ch);
+    ride_ego = ch->skills[SKILL_RIDE].learned / 10 + get_max_level(ch);
 
     if (IS_AFFECTED(ch, AFF_DRAGON_RIDE)) {
       ride_ego += (GET_INT(ch) + GET_WIS(ch));
@@ -2833,7 +2833,7 @@ int GetSumRaceMaxLevInRoom(struct char_data *ch) {
 
   for (i = rp->people; i; i = i->next_in_room) {
     if (GET_RACE(i) == GET_RACE(ch)) {
-      sum += GetMaxLevel(i);
+      sum += get_max_level(i);
     }
   }
   return (sum);
@@ -2920,7 +2920,7 @@ int GET_EGO(struct char_data *ch) {
 
   if (IS_PC(ch)) {
 
-    p_ego = GetMaxLevel(ch);
+    p_ego = get_max_level(ch);
 
     /* triple class character is considered 6 levels above his max */
     /* dual class, 3 */
@@ -2930,7 +2930,7 @@ int GET_EGO(struct char_data *ch) {
     else if (HowManyClasses(ch) > 1)
       p_ego += 3;
 
-    if (GetMaxLevel(ch) > 12 && !IS_IMMORTAL(ch))
+    if (get_max_level(ch) > 12 && !IS_IMMORTAL(ch))
       if (IS_SET(ch->specials.act, ACT_WIMPY))
         p_ego -= 2;
 
@@ -2960,7 +2960,7 @@ int GET_EGO(struct char_data *ch) {
 
     tmp *= 2.0;                 /* bonus for stats */
 
-    tmp *= MAX(1, (GetMaxLevel(ch) / 10));
+    tmp *= MAX(1, (get_max_level(ch) / 10));
 
     tmp *= GET_HIT(ch);
     tmp /= GET_MAX_HIT(ch);

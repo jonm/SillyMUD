@@ -2234,7 +2234,7 @@ void store_to_char(struct char_file_u *st, struct char_data *ch) {
 
   SpaceForSkills(ch);
 
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL) {
+  if (get_max_level(ch) >= LOW_IMMORTAL) {
     max = 100;
   }
   else {
@@ -2777,11 +2777,11 @@ void reset_char(struct char_data *ch) {
     GET_GOLD(ch) = 100000;
   }
 
-  if (GET_BANK(ch) > GetMaxLevel(ch) * 100000) {
+  if (GET_BANK(ch) > get_max_level(ch) * 100000) {
     SPRINTF(buf, "%s has %d coins in bank.", GET_NAME(ch), GET_BANK(ch));
     log_msg(buf);
   }
-  if (GET_GOLD(ch) > GetMaxLevel(ch) * 100000) {
+  if (GET_GOLD(ch) > get_max_level(ch) * 100000) {
     SPRINTF(buf, "%s has %d coins.", GET_NAME(ch), GET_GOLD(ch));
     log_msg(buf);
   }
@@ -2972,7 +2972,7 @@ void init_char(struct char_data *ch) {
     SpaceForSkills(ch);
 
   for (i = 0; i <= MAX_SKILLS - 1; i++) {
-    if (GetMaxLevel(ch) < IMPLEMENTOR) {
+    if (get_max_level(ch) < IMPLEMENTOR) {
       ch->skills[i].learned = 0;
       ch->skills[i].flags = 0;
     }
@@ -2990,7 +2990,7 @@ void init_char(struct char_data *ch) {
     ch->specials.apply_saving_throw[i] = 0;
 
   for (i = 0; i < 3; i++)
-    GET_COND(ch, i) = (GetMaxLevel(ch) > GOD ? -1 : 24);
+    GET_COND(ch, i) = (get_max_level(ch) > GOD ? -1 : 24);
 }
 
 /*

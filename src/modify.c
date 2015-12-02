@@ -207,7 +207,7 @@ void do_string(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
     switch (field) {
     case 1:
-      if (!IS_NPC(mob) && GetMaxLevel(ch) < IMPLEMENTOR) {
+      if (!IS_NPC(mob) && get_max_level(ch) < IMPLEMENTOR) {
         send_to_char("You can't change that field for players.", ch);
         return;
       }
@@ -246,7 +246,7 @@ void do_string(struct char_data *ch, char *arg, int UNUSED(cmd)) {
         send_to_char("Monsters have no titles.\n\r", ch);
         return;
       }
-      if ((GetMaxLevel(ch) >= GetMaxLevel(mob)) && (ch != mob))
+      if ((get_max_level(ch) >= get_max_level(mob)) && (ch != mob))
         ch->desc->str = &mob->player.title;
       else {
         send_to_char
@@ -420,7 +420,7 @@ void do_edit(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
   rp = real_roomp(ch->in_room);
 
-  if ((IS_NPC(ch)) || (GetMaxLevel(ch) < LOW_IMMORTAL))
+  if ((IS_NPC(ch)) || (get_max_level(ch) < LOW_IMMORTAL))
     return;
 
   if (!ch->desc)                /* someone is forced to do something. can be bad! */
@@ -428,7 +428,7 @@ void do_edit(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
 
 #ifndef TEST_SERVER
-  if ((GetMaxLevel(ch) < 55) && (rp->zone != GET_ZONE(ch))) {
+  if ((get_max_level(ch) < 55) && (rp->zone != GET_ZONE(ch))) {
     send_to_char("Sorry, you are not authorized to edit this zone.\n\r", ch);
     return;
   }

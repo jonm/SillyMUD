@@ -82,7 +82,7 @@ int TriggerTrap(struct char_data *ch, struct obj_data *i) {
 
   if (ITEM_TYPE(i) == ITEM_TRAP) {
     if (i->obj_flags.value[TRAP_CHARGES]) {
-      adj = GET_TRAP_LEV(i) - GetMaxLevel(ch);
+      adj = GET_TRAP_LEV(i) - get_max_level(ch);
       adj -= dex_app[(int)GET_DEX(ch)].reaction * 5;
       fireperc = 95 + adj;
       roll = number(1, 100);
@@ -243,7 +243,7 @@ void TrapTeleport(struct char_data *v) {
   do_look(v, "", 0);
 
   if (IS_SET(real_roomp(to_room)->room_flags, DEATH) &&
-      GetMaxLevel(v) < LOW_IMMORTAL) {
+      get_max_level(v) < LOW_IMMORTAL) {
     NailThisSucker(v);
   }
 }

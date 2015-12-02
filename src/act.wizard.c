@@ -121,7 +121,7 @@ void do_imptest(struct char_data *ch, char *arg, int UNUSED(cmd)) {
     return;                     /* regular game */
   }
 
-  if (GetMaxLevel(ch) < IMPLEMENTOR)
+  if (get_max_level(ch) < IMPLEMENTOR)
     return;
 
   H = InitHeap();
@@ -483,8 +483,8 @@ void do_highfive(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   if (argument) {
     only_argument(argument, buf);
     if ((tch = get_char_room_vis(ch, buf)) != 0) {
-      if ((GetMaxLevel(tch) >= DEMIGOD) && (!IS_NPC(tch)) &&
-          (GetMaxLevel(ch) >= DEMIGOD) && (!IS_NPC(ch))) {
+      if ((get_max_level(tch) >= DEMIGOD) && (!IS_NPC(tch)) &&
+          (get_max_level(ch) >= DEMIGOD) && (!IS_NPC(ch))) {
         SPRINTF(mess, "Time stops for a moment as %s and %s high five.\n\r",
                 ch->player.name, tch->player.name);
         send_to_all(mess);
@@ -517,7 +517,7 @@ void do_listhosts(struct char_data *UNUSED(ch), char *UNUSED(argument),
 void do_silence(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   char buf[255];
   extern int Silence;
-  if ((GetMaxLevel(ch) < DEMIGOD) || (IS_NPC(ch))) {
+  if ((get_max_level(ch) < DEMIGOD) || (IS_NPC(ch))) {
     send_to_char("You cannot Silence.\n\r", ch);
     return;
   }
@@ -551,7 +551,7 @@ void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   extern int WizLock;
 
 
-  if ((GetMaxLevel(ch) < DEMIGOD) || (IS_NPC(ch))) {
+  if ((get_max_level(ch) < DEMIGOD) || (IS_NPC(ch))) {
     send_to_char("You cannot WizLock.\n\r", ch);
     return;
   }
@@ -711,7 +711,7 @@ void do_rload(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   if (IS_NPC(ch))
     return;
-  if (GetMaxLevel(ch) < IMMORTAL)
+  if (get_max_level(ch) < IMMORTAL)
     return;
 
   for (i = 0; *(argument + i) == ' '; i++);
@@ -732,7 +732,7 @@ void do_rsave(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   if (IS_NPC(ch))
     return;
-  if (GetMaxLevel(ch) < IMMORTAL)
+  if (get_max_level(ch) < IMMORTAL)
     return;
 
   for (i = 0; *(argument + i) == ' '; i++);
@@ -926,7 +926,7 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   if (IS_NPC(ch))
     return;
-  if ((GetMaxLevel(ch) > 0) && (GetMaxLevel(ch) < LOW_IMMORTAL)) {
+  if ((get_max_level(ch) > 0) && (get_max_level(ch) < LOW_IMMORTAL)) {
     send_to_char("Huh?\n\r", ch);
     return;
   }
@@ -940,7 +940,7 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   if (isdigit(*buf) && NULL == index(buf, '.')) {
     loc_nr = atoi(buf);
     if (NULL == real_roomp(loc_nr)) {
-      if (GetMaxLevel(ch) < CREATOR || loc_nr < 0) {
+      if (get_max_level(ch) < CREATOR || loc_nr < 0) {
         send_to_char("No room exists with that number.\n\r", ch);
         return;
       }
@@ -988,7 +988,7 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 
   if (IS_SET(real_roomp(location)->room_flags, PRIVATE)
-      && GetMaxLevel(ch) < 59) {
+      && get_max_level(ch) < 59) {
     for (i = 0, pers = real_roomp(location)->people; pers;
          pers = pers->next_in_room, i++);
     if (i > 1) {
@@ -1000,7 +1000,7 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   if (IS_SET(ch->specials.act, PLR_STEALTH)) {
     for (v = real_roomp(ch->in_room)->people; v; v = v->next_in_room) {
-      if ((ch != v) && (GetMaxLevel(v) >= LOW_IMMORTAL)) {
+      if ((ch != v) && (get_max_level(v) >= LOW_IMMORTAL)) {
         if (!IS_SET(ch->specials.pmask, BIT_POOF_OUT) || !ch->specials.poofout)
           act("$n disappears in a cloud of mushrooms.",
               FALSE, ch, 0, v, TO_VICT);
@@ -1026,7 +1026,7 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   if (IS_SET(ch->specials.act, PLR_STEALTH)) {
     for (v = real_roomp(ch->in_room)->people; v; v = v->next_in_room) {
-      if ((ch != v) && (GetMaxLevel(v) >= LOW_IMMORTAL)) {
+      if ((ch != v) && (get_max_level(v) >= LOW_IMMORTAL)) {
 
         if (!IS_SET(ch->specials.pmask, BIT_POOF_IN) || !ch->specials.poofin)
           act("$n appears with an explosion of rose-petals.",
@@ -1634,7 +1634,7 @@ void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   extern char EasySummon;
 
 #ifndef TEST_SERVER
-  if ((GetMaxLevel(ch) < SILLYLORD) || (IS_NPC(ch)))
+  if ((get_max_level(ch) < SILLYLORD) || (IS_NPC(ch)))
     return;
 #endif
   argument = one_argument(argument, field);
@@ -1676,13 +1676,13 @@ void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     argument = one_argument(argument, parmstr);
     sscanf(parmstr, "%d", &parm2);
     if (!IS_NPC(mob)) {
-      if ((GetMaxLevel(mob) >= GetMaxLevel(ch)) && (ch != mob)) {
+      if ((get_max_level(mob) >= get_max_level(ch)) && (ch != mob)) {
         send_to_char(GET_NAME(ch), mob);
         send_to_char(" just tried to change your level.\n\r", mob);
         return;
       }
-      else if (GetMaxLevel(mob) < LOW_IMMORTAL &&
-               GetMaxLevel(ch) < IMPLEMENTOR && parm2 > 50) {
+      else if (get_max_level(mob) < LOW_IMMORTAL &&
+               get_max_level(ch) < IMPLEMENTOR && parm2 > 50) {
         send_to_char("Thou shalt not create new immortals.\n\r", ch);
       }
     }
@@ -1697,8 +1697,8 @@ void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       return;
     }
 
-    if (parm < GetMaxLevel(ch) || !strcmp(GET_NAME(ch), "Loki")) {
-      if (GetMaxLevel(ch) >= IMPLEMENTOR) {
+    if (parm < get_max_level(ch) || !strcmp(GET_NAME(ch), "Loki")) {
+      if (get_max_level(ch) >= IMPLEMENTOR) {
         if (parm2 < MAX_CLASS)
           GET_LEVEL(mob, parm2) = parm;
       }
@@ -1955,7 +1955,7 @@ logically.. this person has returned from being a creature?
     return;
   }
 
-  if (GetMaxLevel(victim) >= GetMaxLevel(ch)) {
+  if (get_max_level(victim) >= get_max_level(ch)) {
     send_to_char("You failed.\n\r", ch);
     return;
   }
@@ -2018,7 +2018,7 @@ void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
 
   void do_snoop(struct char_data *ch, char *argument, int cmd);
 
-  if (GetMaxLevel(ch) < LOW_IMMORTAL)
+  if (get_max_level(ch) < LOW_IMMORTAL)
     if (ch->specials.fighting) {
       send_to_char("You are far too busy fighting to return now!\n\r", ch);
       return;
@@ -2086,7 +2086,7 @@ void do_force(struct char_data *ch, char *argument, int cmd) {
     if (!(vict = get_char_vis(ch, name)))
       send_to_char("No-one by that name here..\n\r", ch);
     else {
-      if ((GetMaxLevel(ch) <= GetMaxLevel(vict)) && (!IS_NPC(vict)))
+      if ((get_max_level(ch) <= get_max_level(vict)) && (!IS_NPC(vict)))
         send_to_char("Oh no you don't!!\n\r", ch);
       else {
         SPRINTF(buf, "$n has forced you to '%s'.", to_force);
@@ -2100,7 +2100,7 @@ void do_force(struct char_data *ch, char *argument, int cmd) {
     for (i = descriptor_list; i; i = i->next)
       if (i->character != ch && !i->connected) {
         vict = i->character;
-        if ((GetMaxLevel(ch) <= GetMaxLevel(vict)) && (!IS_NPC(vict)))
+        if ((get_max_level(ch) <= get_max_level(vict)) && (!IS_NPC(vict)))
           send_to_char("Oh no you don't!!\n\r", ch);
         else {
           SPRINTF(buf, "$n has forced you to '%s'.", to_force);
@@ -2173,7 +2173,7 @@ void do_load(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       return;
     }
 
-    if (GetMaxLevel(ch) < IMPLEMENTOR) {
+    if (get_max_level(ch) < IMPLEMENTOR) {
       switch (obj_index[number].virtual) {
       case 5021:
         send_to_char("no.  No more bows!  And don't kill the worm either!\n\r",
@@ -2221,7 +2221,7 @@ void do_load(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   else if (is_abbrev(type, "room")) {
     int start, end;
 
-    if (GetMaxLevel(ch) < CREATOR)
+    if (get_max_level(ch) < CREATOR)
       return;
 
     switch (sscanf(num, "%d %d", &start, &end)) {
@@ -2297,7 +2297,7 @@ void do_purge(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   only_argument(argument, name);
 
   if (*name) {                  /* argument supplied. destroy single object or char */
-    if (strcmp(name, "links") == 0 && GetMaxLevel(ch) >= IMPLEMENTOR) {
+    if (strcmp(name, "links") == 0 && get_max_level(ch) >= IMPLEMENTOR) {
 
       struct descriptor_data *d;
 
@@ -2308,7 +2308,7 @@ void do_purge(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
     if ((vict = get_char_room_vis(ch, name)) != NULL) {
       if ((!IS_NPC(vict) || IS_SET(vict->specials.act, ACT_POLYSELF)) &&
-          (GetMaxLevel(ch) < IMPLEMENTOR)) {
+          (get_max_level(ch) < IMPLEMENTOR)) {
         send_to_char("I'm sorry...  I can't let you do that.\n\r", ch);
         return;
       }
@@ -2342,7 +2342,7 @@ void do_purge(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         int range[2];
         register int i;
         struct room_data *rp;
-        if (GetMaxLevel(ch) < IMPLEMENTOR) {
+        if (get_max_level(ch) < IMPLEMENTOR) {
           send_to_char("I'm sorry, I can't let you do that.\n\r", ch);
           if (strcmp(GET_NAME(ch), "Haplo") == 0) {
             send_to_char("(Fuck you Phil) :-)\n\r", ch);
@@ -2388,7 +2388,7 @@ void do_purge(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Ok.\n\r", ch);
   }
   else {                        /* no argument. clean out the room */
-    if (GetMaxLevel(ch) < DEMIGOD)
+    if (get_max_level(ch) < DEMIGOD)
       return;
     if (IS_NPC(ch)) {
       send_to_char("You would only kill yourself..\n\r", ch);
@@ -2492,7 +2492,7 @@ void roll_abilities(struct char_data *ch) {
 
   ch->abilities.str_add = 0;
 
-  if (GetMaxLevel(ch) < 2) {
+  if (get_max_level(ch) < 2) {
     ch->points.max_hit = HowManyClasses(ch) * 10;
 
     if (HasClass(ch, CLASS_MAGIC_USER)) {
@@ -2812,7 +2812,7 @@ void do_advance(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 
   if (((adv + GET_LEVEL(victim, lin_class)) > 1)
-      && (GetMaxLevel(ch) < IMPLEMENTOR)) {
+      && (get_max_level(ch) < IMPLEMENTOR)) {
     send_to_char("Thou art not godly enough.\n\r", ch);
     return;
   }
@@ -2886,7 +2886,7 @@ void do_restore(struct char_data *ch, char *argument, int cmd) {
     if (IS_NPC(victim))
       return;
 
-    if (GetMaxLevel(victim) < LOW_IMMORTAL) {
+    if (get_max_level(victim) < LOW_IMMORTAL) {
       GET_COND(victim, THIRST) = 24;
       GET_COND(victim, FULL) = 24;
     }
@@ -2895,13 +2895,13 @@ void do_restore(struct char_data *ch, char *argument, int cmd) {
       GET_COND(victim, FULL) = -1;
     }
 
-    if (GetMaxLevel(victim) >= CREATOR) {
+    if (get_max_level(victim) >= CREATOR) {
       for (i = 0; i < MAX_SKILLS; i++) {
         victim->skills[i].learned = 100;
         victim->skills[i].flags = 1;
       }
 
-      if (GetMaxLevel(victim) >= GOD) {
+      if (get_max_level(victim) >= GOD) {
         victim->abilities.str_add = 100;
         victim->abilities.intel = 25;
         victim->abilities.wis = 25;
@@ -2943,15 +2943,15 @@ void do_noshout(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Couldn't find any such creature.\n\r", ch);
   else if (IS_NPC(vict))
     send_to_char("Can't do that to a beast.\n\r", ch);
-  else if (GetMaxLevel(vict) >= GetMaxLevel(ch))
+  else if (get_max_level(vict) >= get_max_level(ch))
     act("$E might object to that.. better not.", 0, ch, 0, vict, TO_CHAR);
   else if (IS_SET(vict->specials.act, PLR_NOSHOUT) &&
-           (GetMaxLevel(ch) >= SAINT)) {
+           (get_max_level(ch) >= SAINT)) {
     send_to_char("You can shout again.\n\r", vict);
     send_to_char("NOSHOUT removed.\n\r", ch);
     REMOVE_BIT(vict->specials.act, PLR_NOSHOUT);
   }
-  else if (GetMaxLevel(ch) >= SAINT) {
+  else if (get_max_level(ch) >= SAINT) {
     send_to_char("The gods take away your ability to shout!\n\r", vict);
     send_to_char("NOSHOUT set.\n\r", ch);
     SET_BIT(vict->specials.act, PLR_NOSHOUT);
@@ -2984,7 +2984,7 @@ void do_nohassle(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Couldn't find any such creature.\n\r", ch);
   else if (IS_NPC(vict))
     send_to_char("Can't do that to a beast.\n\r", ch);
-  else if (GetMaxLevel(vict) > GetMaxLevel(ch))
+  else if (get_max_level(vict) > get_max_level(ch))
     act("$E might object to that.. better not.", 0, ch, 0, vict, TO_CHAR);
   else
     send_to_char("The implementor won't let you set this on mortals...\n\r",
@@ -3015,7 +3015,7 @@ void do_stealth(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Couldn't find any such creature.\n\r", ch);
   else if (IS_NPC(vict))
     send_to_char("Can't do that to a beast.\n\r", ch);
-  else if (GetMaxLevel(vict) > GetMaxLevel(ch))
+  else if (get_max_level(vict) > get_max_level(ch))
     act("$E might object to that.. better not.", 0, ch, 0, vict, TO_CHAR);
   else
     send_to_char("The implementor won't let you set this on mortals...\n\r",

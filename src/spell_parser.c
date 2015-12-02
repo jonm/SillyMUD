@@ -535,7 +535,7 @@ void affect_update(int pulse) {
 
       if (IS_PC(i)) {
         update_char_objects(i);
-        if (GetMaxLevel(i) < DEMIGOD && i->in_room != 3 && i->in_room != 2)
+        if (get_max_level(i) < DEMIGOD && i->in_room != 3 && i->in_room != 2)
           check_idling(i);
         rp = real_roomp(i->in_room);
         if (rp) {
@@ -899,7 +899,7 @@ bool saves_spell(struct char_data *ch, sh_int save_type) {
                                                    GET_LEVEL(ch,
                                                              BestMagicClass
                                                              (ch))];
-    if (GetMaxLevel(ch) > MAX_MORT)
+    if (get_max_level(ch) > MAX_MORT)
       return (TRUE);
   }
 
@@ -922,7 +922,7 @@ bool ImpSaveSpell(struct char_data * ch, sh_int save_type, int mod) {
 
     save += saving_throws[BestMagicClass(ch)][save_type]
       [(int)GET_LEVEL(ch, BestMagicClass(ch))];
-    if (GetMaxLevel(ch) >= LOW_IMMORTAL)
+    if (get_max_level(ch) >= LOW_IMMORTAL)
       return (TRUE);
   }
 
@@ -960,7 +960,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
   if (apply_soundproof(ch))
     return;
 
-  if (GET_MANA(ch) < 1 && GetMaxLevel(ch) < LOW_IMMORTAL) {
+  if (GET_MANA(ch) < 1 && get_max_level(ch) < LOW_IMMORTAL) {
     send_to_char("You are much too fatigued to cast right now.\n\r", ch);
     return;
   }
@@ -1235,7 +1235,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
         }
       }
       else {
-        if (GetMaxLevel(ch) < LOW_IMMORTAL && !intrinsic) {
+        if (get_max_level(ch) < LOW_IMMORTAL && !intrinsic) {
           if (GET_MANA(ch) < USE_MANA(ch, (int)spl)) {
             send_to_char
               ("You can't summon enough energy to cast the spell.\n\r", ch);
@@ -2150,7 +2150,7 @@ void check_drowning(struct char_data *ch) {
   if (IS_AFFECTED(ch, AFF_WATERBREATH))
     return;
 
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL)
+  if (get_max_level(ch) >= LOW_IMMORTAL)
     return;
 
   rp = real_roomp(ch->in_room);

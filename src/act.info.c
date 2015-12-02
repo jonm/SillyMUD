@@ -684,7 +684,7 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode) {
       send_to_char("\n\rYou attempt to peek at the inventory:\n\r", ch);
       for (tmp_obj = i->carrying; tmp_obj; tmp_obj = tmp_obj->next_content) {
         if (CAN_SEE_OBJ(ch, tmp_obj) &&
-            (number(0, MAX_MORT) < GetMaxLevel(ch))) {
+            (number(0, MAX_MORT) < get_max_level(ch))) {
           show_obj_to_char(tmp_obj, ch, 1);
           found = TRUE;
         }
@@ -926,7 +926,7 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch,
       send_to_char("\n\rYou attempt to peek at the inventory:\n\r", ch);
       for (tmp_obj = i->carrying; tmp_obj; tmp_obj = tmp_obj->next_content) {
         if (CAN_SEE_OBJ(ch, tmp_obj)
-            && (number(0, MAX_MORT) < GetMaxLevel(ch))) {
+            && (number(0, MAX_MORT) < get_max_level(ch))) {
           show_obj_to_char(tmp_obj, ch, 1);
           found = TRUE;
         }
@@ -1815,7 +1815,7 @@ void do_wizhelp(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   for (i = 0; i < 26; i++) {
     n = radix_head[i].next;
     while (n) {
-      if (n->min_level <= GetMaxLevel(ch) && n->min_level >= LOW_IMMORTAL) {
+      if (n->min_level <= get_max_level(ch) && n->min_level >= LOW_IMMORTAL) {
         SAPPENDF(buf, "%-10s", n->name);
         if (!(j % 7))
           SAPPENDF(buf, "\n\r");
@@ -1875,7 +1875,7 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
           if ((!IS_AFFECTED(person, AFF_HIDE)) || (IS_IMMORTAL(ch))) {
             SPRINTF(buf, "%-25s - %s ", GET_NAME(person),
                     real_roomp(person->in_room)->name);
-            if (GetMaxLevel(ch) >= LOW_IMMORTAL)
+            if (get_max_level(ch) >= LOW_IMMORTAL)
               SAPPENDF(buf, "[%d]", person->in_room);
           }
         }
@@ -2197,7 +2197,7 @@ void do_where_person(struct char_data *ch, struct char_data *person,
           (person->in_room >
            -1 ? real_roomp(person->in_room)->name : "Nowhere"));
 
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL)
+  if (get_max_level(ch) >= LOW_IMMORTAL)
     SAPPENDF(buf, "[%d]", person->in_room);
 
   strcpy(buf + strlen(buf), "\n\r");
@@ -2256,7 +2256,7 @@ void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   only_argument(argument, name);
 
   if (!*name) {
-    if (GetMaxLevel(ch) < LOW_IMMORTAL) {
+    if (get_max_level(ch) < LOW_IMMORTAL) {
       send_to_char("What are you looking for?\n\r", ch);
       return;
     }
@@ -2302,7 +2302,7 @@ void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   for (i = character_list; i; i = i->next)
     if (isname(name, i->player.name) && CAN_SEE(ch, i)) {
       if ((i->in_room != NOWHERE) &&
-          ((GetMaxLevel(ch) >= LOW_IMMORTAL)
+          ((get_max_level(ch) >= LOW_IMMORTAL)
            || (real_roomp(i->in_room)->zone ==
                real_roomp(ch->in_room)->zone))) {
         if (number == 0 || (--count) == 0) {
@@ -2315,14 +2315,14 @@ void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           if (number != 0)
             break;
         }
-        if (GetMaxLevel(ch) < LOW_IMMORTAL)
+        if (get_max_level(ch) < LOW_IMMORTAL)
           break;
       }
     }
 
   /*  count = number; */
 
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL) {
+  if (get_max_level(ch) >= LOW_IMMORTAL) {
     for (k = object_list; k; k = k->next)
       if (isname(name, k->name) && CAN_SEE_OBJ(ch, k)) {
         if (number == 0 || (--count) == 0) {
@@ -2367,7 +2367,7 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     char buf[100];
     int exp;
 
-    if (GetMaxLevel(ch) >= LOW_IMMORTAL) {
+    if (get_max_level(ch) >= LOW_IMMORTAL) {
       send_to_char("No ammount of experience will ever get you a level!\n\r",
                    ch);
       send_to_char("However, have you considered brown nosing?\n\r", ch);
@@ -2675,7 +2675,7 @@ void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   if (!*argument) {
     for (i = 1, spl = 0; i <= MAX_EXIST_SPELL; i++, spl++) {
-      if (GetMaxLevel(ch) > LOW_IMMORTAL ||
+      if (get_max_level(ch) > LOW_IMMORTAL ||
           skill_info[i].min_level[MIN_LEVEL_CLERIC] < ABS_MAX_LVL)
         SAPPENDF(buf,
                  "[%2d] %-20s  Mana: %3d, Cl: %2d, Mu: %2d, Dr: %2d\n\r",
@@ -2702,7 +2702,7 @@ void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     case 'p':
 
 
-      if (GetMaxLevel(ch) < LOW_IMMORTAL)
+      if (get_max_level(ch) < LOW_IMMORTAL)
         RaceMax = RacialMax[GET_RACE(ch)][CLERIC_LEVEL_IND];
       else
         RaceMax = 50;
@@ -2745,7 +2745,7 @@ void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     case 'M':
     case 'm':
 
-      if (GetMaxLevel(ch) < LOW_IMMORTAL)
+      if (get_max_level(ch) < LOW_IMMORTAL)
         RaceMax = RacialMax[GET_RACE(ch)][MAGE_LEVEL_IND];
       else
         RaceMax = 50;
@@ -2789,7 +2789,7 @@ void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     case 'D':
     case 'd':
 
-      if (GetMaxLevel(ch) < LOW_IMMORTAL)
+      if (get_max_level(ch) < LOW_IMMORTAL)
         RaceMax = RacialMax[GET_RACE(ch)][DRUID_LEVEL_IND];
       else
         RaceMax = 50;
@@ -2908,7 +2908,7 @@ void do_attribute(struct char_data *ch, char *UNUSED(argument),
   SPRINTF(buf, "You are %s \n\r", ArmorDesc(ch->points.armor));
   send_to_char(buf, ch);
 
-  if ((GetMaxLevel(ch) > 15) || (HasClass(ch, CLASS_MAGIC_USER) ||
+  if ((get_max_level(ch) > 15) || (HasClass(ch, CLASS_MAGIC_USER) ||
                                  HasClass(ch, CLASS_MONK))) {
     if ((GET_STR(ch) == 18) && (HasClass(ch, CLASS_WARRIOR))) {
       SPRINTF(buf,
@@ -3437,13 +3437,13 @@ int MobLevBonus(struct char_data *ch) {
 
   t += (ch->mult_att - 1) * 3;
 
-  if (GET_HIT(ch) > GetMaxLevel(ch) * 8)
+  if (GET_HIT(ch) > get_max_level(ch) * 8)
     t += 1;
-  if (GET_HIT(ch) > GetMaxLevel(ch) * 12)
+  if (GET_HIT(ch) > get_max_level(ch) * 12)
     t += 1;
-  if (GET_HIT(ch) > GetMaxLevel(ch) * 16)
+  if (GET_HIT(ch) > get_max_level(ch) * 16)
     t += 1;
-  if (GET_HIT(ch) > GetMaxLevel(ch) * 20)
+  if (GET_HIT(ch) > get_max_level(ch) * 20)
     t += 1;
 
   return (t);

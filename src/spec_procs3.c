@@ -515,8 +515,8 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (cmd) {
     if (cmd == 1 && ch->in_room == TimnusRoom) {
-      if ((TIMNUSNORTHLIMIT < GetMaxLevel(ch)) &&
-          (GetMaxLevel(ch) < LOW_IMMORTAL)) {
+      if ((TIMNUSNORTHLIMIT < get_max_level(ch)) &&
+          (get_max_level(ch) < LOW_IMMORTAL)) {
         if (!check_soundproof(ch)) {
           act("$n tells you 'Thou art not pure enough of heart.'", TRUE,
               mob, 0, ch, TO_VICT);
@@ -527,8 +527,8 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
       return (FALSE);
     }
     else if (cmd == 4 && ch->in_room == TimnusRoom) {
-      if ((TIMNUSWESTLIMIT < GetMaxLevel(ch)) &&
-          (GetMaxLevel(ch) < LOW_IMMORTAL)) {
+      if ((TIMNUSWESTLIMIT < get_max_level(ch)) &&
+          (get_max_level(ch) < LOW_IMMORTAL)) {
         if (!check_soundproof(ch)) {
           act("$n tells you 'Thou art not pure enough of heart.'", TRUE,
               mob, 0, ch, TO_VICT);
@@ -555,11 +555,11 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
               vict = ch->specials.fighting;
             if (!vict)
               return (FALSE);
-            lspell = number(0, GetMaxLevel(ch));
+            lspell = number(0, get_max_level(ch));
             if (!IS_PC(ch)) {
-              lspell += GetMaxLevel(ch) / 5;
+              lspell += get_max_level(ch) / 5;
             }
-            lspell = MIN(GetMaxLevel(ch), lspell);
+            lspell = MIN(get_max_level(ch), lspell);
 
             if (lspell < 1)
               lspell = 1;
@@ -567,7 +567,7 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
             if (IS_AFFECTED(ch, AFF_BLIND) && (lspell > 15)) {
               act("$n utters the words 'Let me see the light!'",
                   TRUE, ch, 0, 0, TO_ROOM);
-              cast_cure_blind(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch,
+              cast_cure_blind(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch,
                               0);
               return (FALSE);
             }
@@ -576,7 +576,7 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
               act
                 ("$n pulls a glass of lemonade out of thin air.  How refreshing.",
                  1, ch, 0, 0, TO_ROOM);
-              cast_refresh(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
+              cast_refresh(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
               return (FALSE);
             }
 
@@ -601,21 +601,21 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
             }
 
             if (((IS_AFFECTED(vict, AFF_SANCTUARY)) && (lspell > 25))
-                && (GetMaxLevel(ch) >= GetMaxLevel(vict))) {
+                && (get_max_level(ch) >= get_max_level(vict))) {
               act
                 ("$n utters the words 'Do unto others as you'd have them do unto you...'",
                  1, ch, 0, 0, TO_ROOM);
-              cast_dispel_magic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL,
+              cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL,
                                 vict, 0);
               return (FALSE);
             }
 
             if (((IS_AFFECTED(vict, AFF_FIRESHIELD)) && (lspell > 25))
-                && (GetMaxLevel(ch) >= GetMaxLevel(vict))) {
+                && (get_max_level(ch) >= get_max_level(vict))) {
               act
                 ("$n utters the words 'Do unto others as you'd have them do unto you...'",
                  1, ch, 0, 0, TO_ROOM);
-              cast_dispel_magic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL,
+              cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL,
                                 vict, 0);
               return (FALSE);
             }
@@ -624,7 +624,7 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
               act
                 ("$n utters the words 'Here's a penny, go buy a brain, and give me the change'",
                  1, ch, 0, 0, TO_ROOM);
-              cast_feeblemind(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict,
+              cast_feeblemind(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
                               0);
               return (FALSE);
             }
@@ -669,7 +669,7 @@ int winger(struct char_data *ch, int cmd, char *UNUSED(arg),
     if (IS_AFFECTED(vict, AFF_FLYING)) {
       act("$n utters the words 'Instant Wing Remover!'.", 1, ch, 0, 0,
           TO_ROOM);
-      cast_dispel_magic(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+      cast_dispel_magic(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (TRUE);
     }
     else {

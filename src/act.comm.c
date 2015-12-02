@@ -147,7 +147,7 @@ void do_commune(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     for (i = descriptor_list; i; i = i->next)
       if (i->character != ch && !i->connected && !IS_NPC(i->character) &&
           !IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
-          (GetMaxLevel(i->character) >= LOW_IMMORTAL))
+          (get_max_level(i->character) >= LOW_IMMORTAL))
         act(buf1, 0, ch, 0, i->character, TO_VICT);
   }
 }

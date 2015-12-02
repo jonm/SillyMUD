@@ -299,7 +299,7 @@ void do_pose(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   byte counter;
   int lev, class;
 
-  lev = GetMaxLevel(ch);
+  lev = get_max_level(ch);
   if (IS_IMMORTAL(ch)) {
     lev = LOW_IMMORTAL - 1;
   }

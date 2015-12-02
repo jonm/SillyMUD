@@ -1903,13 +1903,13 @@ void cast_dragon_breath(byte level, struct char_data *ch, char *UNUSED(arg),
             ch, TO_NOTVICT);
         break;
       }
-      if (level > MIN(GET_CON(ch) - 1, GetMaxLevel(ch))) {
+      if (level > MIN(GET_CON(ch) - 1, get_max_level(ch))) {
         send_to_char
           ("!GACK! You are too weak to handle the full power of the potion.\n\r",
            ch);
         act("$n gags and flops around on the floor a bit.", FALSE, ch, 0, ch,
             TO_NOTVICT);
-        level = MIN(GET_CON(ch) - 1, GetMaxLevel(ch));
+        level = MIN(GET_CON(ch) - 1, get_max_level(ch));
       }
       af.modifier = -level;
       af.location = APPLY_CON;
@@ -3072,7 +3072,7 @@ void cast_command(byte UNUSED(level), struct char_data *ch, char *arg,
   if (arg && *arg) {
     p = fname(arg);
 
-    if (((GetMaxLevel(tar_ch) < 6) && (GET_INT(tar_ch) < 13)) ||
+    if (((get_max_level(tar_ch) < 6) && (GET_INT(tar_ch) < 13)) ||
         !saves_spell(tar_ch, SAVING_PARA)) {
 
       if (strcmp(p, "quit")) {

@@ -208,7 +208,7 @@ void do_eat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
 
-  if ((temp->obj_flags.type_flag != ITEM_FOOD) && (GetMaxLevel(ch) < DEMIGOD)) {
+  if ((temp->obj_flags.type_flag != ITEM_FOOD) && (get_max_level(ch) < DEMIGOD)) {
     act("Your stomach refuses to eat that!?!", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }
@@ -241,7 +241,7 @@ void do_eat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
        (6, ch, "", SPELL_TYPE_POTION, ch, 0));
     }
 
-  if (temp->obj_flags.value[3] && (GetMaxLevel(ch) < LOW_IMMORTAL)) {
+  if (temp->obj_flags.value[3] && (get_max_level(ch) < LOW_IMMORTAL)) {
     act("That tasted rather strange!!", FALSE, ch, 0, 0, TO_CHAR);
     act("$n coughs and utters some strange sounds.", FALSE, ch, 0, 0, TO_ROOM);
 

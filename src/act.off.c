@@ -98,7 +98,7 @@ void do_kill(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   static char arg[MAX_INPUT_LENGTH];
   struct char_data *victim;
 
-  if ((GetMaxLevel(ch) < SILLYLORD) || IS_NPC(ch)) {
+  if ((get_max_level(ch) < SILLYLORD) || IS_NPC(ch)) {
     do_hit(ch, argument, 0);
     return;
   }
@@ -230,7 +230,7 @@ void do_backstab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
               TO_CHAR);
       }
     }
-    else if (number(1, 100) < (GetMaxLevel(ch) - GetMaxLevel(victim) + 50)) {
+    else if (number(1, 100) < (get_max_level(ch) - get_max_level(victim) + 50)) {
       if (percent > ch->skills[SKILL_SNEAK].learned) {  /* failed sneak */
         send_to_char("Damn, you think they almost noticed you.\n\r", ch);
         penalized = TRUE;
@@ -611,14 +611,14 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
           if (die == 1) {
             /* The escape has succeded. We'll be nice. */
-            if (GetMaxLevel(ch) > 3) {
+            if (get_max_level(ch) > 3) {
               if (panic || !HasClass(ch, CLASS_WARRIOR)) {
-                loose = GetMaxLevel(ch) + (GetSecMaxLev(ch) / 2) +
+                loose = get_max_level(ch) + (GetSecMaxLev(ch) / 2) +
                   (GetThirdMaxLev(ch) / 3);
-                loose -= GetMaxLevel(ch->specials.fighting) +
+                loose -= get_max_level(ch->specials.fighting) +
                   (GetSecMaxLev(ch->specials.fighting) / 2) +
                   (GetThirdMaxLev(ch->specials.fighting) / 3);
-                loose *= GetMaxLevel(ch);
+                loose *= get_max_level(ch);
               }
             }
             else {
@@ -835,14 +835,14 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
         if (die == 1) {
           /* The escape has succeded. We'll be nice. */
-          if (GetMaxLevel(ch) > 3) {
+          if (get_max_level(ch) > 3) {
             if (panic || !HasClass(ch, CLASS_WARRIOR)) {
-              loose = GetMaxLevel(ch) + (GetSecMaxLev(ch) / 2) +
+              loose = get_max_level(ch) + (GetSecMaxLev(ch) / 2) +
                 (GetThirdMaxLev(ch) / 3);
-              loose -= GetMaxLevel(ch->specials.fighting) +
+              loose -= get_max_level(ch->specials.fighting) +
                 (GetSecMaxLev(ch->specials.fighting) / 2) +
                 (GetThirdMaxLev(ch->specials.fighting) / 3);
-              loose *= GetMaxLevel(ch);
+              loose *= get_max_level(ch);
             }
           }
           else {
@@ -980,8 +980,8 @@ void do_bash(struct char_data *ch, char *argument, int cmd) {
   /* some modifications to account for dexterity, and level */
   percent -= dex_app[(int)GET_DEX(ch)].reaction * 10;
   percent += dex_app[(int)GET_DEX(victim)].reaction * 10;
-  if (GetMaxLevel(victim) > 12) {
-    percent += ((GetMaxLevel(victim) - 10) * 5);
+  if (get_max_level(victim) > 12) {
+    percent += ((get_max_level(victim) - 10) * 5);
   }
 
   if (GET_POS(ch) <= POSITION_STUNNED)
@@ -1218,7 +1218,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd) {
     SetVictFighting(ch, victim);
     return;
   }
-  else if (!IS_NPC(victim) && (GetMaxLevel(victim) > MAX_MORT)) {
+  else if (!IS_NPC(victim) && (get_max_level(victim) > MAX_MORT)) {
     kick_messages(ch, victim, 0);
     SetVictFighting(ch, victim);
     SetCharFighting(ch, victim);
@@ -1596,7 +1596,7 @@ void do_quivering_palm(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   }
   else {
     if (GET_MAX_HIT(victim) > GET_MAX_HIT(ch) * 2
-        || GetMaxLevel(victim) > GetMaxLevel(ch)) {
+        || get_max_level(victim) > get_max_level(ch)) {
       damage(ch, victim, 0, SKILL_QUIV_PALM);
       return;
     }

@@ -113,7 +113,7 @@ void spell_burning_hands(byte level, struct char_data *ch,
        tmp_victim = tmp_victim->next_in_room) {
 
     if ((ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
-      if ((GetMaxLevel(tmp_victim) > LOW_IMMORTAL) && (!IS_NPC(tmp_victim)))
+      if ((get_max_level(tmp_victim) > LOW_IMMORTAL) && (!IS_NPC(tmp_victim)))
         return;
       if (!in_group(ch, tmp_victim)) {
         act("You are seared by the burning flame!\n\r",
@@ -201,10 +201,10 @@ void spell_energy_drain(byte level, struct char_data *ch,
   if (!saves_spell(victim, SAVING_SPELL)) {
     GET_ALIGNMENT(ch) = MAX(-1000, GET_ALIGNMENT(ch) - 200);
     send_to_char("You feel wicked!\n\r", ch);
-    if (GetMaxLevel(victim) <= 1) {
+    if (get_max_level(victim) <= 1) {
       damage(ch, victim, 100, SPELL_ENERGY_DRAIN);      /* Kill the sucker */
     }
-    else if ((!IS_NPC(victim)) && (GetMaxLevel(victim) >= LOW_IMMORTAL)) {
+    else if ((!IS_NPC(victim)) && (get_max_level(victim) >= LOW_IMMORTAL)) {
       send_to_char("Some puny mortal just tried to drain you...\n\r", victim);
     }
     else {
@@ -219,11 +219,11 @@ void spell_energy_drain(byte level, struct char_data *ch,
           set_title(victim);
         }
         else {
-          tmp = GET_MAX_HIT(victim) / GetMaxLevel(victim);
+          tmp = GET_MAX_HIT(victim) / get_max_level(victim);
           victim->points.max_hit -= tmp;
           GET_HIT(victim) -= tmp;
           GET_HIT(ch) += tmp;
-          tmp = GET_EXP(victim) / GetMaxLevel(victim);
+          tmp = GET_EXP(victim) / get_max_level(victim);
           GET_EXP(ch) += tmp;
           GET_EXP(victim) -= tmp;
           victim->points.hitroll += 1;
@@ -239,12 +239,12 @@ void spell_energy_drain(byte level, struct char_data *ch,
             set_title(ch);
           }
           else {
-            tmp = GET_MAX_HIT(victim) / GetMaxLevel(victim);
+            tmp = GET_MAX_HIT(victim) / get_max_level(victim);
             victim->points.max_hit -= tmp;
             GET_HIT(victim) -= tmp;
             GET_HIT(ch) += tmp;
             victim->points.hitroll += 1;
-            tmp = GET_EXP(victim) / GetMaxLevel(victim);
+            tmp = GET_EXP(victim) / get_max_level(victim);
             GET_EXP(ch) += tmp;
             GET_EXP(victim) -= tmp;
           }
@@ -299,7 +299,7 @@ void spell_earthquake(byte level, struct char_data *ch,
     if ((ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
       if (!in_group(ch, tmp_victim) && !IS_IMMORTAL(tmp_victim)) {
 
-        if (GetMaxLevel(tmp_victim) > 4) {
+        if (get_max_level(tmp_victim) > 4) {
           act("You fall and hurt yourself!!\n\r",
               FALSE, ch, 0, tmp_victim, TO_VICT);
           if (number(1, 20) > ch->abilities.dex) {
@@ -558,7 +558,7 @@ void spell_teleport(byte UNUSED(level), struct char_data *ch,
   do_look(ch, "", 0);
 
   if (IS_SET(real_roomp(to_room)->room_flags, DEATH) &&
-      GetMaxLevel(ch) < LOW_IMMORTAL) {
+      get_max_level(ch) < LOW_IMMORTAL) {
     NailThisSucker(ch);
     return;
   }
@@ -1831,7 +1831,7 @@ void RawSummon(struct char_data *v, struct char_data *c) {
   char buf[400];
 
   if (IS_NPC(v) && (!IS_SET(v->specials.act, ACT_POLYSELF)) &&
-      (GetMaxLevel(v) > GetMaxLevel(c) + 3)) {
+      (get_max_level(v) > get_max_level(c) + 3)) {
     act("$N struggles, and all of $S items are destroyed!", TRUE, c, 0, v,
         TO_CHAR);
     /* remove objects from victim */
@@ -1912,7 +1912,7 @@ void spell_charm_person(byte UNUSED(level), struct char_data *ch,
     }
 
 
-    if (GetMaxLevel(victim) > GetMaxLevel(ch) + 3) {
+    if (get_max_level(victim) > get_max_level(ch) + 3) {
       FailCharm(victim, ch);
       return;
     }
@@ -2003,7 +2003,7 @@ void spell_charm_monster(byte UNUSED(level), struct char_data *ch,
     return;
   }
 
-  if (GetMaxLevel(victim) > GetMaxLevel(ch) + 3) {
+  if (get_max_level(victim) > get_max_level(ch) + 3) {
     FailCharm(victim, ch);
     return;
   }
@@ -2299,7 +2299,7 @@ void spell_fire_breath(byte level, struct char_data *ch,
 
   hpch = GET_MAX_HIT(ch);
   hpch *= level;
-  hpch /= GetMaxLevel(ch);
+  hpch /= get_max_level(ch);
   if (hpch < 10)
     hpch = 10;
 
@@ -2343,7 +2343,7 @@ void spell_frost_breath(byte level, struct char_data *ch,
 
   hpch = GET_MAX_HIT(ch);
   hpch *= level;
-  hpch /= GetMaxLevel(ch);
+  hpch /= get_max_level(ch);
   if (hpch < 10)
     hpch = 10;
 
@@ -2384,7 +2384,7 @@ void spell_acid_breath(byte level, struct char_data *ch,
 
   hpch = GET_MAX_HIT(ch);
   hpch *= level;
-  hpch /= GetMaxLevel(ch);
+  hpch /= get_max_level(ch);
   if (hpch < 10)
     hpch = 10;
 
@@ -2408,7 +2408,7 @@ void spell_gas_breath(byte level, struct char_data *ch,
 
   hpch = GET_MAX_HIT(ch);
   hpch *= level;
-  hpch /= GetMaxLevel(ch);
+  hpch /= get_max_level(ch);
   if (hpch < 10)
     hpch = 10;
 
@@ -2433,7 +2433,7 @@ void spell_lightning_breath(byte level, struct char_data *ch,
 
   hpch = GET_MAX_HIT(ch);
   hpch *= level;
-  hpch /= GetMaxLevel(ch);
+  hpch /= get_max_level(ch);
   if (hpch < 10)
     hpch = 10;
 

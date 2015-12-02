@@ -48,7 +48,7 @@ void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   level = GET_LEVEL(ch, DRUID_LEVEL_IND);
 
-  level = (level ? level : GetMaxLevel(ch));    /* for vampires */
+  level = (level ? level : get_max_level(ch));    /* for vampires */
   SPRINTF(buf, "Level %d thing doing a changeform.", level);
   log_msg(buf);
 
@@ -207,7 +207,7 @@ void do_bite(struct char_data *ch, char *argument, int cmd) {
   if (*arg) {
     victim = get_char_room_vis(ch, arg);
     if (victim) {
-      if (GetMaxLevel(victim) >= LOW_IMMORTAL) {
+      if (get_max_level(victim) >= LOW_IMMORTAL) {
         send_to_char("Immortals should not be considered food.\n\r", ch);
         send_to_char("You think someone is eyeing you for lunch.\n\r", victim);
         return;
@@ -263,7 +263,7 @@ void MindflayerAttack(struct char_data *ch, struct char_data *v) {
   if (ch->specials.bitten)
     return;
 
-  if (number(1, 100) > (GetMaxLevel(ch)) + GET_DEX(ch))
+  if (number(1, 100) > (get_max_level(ch)) + GET_DEX(ch))
     return;
 
   if (v->equipment[WEAR_HEAD]) {        /* hey, this bozo has headgear! */
@@ -282,7 +282,7 @@ void MindflayerAttack(struct char_data *ch, struct char_data *v) {
     }
   }
 
-  if (HitOrMiss(ch, v, CalcThaco(ch)) && GetMaxLevel(v) < LOW_IMMORTAL) {
+  if (HitOrMiss(ch, v, CalcThaco(ch)) && get_max_level(v) < LOW_IMMORTAL) {
     /* ha ha, we suck them */
     act("$N screams out in pain as $n's tentacles suck $S energies!", FALSE,
         ch, 0, v, TO_NOTVICT);
@@ -297,7 +297,7 @@ void MindflayerAttack(struct char_data *ch, struct char_data *v) {
 
     act("You wrap your tentacles around $N's head.", FALSE, ch, 0, v, TO_CHAR);
 
-    loss = number(1, GetMaxLevel(ch));
+    loss = number(1, get_max_level(ch));
 
     if (GET_MANA(v) > 0) {
 
@@ -333,7 +333,7 @@ void VampireBite(struct char_data *ch, struct char_data *v) {
   if (v->specials.bitten) {     /* vampire's victim */
     chance = GET_STR(v) - GET_STR(ch);
     chance *= 3.4;              /* chance from +51 to -51 */
-    chance += GetMaxLevel(v) - GetMaxLevel(ch);
+    chance += get_max_level(v) - get_max_level(ch);
     /* chance is now some # from +100 to -100 */
 
     /* we bite better at night :) */
@@ -345,7 +345,7 @@ void VampireBite(struct char_data *ch, struct char_data *v) {
     /* for str diff of 8, 27%, if 10 level dif., 37%, chance averages 62% */
     /* NOTE: This is the chance for the vampire to keep ahold of v */
 
-    if (GetMaxLevel(ch) < GetMaxLevel(v) - 5)   /* life seemed too easy */
+    if (get_max_level(ch) < get_max_level(v) - 5)   /* life seemed too easy */
       chance += 25;
 
     if (chance > number(1, 100)) {
@@ -386,7 +386,7 @@ void VampireBite(struct char_data *ch, struct char_data *v) {
 
     v->specials.bitten = TRUE;
 
-    loss = number(1, MAX(10, GetMaxLevel(ch)));
+    loss = number(1, MAX(10, get_max_level(ch)));
 
     if (GET_HIT(v) > 0) {
       act("You savor the salty taste of $N's blood as you drain it.", FALSE,

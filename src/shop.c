@@ -229,7 +229,7 @@ void shopping_buy(char *arg, struct char_data *ch,
 
   while (num-- > 0) {
 
-    if (GetMaxLevel(ch) < DEMIGOD)
+    if (get_max_level(ch) < DEMIGOD)
       GET_GOLD(ch) -= (int)cost;
 
     GET_GOLD(keeper) += (int)cost;

@@ -194,7 +194,7 @@ void spell_pword_kill(byte level, struct char_data *ch,
   max += level;
   max += level / 2;
 
-  if (GET_MAX_HIT(victim) <= max || GetMaxLevel(ch) > 53) {
+  if (GET_MAX_HIT(victim) <= max || get_max_level(ch) > 53) {
     damage(ch, victim, GET_MAX_HIT(victim) * 12, SPELL_PWORD_KILL);
   }
   else {
@@ -207,7 +207,7 @@ void spell_pword_blind(byte UNUSED(level), struct char_data *ch,
                        struct char_data *victim,
                        struct obj_data *UNUSED(obj)) {
 
-  if (GET_MAX_HIT(victim) <= 100 || GetMaxLevel(ch) > 53) {
+  if (GET_MAX_HIT(victim) <= 100 || get_max_level(ch) > 53) {
     SET_BIT(victim->specials.affected_by, AFF_BLIND);
   }
   else {
@@ -238,7 +238,7 @@ void spell_chain_lightn(byte level, struct char_data *ch,
 
 void spell_scare(byte UNUSED(level), struct char_data *UNUSED(ch),
                  struct char_data *victim, struct obj_data *UNUSED(obj)) {
-  if (GetMaxLevel(victim) <= 5)
+  if (get_max_level(victim) <= 5)
     do_flee(victim, "\0", 0);
 }
 
@@ -786,7 +786,7 @@ void spell_animal_growth(byte UNUSED(level), struct char_data *ch,
     return;
   }
 
-  if (GetMaxLevel(victim) * 2 > GetMaxLevel(ch)) {
+  if (get_max_level(victim) * 2 > get_max_level(ch)) {
     send_to_char("You can't make it more powerful than you!\n\r", ch);
     return;
   }
@@ -821,7 +821,7 @@ void spell_animal_growth(byte UNUSED(level), struct char_data *ch,
   affect_to_char(victim, &af);
 /*
 
-  GET_LEVEL(victim, WARRIOR_LEVEL_IND) = 2*GetMaxLevel(victim);
+  GET_LEVEL(victim, WARRIOR_LEVEL_IND) = 2*get_max_level(victim);
 */
 }
 
@@ -847,7 +847,7 @@ void spell_insect_growth(byte UNUSED(level), struct char_data *ch,
     return;
   }
 
-  if (GetMaxLevel(victim) * 2 > GetMaxLevel(ch)) {
+  if (get_max_level(victim) * 2 > get_max_level(ch)) {
     send_to_char("You can't make it more powerful than you!\n\r", ch);
     return;
   }
@@ -881,7 +881,7 @@ void spell_insect_growth(byte UNUSED(level), struct char_data *ch,
   af.bitvector = 0;
   affect_to_char(victim, &af);
 /*
-  GET_LEVEL(victim, WARRIOR_LEVEL_IND) = 2*GetMaxLevel(victim);
+  GET_LEVEL(victim, WARRIOR_LEVEL_IND) = 2*get_max_level(victim);
 */
 }
 
@@ -1321,7 +1321,7 @@ void spell_charm_veggie(byte UNUSED(level), struct char_data *ch,
     return;
   }
 
-  if (GetMaxLevel(victim) > GetMaxLevel(ch) + 10) {
+  if (get_max_level(victim) > get_max_level(ch) + 10) {
     FailCharm(victim, ch);
     return;
   }
@@ -1399,7 +1399,7 @@ void spell_veggie_growth(byte level, struct char_data *ch,
     return;
   }
 
-  if (GetMaxLevel(victim) * 2 > GetMaxLevel(ch)) {
+  if (get_max_level(victim) * 2 > get_max_level(ch)) {
     send_to_char("You can't make it more powerful than you!\n\r", ch);
     return;
   }
@@ -1440,7 +1440,7 @@ void spell_veggie_growth(byte level, struct char_data *ch,
   af.bitvector = 0;
   affect_to_char(victim, &af);
 
-  GET_LEVEL(victim, WARRIOR_LEVEL_IND) = 2 * GetMaxLevel(victim);
+  GET_LEVEL(victim, WARRIOR_LEVEL_IND) = 2 * get_max_level(victim);
 
 }
 
@@ -1606,12 +1606,12 @@ void spell_animal_friendship(byte level, struct char_data *ch,
     return;
   }
 
-  if (GetMaxLevel(ch) < GetMaxLevel(victim)) {
+  if (get_max_level(ch) < get_max_level(victim)) {
     send_to_char("You do not have enough willpower to charm that yet\n\r", ch);
     return;
   }
 
-  if (GetMaxLevel(victim) > 10 + GetMaxLevel(ch) / 2) {
+  if (get_max_level(victim) > 10 + get_max_level(ch) / 2) {
     send_to_char("That creature is too powerful to charm\n\r", ch);
     return;
   }
@@ -1814,7 +1814,7 @@ void spell_gust_of_wind(byte level, struct char_data *ch,
        tmp_victim = temp) {
     temp = tmp_victim->next_in_room;
     if ((ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
-      if ((GetMaxLevel(tmp_victim) > LOW_IMMORTAL) && (!IS_NPC(tmp_victim)))
+      if ((get_max_level(tmp_victim) > LOW_IMMORTAL) && (!IS_NPC(tmp_victim)))
         return;
       if (!in_group(ch, tmp_victim)) {
         if (saves_spell(tmp_victim, SAVING_SPELL))
@@ -2065,7 +2065,7 @@ void spell_know_monster(byte level, struct char_data *ch,
       act(buf, FALSE, ch, 0, victim, TO_CHAR);
     }
     if (level > 10) {
-      lev = GetApprox(GetMaxLevel(victim), 40 + level);
+      lev = GetApprox(get_max_level(victim), 40 + level);
       SPRINTF(buf, "$N fights like a %d level warrior, you think", lev);
       act(buf, FALSE, ch, 0, victim, TO_CHAR);
     }
@@ -2179,7 +2179,7 @@ void spell_teleport_wo_error(byte level, struct char_data *ch,
   location = victim->in_room;
   rp = real_roomp(location);
 
-  if (GetMaxLevel(victim) > MAX_MORT ||
+  if (get_max_level(victim) > MAX_MORT ||
       !rp ||
       IS_SET(rp->room_flags, PRIVATE) ||
       IS_SET(rp->room_flags, NO_SUM) ||
@@ -2216,7 +2216,7 @@ void spell_teleport_wo_error(byte level, struct char_data *ch,
     check_falling(ch);
 
     if (IS_SET(real_roomp(ch->in_room)->room_flags, DEATH) &&
-        GetMaxLevel(ch) < LOW_IMMORTAL) {
+        get_max_level(ch) < LOW_IMMORTAL) {
       NailThisSucker(ch);
       return;
     }

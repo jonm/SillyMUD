@@ -138,7 +138,7 @@ void do_junk(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     act("You are awarded for outstanding performance.",
         FALSE, ch, 0, 0, TO_CHAR);
 
-    if (GetMaxLevel(ch) < 3)
+    if (get_max_level(ch) < 3)
       gain_exp(ch, MIN(100, value));
     else
       GET_GOLD(ch) += value;
@@ -446,7 +446,7 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
 
-  if (GetMaxLevel(victim) > 50) {
+  if (get_max_level(victim) > 50) {
     send_to_char("Steal from a God?!?  Oh the thought!\n\r", ch);
     SPRINTF(buf, "BUG NOTE: %s tried to steal from GOD %s", GET_NAME(ch),
             GET_NAME(victim));
@@ -456,7 +456,7 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);   /* they're gonna have to wait. */
 
-  if ((GetMaxLevel(ch) < 2) && (!IS_NPC(victim))) {
+  if ((get_max_level(ch) < 2) && (!IS_NPC(victim))) {
     send_to_char
       ("Due to misuse of steal, you can't steal from other players\n\r", ch);
     send_to_char("unless you are at least 2cnd level. \n\r", ch);
@@ -474,7 +474,7 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   percent += GET_AVE_LEVEL(victim);
 
-  if (GetMaxLevel(victim) > MAX_MORT)
+  if (get_max_level(victim) > MAX_MORT)
     percent = 101;              /* Failure */
 
   if (str_cmp(obj_name, "coins") && str_cmp(obj_name, "gold")) {
@@ -1073,12 +1073,12 @@ void do_group(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         REMOVE_BIT(victim->specials.affected_by, AFF_GROUP);
       }
       else {
-        if (GetMaxLevel(victim) >= LOW_IMMORTAL) {
+        if (get_max_level(victim) >= LOW_IMMORTAL) {
           act("You really don't want $n in your group.", FALSE, ch, 0, 0,
               TO_CHAR);
           return;
         }
-        if (GetMaxLevel(ch) >= LOW_IMMORTAL) {
+        if (get_max_level(ch) >= LOW_IMMORTAL) {
           act("Now now.  That would be CHEATING!", FALSE, ch, 0, 0, TO_CHAR);
           return;
 
@@ -1984,7 +1984,7 @@ void do_prompt(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   arg = lower(argument);
 
   if (arg[0] == '-') {
-    if (GetMaxLevel(ch) >= LOW_IMMORTAL) {
+    if (get_max_level(ch) >= LOW_IMMORTAL) {
       if (index(arg, 'r') != NULL) {
         SET_BIT(prompt, PROMPT_R);
       }
@@ -2018,7 +2018,7 @@ void do_prompt(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
   else {
     send_to_char("format: prompt -<statistics>\n\r", ch);
-    if (GetMaxLevel(ch) >= LOW_IMMORTAL) {
+    if (get_max_level(ch) >= LOW_IMMORTAL) {
       send_to_char("Immortals may specify the following statistics:\n\r", ch);
       send_to_char("(R)oom Number, Room (F)lags, (S)ector Type\n\r", ch);
       send_to_char("Immortals may not specify Mortal statistics.\n\r", ch);

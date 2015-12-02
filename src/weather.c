@@ -471,7 +471,7 @@ void SunProblemCheck(struct char_data *ch) {
 void sun_blind(struct char_data *ch) {
   struct affected_type af;
 
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL)
+  if (get_max_level(ch) >= LOW_IMMORTAL)
     return;
 
   if (IS_AFFECTED2(ch, AFF2_SUN_BLIND))
@@ -488,7 +488,7 @@ void sun_blind(struct char_data *ch) {
   af.type = SPELL_SUN_BLIND;
   af.location = APPLY_HITROLL;
   af.modifier = -4;
-  af.duration = (number(1, 2) + (5 - GetMaxLevel(ch) / 10));
+  af.duration = (number(1, 2) + (5 - get_max_level(ch) / 10));
   af.bitvector = 0;
   affect_to_char(ch, &af);
 
@@ -505,7 +505,7 @@ void sun_blind(struct char_data *ch) {
 void remove_sun_blind(struct char_data *ch) {
   struct affected_type af;
 
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL)
+  if (get_max_level(ch) >= LOW_IMMORTAL)
     return;
 
   send_to_char("Your vision begins to return.\n\r", ch);

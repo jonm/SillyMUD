@@ -948,7 +948,7 @@ void MobHit(struct char_data *ch, struct char_data *v, int type) {
         base = 4;
       }
 
-      learned = 50 + GetMaxLevel(ch);
+      learned = 50 + get_max_level(ch);
       percent = number(1, 100);
       if (percent > learned) {
         if (AWAKE(v)) {

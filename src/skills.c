@@ -271,15 +271,15 @@ void do_disarm(struct char_data *ch, char *argument, int cmd) {
     percent += 50;
   }
 
-  percent += GetMaxLevel(victim);
+  percent += get_max_level(victim);
   if (HasClass(victim, CLASS_MONK))
-    percent += GetMaxLevel(victim);
+    percent += get_max_level(victim);
 
   if (HasClass(ch, CLASS_MONK)) {
-    percent -= GetMaxLevel(ch);
+    percent -= get_max_level(ch);
   }
   else {
-    percent -= GetMaxLevel(ch) >> 1;
+    percent -= get_max_level(ch) >> 1;
   }
 
   if (percent > ch->skills[SKILL_DISARM].learned) {
@@ -389,15 +389,15 @@ void do_track(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     break;
   }
 
-  if (GetMaxLevel(ch) >= IMMORTAL)
+  if (get_max_level(ch) >= IMMORTAL)
     dist = MAX_ROOMS;
 
 
   if (affected_by_spell(ch, SPELL_MINOR_TRACK)) {
-    dist = GetMaxLevel(ch) * 10;
+    dist = get_max_level(ch) * 10;
   }
   else if (affected_by_spell(ch, SPELL_MAJOR_TRACK)) {
-    dist = GetMaxLevel(ch) * 20;
+    dist = get_max_level(ch) * 20;
   }
 
   if (dist == 0)
@@ -409,7 +409,7 @@ void do_track(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   huntd.name = name;
   huntd.victim = &ch->specials.hunting;
 
-  if ((GetMaxLevel(ch) < MIN_GLOB_TRACK_LEV) ||
+  if ((get_max_level(ch) < MIN_GLOB_TRACK_LEV) ||
       (affected_by_spell(ch, SPELL_MINOR_TRACK)) ||
       (affected_by_spell(ch, SPELL_MAJOR_TRACK))) {
     code = find_path(ch->in_room, named_mobile_in_room, &huntd, -dist, 1);
@@ -468,7 +468,7 @@ int track(struct char_data *ch, struct char_data *vict) {
   if ((!ch) || (!vict))
     return (-1);
 
-  if ((GetMaxLevel(ch) < MIN_GLOB_TRACK_LEV) ||
+  if ((get_max_level(ch) < MIN_GLOB_TRACK_LEV) ||
       (affected_by_spell(ch, SPELL_MINOR_TRACK)) ||
       (affected_by_spell(ch, SPELL_MAJOR_TRACK))) {
     code = choose_exit_in_zone(ch->in_room, vict->in_room, ch->hunt_dist);
@@ -505,7 +505,7 @@ int dir_track(struct char_data *ch, struct char_data *vict) {
     return (-1);
 
 
-  if ((GetMaxLevel(ch) >= MIN_GLOB_TRACK_LEV) ||
+  if ((get_max_level(ch) >= MIN_GLOB_TRACK_LEV) ||
       (affected_by_spell(ch, SPELL_MINOR_TRACK)) ||
       (affected_by_spell(ch, SPELL_MAJOR_TRACK))) {
     code = choose_exit_global(ch->in_room, vict->in_room, ch->hunt_dist);
@@ -789,7 +789,7 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
     DisplayMove(ch, dir, was_in, 1);
     if (!check_falling(ch)) {
       if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
-          GetMaxLevel(ch) < LOW_IMMORTAL) {
+          get_max_level(ch) < LOW_IMMORTAL) {
         NailThisSucker(ch);
         return;
       }
@@ -850,7 +850,7 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
           DisplayMove(ch, dir, was_in, 1);
           if (!check_falling(ch)) {
             if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
-                GetMaxLevel(ch) < LOW_IMMORTAL) {
+                get_max_level(ch) < LOW_IMMORTAL) {
               NailThisSucker(ch);
               return;
             }
@@ -1076,7 +1076,7 @@ void do_first_aid(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   }
 
   if (number(1, 101) < ch->skills[SKILL_FIRST_AID].learned) {
-    GET_HIT(ch) += number(1, 20) + (GetMaxLevel(ch) / 2);
+    GET_HIT(ch) += number(1, 20) + (get_max_level(ch) / 2);
     if (GET_HIT(ch) > GET_MAX_HIT(ch))
       GET_HIT(ch) = GET_MAX_HIT(ch);
 
@@ -1220,7 +1220,7 @@ void do_climb(struct char_data *ch, char *arg, int UNUSED(cmd)) {
         DisplayMove(ch, dir, was_in, 1);
         if (!check_falling(ch)) {
           if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
-              GetMaxLevel(ch) < LOW_IMMORTAL) {
+              get_max_level(ch) < LOW_IMMORTAL) {
             NailThisSucker(ch);
             return;
           }
@@ -1634,13 +1634,13 @@ void do_makepotion(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   extract_obj(potion);
 
   if (which_potion) {
-    if (!max || GetMaxLevel(ch) < max) {
+    if (!max || get_max_level(ch) < max) {
       send_to_char("This brew is beyond your powers.\n\r", ch);
       return;
     }
   }
   else {
-    if (GetMaxLevel(ch) < 40) {
+    if (get_max_level(ch) < 40) {
       send_to_char("This brew is beyond your powers.\n\r", ch);
       return;
     }

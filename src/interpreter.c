@@ -200,7 +200,7 @@ void command_interpreter(struct char_data *ch, char *argument) {
     return;
   }
 
-  if (GetMaxLevel(ch) < n->min_level) {
+  if (get_max_level(ch) < n->min_level) {
     send_to_char("Pardon?\n\r", ch);
     return;
   }
@@ -248,7 +248,7 @@ void command_interpreter(struct char_data *ch, char *argument) {
           SPRINTF(buf, "%s:%s", ch->player.name, argument);
           slog(buf);
         }
-        if ((GetMaxLevel(ch) >= LOW_IMMORTAL) && (GetMaxLevel(ch) < 60)) {
+        if ((get_max_level(ch) >= LOW_IMMORTAL) && (get_max_level(ch) < 60)) {
           SPRINTF(buf, "%s:%s", ch->player.name, argument);
           slog(buf);
         }
@@ -1269,7 +1269,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       }
 #if IMPL_SECURITY
       if (top_of_p_table > 0) {
-        if (GetMaxLevel(d->character) >= 58) {
+        if (get_max_level(d->character) >= 58) {
           switch (SecCheck(GET_NAME(d->character), d->host)) {
           case -1:
           case 0:
@@ -1739,7 +1739,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 #endif
 
   case CON_RMOTD:              /* read CR after printing motd  */
-    if (GetMaxLevel(d->character) > 50) {
+    if (get_max_level(d->character) > 50) {
       SEND_TO_Q(wmotd, d);
       SEND_TO_Q("\n\r\n[PRESS RETURN]", d);
       STATE(d) = CON_WMOTD;
@@ -1750,7 +1750,7 @@ void nanny(struct descriptor_data *d, char *arg) {
     SEND_TO_Q(MENU, d);
     STATE(d) = CON_SLCT;
     if (WizLock) {
-      if (GetMaxLevel(d->character) < LOW_IMMORTAL) {
+      if (get_max_level(d->character) < LOW_IMMORTAL) {
         SPRINTF(buf, "Sorry, the game is locked up for repair\n\r");
         SEND_TO_Q(buf, d);
         STATE(d) = CON_WIZLOCK;
@@ -1764,7 +1764,7 @@ void nanny(struct descriptor_data *d, char *arg) {
     SEND_TO_Q(MENU, d);
     STATE(d) = CON_SLCT;
     if (WizLock) {
-      if (GetMaxLevel(d->character) < LOW_IMMORTAL) {
+      if (get_max_level(d->character) < LOW_IMMORTAL) {
         SPRINTF(buf, "Sorry, the game is locked up for repair\n\r");
         SEND_TO_Q(buf, d);
         STATE(d) = CON_WIZLOCK;
@@ -1807,7 +1807,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 
         act("$n has entered the game.", TRUE, d->character, 0, 0, TO_ROOM);
         STATE(d) = CON_PLYNG;
-        if (!GetMaxLevel(d->character))
+        if (!get_max_level(d->character))
           do_start(d->character);
         do_look(d->character, "", 15);
         d->prompt_mode = 1;
@@ -1833,14 +1833,14 @@ void nanny(struct descriptor_data *d, char *arg) {
 
         act("$n has entered the game.", TRUE, d->character, 0, 0, TO_ROOM);
         STATE(d) = CON_PLYNG;
-        if (!GetMaxLevel(d->character))
+        if (!get_max_level(d->character))
           do_start(d->character);
         do_look(d->character, "", 15);
         d->prompt_mode = 1;
 
         break;
       case '3':
-        if (GetMaxLevel(d->character) > 5) {
+        if (get_max_level(d->character) > 5) {
 
           reset_char(d->character);
           SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
@@ -1860,7 +1860,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 
           act("$n has entered the game.", TRUE, d->character, 0, 0, TO_ROOM);
           STATE(d) = CON_PLYNG;
-          if (!GetMaxLevel(d->character))
+          if (!get_max_level(d->character))
             do_start(d->character);
           do_look(d->character, "", 15);
           d->prompt_mode = 1;
@@ -1873,7 +1873,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           break;
         }
       case '4':
-        if (GetMaxLevel(d->character) > 5) {
+        if (get_max_level(d->character) > 5) {
 
           reset_char(d->character);
           SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
@@ -1893,7 +1893,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 
           act("$n has entered the game.", TRUE, d->character, 0, 0, TO_ROOM);
           STATE(d) = CON_PLYNG;
-          if (!GetMaxLevel(d->character))
+          if (!get_max_level(d->character))
             do_start(d->character);
           do_look(d->character, "", 15);
           d->prompt_mode = 1;
@@ -1906,7 +1906,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           break;
         }
       case '5':
-        if (GetMaxLevel(d->character) > 5) {
+        if (get_max_level(d->character) > 5) {
 
           reset_char(d->character);
           SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
@@ -1926,7 +1926,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 
           act("$n has entered the game.", TRUE, d->character, 0, 0, TO_ROOM);
           STATE(d) = CON_PLYNG;
-          if (!GetMaxLevel(d->character))
+          if (!get_max_level(d->character))
             do_start(d->character);
           do_look(d->character, "", 15);
           d->prompt_mode = 1;
@@ -1965,7 +1965,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       character_list = d->character;
       if (d->character->in_room == NOWHERE ||
           d->character->in_room == AUTO_RENT) {
-        if (GetMaxLevel(d->character) < LOW_IMMORTAL) {
+        if (get_max_level(d->character) < LOW_IMMORTAL) {
 
           if (d->character->specials.start_room <= 0) {
             if (GET_RACE(d->character) == RACE_HALFLING) {
@@ -2017,7 +2017,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 
       act("$n has entered the game.", TRUE, d->character, 0, 0, TO_ROOM);
       STATE(d) = CON_PLYNG;
-      if (!GetMaxLevel(d->character))
+      if (!get_max_level(d->character))
         do_start(d->character);
       do_look(d->character, "", 15);
       d->prompt_mode = 1;
@@ -2055,11 +2055,11 @@ void nanny(struct descriptor_data *d, char *arg) {
       SEND_TO_Q("Where would you like to enter?\n\r", d);
       SEND_TO_Q("1.    Midgaard\n\r", d);
       SEND_TO_Q("2.    Shire\n\r", d);
-      if (GetMaxLevel(d->character) > 5)
+      if (get_max_level(d->character) > 5)
         SEND_TO_Q("3.    Mordilnia\n\r", d);
-      if (GetMaxLevel(d->character) > 10)
+      if (get_max_level(d->character) > 10)
         SEND_TO_Q("4.    New  Thalos\n\r", d);
-      if (GetMaxLevel(d->character) > 20)
+      if (get_max_level(d->character) > 20)
         SEND_TO_Q("5.    The Gypsy Village\n\r", d);
       SEND_TO_Q("Your choice? ", d);
       STATE(d) = CON_CITY_CHOICE;

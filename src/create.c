@@ -112,14 +112,14 @@ void do_redit(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   if (IS_NPC(ch))
     return;
 
-  if ((IS_NPC(ch)) || (GetMaxLevel(ch) < LOW_IMMORTAL))
+  if ((IS_NPC(ch)) || (get_max_level(ch) < LOW_IMMORTAL))
     return;
 
   if (!ch->desc)                /* someone is forced to do something. can be bad! */
     return;                     /* the ch->desc->str field will cause problems... */
 
 #ifndef TEST_SERVER
-  if ((GetMaxLevel(ch) < 56) && (rp->zone != GET_ZONE(ch))) {
+  if ((get_max_level(ch) < 56) && (rp->zone != GET_ZONE(ch))) {
     send_to_char("Sorry, you are not authorized to edit this zone.\n\r", ch);
     return;
   }

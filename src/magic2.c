@@ -361,7 +361,7 @@ void spell_turn(byte level, struct char_data *ch,
   turned = FALSE;
 
   if (IsUndead(victim)) {
-    diff = level - GetMaxLevel(victim);
+    diff = level - get_max_level(victim);
     if (diff <= -4) {           /* The puny girly girly clerics just don't cut it */
       act("You are powerless to affect $N", TRUE, ch, 0, victim, TO_CHAR);
       return;
@@ -527,19 +527,19 @@ void spell_holy_word(byte level, struct char_data *ch,
           holy_banish(level, ch, t, obj);
           continue;
         }
-        else if (level - GetMaxLevel(t) > 30) {
+        else if (level - get_max_level(t) > 30) {
           holy_destroy(level, ch, t, obj);
           continue;
         }
-        else if (level - GetMaxLevel(t) > 20) {
+        else if (level - get_max_level(t) > 20) {
           holy_bigdif(level, ch, t, obj);
           continue;
         }
-        else if (level - GetMaxLevel(t) > 10) {
+        else if (level - get_max_level(t) > 10) {
           holy_meddif(level, ch, t, obj);
           continue;
         }
-        else if (level - GetMaxLevel(t) > 0) {
+        else if (level - get_max_level(t) > 0) {
           holy_smldif(level, ch, t, obj);
         }
         continue;
@@ -582,7 +582,7 @@ void holy_bigdif(byte level, struct char_data *ch,
   struct affected_type af;
   int damg = 1;
 
-  damg = (level - GetMaxLevel(victim)) * 3;
+  damg = (level - get_max_level(victim)) * 3;
 
   act("$N screams in agony and terror at $n's furious blast!",
       TRUE, ch, 0, victim, TO_NOTVICT);
@@ -620,7 +620,7 @@ void holy_meddif(byte level, struct char_data *ch,
   struct affected_type af;
   int damg = 1;
 
-  damg = 2 * (level - GetMaxLevel(victim));
+  damg = 2 * (level - get_max_level(victim));
 
   act("$N is blasted by $n's mighty word, bringing $N to $S knees.",
       TRUE, ch, 0, victim, TO_NOTVICT);
@@ -1529,7 +1529,7 @@ void spell_dispel_magic(byte level, struct char_data *ch,
 
 /* gets rid of infravision, invisibility, detect, etc */
 
-  if (GetMaxLevel(victim) <= GetMaxLevel(ch))
+  if (get_max_level(victim) <= get_max_level(ch))
     yes = TRUE;
   else
     yes = FALSE;
@@ -1849,7 +1849,7 @@ void spell_fear(byte UNUSED(level), struct char_data *ch,
 
   assert(victim && ch);
 
-  if (GetMaxLevel(ch) >= GetMaxLevel(victim) - 2) {
+  if (get_max_level(ch) >= get_max_level(victim) - 2) {
     if (!saves_spell(victim, SAVING_SPELL)) {
       do_flee(victim, "", 0);
       if (!IS_PC(victim))

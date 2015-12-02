@@ -112,7 +112,7 @@ int RatioExp(struct char_data *ch, struct char_data *victim, int total) {
   if (!IS_SET(victim->specials.act, ACT_AGGRESSIVE) &&
       !IS_SET(victim->specials.act, ACT_META_AGG) &&
       !IS_AFFECTED(victim, AFF_CHARM))
-    if (GetMaxLevel(ch) > 20)
+    if (get_max_level(ch) > 20)
       total = LevelMod(ch, victim, total);
 
   if ((IS_SET(victim->specials.act, ACT_AGGRESSIVE) ||
@@ -450,27 +450,27 @@ void change_alignment(struct char_data *ch, struct char_data *victim) {
   if (IS_GOOD(ch) && (IS_GOOD(victim))) {
     change =
       (GET_ALIGNMENT(victim) / 200) *
-      (MAX(1, GetMaxLevel(victim) - GetMaxLevel(ch)));
+      (MAX(1, get_max_level(victim) - get_max_level(ch)));
   }
   else if (IS_EVIL(ch) && (IS_GOOD(victim))) {
     change =
       (GET_ALIGNMENT(victim) / 30) *
-      (MAX(1, GetMaxLevel(victim) - GetMaxLevel(ch)));
+      (MAX(1, get_max_level(victim) - get_max_level(ch)));
   }
   else if (IS_EVIL(victim) && (IS_GOOD(ch))) {
     change =
       (GET_ALIGNMENT(victim) / 30) *
-      (MAX(1, GetMaxLevel(victim) - GetMaxLevel(ch)));
+      (MAX(1, get_max_level(victim) - get_max_level(ch)));
   }
   else if (IS_EVIL(ch) && (IS_EVIL(victim))) {
     change =
       ((GET_ALIGNMENT(victim) / 200) +
-       1) * (MAX(1, GetMaxLevel(victim) - GetMaxLevel(ch)));
+       1) * (MAX(1, get_max_level(victim) - get_max_level(ch)));
   }
   else {
     change =
       ((GET_ALIGNMENT(victim) / 200) +
-       1) * (MAX(1, GetMaxLevel(victim) - GetMaxLevel(ch)));
+       1) * (MAX(1, get_max_level(victim) - get_max_level(ch)));
   }
 
   if (change == 0) {
@@ -589,7 +589,7 @@ void die(struct char_data *ch) {
         if (GET_LEVEL(ch, i) >= LOW_IMMORTAL)
           break;
         if (GET_EXP(ch) < (titles[i][(int)GET_LEVEL(ch, i)].exp / fraction)) {
-          tmp = (ch->points.max_hit) / GetMaxLevel(ch);
+          tmp = (ch->points.max_hit) / get_max_level(ch);
           ch->points.max_hit -= tmp;
           GET_LEVEL(ch, i) -= 1;
           ch->specials.spells_to_learn -=
@@ -603,11 +603,11 @@ void die(struct char_data *ch) {
 #endif
 
 #if NEWEXP
-  if (GetMaxLevel(ch) > 15)
+  if (get_max_level(ch) > 15)
     gain_exp(ch, -GET_EXP(ch) / 2);
-  else if (GetMaxLevel(ch) > 10)
+  else if (get_max_level(ch) > 10)
     gain_exp(ch, -GET_EXP(ch) / 3);
-  else if (GetMaxLevel(ch) > 5)
+  else if (get_max_level(ch) > 5)
     gain_exp(ch, -GET_EXP(ch) / 4);
   else
     gain_exp(ch, -GET_EXP(ch) / 5);
@@ -1063,7 +1063,7 @@ void DamageMessages(struct char_data *ch, struct char_data *v, int dam,
              j++)
           messages = messages->next;
 
-        if (!IS_NPC(v) && (GetMaxLevel(v) > MAX_MORT)) {
+        if (!IS_NPC(v) && (get_max_level(v) > MAX_MORT)) {
           act(messages->god_msg.attacker_msg,
               FALSE, ch, ch->equipment[WIELD], v, TO_CHAR);
           act(messages->god_msg.victim_msg,
@@ -1307,7 +1307,7 @@ void AreaDamage(struct char_data *ch, int dam, int attacktype,
     temp = tmp_victim->next_in_room;
 
     if ((ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
-      if (GetMaxLevel(tmp_victim) < LOW_IMMORTAL) {
+      if (get_max_level(tmp_victim) < LOW_IMMORTAL) {
         if (!in_group(ch, tmp_victim)) {
           if (saves_spell(tmp_victim, SAVING_SPELL)) {
             if (save_negates) {
@@ -1843,7 +1843,7 @@ int GetBackstabMult(struct char_data *ch, struct char_data *v) {
     mult = backstab_mult[(int)GET_LEVEL(ch, THIEF_LEVEL_IND)];
   }
   else {
-    mult = backstab_mult[GetMaxLevel(ch)];
+    mult = backstab_mult[get_max_level(ch)];
   }
   if (!ch->skills)
     return (mult);
@@ -1980,7 +1980,7 @@ void HitVictim(struct char_data *ch, struct char_data *v, int dam,
     int tmp;
 
     tmp = GetBackstabMult(ch, v);
-    SPRINTF(buf, "BS multiplier for %dth level char is %d.", GetMaxLevel(ch),
+    SPRINTF(buf, "BS multiplier for %dth level char is %d.", get_max_level(ch),
             tmp);
     log_msg(buf);
     dam *= tmp;
@@ -3040,7 +3040,7 @@ int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam) {
     if (type == TYPE_HIT || IS_NPC(ch) ||
         (IS_SET(ch->player.class, CLASS_MONK) && !ch->equipment[WIELD])) {
 
-      if (GetMaxLevel(ch) > ((Immunity + 1) * (Immunity + 1)) + 6) {
+      if (get_max_level(ch) > ((Immunity + 1) * (Immunity + 1)) + 6) {
         return (dam);
       }
       else {
@@ -3145,7 +3145,7 @@ int GetItemDamageType(int type) {
 int SkipImmortals(struct char_data *v, int amnt) {
   /* You can't damage an immortal! */
 
-  if ((GetMaxLevel(v) > MAX_MORT) && !IS_NPC(v))
+  if ((get_max_level(v) > MAX_MORT) && !IS_NPC(v))
     amnt = 0;
 
   /* special type of monster */

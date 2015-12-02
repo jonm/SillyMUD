@@ -148,7 +148,7 @@ void board_write_msg(struct char_data *ch, char *arg, int bnum) {
 
   curr_board = &boards[bnum];
 
-  if (GetMaxLevel(ch) < min_write_level[bnum]) {
+  if (get_max_level(ch) < min_write_level[bnum]) {
     send_to_char
       ("You pick up a quill to write, but realize you're not powerful enough\n\r",
        ch);
@@ -247,7 +247,7 @@ int board_remove_msg(struct char_data *ch, char *arg, int bnum) {
 
   curr_board = &boards[bnum];
 
-  if (GetMaxLevel(ch) < min_remove_level[bnum]) {
+  if (get_max_level(ch) < min_remove_level[bnum]) {
     send_to_char
       ("You try and grab one of the notes of the board but get a nasty\n\r",
        ch);
@@ -434,9 +434,9 @@ int board_display_msg(struct char_data *ch, char *arg, int bnum) {
 
   if ((boards[bnum].number != -1) &&
       (tmessage >= 0 && tmessage <= curr_board->number) &&
-      (GetMaxLevel(ch) < min_read_level[bnum]) &&
+      (get_max_level(ch) < min_read_level[bnum]) &&
       (strcmp(GET_NAME(ch), curr_board->msg[tmessage].author)));
-  else if (GetMaxLevel(ch) < min_read_level[bnum]) {
+  else if (get_max_level(ch) < min_read_level[bnum]) {
     send_to_char("You try and look at the messages on the board but you\n\r",
                  ch);
     send_to_char("cannot comprehend their meaning.\n\r\n\r", ch);
@@ -479,7 +479,7 @@ int board_show_board(struct char_data *ch, char *arg, int bnum) {
   if (!*tmp || !isname(tmp, "board bulletin"))
     return (0);
 
-  if ((GetMaxLevel(ch) < min_read_level[bnum]) && (bnum != 5))
+  if ((get_max_level(ch) < min_read_level[bnum]) && (bnum != 5))
     /* Skip if board 5 (Reimb board) */
   {
     send_to_char("You try and look at the messages on the board but you\n\r",

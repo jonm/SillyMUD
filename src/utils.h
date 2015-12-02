@@ -185,7 +185,7 @@
 #define AWAKE(ch) (GET_POS(ch) > POSITION_SLEEPING && \
 		   !IS_AFFECTED(ch, AFF_PARALYSIS) )
 
-#define WAIT_STATE(ch, cycle)  (((ch)->desc) ? (ch)->desc->wait = ((GetMaxLevel(ch) >= DEMIGOD) ? (0) : (cycle)) : 0)
+#define WAIT_STATE(ch, cycle)  (((ch)->desc) ? (ch)->desc->wait = ((get_max_level(ch) >= DEMIGOD) ? (0) : (cycle)) : 0)
 
 /* Object And Carry related macros */
 
@@ -197,7 +197,7 @@
 
 #define CAN_CARRY_W(ch) (str_app[STRENGTH_APPLY_INDEX(ch)].carry_w)
 
-#define CAN_CARRY_N(ch) (5+GET_DEX(ch)/2+GetMaxLevel(ch)/2)
+#define CAN_CARRY_N(ch) (5+GET_DEX(ch)/2+get_max_level(ch)/2)
 
 #define IS_CARRYING_W(ch) ((ch)->specials.carry_weight)
 
@@ -232,7 +232,7 @@
                      (real_roomp(ch->in_room)->sector_type != SECT_INSIDE) && \
                      (real_roomp(ch->in_room)->sector_type != SECT_UNDERWATER))
 
-#define IS_IMMORTAL(ch) (!IS_NPC(ch)&&(GetMaxLevel(ch)>=LOW_IMMORTAL))
+#define IS_IMMORTAL(ch) (!IS_NPC(ch)&&(get_max_level(ch)>=LOW_IMMORTAL))
 
 #define IS_POLICE(ch) ((mob_index[ch->nr].virtual == 3060) || \
                        (mob_index[ch->nr].virtual == 3069) || \
@@ -262,7 +262,7 @@
 #define IS_PC(ch) (!IS_NPC((ch)) || IS_SET((ch)->specials.act, ACT_POLYSELF))
 
 
-#define GET_AVE_LEVEL(ch) (GetMaxLevel(ch)+(GetSecMaxLev(ch)/2)+\
+#define GET_AVE_LEVEL(ch) (get_max_level(ch)+(GetSecMaxLev(ch)/2)+\
 	  (GetThirdMaxLev(ch)/3))
 
 #define GET_ALIAS(ch, num) ((ch)->specials.A_list->com[(num)])

@@ -712,7 +712,7 @@ void do_give(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char("Sorry, you can't do that!\n\r", ch);
       return;
     }
-    if ((GET_GOLD(ch) < amount) && (IS_NPC(ch) || (GetMaxLevel(ch) < DEMIGOD))) {
+    if ((GET_GOLD(ch) < amount) && (IS_NPC(ch) || (get_max_level(ch) < DEMIGOD))) {
       send_to_char("You haven't got that many coins!\n\r", ch);
       return;
     }
@@ -733,7 +733,7 @@ void do_give(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     SPRINTF(buf, "%s gives you %d gold coins.\n\r", PERS(ch, vict), amount);
     send_to_char(buf, vict);
     act("$n gives some gold to $N.", 1, ch, 0, vict, TO_NOTVICT);
-    if (IS_NPC(ch) || (GetMaxLevel(ch) < DEMIGOD))
+    if (IS_NPC(ch) || (get_max_level(ch) < DEMIGOD))
       GET_GOLD(ch) -= amount;
     GET_GOLD(vict) += amount;
     save_char(ch, AUTO_RENT);
