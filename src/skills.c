@@ -550,12 +550,8 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 	      int depth, int in_zone)
 {
    struct room_q *tmp_q, *q_head, *q_tail;
-#if 1
   struct hash_header	x_room;
 /*  static struct hash_header	x_room; */
-#else
-  struct nodes x_room[MAX_ROOMS];
-#endif
    int i, tmp_room, count=0, thru_doors;
   struct room_data	*herep, *therep;
   struct room_data      *startp;
@@ -564,13 +560,6 @@ int find_path(int in_room, int (*predicate)(), void *c_data,
 	/* If start = destination we are done */
    if ((predicate)(in_room, c_data))
      return(-69);		/* <grin> couldn't return a direction */
-
-#if 0
-   if (top_of_world > MAX_ROOMS) {
-     log_msg("TRACK Is disabled, too many rooms.\n\rContact Loki soon.\n\r");
-    return -1;
-   }
-#endif
 
    if (depth<0) {
      thru_doors = TRUE;

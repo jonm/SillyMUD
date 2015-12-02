@@ -210,16 +210,6 @@ void MobScavenge(struct char_data *ch)
     }
   }
 
-#if 0
-  if (number(0,3)) {
-    for( obj=ch->carrying;obj;obj=obj->next) {
-      if (IS_OBJ_STAT(obj, ITEM_NODROP)) {
-	do_junk(ch, obj->name, 0);
-      }
-    }
-  }
-#endif
-
   if (!number(0,3)) {
     if (IsHumanoid(ch) && ch->carrying) {
       SPRINTF(buf, "all");
@@ -451,9 +441,6 @@ int AssistFriend( struct char_data *ch)
   
   if (check_peaceful(ch, ""))
     return(0);
-#if 0
-  assert(ch->in_room >= 0); 
-#else
   if (ch->in_room < 0) {
     SPRINTF(buf, "Mob %s in negative room", ch->player.name);
     log_msg(buf);
@@ -461,7 +448,6 @@ int AssistFriend( struct char_data *ch)
     extract_char(ch);
     return(0);
   }
-#endif
   if (ch->in_room == 0) 
     return(0);
   

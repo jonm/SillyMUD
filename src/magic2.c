@@ -135,7 +135,6 @@ void spell_resurrection(byte UNUSED(level), struct char_data *ch,
 	   (making sure to lowercase it).  
 	   */
 
-#if 1
 	if (IS_SET(st.affected_by2, AFF2_ONE_LIFER)) {
 	  char *ptr;
 	  for (i = 0; i <= top_of_p_table; i++)	{
@@ -152,7 +151,6 @@ void spell_resurrection(byte UNUSED(level), struct char_data *ch,
 	    }
 	  }
 	}
-#endif
 	
 	st.points.exp *= 2;
 	st.talks[2] = TRUE;
@@ -1028,26 +1026,6 @@ void spell_cone_of_cold(byte level, struct char_data *ch,
 
   AreaDamage(ch, dam, SPELL_CONE_OF_COLD, "You are chilled to the bone!\n\r",
 	     "You are able to avoid the cone!\n\r", "", FALSE, FALSE);
-#if 0
-   for ( tmp_victim = real_roomp(ch->in_room)->people; tmp_victim; 
-	tmp_victim = temp ) {
-      temp = tmp_victim->next_in_room;
-      if ( (ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
-         if ((GetMaxLevel(tmp_victim)>LOW_IMMORTAL) && (!IS_NPC(tmp_victim)))
-            return;
-         if (!in_group(ch, tmp_victim)) {
-            act("You are chilled to the bone!\n\r",
-                 FALSE, ch, 0, tmp_victim, TO_VICT);
-            if ( saves_spell(tmp_victim, SAVING_SPELL) )
-                dam >>= 1;
-   	    MissileDamage(ch, tmp_victim, dam, SPELL_CONE_OF_COLD);
-	 } else {
-            act("You are able to avoid the cone!\n\r",
-                 FALSE, ch, 0, tmp_victim, TO_VICT);
-	  }
-       }
-    }
-#endif
 }
 
 void spell_ice_storm(byte level, struct char_data *ch,
@@ -1066,26 +1044,6 @@ void spell_ice_storm(byte level, struct char_data *ch,
 
   AreaDamage(ch, dam, SPELL_ICE_STORM, "You are blasted by the storm!\n\r",
 	     "You are able to dodge the storm.\n\r", "", FALSE, FALSE);
-#if 0
-   for ( tmp_victim = real_roomp(ch->in_room)->people; tmp_victim; 
-	tmp_victim = temp) {
-      temp = tmp_victim->next_in_room;
-      if ( (ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
-         if ((GetMaxLevel(tmp_victim)>LOW_IMMORTAL) && (!IS_NPC(tmp_victim)))
-            return;
-         if (!in_group(ch, tmp_victim)) {
-            act("You are blasted by the storm\n\r",
-                 FALSE, ch, 0, tmp_victim, TO_VICT);
-            if ( saves_spell(tmp_victim, SAVING_SPELL) )
-                dam >>= 1;
-   	    MissileDamage(ch, tmp_victim, dam, SPELL_ICE_STORM);
-	 } else {
-            act("You are able to dodge the storm!\n\r",
-                 FALSE, ch, 0, tmp_victim, TO_VICT);
-	  }
-       }
-    }
-#endif
 }
 
 
@@ -1249,28 +1207,6 @@ void spell_light(byte level, struct char_data *ch,
   assert(ch);
   assert((level >= 0) && (level <= ABS_MAX_LVL));
 
-#if 0
-  CREATE(tmp_obj, struct obj_data, 1);
-  clear_object(tmp_obj);
-
-  tmp_obj->name = strdup("ball light");
-  tmp_obj->short_description = strdup("A ball of light");
-  tmp_obj->description = strdup("There is a ball of light on the ground here.");
-
-  tmp_obj->obj_flags.type_flag = ITEM_LIGHT;
-  tmp_obj->obj_flags.wear_flags = ITEM_TAKE | ITEM_HOLD;
-  tmp_obj->obj_flags.value[2] = 24+level;
-  tmp_obj->obj_flags.weight = 1;
-  tmp_obj->obj_flags.cost = 10;
-  tmp_obj->obj_flags.cost_per_day = 1;
-
-  tmp_obj->next = object_list;
-  object_list = tmp_obj;
-
-  obj_to_char(tmp_obj,ch);
-
-  tmp_obj->item_number = -1;
-#else
   tmp_obj = read_object(20, VIRTUAL);  /* this is all you have to do */
   if (tmp_obj) {
       tmp_obj->obj_flags.value[2] = 24+level;
@@ -1279,9 +1215,6 @@ void spell_light(byte level, struct char_data *ch,
     send_to_char("Sorry, I can't create the ball of light\n\r", ch);
     return;
   }
-
-
-#endif
 
   act("$n twiddles $s thumbs and $p suddenly appears.",TRUE,ch,tmp_obj,0,TO_ROOM);
   act("You twiddle your thumbs and $p suddenly appears.",TRUE,ch,tmp_obj,0,TO_CHAR);
@@ -1393,28 +1326,6 @@ void spell_cont_light(byte level, struct char_data *ch,
   assert(ch);
   assert((level >= 0) && (level <= ABS_MAX_LVL));
 
-#if 0
-  CREATE(tmp_obj, struct obj_data, 1);
-  clear_object(tmp_obj);
-
-  tmp_obj->name = strdup("ball light");
-  tmp_obj->short_description = strdup("A bright ball of light");
-  tmp_obj->description = strdup("There is a bright ball of light on the ground here.");
-
-  tmp_obj->obj_flags.type_flag = ITEM_LIGHT;
-  tmp_obj->obj_flags.wear_flags = ITEM_TAKE | ITEM_HOLD;
-  tmp_obj->obj_flags.value[2] = -1;
-  tmp_obj->obj_flags.weight = 1;
-  tmp_obj->obj_flags.cost = 40;
-  tmp_obj->obj_flags.cost_per_day = 1;
-
-  tmp_obj->next = object_list;
-  object_list = tmp_obj;
-
-  obj_to_char(tmp_obj,ch);
-
-  tmp_obj->item_number = -1;
-#else
   tmp_obj = read_object(20, VIRTUAL);  /* this is all you have to do */
   if (tmp_obj)
      obj_to_char(tmp_obj,ch);
@@ -1422,7 +1333,6 @@ void spell_cont_light(byte level, struct char_data *ch,
     send_to_char("Sorry, I can't create the ball of light\n\r", ch);
     return;
   }    
-#endif
 
   act("$n twiddles $s thumbs and $p suddenly appears.",TRUE,ch,tmp_obj,0,TO_ROOM);
   act("You twiddle your thumbs and $p suddenly appears.",TRUE,ch,tmp_obj,0,TO_CHAR);
@@ -2254,22 +2164,6 @@ void spell_geyser(byte level, struct char_data *ch,
 	     "You are almost seared by the boiling water!!\n\r",
 	     "You hear Old Faithful off in the distance.\n\r",
 	     FALSE, FALSE);
-#if 0
-   for(tmp_victim = real_roomp(ch->in_room)->people; 
-       tmp_victim; tmp_victim = temp) {
-      temp = tmp_victim->next_in_room;
-      if ((ch != tmp_victim) && (ch->in_room == tmp_victim->in_room)) {
-            if ((GetMaxLevel(tmp_victim)<LOW_IMMORTAL)||(IS_NPC(tmp_victim))) {
-      	       MissileDamage(ch, tmp_victim, dam, SPELL_GEYSER);
-               act("You are seared by the boiling water!!\n\r",
-                   FALSE, ch, 0, tmp_victim, TO_VICT);
-	    } else {
-               act("You are almost seared by the boiling water!!\n\r",
-                 FALSE, ch, 0, tmp_victim, TO_VICT);
-	    }
-      }
-    }
-#endif
 }
 
 void spell_green_slime(byte level, struct char_data *ch,

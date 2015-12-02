@@ -698,13 +698,11 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg,
       return TRUE;
     }
     
-#if 1
     /* multiple buy code */
     if ((num = getabunch(argm,newarg))!=0) {
       strcpy(argm,newarg);
     }
     if (num == 0) num = 1;
-#endif
     
     if(!( temp1 = get_obj_in_list_vis(ch,argm,andy->carrying)))      {
 	act("$n tells you 'Sorry, but I don't sell that.'", FALSE, andy, 0, ch, TO_VICT);
@@ -2556,41 +2554,6 @@ int temple_labrynth_sentry(struct char_data *ch, int cmd, char * UNUSED(arg),
   return TRUE;
 }
 
-#if 0
-#define WW_LOOSE 0
-#define WW_FOLLOW 1
-
-int Whirlwind (struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
-  struct char_data *tmp;
-  const char *names[] = { "Loki", "Belgarath", 0};
-  int i = 0;
-  
-  if (ch->in_room == -1) return(FALSE);
-  
-  if (cmd == 0 && ch->generic == WW_LOOSE)  {   
-    for (tmp = real_roomp(ch->in_room)->people; tmp ; tmp = tmp->next_in_room) {
-      while (names[i])  {
-	if ( !strcmp(GET_NAME(tmp), names[i] ) && ch->generic == WW_LOOSE)  {
-	  /* start following */
-	  if (circle_follow(ch, tmp)) 
-	    return(FALSE);
-	  if (ch->master)
-	    stop_follower(ch);
-	  add_follower(ch, tmp);
-	  ch->generic = WW_FOLLOW;
-	}
-	i++;
-      }
-    }
-    if (ch->generic == WW_LOOSE && !cmd )  {
-      act("The $n suddenly dissispates into nothingness.",0,ch,0,0,TO_ROOM);   
-      extract_char(ch);      
-    }
-  }
-}
-#endif
-
 #define NN_LOOSE  0
 #define NN_FOLLOW 1
 #define NN_STOP   2
@@ -3539,64 +3502,6 @@ int Donation(struct char_data *ch, int cmd, char *arg,
   return(FALSE);
 }
 
-/*
-  house routine for saved items.
-*/
-#if 0
-int House(struct char_data *ch, int cmd, char *arg, struct room_data *rp, int type) 
-{
-  char buf[100];
-  struct obj_cost cost;
-  int i, save_room;
-  int count=0;
-
-  if (IS_NPC(ch)) return(FALSE);
-  
-  /* if (cmd != rent) ignore */
-  if (cmd != 92) {
-    return(FALSE);
-  } else {
-    
-    /*  verify the owner */
-    if (strncmp(GET_NAME(ch), real_roomp(ch->in_room)->name, 
-		strlen(GET_NAME(ch)))) {
-      send_to_char("Sorry, you'll have to find your own house.\n\r",ch);
-      return(FALSE);
-    }
-    
-    cost.total_cost = 0; /* Minimum cost */
-    cost.no_carried = 0;
-    cost.ok = TRUE; /* Use if any "-1" objects */
-    
-    add_obj_cost(ch, 0, ch->carrying, &cost);
-    count = CountLims(ch->carrying);
-    for(i = 0; i<MAX_WEAR; i++) {
-       add_obj_cost(ch, 0, ch->equipment[i], &cost);
-       count += CountLims(ch->equipment[i]);
-    }
-    
-    if (!cost.ok) {
-      return(FALSE);
-    }
-
-    cost.total_cost = 0;
-
-    SPRINTF(buf, "It will cost you %d coins per day\n\r", cost.total_cost);
-    send_to_char(buf, ch);
-
-    save_obj(ch, &cost,1);
-    save_room = ch->in_room;
-
-    if (ch->specials.start_room != 2)
-      ch->specials.start_room = save_room;
-
-    extract_char(ch);  /* CHARACTERS aren't freed by this */
-    save_char(ch, save_room);
-    ch->in_room = save_room;
-
-  }  
-}
-#endif
 /***********************************************************************
 
 			   CHESSBOARD PROCS
@@ -4639,67 +4544,6 @@ int StatTeller(struct char_data *ch, int cmd, char * UNUSED(arg),
   return(FALSE);
 }
 
-#if 0
-int StatTeller(struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
-  int choice;
-  char buf[200];
-
-  if (cmd) {
-    if (cmd == 56) { /* buy */
-
-  /*
-  ** randomly tells a player 3 of his/her stats.. for a price
-  */
-      if (GET_GOLD(ch)< 1000) {
-	send_to_char("You do not have the money to pay me.\n\r", ch);
-	return(TRUE);
-      } else {
-	GET_GOLD(ch)-=1000;
-      }
-
-      choice = number(0,2);
-      switch(choice) {
-      case 0:
-	SPRINTF(buf, "STR: %d, WIS: %d, DEX: %d\n\r", GET_STR(ch), GET_WIS(ch), GET_DEX(ch));
-	send_to_char(buf, ch);
-	break;
-      case 1:
-	SPRINTF(buf, "INT: %d, DEX:  %d, CON: %d \n\r", GET_INT(ch), GET_DEX(ch), GET_CON(ch));
-	send_to_char(buf, ch);
-	break;
-      case 2:
-	SPRINTF(buf, "CON: %d, INT: %d , WIS: %d \n\r", GET_CON(ch), GET_INT(ch), GET_WIS(ch));
-	send_to_char(buf, ch);
-	break;
-      default:
-	send_to_char("We are experiencing Technical difficulties\n\r", ch);
-	return(TRUE);
-      }
-
-    } else {
-      return(FALSE);
-    }
-  }else {    
-
-  /*
-  **  in combat, issues a more potent curse.
-  */
-
-    if (ch->specials.fighting) {
-      act("$n gives you the evil eye!  You feel your hitpoints ebbing away", 
-	  FALSE, ch, 0, ch->specials.fighting, TO_VICT);
-      act("$n gives $N the evil eye!  $N seems weaker!", 
-	  FALSE, ch, 0, ch->specials.fighting, TO_NOTVICT);
-      ch->specials.fighting->points.max_hit -= 10;
-      ch->specials.fighting->points.hit -= 10;
-      return(FALSE);
-    }
-
-  }
-  return(FALSE);
-}
-#endif
 
 void ThrowChar(struct char_data *ch, struct char_data *v, int dir)
 {
@@ -4767,23 +4611,6 @@ int ThrowerMob(struct char_data *ch, int cmd, char * UNUSED(arg),
   }
   return(FALSE);
 }
-
-
-
-#if 0
-/*
-Smart thief special
-*/
-
-Thief(struct char_data *ch, char *arg, ind cmd, struct char_data *mob, int type)
-{
-
-  if (cmd || !AWAKE(ch)) return;
-
-}
-
-#endif
-
 
 
 /*

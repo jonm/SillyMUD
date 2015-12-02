@@ -1318,11 +1318,6 @@ void extract_obj(struct obj_data *obj)
   struct obj_data *temp1, *temp2;
   extern long obj_count;
 
-#if 0
-  if(IS_SET(obj->obj_flags.extra_flags, ITEM_FIGURINE) && obj->link)
-     extract_char(obj->link);
-#endif
-  
   if(obj->in_room != NOWHERE)
     obj_from_room(obj);
   else if(obj->carried_by)

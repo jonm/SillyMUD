@@ -424,41 +424,6 @@ typedef struct T1000_data {
 
 } T1000_data;
 
-#if 0
-#define T1000_SEARCHING   0
-#define T1000_HUNTING     1
-
-int T1000( struct char_data *ch, char *line, int cmd, struct char_data *mob, int type)
-{
-   int count;
-   struct descriptor_data *i;
-
-   extern struct descriptor_data *descriptor_list;
-
-   if (ch->specials.hunting == 0)
-     ch->generic = T1000_SEARCHING;
-
-    switch(ch->generic) {
-       case T1000_SEARCHING: {
-	  count = number(0,200);
-	  for (i = descriptor_list; count>0; i= i->next) {
-	     if (!i) {
-	       i = descriptor_list;
-	     }
-	  }
-	  if (i) {
-	     ch->specials.hunting = i->character;
-	     ch->generic = T1000_HUNTING;
-	  }
-       }
-       case T1000_HUNTING: {
-	  if (ch->in_room == ch->specials.hunting->in_room) {
-	  } else {
-	  }
-       }
-    }
-}
-#endif
 
 void invert(char *arg1, char *arg2)
 {
@@ -2063,58 +2028,6 @@ int creeping_death(struct char_data *ch, int cmd, char * UNUSED(arg),
   return(FALSE);
 }
 
-#if 0
-/*
-   shanty town kids
-*/
-int shanty_town_kids( struct char_data *ch, int cmd, char *arg, struct char_data *mob, int type)
-{
-
-  if (!AWAKE(ch)) return(FALSE);
-
-
-  /*
-    harrass low levellers.
-  */
-  if (cmd >= 1 && cmd <= 6) {
-    if (GetMaxLevel(ch) <= 5 && number(0,2)==0) {
-      act("A street kid sticks out a foot and trips you as you try to leave",
-	  FALSE, ch, 0, 0, TO_CHAR);
-      act("A street kid sticks out a foot and trips $n",
-	  FALSE, ch, 0, 0, TO_ROOM);
-      GET_POS(ch) = POSITION_SITTING;
-      act("The street kid laughs at you", FALSE,ch, 0, 0, TO_CHAR);
-      act("The street kid laughs at $n", FALSE,ch, 0, 0, TO_ROOM);
-    }
-  }
-
-  /*
-    steal from mid-levellers
-  */
-  
-
-  /*
-    backstab high levellers
-    */
-
-
-  if (cmd) {
-    
-    
-  }
-
-  if (ch->specials.fighting) {
-    act("$N runs between $n's legs", FALSE, ch->specials.fighting, 0, ch, TO_ROOM);
-    act("$N runs between your legs", FALSE, ch->specials.fighting, 0, ch, TO_CHAR);
-    vict = ch->specials.fighting;
-    stop_fighting(ch);
-    stop_fighting(vict);
-  }
-
-}
-
-#endif
-
 void  Submit(struct char_data *ch, struct char_data *t)
 {
   char buf[200];
@@ -2879,8 +2792,6 @@ int MonkChallenger(struct char_data *ch, int cmd, char * UNUSED(arg),
 
 }
 
-#if 1
-
 #define NOD  35
 #define DRUID_MOB 600
 #define MONK_MOB  650
@@ -3228,25 +3139,6 @@ int monk_challenge_prep_room(struct char_data *ch, int cmd, char * UNUSED(arg),
   return(FALSE);
 }
 
-
-#endif
-
-
-
-
-/************************************************************************/
-#if 0
-/*
-  glass teleport ring
-*/
-int glass_teleport_ring(struct char_data *ch, int cmd, char *arg, struct obj_data *obj, int type)
-{
-
-
-
-}
-
-#endif
 
 #define ENTER 7
 

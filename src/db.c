@@ -157,10 +157,6 @@ void boot_db()
 			
 	log_msg("Renumbering zone table.");
 	renum_zone_table();
-#if 0 
-	log_msg("Cleaning up player file.");
-	clean_playerfile();
-#endif
 	log_msg("Generating player index.");
 	build_player_index();
 
@@ -852,24 +848,6 @@ void load_one_room(FILE *fl, struct room_data *rp)
 #endif
       total_bc += bc;
       room_count++; 
-#if 0
-      if(IS_SET(rp->room_flags, SAVE_ROOM)) {
-         saved_rooms[number_of_saved_rooms] = rp->number;
-         number_of_saved_rooms++;
-      } 
-      {
-       FILE *fp;
-       char buf[255];
-
-       SPRINTF(buf, "world/%d", rp->number);
-       fp = fopen(buf, "r");
-       if(fp) {
-          saved_rooms[number_of_saved_rooms] = rp->number;
-          number_of_saved_rooms++;
-          fclose(fp);
-	}
-      }
-#endif
       return;
     default:
       SPRINTF(buf,"unknown auxiliary code `%s' in room load of #%d",
@@ -2126,12 +2104,6 @@ void reset_zone(int zone)
       last_cmd = 0;
     
   }
-#if 0
-  for (j=0;zone_table[zone].races[j];j++) {
-    fprintf(stderr, "%d ", (int)zone_table[zone].races[j]);
-  }
-  fprintf(stderr, "\n");  
-#endif
 
   zone_table[zone].age = 0;
   zone_table[zone].start = 1;

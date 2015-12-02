@@ -123,17 +123,6 @@ int CAN_SEE(struct char_data *s, struct char_data *o)
     return(FALSE);
 
   return(TRUE);
-
-#if 0
-  ((IS_IMMORTAL(sub)) || /* gods can see anything */ \
-   (((!IS_AFFECTED((obj),AFF_INVISIBLE)) || /* visible object */ \
-     ((IS_AFFECTED((sub),AFF_DETECT_INVISIBLE)) && /* you detect I and */ \
-      (!IS_IMMORTAL(obj)))) &&			/* object is not a god */ \
-    (!IS_AFFECTED((sub),AFF_BLIND)) &&      /* you are not blind */ \
-    ( (IS_LIGHT(sub->in_room)) || (IS_AFFECTED((sub),AFF_INFRAVISION))) \
-		/* there is enough light to see or you have infravision */ \
-    ))
-#endif
 }
 
 int CAN_SEE_OBJ( struct char_data *ch, struct obj_data *obj)
@@ -1163,27 +1152,6 @@ void RoomSave(struct char_data *ch, int start, int end)
           else
             fprintf(fp, "0");
 
-
-#if 0				/* old code */
-          if (IS_SET(rdd->exit_info, EX_CLIMB | EX_ISDOOR | EX_PICKPROOF))
-            fprintf(fp, "7");
-          else if (IS_SET(rdd->exit_info, EX_CLIMB | EX_ISDOOR))
-            fprintf(fp, "6");
-          else if (IS_SET(rdd->exit_info, EX_CLIMB))
-            fprintf(fp, "5");
-          else if (IS_SET(rdd->exit_info, EX_ISDOOR | EX_SECRET | EX_PICKPROOF))
-            fprintf(fp, "4");
-          else if (IS_SET(rdd->exit_info, EX_ISDOOR | EX_SECRET))
-            fprintf(fp, "3");
-	  else if (IS_SET(rdd->exit_info, EX_ISDOOR | EX_PICKPROOF)) {
-	    fprintf(fp, "2");
-	  } else if (IS_SET(rdd->exit_info, EX_ISDOOR)) {
-	    fprintf(fp, "1");
-          } else {
-	    fprintf(fp, "0");
-	  }
-
-#endif
 	  fprintf(fp," %d ", 
 		  rdd->key);
 
@@ -1622,15 +1590,6 @@ return;
    ch->hunt_dist = dist;
    ch->persist = persist;
    ch->old_room = ch->in_room;
-#if 0
-    if (GetMaxLevel(tch) >= IMMORTAL) {
-        SPRINTF(buf, ">>%s is hunting you from %s\n\r", 
-       	   (ch->player.short_descr[0]?ch->player.short_descr:"(null)"),
-       	   (real_roomp(ch->in_room)->name[0]?real_roomp(ch->in_room)->name:"(null)"));
-        send_to_char(buf, tch);
-    }
-#endif
-
 }
 
 
@@ -2931,54 +2890,6 @@ int ItemEgoClash(struct char_data *ch, struct obj_data *obj, int bon)
   return(1);			/* ego is not checked. */
   
 }
-
-
-#if 0
-  obj_ego = obj->obj_flags.cost_per_day;
-
-  if (obj_ego >= MAX(LIM_ITEM_COST_MIN,14000) || obj_ego < 0) {
-    
-    if (obj_ego < 0)
-      obj_ego = 50000;
-
-    obj_ego /= 666;
-
-/*    
-  alignment stuff
-    */    
-
-    if (IS_OBJ_STAT(obj, ITEM_ANTI_GOOD) || 
-	(IS_OBJ_STAT(obj, ITEM_ANTI_EVIL))) {
-      if (IS_NEUTRAL(ch))
-	obj_ego += obj_ego/4;
-    }
-
-    if (IS_PC(ch)) {
-      p_ego = GetMaxLevel(ch)+HowManyClasses(ch);
-
-      if (p_ego > 40) {
-	p_ego *= (p_ego-39);
-      } else if (p_ego > 20) {
-	p_ego += (p_ego -20);
-      }
-      
-    } else {
-      p_ego = 10000;
-    }
-
-    tmp = GET_INT(ch)+GET_WIS(ch)+GET_CHR(ch);
-    tmp /= 3;
-
-
-    tmp *= GET_HIT(ch);
-    tmp /= GET_MAX_HIT(ch);
-
-
-    return((p_ego + tmp + bon + number(1,6))-(obj_ego+number(1,6)));
-  }
-  
-  return(1);
-#endif
 
 
 int GET_OBJ_EGO(struct obj_data *obj)

@@ -829,25 +829,6 @@ void dam_message(int dam, struct char_data *ch, struct char_data *victim,
   w_type -= TYPE_HIT;   /* Change to base of table with text */
   
   wield = ch->equipment[WIELD];
-#if 0  
-  if (dam <= 0) {
-    snum = 0;
-  } else if (dam <= 2) {
-    snum = 1;
-  } else if (dam <= 4) {
-    snum = 2;
-  } else if (dam <= 10) {
-    snum = 3;
-  } else if (dam <= 15) {
-    snum = 4;
-  } else if (dam <= 25) {
-    snum = 5;
-  } else if (dam <= 35) {
-    snum = 6;
-  } else {
-    snum = 7;
-  }
-#else
 
   if (GET_HIT(victim) > 0)
     perc = (float)dam/(float)GET_HIT(victim);
@@ -872,8 +853,6 @@ void dam_message(int dam, struct char_data *ch, struct char_data *victim,
     snum = 7;
   }
 
-#endif
-
  
   buf = replace_string(dam_weapons[snum].to_room, attack_hit_text[w_type].plural, attack_hit_text[w_type].singular);
   act(buf, FALSE, ch, wield, victim, TO_NOTVICT);
@@ -884,7 +863,6 @@ void dam_message(int dam, struct char_data *ch, struct char_data *victim,
   
 }
 
-#if 1
 int DamCheckDeny(struct char_data *ch, struct char_data *victim, int type)
 {
   struct room_data *rp;
@@ -1269,22 +1247,6 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim)
       }
       log_sev(buf, 6);
     }
-#if 0
-    /* this has been added to try and track down people killing
-       shopkeepers 
-       */
-    if (IS_NPC(victim)) {
-      if (IS_SET(victim->specials.act, ACT_SPEC)) {
-	if (mob_index[victim->nr].func) {
-	  if (mob_index[victim->nr].func == shop_keeper) {
-	    SPRINTF(buf, "%s (shopkeeper) killed by %s\n",
-		    GET_NAME(victim), GET_NAME(ch));
-	    log_sev(buf, 6);
-	  }
-	}
-      }
-    }
-#endif
     die(victim);
     /*
      *  if the victim is dead, return TRUE.
@@ -1447,248 +1409,6 @@ int damage(struct char_data *ch, struct char_data *victim,
    return(FALSE);  /* not dead */
 }
 
-#else    /* this is for an example of the old code, slightly modified */
-
-int damage(struct char_data *ch, struct char_data *victim,
-	   int dam, int attacktype)
-{
-  char buf[MAX_INPUT_LENGTH];
-  struct message_type *messages;
-  int i,j,nr,max_hit,exp;
-  struct room_data	*rp;
-  
-  int hit_limit(struct char_data *ch);
-  
-  assert(GET_POS(victim) > POSITION_DEAD);
-  
-  rp = real_roomp(ch->in_room);
-  if (rp && rp->room_flags&PEACEFUL &&
-      attacktype!=SPELL_POISON /* poison is allowed */
-      ) {
-    char	buf[MAX_INPUT_LENGTH];
-    SPRINTF(buf, "damage(,,,%d) called in PEACEFUL room", attacktype);
-    log_msg(buf);
-    return;
-  }
-  
-  dam = SkipImmortals(victim, dam);
-  if (dam == -1)
-    return(FALSE);
-  
-  if (ch->in_room != victim->in_room)
-    return(FALSE);
-  
-  if (victim != ch) {
-    if (GET_POS(victim) > POSITION_STUNNED) {
-      if (!(victim->specials.fighting))
-	if ((!IS_NPC(ch))||(!IS_SET(ch->specials.act, ACT_IMMORTAL))) {
-	  if (ch->attackers < 6) {
-	    set_fighting(victim, ch);
-	    GET_POS(victim) = POSITION_FIGHTING;
-	  }
-	} else {
-	  return(FALSE);
-	}
-    }
-  }
-  
-  if (victim != ch) {
-    if (GET_POS(ch) > POSITION_STUNNED) {	
-      if (!(ch->specials.fighting))
-	if ((!IS_NPC(ch))||(!IS_SET(ch->specials.act, ACT_IMMORTAL))) {
-	  set_fighting(ch, victim);
-	  GET_POS(ch) = POSITION_FIGHTING;
-	} else {
-	  return(FALSE);
-	}
-    }
-  }
-  
-  if (victim->master == ch)
-    stop_follower(victim);
-  
-  if (IS_AFFECTED(ch, AFF_INVISIBLE) || IS_AFFECTED2()
-    appear(ch);
-
-  if (IS_AFFECTED(ch, AFF_SNEAK)) {
-    affect_from_char(ch, SKILL_SNEAK);
-  }
-  
-  if (IS_AFFECTED(victim, AFF_SANCTUARY))
-    dam = MAX((int)(dam/2), 0);  /* Max 1/2 damage when sanct'd */
-  
-  dam = PreProcDam(victim, attacktype,dam);
-  
-  dam = WeaponCheck(ch, victim, attacktype, dam);
-
-  DamageStuff(victim, attacktype, dam);
-  
-  dam=MAX(dam,0);
-  
-  /*
-   *  check if this hit will send the victim over the edge
-   */
-  if (GET_HIT(victim)-dam < 1) {
-    if (IS_AFFECTED(victim, AFF_LIFE_PROT)) {
-      BreakLifeSaverObj(victim);
-      dam = 0;
-      REMOVE_BIT(ch->specials.affected_by, AFF_LIFE_PROT);
-    }
-  }
-
-  
-  GET_HIT(victim)-=dam;  
-
-  if (IS_AFFECTED(victim, AFF_FIRESHIELD)&&!IS_AFFECTED(ch, AFF_FIRESHIELD)) {
-    if (damage(victim, ch, dam, SPELL_FIREBALL)) {
-      update_pos(victim);
-      if (GET_POS(victim) != POSITION_DEAD)
-        return(FALSE);
-      else
-        return(TRUE);
-    }
-  }
-  update_pos(victim);
-  
-  if ((attacktype >= TYPE_HIT) && (attacktype <= TYPE_SMITE)) {
-    if (!ch->equipment[WIELD]) {
-      dam_message(dam, ch, victim, TYPE_HIT);
-    } else {
-      dam_message(dam, ch, victim, attacktype);
-  /*
-   *  check if attacker's weapon is brittle
-   */
-      BrittleCheck(ch, dam);
-  
-    }
-  } else {
-    
-    for(i = 0; i < MAX_MESSAGES; i++) {
-      if (fight_messages[i].a_type == attacktype) {
-	nr=dice(1,fight_messages[i].number_of_attacks);
-	for(j=1,messages=fight_messages[i].msg;(j<nr)&&(messages);j++)
-	  messages=messages->next;
-	
-	if (!IS_NPC(victim) && (GetMaxLevel(victim) > MAX_MORT)){
-	  act(messages->god_msg.attacker_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_CHAR);
-	  act(messages->god_msg.victim_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_VICT);
-	  act(messages->god_msg.room_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_NOTVICT);
-	} else if (dam != 0) {
-	  if (GET_POS(victim) == POSITION_DEAD) {
-	    act(messages->die_msg.attacker_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_CHAR);
-	    act(messages->die_msg.victim_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_VICT);
-	    act(messages->die_msg.room_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_NOTVICT);
-	  } else {
-	    act(messages->hit_msg.attacker_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_CHAR);
-	    act(messages->hit_msg.victim_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_VICT);
-	    act(messages->hit_msg.room_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_NOTVICT);
-	  }
-	} else { /* Dam == 0 */
-	  act(messages->miss_msg.attacker_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_CHAR);
-	  act(messages->miss_msg.victim_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_VICT);
-	  act(messages->miss_msg.room_msg, FALSE, ch, ch->equipment[WIELD], victim, TO_NOTVICT);
-	}
-      }
-    }
-  }
-  switch (GET_POS(victim)) {
-  case POSITION_MORTALLYW:
-    act("$n is mortally wounded, and will die soon, if not aided.", TRUE, victim, 0, 0, TO_ROOM);
-    act("You are mortally wounded, and will die soon, if not aided.", FALSE, victim, 0, 0, TO_CHAR);
-    break;
-  case POSITION_INCAP:
-    act("$n is incapacitated and will slowly die, if not aided.", TRUE, victim, 0, 0, TO_ROOM);
-    act("You are incapacitated and you will slowly die, if not aided.", FALSE, victim, 0, 0, TO_CHAR);
-    break;
-  case POSITION_STUNNED:
-    act("$n is stunned, but will probably regain consciousness again.", TRUE, victim, 0, 0, TO_ROOM);
-    act("You're stunned, but you will probably regain consciousness again.", FALSE, victim, 0, 0, TO_CHAR);
-    break;
-  case POSITION_DEAD:
-    act("$n is dead! R.I.P.", TRUE, victim, 0, 0, TO_ROOM);
-    act("You are dead!  Sorry...", FALSE, victim, 0, 0, TO_CHAR);
-    break;
-    
-  default:  /* >= POSITION SLEEPING */
-    
-    max_hit=hit_limit(victim);
-    
-    if (dam > (max_hit/5))
-      act("That Really HURT!",FALSE, victim, 0, 0, TO_CHAR);
-    
-    if (GET_HIT(victim) < (max_hit/5) && GET_HIT(victim) > 0) {
-      
-      act("You wish that your wounds would stop BLEEDING so much!",FALSE,victim,0,0,TO_CHAR);
-      if (IS_NPC(victim)) {
-	if (IS_SET(victim->specials.act, ACT_WIMPY))
-	  do_flee(victim, "", 0);
-      } else {
-	if (IS_SET(victim->specials.act, PLR_WIMPY))
-	  do_flee(victim, "", 0);
-      }
-      
-    }
-    break;
-  }
-  
-  if (IS_PC(victim) && !(victim->desc)) {
-    do_flee(victim, "", 0);
-    act("$n is rescued by divine forces.", FALSE, victim, 0, 0, TO_ROOM);
-    update_pos(victim);
-  }
-  
-  if (GET_POS(victim) == POSITION_DEAD) {
-    if (ch->specials.fighting == victim)
-      stop_fighting(ch);
-  }
-  
-  if (!AWAKE(victim))
-    if (victim->specials.fighting)
-      stop_fighting(victim);
-  
-  if (GET_POS(victim) == POSITION_DEAD) {
-    if (IS_NPC(victim) || victim->desc)
-      if (IS_AFFECTED(ch, AFF_GROUP)) {
-	group_gain(ch, victim);
-      } else {
-	/* Calculate level-difference bonus */
-	exp = GET_EXP(victim);
-
-	exp = RatioExp(ch, victim, exp);
-	
-	exp = MAX(exp, 1);
-	exp = MIN(exp, 100000);
-
-	if (!IS_PC(victim)) {
-	  gain_exp(ch, exp);
-	}
-	change_alignment(ch, victim);
-      }
-    if (!IS_NPC(victim)) {
-      if (victim->in_room > -1) {
-	SPRINTF(buf, "%s killed by %s at %s",
-		GET_NAME(victim),
-		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)),
-		(real_roomp(victim->in_room))->name);
-      } else {
-	SPRINTF(buf, "%s killed by %s at Nowhere.",
-		GET_NAME(victim),
-		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)));
-      }
-      log_msg(buf);
-    }
-    die(victim);
-    /*
-     *  if the victim is dead, return TRUE.
-     */
-    victim = 0;
-    return(TRUE);
-  } else {
-    return(FALSE);
-  }
-}
-
-#endif
 
 int GetWeaponType(struct char_data *ch, struct obj_data **wielded) 
 {
@@ -1862,90 +1582,7 @@ int HitCheckDeny(struct char_data *ch, struct char_data *victim) {
     }
   }
   
-#if 0
-  if (!IS_PC(ch) && !IS_PC(victim)) {
-
-    if (affected_by_spell(ch, SPELL_CHARM_PERSON) ||
-	!IS_AFFECTED(ch, AFF_CHARM)) {
-
-      if (IS_SET(ch->specials.act, ACT_SENTINEL))
-	return(FALSE);
-
-      if (!Hates(ch, victim)) {
-	/*
-	  they may flee
-	  */
-	diff = GET_ALIGNMENT(ch) - GET_ALIGNMENT(victim);
-	diff /= 10;
-	if (diff < 0)
-	  diff *= -1;
-	
-	if (diff < number(0,50)) {
-	  do_flee(ch, "\0", 0);
-	  return(TRUE);
-	} else {
-	  if (victim->specials.fighting == ch) {
-	    int vsum, csum;
-	    float perc;
-
-	    vsum = GetSumRaceMaxLevInRoom(victim);
-	    csum = GetSumRaceMaxLevInRoom(ch);
-
-	    /*
-	      ch/vict - percentage of total levels
-	      */
-	    perc = csum / vsum;
-	    perc *= 100;   /* multiply by 100 so integers can be included */
-	    
-	    
-	    if (IS_SET(ch->specials.act, ACT_AGGRESSIVE))
-	      perc += (float)2*number(1, GetMaxLevel(ch));
-	    else 
-	      perc += (float)number(1, GetMaxLevel(ch));
-	    
-	    if (perc < 90.0) {
-	      do_flee(ch, "\0", 0);
-	      return(TRUE);
-	    } 
-	  }
-	}
-      }
-    }
-  } else if (!IS_PC(ch)) {
-    int vsum, csum;
-    float perc;
-
-
-    if (IS_SET(ch->specials.act, ACT_SENTINEL))
-      return(FALSE);
-
-    if (affected_by_spell(ch, SPELL_CHARM_PERSON) ||
-	!IS_AFFECTED(ch, AFF_CHARM)) {
-      
-      vsum = GetSumRaceMaxLevInRoom(victim);
-      csum = GetSumRaceMaxLevInRoom(ch);
-
-/*
-  ch/vict - percentage of total levels
-*/
-      perc = csum / vsum;
-      perc *= 100;   /* multiply by 100 so integers can be included */
-
-
-      if (IS_SET(ch->specials.act, ACT_AGGRESSIVE))
-	perc += (float)2*number(1, GetMaxLevel(ch));
-      else 
-	perc += (float)number(1, GetMaxLevel(ch));
-
-      if (perc < 90.0) {
-	do_flee(ch, "\0", 0);
-	return(TRUE);
-      } 
-    }
-  }
-#endif
   return(FALSE);
-
 }
 
 int CalcThaco(struct char_data *ch)
@@ -2056,9 +1693,6 @@ int GetWeaponDam(struct char_data *ch, struct char_data *v,
 	if (wielded->obj_flags.value[0] == 2) {
 	  if (GET_HEIGHT(v) < 250) {
 	    dam += dice(wielded->obj_flags.value[1],wielded->obj_flags.value[2]/2);
-#if 0
-	    send_to_char("Your weapon seems to be less effective against non-giant-sized opponents\n", ch);
-#endif
 	  } else {
 	    dam += dice(wielded->obj_flags.value[1],wielded->obj_flags.value[2]);
 	  }
@@ -2128,51 +1762,6 @@ int GetWeaponDam(struct char_data *ch, struct char_data *v,
     
 }
 
-#if 0
-int LoreBackstabBonus(struct char_data *ch, struct char_data *v)
-{
-  int mult = 0;
-  int learn=0;
-
-  if(!ch->skills);
-  return(0);
-
-  if (IsAnimal(v) && ch->skills[SKILL_CONS_ANIMAL].learned) {
-    learn = ch->skills[SKILL_CONS_ANIMAL].learned;
-  }
-  if (IsVeggie(v) && ch->skills[SKILL_CONS_VEGGIE].learned) {
-    learn = MAX(learn, ch->skills[SKILL_CONS_VEGGIE].learned);
-  }
-  if (IsDiabolic(v) && ch->skills[SKILL_CONS_DEMON].learned) {
-    learn = MAX(learn, ch->skills[SKILL_CONS_DEMON].learned);
-  }
-  if (IsReptile(v) && ch->skills[SKILL_CONS_REPTILE].learned) {
-    learn = MAX(learn, ch->skills[SKILL_CONS_REPTILE].learned);
-  }
-  if (IsUndead(v) && ch->skills[SKILL_CONS_UNDEAD].learned) {
-    learn = MAX(learn, ch->skills[SKILL_CONS_UNDEAD].learned);
-  }  
-  if (IsGiantish(v)&& ch->skills[SKILL_CONS_GIANT].learned) {
-    learn = MAX(learn, ch->skills[SKILL_CONS_GIANT].learned);
-  }
-  if (IsPerson(v) && ch->skills[SKILL_CONS_PEOPLE].learned) {
-    learn = MAX(learn, ch->skills[SKILL_CONS_PEOPLE].learned);
-  }
-  if (IsOther(v)&& ch->skills[SKILL_CONS_OTHER].learned) {
-    learn = MAX(learn, ch->skills[SKILL_CONS_OTHER].learned/2);
-  }
-
-  if (learn > 40)  
-    mult += 1;
-  if (learn > 74)
-    mult += 1;
-
-  if (mult > 0) 
-    send_to_char("Your lore aids your attack!\n\r", ch);
-
-  return(mult);
-}
-#endif
 
 int GetBackstabMult(struct char_data *ch, struct char_data *v)
 {
@@ -2570,8 +2159,6 @@ void perform_violence() {
 	    equip_char(ch, tmp2, HOLD);
 
 
-#if 1
-	  
 	  /* check for the second attack */
 	  if (DUAL_WIELD(ch) && ch->skills) {
 	    struct obj_data *weapon;
@@ -2612,8 +2199,7 @@ void perform_violence() {
 		}
 	      }
 	    }
-	  }
-#endif
+   	  }
 	} else {
 	  x = ch->mult_att;
 	  

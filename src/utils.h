@@ -56,13 +56,6 @@
 #define IS_AFFECTED2(ch,skill) (IS_SET((ch)->specials.affected_by2,(skill)))
 #define IS_INTRINSIC(ch,skill) (IS_SET((ch)->specials.intrinsics,(skill)))
 
-#if 0
-#define IS_DARK(room)  (real_roomp(room)->light<=0 && \
-    ((IS_SET(real_roomp(room)->room_flags, DARK)) || real_roomp(room)->dark))
-
-#define IS_LIGHT(room)  (real_roomp(room)->light>0 || (!IS_SET(real_roomp(room)->room_flags, DARK) || !real_roomp(room)->dark))
-#else
-
 #define IS_DARK(room) (real_roomp(room)->light <= 0 && \
 	((IS_SET(real_roomp(room)->room_flags, DARK)) ||  \
 	 IsDarkOutside(real_roomp(room))))
@@ -70,10 +63,6 @@
 #define IS_LIGHT(room) (real_roomp(room)->light>0 || \
 	 (!IS_SET(real_roomp(room)->room_flags, DARK) || \
 	  !IsDarkOutside(real_roomp(room))))
-
-#endif
-
-
 
 #define SET_BIT(var,bit)  ((var) = (var) | (bit))
 
@@ -196,12 +185,7 @@
 #define AWAKE(ch) (GET_POS(ch) > POSITION_SLEEPING && \
 		   !IS_AFFECTED(ch, AFF_PARALYSIS) )
 
-#if 1
 #define WAIT_STATE(ch, cycle)  (((ch)->desc) ? (ch)->desc->wait = ((GetMaxLevel(ch) >= DEMIGOD) ? (0) : (cycle)) : 0)
-#endif
-#if 0
-#define WAIT_STATE2(ch, cycle)  ((ch)->specials->wait = ((GetMaxLevel(ch) >= DEMIGOD) ? (0) : (cycle)) : (ch)->specials->wait)
-#endif
 
 /* Object And Carry related macros */
 
@@ -285,10 +269,6 @@
 
 #define MOUNTED(ch) ((ch)->specials.mounted_on)
 #define RIDDEN(ch) ((ch)->specials.ridden_by)
-
-#if 0
-#define isdigit(ch) (ch >= '0' && ch <= '9')
-#endif
 
 #define GET_VALUE(obj) ((obj)->obj_flags.cost)
 #define GET_RENT(obj) ((obj)->obj_flags.cost_per_day)

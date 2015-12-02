@@ -621,11 +621,6 @@ int get_racial_alignment(struct descriptor_data *d);
 int CheckValidClass(struct descriptor_data *d, int class);
 void DisplayRaceClasses(struct descriptor_data *d);
 
-#if 0
-int command_search( char *arg, int len, struct command_info *cmd_info, 
-  char **list);
-#endif 
- 
 /* From limits.c */
  
 char *ClassTitles(struct char_data *ch);

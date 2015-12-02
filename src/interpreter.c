@@ -47,11 +47,6 @@ int WizLock;
 int Silence = 0;
 int plr_tick_count=0;
 
-#if 0
-int command_search( char *arg, int len, struct command_info *cmd_info, 
-  char **list);
-#endif
-
 void do_cset(struct char_data *ch, char *arg, int cmd);
 
 #if PLAYER_AUTH

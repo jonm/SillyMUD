@@ -2147,28 +2147,6 @@ void spell_firestorm(byte level, struct char_data *ch,
 	     "You are seared by the burning flame!\n\r",
 	     "You are able to avoid the flames!\n\r",
 	     "", FALSE, TRUE);
-#if 0
-  for ( tmp_victim = real_roomp(ch->in_room)->people; tmp_victim; 
-       tmp_victim = temp ) {
-    temp = tmp_victim->next_in_room;
-    if ( (ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
-      if ((GetMaxLevel(tmp_victim)>LOW_IMMORTAL) && (!IS_NPC(tmp_victim)))
-	return;
-      if (!in_group(ch, tmp_victim)) {
-	act("You are seared by the burning flame!\n\r",
-	    FALSE, ch, 0, tmp_victim, TO_VICT);
-	if ( saves_spell(tmp_victim, SAVING_SPELL) )
-	  dam >>= 1;
-	heat_blind(tmp_victim);
-	MissileDamage(ch, tmp_victim, dam, SPELL_BURNING_HANDS);
-      } else {
-	act("You are able to avoid the flames!\n\r",
-	    FALSE, ch, 0, tmp_victim, TO_VICT);
-	heat_blind(tmp_victim);
-      }
-    }
-  }
-#endif
 }
 
 void spell_teleport_wo_error(byte level, struct char_data *ch,

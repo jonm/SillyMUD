@@ -270,31 +270,6 @@ void spell_fireball(byte level, struct char_data *ch,
 	     "You feel a blast of hot air.\n\r", FALSE, TRUE);
 
   return;
-
-#if 0
-   for(tmp_victim = character_list; tmp_victim; tmp_victim = temp) {
-      temp = tmp_victim->next;
-      if ( (ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
-         if (!in_group(ch,tmp_victim) && !IS_IMMORTAL(tmp_victim)) {
-	   if ( saves_spell(tmp_victim, SAVING_SPELL) )
-	     dam >>= 1;
-	   heat_blind(tmp_victim);
-	   MissileDamage(ch, tmp_victim, dam, SPELL_FIREBALL);
-	 } else {
-            act("You dodge the mass of flame!!\n\r",
-                 FALSE, ch, 0, tmp_victim, TO_VICT);
-	    heat_blind(tmp_victim);
-	 }
-      } else {
-	 if (tmp_victim->in_room != NOWHERE) {
-            if (real_roomp(ch->in_room)->zone == 
-		real_roomp(tmp_victim->in_room)->zone) {
-                send_to_char("You feel a blast of hot air.\n\r", tmp_victim);
-	    }
-	 }
-      }
-   } 
-#endif
 }
 
 void spell_earthquake(byte level, struct char_data *ch,

@@ -528,12 +528,8 @@ void do_put(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	
       } else {
 	while (num != 0) {
-#if 1
 	  bits = generic_find(arg1, FIND_OBJ_INV,
 			      ch, &tmp_char, &obj_object);
-#else
-	  obj_object = get_obj_in_list_vis(ch, arg1, ch->carrying);
-#endif
 	  
 	  if (obj_object) {
 	    if (IS_OBJ_STAT(obj_object,ITEM_NODROP)) {

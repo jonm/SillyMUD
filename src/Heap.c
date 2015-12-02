@@ -117,24 +117,5 @@ void DisplayStringHeap
    }
 }
 
-#if 0
-main()
-{
-   struct StrHeap *H;
-   int i;
-   char buf[256];
-
-   H = InitHeap();
-
-   for (i=1;i<10;i++) {
-      scanf("%s", buf);
-      StringHeap(buf, H);
-   }   
-
-   DisplayStringHeap(H,0,TRUE);
-
-}
-#endif
-
 
 

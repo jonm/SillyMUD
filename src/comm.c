@@ -28,15 +28,7 @@
 #define DFLT_PORT 4000        /* default port */
 #define MAX_NAME_LENGTH 15
 #define MAX_HOSTNAME   256
-#if 1
 #define OPT_USEC 250000       /* time delay corresponding to 4 passes/sec */
-#else
-#if TITAN
-#define OPT_USEC 125000       /* lets see if this changes the lag any */
-#else
-#define OPT_USEC 250000       /* time delay corresponding to 4 passes/sec */
-#endif
-#endif
 
 #define STATE(d) ((d)->connected)
 
@@ -270,10 +262,6 @@ void run_the_game(int port)
 void game_loop(int s)
 {
   fd_set input_set, output_set, exc_set;
-#if 0
-  fd_set tin, tout, tex;
-  fd_set mtin, mtout, mtex;
-#endif
   struct timeval last_time, now, timespent, timeout, null_time;
   static struct timeval opt_time;
   char comm[MAX_INPUT_LENGTH];
@@ -674,13 +662,8 @@ void write_to_q(char *txt, struct txt_q *queue)
     free(new);
     return;
   }
-#if 0 /* Changed for test */
-  CREATE(new->text, char, strl+1);
-  strcpy(new->text, txt);
-#else
   
   new->text = (char *)strdup(txt);
-#endif
 
   new->next = NULL;
 
@@ -800,22 +783,6 @@ int new_connection(int s)
     return(-1);
   }
   nonblock(t);
-#if 0  
-#ifdef sun
-
-  
-    
-  i = sizeof(peer);
-  if (!getpeername(t, &peer, &i))	{
-    if (i > 0) {
-      *(peer.sa_data + 49) = '\0';
-      SPRINTF(buf, "New connection from addr %s.", peer.sa_data);
-      log_msg(buf);
-    }
-  }
-
-#endif
-#endif
   return(t);
 }
 
@@ -1151,10 +1118,6 @@ void close_socket(struct descriptor_data *d)
       
     }
   }
-#if 0
-  if (d->showstr_head)   /* this piece of code causes core dumps on */
-    free(d->showstr_head);   /* ardent titans */
-#endif
   /*
     free the input and output queues.
    */
@@ -1571,9 +1534,6 @@ void raw_force_all( char *to_force)
     }
 }
 
-
-#if 0
-#endif
 
 void UpdateScreen(struct char_data *ch, int update)
 {

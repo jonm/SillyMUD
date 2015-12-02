@@ -39,12 +39,6 @@ int add_obj_cost(struct char_data *ch, struct char_data *re,
     if ((obj->item_number > -1) && (cost->ok) && ItemEgoClash(ch,obj,0) >-5 ) {
       temp = MAX(0, obj->obj_flags.cost_per_day);
       cost->total_cost += temp;
-      if (re) {
-#if  0
-	SPRINTF(buf, "%30s : %d coins/day\n\r", obj->short_description, temp);
-	send_to_char(buf, ch);
-#endif	
-      }
       cost->no_carried++;
       hoarder = add_obj_cost(ch, re, obj->contains, cost, hoarder);
       hoarder = add_obj_cost(ch, re, obj->next_content, cost, hoarder);
@@ -165,11 +159,6 @@ void update_file(struct char_data *ch, struct obj_file_u *st)
   write_char_extra(ch);
   SPRINTF(buf, "rent/%s", lower(ch->player.name));
   ensure_rent_directory();
-#if 0
-  for(p=buf;*p && *p != ' ';p++);
-  *p = '\0';
-  log_msg("buf");
-#endif
   if (!(fl = fopen(buf, "w")))  {
     perror("saving PC's objects");
     assert(0);  
@@ -540,10 +529,6 @@ void update_obj_file()
             fseek(char_file, (long) (player_table[i].nr *
 					 sizeof(struct char_file_u)), 0);
 	    fwrite(&ch_st, sizeof(struct char_file_u), 1, char_file);
-#if 0
-	    rewind(fl);
-	    WriteObjs(fl, &st);
-#endif
 	    fclose(fl);
 	  } else {
  
@@ -569,10 +554,6 @@ void update_obj_file()
 		log_msg(buf);
 		st.gold_left  -= (st.total_cost*days_passed);
 		st.last_update = time(0)-secs_lost;
-#if 0
-		rewind(fl);
-		WriteObjs(fl, &st);
-#endif
 		fclose(fl);
 #if LIMITED_ITEMS
 		CountLimitedItems(&st);
@@ -586,10 +567,6 @@ void update_obj_file()
 #endif
 	      SPRINTF(buf, "  same day update on %s", st.owner);
 	      log_msg(buf);
-#if 0
-	      rewind(fl);
-	      WriteObjs(fl, &st);
-#endif
 	      fclose(fl);
 	    }
 	  }
@@ -639,16 +616,6 @@ void CountLimitedItems(struct obj_file_u *st)
 
 
 void PrintLimitedItems() {
-/*  int i; */
-#if 0
-  char buf[200];
-  for (i=0;i<=top_of_objt;i++) {
-    if (obj_index[i].number > 0) {
-      SPRINTF(buf, "item> %d [%d]", obj_index[i].virtual, obj_index[i].number);
-      log_msg(buf);
-    }
-  }
-#endif
 }
 
 
@@ -1053,10 +1020,6 @@ void obj_store_to_room(int room, struct obj_file_u *st)
       obj_to_room2(obj, room);
     }
   }
-  /* bug report -  this is a static array, shouldn't be freed */
-#if 0
-  free(st->objects);
-#endif
 }
 
 void load_room_objs(int room)

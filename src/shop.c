@@ -188,12 +188,6 @@ void shopping_buy( char *arg, struct char_data *ch,
   if(DoIHateYou(ch))      /* we are prejudice against certain races */
     cost *=2;
 
-#if 0
-  shop_index[shop_nr].profit_buy -
-    ((chr_apply[GET_CHR(ch)].reaction*temp1->obj_flags.cost)/100) +
-      (mult * temp1->obj_flags.cost))) && GetMaxLevel(ch)<DEMIGOD)    {
-#endif 
- 
   if (GET_GOLD(ch) < (int) (num* cost)) {
   SPRINTF(buf,
 	  shop_index[shop_nr].missing_cash2,

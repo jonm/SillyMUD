@@ -1401,8 +1401,6 @@ void show_exits(struct char_data *ch)
     send_to_char("None.\n\r", ch);
 }
 
-#if 1
-
 /*  Gecko's spiffy enhancement to do_exits() from act.info.c */
 
 void do_exits(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
@@ -1454,7 +1452,6 @@ void do_exits(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
     send_to_char("None.\n\r", ch);
 }
 
-#endif
 
 void do_score(struct char_data *ch, char * UNUSED(argument), int UNUSED(cmd)) {
   struct time_info_data playing_time;

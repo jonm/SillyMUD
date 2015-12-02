@@ -350,15 +350,6 @@ void assign_mobiles()
     { 1462, chess_game },
     { 1463, chess_game },
     
-#if 0
-    { 1401, fighter}, 
-    { 1404, fighter}, 
-    { 1406, fighter}, 
-    { 1457, fighter}, 
-    { 1460, fighter}, 
-    { 1462, fighter}, 
-#endif
-
     { 1499, sisyphus }, 
     { 1471, paramedics }, 
     { 1470, jabberwocky },
@@ -676,38 +667,6 @@ void assign_mobiles()
     {16640, cleric},
     {16650, cleric},
 
-#if 0
-/*
-**  King's Mountain
-*/
-    {16700, BreathWeapon},
-    {16702, shadow},
-    {16703, magic_user},
-    {16709, vampire},
-    {16710, Devil},
-    {16711, Devil},
-    {16712, Devil},
-    {16713, ghoul},
-    {16714, ghoul},
-    {16715, wraith},
-    {16717, fighter},
-    {16720, Devil},
-    {16721, Devil},
-    {16724, Devil},
-    {16725, magic_user},
-    {16726, cleric},
-    {16727, Devil},
-    {16728, Devil},
-    {16730, Devil},
-    {16731, Devil},
-    {16732, Demon},
-    {16733, Demon},
-    {16734, Demon},
-    {16735, Demon},
-    {16736, cleric},
-    {16738, BreathWeapon},
-#endif
-
 /*
 **  Sewer Rats
 */
@@ -962,17 +921,9 @@ void assign_mobiles()
 **  Arachnos
 */
 
-#if 0
-    { 20001, snake },	/* Young (large) spider */
-#endif
-
     { 20003, snake },	/* wolf (giant) spider  */
 
     { 20005, snake },	/* queen wasp      */
-
-#if 0
-    { 20006, snake },	/* drone spider    */
-#endif
 
     { 20010, snake },	/* bird spider     */
     { 20009, magic_user }, /* quasit         */
@@ -1004,22 +955,6 @@ void assign_mobiles()
     { 22605, timnus },         /* timnus */
     { 22604, baby_bear},	/* mother bear */
     { 22624, baby_bear},	/* baby bears. */
-
-#if 0
-/*
-**   The Darklands
-*/
-
-    { 24050, cleric },
-    { 24052, magic_user2 }, 
-    { 24053, magic_user2 }, 
-    { 24054, magic_user2 }, 
-    { 24055, magic_user2 }, 
-    { 24056, magic_user2 }, 
-    { 24057, magic_user2 }, 
-    { 24058, magic_user2 }, 
-    { 24059, magic_user2 }, 
-#endif
 
 /*
 **   Abbarach

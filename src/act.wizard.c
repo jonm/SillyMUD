@@ -2653,22 +2653,7 @@ void do_advance(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 	case 'p':
 	  lin_class = CLERIC_LEVEL_IND;
 	  break;
-#if 0
-	case 'D':
-	case 'd':
-	  lin_class = DRUID_LEVEL_IND;
-	  break;
-
-	case 'K' :
-	case 'k' :
-	  lin_class = MONK_LEVEL_IND;
-	  break;
-
-#endif
 	default:
-#if 0
-	  send_to_char("Must supply a class (M C W T D K B)\n\r", ch);
-#endif
 	  send_to_char("Must supply a class (M C W T)\n\r", ch);
 	  return;
 	  break;

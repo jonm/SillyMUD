@@ -471,24 +471,6 @@ void do_sign(struct char_data *ch, char *argument, int UNUSED(cmd))
 
 void bird_garble(char * UNUSED(buf), char * UNUSED(buf2), 
                  struct char_data * UNUSED(ch)) {
-#if 0
-  char *p;
-
-  buf2[0] = '\0';
-  
-  p = strtok(buf, " ");
-  
-  while(p) {
-    if(number(1,18) > GET_INT(ch)) {
-      strcat(buf2, bird_noises[number(0,BIRD_NOISE_NUM)]);
-      strcat(buf2, " ");
-    }
-    strcat(buf2, p);
-    p = strtok(0, " ");
-    if(p)
-      strcat(buf2, " ");
-  }
-#endif
 }
 
 void rat_garble(char *buf, char *buf2, struct char_data *ch)

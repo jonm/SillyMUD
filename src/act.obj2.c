@@ -399,12 +399,6 @@ void do_sip(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 				 [THIRST]/4)
 );
 
-#if 0  
-  if(!IS_SET(temp->obj_flags.value[3],DRINK_PERM) ||
-     (temp->obj_flags.value[0] > 19))
-    weight_change_object(temp, -1); /* Subtract one unit, unless permanent */
-#endif
-
   if(GET_COND(ch,DRUNK)>10)
     act("You feel drunk.",FALSE,ch,0,0,TO_CHAR);
   
