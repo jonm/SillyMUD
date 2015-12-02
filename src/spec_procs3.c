@@ -544,7 +544,7 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
       if (ch->specials.fighting) {
         if ((GET_POS(ch) < POSITION_FIGHTING) &&
             (GET_POS(ch) > POSITION_STUNNED)) {
-          StandUp(ch);
+          stand_up(ch);
         }
         else {
           if (check_soundproof(ch) || check_nomagic(ch, 0, 0))

@@ -3688,7 +3688,7 @@ int sisyphus(struct char_data *ch, int cmd, char *UNUSED(arg),
     if (ch->specials.fighting) {
       if ((GET_POS(ch) < POSITION_FIGHTING) &&
           (GET_POS(ch) > POSITION_STUNNED)) {
-        StandUp(ch);
+        stand_up(ch);
       }
       else {
         switch (number(1, 10)) {
@@ -3717,7 +3717,7 @@ int jabberwocky(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (ch->specials.fighting) {
     if ((GET_POS(ch) < POSITION_FIGHTING) && (GET_POS(ch) > POSITION_STUNNED)) {
-      StandUp(ch);
+      stand_up(ch);
     }
     else {
       FighterMove(ch);
@@ -3732,7 +3732,7 @@ int flame(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
   if (ch->specials.fighting) {
     if ((GET_POS(ch) < POSITION_FIGHTING) && (GET_POS(ch) > POSITION_STUNNED)) {
-      StandUp(ch);
+      stand_up(ch);
     }
     else {
       FighterMove(ch);
@@ -4109,7 +4109,7 @@ int StormGiant(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
   if (ch->specials.fighting) {
     if ((GET_POS(ch) < POSITION_FIGHTING) && (GET_POS(ch) > POSITION_STUNNED)) {
-      StandUp(ch);
+      stand_up(ch);
     }
     else {
       if (number(0, 5)) {
@@ -4143,7 +4143,7 @@ int fighter(struct char_data *ch, int cmd, char *UNUSED(arg),
       FighterMove(ch);
     }
     else {
-      StandUp(ch);
+      stand_up(ch);
     }
     FindABetterWeapon(ch);
   }
@@ -4512,7 +4512,7 @@ int magic_user2(struct char_data *ch, int cmd, char *UNUSED(arg),
     return FALSE;
 
   if ((GET_POS(ch) > POSITION_STUNNED) && (GET_POS(ch) < POSITION_FIGHTING)) {
-    StandUp(ch);
+    stand_up(ch);
     return (TRUE);
   }
 
@@ -5693,7 +5693,7 @@ int trogcook(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (ch->specials.fighting) {
     if (GET_POS(ch) != POSITION_FIGHTING)
-      StandUp(ch);
+      stand_up(ch);
     return (FALSE);
   }
 
@@ -5805,7 +5805,7 @@ int troguard(struct char_data *ch, int cmd, char *UNUSED(arg),
       FighterMove(ch);
     }
     else {
-      StandUp(ch);
+      stand_up(ch);
     }
 
     if (!check_soundproof(ch)) {
@@ -5888,7 +5888,7 @@ int keystone(struct char_data *ch, int cmd, char *UNUSED(arg),
       FighterMove(ch);
     }
     else {
-      StandUp(ch);
+      stand_up(ch);
     }
     CallForGuard(ch, ch->specials.fighting, 3, OUTPOST);
   }
@@ -5949,7 +5949,7 @@ int ghostsoldier(struct char_data *ch, int cmd, char *UNUSED(arg),
       FighterMove(ch);
     }
     else {
-      StandUp(ch);
+      stand_up(ch);
     }
     CallForGuard(ch, ch->specials.fighting, 3, OUTPOST);
   }
@@ -6361,7 +6361,7 @@ int guardian(struct char_data *ch, int cmd, char *arg,
         FighterMove(ch);
       }
       else {
-        StandUp(ch);
+        stand_up(ch);
       }
     }
     return (FALSE);
@@ -6500,7 +6500,7 @@ int web_slinger(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 
   if ((GET_POS(ch) > POSITION_STUNNED) && (GET_POS(ch) < POSITION_FIGHTING)) {
-    StandUp(ch);
+    stand_up(ch);
     return (TRUE);
   }
 

@@ -474,7 +474,7 @@ char *replace_string(char *str, char *weapon, char *weapon_s);
 void dam_message(int dam, struct char_data *ch, struct char_data *victim,
                  int w_type);
 int DamCheckDeny(struct char_data *ch, struct char_data *victim, int type);
-int DamDetailsOk(struct char_data *ch, struct char_data *v, int dam, int type);
+int dam_details_ok(struct char_data *ch, struct char_data *v, int dam, int type);
 int SetCharFighting(struct char_data *ch, struct char_data *v);
 int SetVictFighting(struct char_data *ch, struct char_data *v);
 int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type);
@@ -1995,7 +1995,7 @@ int IsGodly(struct char_data *ch);
 void SetHunting(struct char_data *ch, struct char_data *tch);
 void CallForGuard
   (struct char_data *ch, struct char_data *vict, int lev, int area);
-void StandUp(struct char_data *ch);
+void stand_up(struct char_data *ch);
 void MakeNiftyAttack(struct char_data *ch);
 void FighterMove(struct char_data *ch);
 void MonkMove(struct char_data *ch);
@@ -2037,7 +2037,7 @@ int too_many_followers(struct char_data *ch);
 int follow_time(struct char_data *ch);
 int ItemAlignClash(struct char_data *ch, struct obj_data *obj);
 int ItemEgoClash(struct char_data *ch, struct obj_data *obj, int bon);
-void IncrementZoneNr(int nr);
+void increment_zone_nr(int nr);
 int IsDarkOutside(struct room_data *rp);
 int GET_OBJ_EGO(struct obj_data *obj);
 int GET_EGO(struct char_data *ch);

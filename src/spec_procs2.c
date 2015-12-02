@@ -93,7 +93,7 @@ int druid_protector(struct char_data *ch, int cmd, char *UNUSED(arg),
     if (ch->specials.fighting) {
       if ((GET_POS(ch) < POSITION_FIGHTING) &&
           (GET_POS(ch) > POSITION_STUNNED)) {
-        StandUp(ch);
+        stand_up(ch);
       }
       else {
         FighterMove(ch);
@@ -508,9 +508,9 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     if ((GET_POS(ch) > POSITION_STUNNED) && (GET_POS(ch) < POSITION_FIGHTING)) {
 
       if (GET_HIT(ch) > GET_HIT(ch->specials.fighting) / 2)
-        StandUp(ch);
+        stand_up(ch);
       else {
-        StandUp(ch);
+        stand_up(ch);
         do_flee(ch, "\0", 0);
       }
 
@@ -856,7 +856,7 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (GET_POS(ch) != POSITION_FIGHTING) {
     if ((GET_POS(ch) < POSITION_STANDING) && (GET_POS(ch) > POSITION_STUNNED)) {
-      StandUp(ch);
+      stand_up(ch);
     }
     return FALSE;
   }
@@ -2746,7 +2746,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 
   if (GET_POS(ch) < POSITION_FIGHTING && GET_POS(ch) > POSITION_SLEEPING) {
-    StandUp(ch);
+    stand_up(ch);
     return (TRUE);
   }
 

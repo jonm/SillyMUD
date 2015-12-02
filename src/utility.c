@@ -1664,7 +1664,7 @@ void CallForGuard
   }
 }
 
-void StandUp(struct char_data *ch) {
+void stand_up(struct char_data *ch) {
   if ((GET_POS(ch) < POSITION_STANDING) && (GET_POS(ch) > POSITION_STUNNED)) {
     if (ch->points.hit > (ch->points.max_hit / 2))
       act("$n quickly stands up.", 1, ch, 0, 0, TO_ROOM);
@@ -2976,7 +2976,7 @@ int GET_EGO(struct char_data *ch) {
 
 
 
-void IncrementZoneNr(int nr) {
+void increment_zone_nr(int nr) {
   struct char_data *c;
   extern struct char_data *character_list;
   extern int top_of_zone_table;

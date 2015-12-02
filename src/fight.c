@@ -898,7 +898,7 @@ int DamCheckDeny(struct char_data *ch, struct char_data *victim, int type) {
 
 }
 
-int DamDetailsOk(struct char_data *ch, struct char_data *v, int dam, int type) {
+int dam_details_ok(struct char_data *ch, struct char_data *v, int dam, int type) {
 
   if (dam < 0)
     return (FALSE);
@@ -1386,7 +1386,7 @@ int MissileDamage(struct char_data *ch, struct char_data *victim,
 
   dam = SkipImmortals(victim, dam);
 
-  if (!DamDetailsOk(ch, victim, dam, attacktype))
+  if (!dam_details_ok(ch, victim, dam, attacktype))
     return (FALSE);
 
   SetVictFighting(ch, victim);
@@ -1420,7 +1420,7 @@ int damage(struct char_data *ch, struct char_data *victim,
 
   dam = SkipImmortals(victim, dam);
 
-  if (!DamDetailsOk(ch, victim, dam, attacktype))
+  if (!dam_details_ok(ch, victim, dam, attacktype))
     return (FALSE);
 
   SetVictFighting(ch, victim);
