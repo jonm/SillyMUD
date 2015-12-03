@@ -24,7 +24,7 @@
 
 #define UPPER(c) (((c)>='a'  && (c) <= 'z') ? ((c)+('A'-'a')) : (c) )
 
-#define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r') 
+#define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r')
 
 #define IS_WEAPON(o) (o->obj_flags.type_flag == ITEM_WEAPON)
 
@@ -56,24 +56,13 @@
 #define IS_AFFECTED2(ch,skill) (IS_SET((ch)->specials.affected_by2,(skill)))
 #define IS_INTRINSIC(ch,skill) (IS_SET((ch)->specials.intrinsics,(skill)))
 
-#if 0
-#define IS_DARK(room)  (real_roomp(room)->light<=0 && \
-    ((IS_SET(real_roomp(room)->room_flags, DARK)) || real_roomp(room)->dark))
-
-#define IS_LIGHT(room)  (real_roomp(room)->light>0 || (!IS_SET(real_roomp(room)->room_flags, DARK) || !real_roomp(room)->dark))
-#else
-
 #define IS_DARK(room) (real_roomp(room)->light <= 0 && \
 	((IS_SET(real_roomp(room)->room_flags, DARK)) ||  \
-	 IsDarkOutside(real_roomp(room))))
+	 is_dark_outside(real_roomp(room))))
 
 #define IS_LIGHT(room) (real_roomp(room)->light>0 || \
 	 (!IS_SET(real_roomp(room)->room_flags, DARK) || \
-	  !IsDarkOutside(real_roomp(room))))
-
-#endif
-
-
+	  !is_dark_outside(real_roomp(room))))
 
 #define SET_BIT(var,bit)  ((var) = (var) | (bit))
 
@@ -98,7 +87,7 @@
 	(((ch)->player.sex == 1) ? "he" : "she") : "it")
 
 #define HMHR(ch) ((ch)->player.sex ? 					\
-	(((ch)->player.sex == 1) ? "him" : "her") : "it")	
+	(((ch)->player.sex == 1) ? "him" : "her") : "it")
 
 #define ANA(obj) (index("aeiouyAEIOUY", *(obj)->name) ? "An" : "A")
 
@@ -196,12 +185,7 @@
 #define AWAKE(ch) (GET_POS(ch) > POSITION_SLEEPING && \
 		   !IS_AFFECTED(ch, AFF_PARALYSIS) )
 
-#if 1
-#define WAIT_STATE(ch, cycle)  (((ch)->desc) ? (ch)->desc->wait = ((GetMaxLevel(ch) >= DEMIGOD) ? (0) : (cycle)) : 0)
-#endif
-#if 0
-#define WAIT_STATE2(ch, cycle)  ((ch)->specials->wait = ((GetMaxLevel(ch) >= DEMIGOD) ? (0) : (cycle)) : (ch)->specials->wait)
-#endif
+#define WAIT_STATE(ch, cycle)  (((ch)->desc) ? (ch)->desc->wait = ((get_max_level(ch) >= DEMIGOD) ? (0) : (cycle)) : 0)
 
 /* Object And Carry related macros */
 
@@ -213,7 +197,7 @@
 
 #define CAN_CARRY_W(ch) (str_app[STRENGTH_APPLY_INDEX(ch)].carry_w)
 
-#define CAN_CARRY_N(ch) (5+GET_DEX(ch)/2+GetMaxLevel(ch)/2)
+#define CAN_CARRY_N(ch) (5+GET_DEX(ch)/2+get_max_level(ch)/2)
 
 #define IS_CARRYING_W(ch) ((ch)->specials.carry_weight)
 
@@ -248,7 +232,7 @@
                      (real_roomp(ch->in_room)->sector_type != SECT_INSIDE) && \
                      (real_roomp(ch->in_room)->sector_type != SECT_UNDERWATER))
 
-#define IS_IMMORTAL(ch) (!IS_NPC(ch)&&(GetMaxLevel(ch)>=LOW_IMMORTAL))
+#define IS_IMMORTAL(ch) (!IS_NPC(ch)&&(get_max_level(ch)>=LOW_IMMORTAL))
 
 #define IS_POLICE(ch) ((mob_index[ch->nr].virtual == 3060) || \
                        (mob_index[ch->nr].virtual == 3069) || \
@@ -278,17 +262,13 @@
 #define IS_PC(ch) (!IS_NPC((ch)) || IS_SET((ch)->specials.act, ACT_POLYSELF))
 
 
-#define GET_AVE_LEVEL(ch) (GetMaxLevel(ch)+(GetSecMaxLev(ch)/2)+\
-	  (GetThirdMaxLev(ch)/3))
+#define GET_AVE_LEVEL(ch) (get_max_level(ch)+(get_sec_max_lev(ch)/2)+\
+	  (get_third_max_lev(ch)/3))
 
 #define GET_ALIAS(ch, num) ((ch)->specials.A_list->com[(num)])
 
 #define MOUNTED(ch) ((ch)->specials.mounted_on)
 #define RIDDEN(ch) ((ch)->specials.ridden_by)
-
-#if 0
-#define isdigit(ch) (ch >= '0' && ch <= '9')
-#endif
 
 #define GET_VALUE(obj) ((obj)->obj_flags.cost)
 #define GET_RENT(obj) ((obj)->obj_flags.cost_per_day)
@@ -305,4 +285,3 @@
 
 #define SAPPENDF(str, ...)                                          \
   snprintf(str+strlen(str), sizeof(str)-strlen(str) - 1, __VA_ARGS__)
-

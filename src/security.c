@@ -11,37 +11,35 @@
 
 void log_msg(char *);
 
-int SecCheck(char *arg, char *site)
-{
- char buf[255], buf2[255];
- FILE *f1;
+int sec_check(char *arg, char *site) {
+  char buf[255], buf2[255];
+  FILE *f1;
 
- SPRINTF(buf, "security/%s", arg);
+  SPRINTF(buf, "security/%s", arg);
 
- if(!(f1 = fopen(buf, "rt"))) {
+  if (!(f1 = fopen(buf, "rt"))) {
     SPRINTF(buf, "Unable to open security file for %s.", arg);
     log_msg(buf);
-    return(-1);
+    return (-1);
   }
 
- fgets(buf2, 250, f1);
- fclose(f1);
+  fgets(buf2, 250, f1);
+  fclose(f1);
 
- if(!*buf2) {
+  if (!*buf2) {
     SPRINTF(buf, "Security file for %s empty.", arg);
     log_msg(buf);
-    return(-1);
+    return (-1);
   }
 
- if(buf2[strlen(buf2)-1] == '\n')
-   buf2[strlen(buf2)-1] = '\0';
+  if (buf2[strlen(buf2) - 1] == '\n')
+    buf2[strlen(buf2) - 1] = '\0';
 
- if(!(strncmp(site, buf2, strlen(buf2)))) {
-    return(1);
+  if (!(strncmp(site, buf2, strlen(buf2)))) {
+    return (1);
   }
-    SPRINTF(buf, "Site %s and %s don't match for %s. Booting.", site, buf2, arg);
-     log_msg(buf);
+  SPRINTF(buf, "Site %s and %s don't match for %s. Booting.", site, buf2, arg);
+  log_msg(buf);
 
- return(0);
+  return (0);
 }
-

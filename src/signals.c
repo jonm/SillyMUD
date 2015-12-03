@@ -17,41 +17,39 @@ void shutdown_request(int);
 void logsig(int);
 void hupsig(int);
 
-void raw_force_all( char *to_force);
+void raw_force_all(char *to_force);
 
-void signal_setup()
-{
-	struct itimerval itime;
-	struct timeval interval;
+void signal_setup() {
+  struct itimerval itime;
+  struct timeval interval;
 
-	signal(SIGUSR2, shutdown_request);
+  signal(SIGUSR2, shutdown_request);
 
-	/* just to be on the safe side: */
+  /* just to be on the safe side: */
 
-	signal(SIGHUP, hupsig);
-	signal(SIGPIPE, SIG_IGN);
-	signal(SIGINT, hupsig);
-	signal(SIGALRM, logsig);
-	signal(SIGTERM, hupsig);
+  signal(SIGHUP, hupsig);
+  signal(SIGPIPE, SIG_IGN);
+  signal(SIGINT, hupsig);
+  signal(SIGALRM, logsig);
+  signal(SIGTERM, hupsig);
 
-	/* set up the deadlock-protection */
+  /* set up the deadlock-protection */
 
-	interval.tv_sec = 900;    /* 15 minutes */
-	interval.tv_usec = 0;
-	itime.it_interval = interval;
-	itime.it_value = interval;
-	setitimer(ITIMER_VIRTUAL, &itime, 0);
-	signal(SIGVTALRM, checkpointing);
+  interval.tv_sec = 900;        /* 15 minutes */
+  interval.tv_usec = 0;
+  itime.it_interval = interval;
+  itime.it_value = interval;
+  setitimer(ITIMER_VIRTUAL, &itime, 0);
+  signal(SIGVTALRM, checkpointing);
 }
 
 void checkpointing(int UNUSED(sig)) {
   extern int tics;
-	
-  if (!tics)
-    {
-      log_msg("CHECKPOINT shutdown: tics not updated");
-      abort();
-    }
+
+  if (!tics) {
+    log_msg("CHECKPOINT shutdown: tics not updated");
+    abort();
+  }
   else
     tics = 0;
 }
@@ -72,8 +70,8 @@ void hupsig(int UNUSED(sig)) {
 
   raw_force_all("return");
   raw_force_all("save");
-  for (i=0;i<30;i++) {
-    SaveTheWorld();
+  for (i = 0; i < 30; i++) {
+    save_the_world();
   }
   mudshutdown = should_reboot = 1;
 }

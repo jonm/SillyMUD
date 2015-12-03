@@ -15,8 +15,8 @@
 
 struct PolyType {
   char name[20];
-  int  level;
-  int  number;
+  int level;
+  int number;
 };
 
 #define LAST_DRUID_MOB 16
