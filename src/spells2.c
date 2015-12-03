@@ -2605,7 +2605,7 @@ void cast_mon_sum1(byte UNUSED(level), struct char_data *ch,
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
   case SPELL_TYPE_STAFF:
-    spell_Create_Monster(5, ch, 0, 0);
+    spell_create_monster(5, ch, 0, 0);
     break;
   default:
     log_msg("Serious screw-up in monster_summoning_1");
@@ -2625,7 +2625,7 @@ void cast_mon_sum2(byte UNUSED(level), struct char_data *ch,
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
   case SPELL_TYPE_STAFF:
-    spell_Create_Monster(7, ch, 0, 0);
+    spell_create_monster(7, ch, 0, 0);
     break;
   default:
     log_msg("Serious screw-up in monster_summoning_1");
@@ -2645,7 +2645,7 @@ void cast_mon_sum3(byte UNUSED(level), struct char_data *ch,
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
   case SPELL_TYPE_STAFF:
-    spell_Create_Monster(9, ch, 0, 0);
+    spell_create_monster(9, ch, 0, 0);
     break;
   default:
     log_msg("Serious screw-up in monster_summoning_1");
@@ -2665,7 +2665,7 @@ void cast_mon_sum4(byte UNUSED(level), struct char_data *ch,
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
   case SPELL_TYPE_STAFF:
-    spell_Create_Monster(11, ch, 0, 0);
+    spell_create_monster(11, ch, 0, 0);
     break;
   default:
     log_msg("Serious screw-up in monster_summoning_1");
@@ -2685,7 +2685,7 @@ void cast_mon_sum5(byte UNUSED(level), struct char_data *ch,
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
   case SPELL_TYPE_STAFF:
-    spell_Create_Monster(13, ch, 0, 0);
+    spell_create_monster(13, ch, 0, 0);
     break;
   default:
     log_msg("Serious screw-up in monster_summoning_1");
@@ -2705,7 +2705,7 @@ void cast_mon_sum6(byte UNUSED(level), struct char_data *ch,
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
   case SPELL_TYPE_STAFF:
-    spell_Create_Monster(15, ch, 0, 0);
+    spell_create_monster(15, ch, 0, 0);
     break;
   default:
     log_msg("Serious screw-up in monster_summoning_1");
@@ -2725,7 +2725,7 @@ void cast_mon_sum7(byte UNUSED(level), struct char_data *ch,
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
   case SPELL_TYPE_STAFF:
-    spell_Create_Monster(17, ch, 0, 0);
+    spell_create_monster(17, ch, 0, 0);
     break;
   default:
     log_msg("Serious screw-up in monster_summoning_1");

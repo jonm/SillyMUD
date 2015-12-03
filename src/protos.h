@@ -843,7 +843,7 @@ void spell_sending(byte level, struct char_data *ch,
                    struct char_data *victim, struct obj_data *obj);
 void spell_meteor_swarm(byte level, struct char_data *ch,
                         struct char_data *victim, struct obj_data *obj);
-void spell_Create_Monster(byte level, struct char_data *ch,
+void spell_create_monster(byte level, struct char_data *ch,
                           struct char_data *victim, struct obj_data *obj);
 void spell_light(byte level, struct char_data *ch,
                  struct char_data *victim, struct obj_data *obj);

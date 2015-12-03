@@ -1117,7 +1117,7 @@ void spell_meteor_swarm(byte level, struct char_data *ch,
 
 }
 
-void spell_Create_Monster(byte level, struct char_data *ch,
+void spell_create_monster(byte level, struct char_data *ch,
                           struct char_data *UNUSED(victim),
                           struct obj_data *UNUSED(obj)) {
   struct affected_type af;
