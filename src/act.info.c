@@ -607,8 +607,8 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode) {
 
     if (RIDDEN(i)) {
       SPRINTF(buffer, "$n is ridden by %s",
-              IS_NPC(RIDDEN(i)) ? RIDDEN(i)->player.
-              short_descr : GET_NAME(RIDDEN(i)));
+              IS_NPC(RIDDEN(i)) ? RIDDEN(i)->
+              player.short_descr : GET_NAME(RIDDEN(i)));
       act(buffer, FALSE, i, 0, ch, TO_VICT);
     }
 
@@ -1209,8 +1209,8 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             /* Extra description in room?? */
             if (!found) {
               tmp_desc = find_ex_description(arg2,
-                                             real_roomp(ch->in_room)->
-                                             ex_description);
+                                             real_roomp(ch->
+                                                        in_room)->ex_description);
               if (tmp_desc) {
                 page_string(ch->desc, tmp_desc, 0);
                 return;
@@ -2020,8 +2020,8 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
                     }
                   case 't':{
                       SPRINTF(tempbuf, " %-16s ",
-                              (person->player.title ? person->player.
-                               title : "(null)"));
+                              (person->player.title ? person->
+                               player.title : "(null)"));
                       strcat(buf, tempbuf);
                       break;
                     }
@@ -2050,8 +2050,8 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
               }
               else {
                 SPRINTF(buf, "%s %s\n\r", GET_NAME(person),
-                        (person->player.title ? person->player.
-                         title : "(null)"));
+                        (person->player.title ? person->
+                         player.title : "(null)"));
                 send_to_char(buf, ch);
               }
             }
@@ -2470,8 +2470,8 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             titles[class][i].exp,
             titles[class][i + 1].exp,
             (GET_SEX(ch) ==
-             SEX_FEMALE ? titles[class][i].title_f : titles[class][i].
-             title_m));
+             SEX_FEMALE ? titles[class][i].
+             title_f : titles[class][i].title_m));
 
     send_to_char(buf, ch);
   }

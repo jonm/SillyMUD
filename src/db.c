@@ -1988,8 +1988,9 @@ void reset_zone(int zone) {
 
           if (GET_RACE(mob) > RACE_GNOME)
             if (!strchr(zone_table[ZCMD.arg1].races, GET_RACE(mob))) {
-              zone_table[ZCMD.arg1].
-                races[strlen(zone_table[ZCMD.arg1].races)] = GET_RACE(mob);
+              zone_table[ZCMD.
+                         arg1].races[strlen(zone_table[ZCMD.arg1].races)] =
+                GET_RACE(mob);
             }
         }
         break;

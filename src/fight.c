@@ -1664,9 +1664,10 @@ int calc_thaco(struct char_data *ch) {
   /* The lower AC, the better                      */
 
   if (!IS_NPC(ch))
-    calc_thaco =
-      thaco[best_fighting_class(ch)][(int)
-                                     GET_LEVEL(ch, best_fighting_class(ch))];
+    calc_thaco = thaco[best_fighting_class(ch)][(int)
+                                                GET_LEVEL(ch,
+                                                          best_fighting_class
+                                                          (ch))];
   else
     /* THAC0 for monsters is set in the HitRoll */
     calc_thaco = 20;

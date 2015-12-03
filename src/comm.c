@@ -210,14 +210,12 @@ int real_main(int argc, char **argv) {
 /* Init sockets, run game, and cleanup sockets */
 void run_the_game(int port) {
   int s;
-  PROFILE(extern etext();
-    )
+  PROFILE(extern etext();)
 
   void signal_setup(void);
   int load(void);
 
-  PROFILE(monstartup((int)2, etext);
-    )
+  PROFILE(monstartup((int)2, etext);)
 
     descriptor_list = NULL;
 
@@ -240,8 +238,7 @@ void run_the_game(int port) {
 
   close_sockets(s);
 
-  PROFILE(monitor(0);
-    )
+  PROFILE(monitor(0);)
 
     if (should_reboot) {
     log_msg("Rebooting.");

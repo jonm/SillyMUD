@@ -972,8 +972,8 @@ void down_river(int pulse) {
                   if ((real_roomp(ch->in_room))->dir_option[rd]) {
                     obj_from_room(obj_object);
                     obj_to_room(obj_object,
-                                (real_roomp(ch->in_room))->dir_option[rd]->
-                                to_room);
+                                (real_roomp(ch->in_room))->
+                                dir_option[rd]->to_room);
                   }
                 }
 /*
@@ -1003,8 +1003,8 @@ void down_river(int pulse) {
                       if (RIDDEN(ch)) {
                         char_from_room(RIDDEN(ch));
                         char_to_room(RIDDEN(ch),
-                                     (real_roomp(or))->dir_option[rd]->
-                                     to_room);
+                                     (real_roomp(or))->
+                                     dir_option[rd]->to_room);
                       }
                       char_to_room(ch,
                                    (real_roomp(or))->dir_option[rd]->to_room);
@@ -2099,8 +2099,8 @@ void river_pulse_stuff(int pulse) {
                     if ((real_roomp(ch->in_room))->dir_option[rd]) {
                       obj_from_room(obj_object);
                       obj_to_room(obj_object,
-                                  (real_roomp(ch->in_room))->dir_option[rd]->
-                                  to_room);
+                                  (real_roomp(ch->in_room))->
+                                  dir_option[rd]->to_room);
                     }
                   }
                   /*
@@ -2132,12 +2132,12 @@ void river_pulse_stuff(int pulse) {
                           if (RIDDEN(ch)) {
                             char_from_room(RIDDEN(ch));
                             char_to_room(RIDDEN(ch),
-                                         (real_roomp(or))->dir_option[rd]->
-                                         to_room);
+                                         (real_roomp(or))->
+                                         dir_option[rd]->to_room);
                           }
                           char_to_room(ch,
-                                       (real_roomp(or))->dir_option[rd]->
-                                       to_room);
+                                       (real_roomp(or))->
+                                       dir_option[rd]->to_room);
                           do_look(ch, "\0", 15);
                           if (RIDDEN(ch)) {
                             do_look(RIDDEN(ch), "\0", 15);

@@ -2015,8 +2015,8 @@ int make_quest(struct char_data *ch, struct char_data *gm, int Class,
              (QuestList[Class][(int)GET_LEVEL(ch, Class)].item)].number > 5
             && GET_LEVEL(ch, Class) < 40)
           obj_index[real_object
-                    (QuestList[Class][(int)GET_LEVEL(ch, Class)].item)].
-            number = 0;
+                    (QuestList[Class][(int)GET_LEVEL(ch, Class)].
+                     item)].number = 0;
         return (FALSE);
       }
     }
