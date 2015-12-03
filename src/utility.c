@@ -972,8 +972,8 @@ void down_river(int pulse) {
                   if ((real_roomp(ch->in_room))->dir_option[rd]) {
                     obj_from_room(obj_object);
                     obj_to_room(obj_object,
-                                (real_roomp(ch->in_room))->
-                                dir_option[rd]->to_room);
+                                (real_roomp(ch->in_room))->dir_option[rd]->
+                                to_room);
                   }
                 }
 /*
@@ -1003,8 +1003,8 @@ void down_river(int pulse) {
                       if (RIDDEN(ch)) {
                         char_from_room(RIDDEN(ch));
                         char_to_room(RIDDEN(ch),
-                                     (real_roomp(or))->
-                                     dir_option[rd]->to_room);
+                                     (real_roomp(or))->dir_option[rd]->
+                                     to_room);
                       }
                       char_to_room(ch,
                                    (real_roomp(or))->dir_option[rd]->to_room);
@@ -1938,7 +1938,7 @@ void rem_all_affects(struct char_data *ch) {
 }
 
 int check_for_blocked_move(struct char_data *ch, int cmd, char *UNUSED(arg),
-                        int room, int dir, int class) {
+                           int room, int dir, int class) {
   char buf[256], buf2[256];
 
   if (cmd > 6 || cmd < 1)
@@ -2099,8 +2099,8 @@ void river_pulse_stuff(int pulse) {
                     if ((real_roomp(ch->in_room))->dir_option[rd]) {
                       obj_from_room(obj_object);
                       obj_to_room(obj_object,
-                                  (real_roomp(ch->in_room))->
-                                  dir_option[rd]->to_room);
+                                  (real_roomp(ch->in_room))->dir_option[rd]->
+                                  to_room);
                     }
                   }
                   /*
@@ -2132,12 +2132,12 @@ void river_pulse_stuff(int pulse) {
                           if (RIDDEN(ch)) {
                             char_from_room(RIDDEN(ch));
                             char_to_room(RIDDEN(ch),
-                                         (real_roomp(or))->
-                                         dir_option[rd]->to_room);
+                                         (real_roomp(or))->dir_option[rd]->
+                                         to_room);
                           }
                           char_to_room(ch,
-                                       (real_roomp(or))->
-                                       dir_option[rd]->to_room);
+                                       (real_roomp(or))->dir_option[rd]->
+                                       to_room);
                           do_look(ch, "\0", 15);
                           if (RIDDEN(ch)) {
                             do_look(RIDDEN(ch), "\0", 15);
@@ -2175,7 +2175,8 @@ void river_pulse_stuff(int pulse) {
             /*
              *  Make the sound;
              */
-            make_noise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
+            make_noise(ch->in_room, ch->player.sounds,
+                       ch->player.distant_snds);
           }
           else if (GET_POS(ch) == POSITION_SLEEPING) {
             /*
@@ -2183,7 +2184,7 @@ void river_pulse_stuff(int pulse) {
              */
             SPRINTF(buffer, "%s snores loudly.\n\r", ch->player.short_descr);
             make_noise(ch->in_room, buffer,
-                      "You hear a loud snore nearby.\n\r");
+                       "You hear a loud snore nearby.\n\r");
           }
         }
         else if (GET_POS(ch) == ch->specials.default_pos) {

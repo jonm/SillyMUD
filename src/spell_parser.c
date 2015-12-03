@@ -895,9 +895,9 @@ bool saves_spell(struct char_data *ch, sh_int save_type) {
   if (!IS_NPC(ch)) {
 
     save += saving_throws[best_magic_class(ch)][save_type][(int)
-                                                         GET_LEVEL(ch,
-                                                                   best_magic_class
-                                                                   (ch))];
+                                                           GET_LEVEL(ch,
+                                                                     best_magic_class
+                                                                     (ch))];
     if (get_max_level(ch) > MAX_MORT)
       return (TRUE);
   }
@@ -1352,9 +1352,9 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
 
 
       send_to_char("Ok.\n\r", ch);
-      ((*skill_info[spl].spell_pointer) (GET_LEVEL(ch, best_magic_class(ch)), ch,
-                                         argument, SPELL_TYPE_SPELL, tar_char,
-                                         tar_obj));
+      ((*skill_info[spl].spell_pointer) (GET_LEVEL(ch, best_magic_class(ch)),
+                                         ch, argument, SPELL_TYPE_SPELL,
+                                         tar_char, tar_obj));
       cost = (int)USE_MANA(ch, (int)spl);
       if (cmd == 283) {         /* recall */
         forget(ch, spl);

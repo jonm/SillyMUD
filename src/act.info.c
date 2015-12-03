@@ -61,7 +61,7 @@ void list_groups(struct char_data *ch);
 void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode,
                       bool show);
 char *desc_damage(float dam);
-char *desc_ratio(float f);       /* theirs / yours */
+char *desc_ratio(float f);      /* theirs / yours */
 char *dam_roll_desc(int a);
 char *hit_roll_desc(int a);
 char *armor_desc(int a);
@@ -607,8 +607,8 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode) {
 
     if (RIDDEN(i)) {
       SPRINTF(buffer, "$n is ridden by %s",
-              IS_NPC(RIDDEN(i)) ? RIDDEN(i)->
-              player.short_descr : GET_NAME(RIDDEN(i)));
+              IS_NPC(RIDDEN(i)) ? RIDDEN(i)->player.
+              short_descr : GET_NAME(RIDDEN(i)));
       act(buffer, FALSE, i, 0, ch, TO_VICT);
     }
 
@@ -1209,8 +1209,8 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             /* Extra description in room?? */
             if (!found) {
               tmp_desc = find_ex_description(arg2,
-                                             real_roomp(ch->
-                                                        in_room)->ex_description);
+                                             real_roomp(ch->in_room)->
+                                             ex_description);
               if (tmp_desc) {
                 page_string(ch->desc, tmp_desc, 0);
                 return;
@@ -1225,8 +1225,7 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
                 if (ch->equipment[j]) {
                   if (CAN_SEE_OBJ(ch, ch->equipment[j])) {
                     tmp_desc = find_ex_description(arg2,
-                                                   ch->
-                                                   equipment
+                                                   ch->equipment
                                                    [j]->ex_description);
                     if (tmp_desc) {
                       page_string(ch->desc, tmp_desc, 1);
@@ -2021,8 +2020,8 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
                     }
                   case 't':{
                       SPRINTF(tempbuf, " %-16s ",
-                              (person->player.title ? person->
-                               player.title : "(null)"));
+                              (person->player.title ? person->player.
+                               title : "(null)"));
                       strcat(buf, tempbuf);
                       break;
                     }
@@ -2051,8 +2050,8 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
               }
               else {
                 SPRINTF(buf, "%s %s\n\r", GET_NAME(person),
-                        (person->player.title ? person->
-                         player.title : "(null)"));
+                        (person->player.title ? person->player.
+                         title : "(null)"));
                 send_to_char(buf, ch);
               }
             }
@@ -2471,8 +2470,8 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             titles[class][i].exp,
             titles[class][i + 1].exp,
             (GET_SEX(ch) ==
-             SEX_FEMALE ? titles[class][i].
-             title_f : titles[class][i].title_m));
+             SEX_FEMALE ? titles[class][i].title_f : titles[class][i].
+             title_m));
 
     send_to_char(buf, ch);
   }
@@ -2991,7 +2990,7 @@ void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 
-  if (!spy_check(ch)) {          /* failed spying check */
+  if (!spy_check(ch)) {         /* failed spying check */
     if (obj && vict) {
       act("$n looks at you, and $s eyes linger on $p",
           FALSE, ch, obj, vict, TO_VICT);
@@ -3006,7 +3005,7 @@ void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
   }
 
-  if (!has_class(ch, CLASS_THIEF)) {     /* it had better be an intrinsic */
+  if (!has_class(ch, CLASS_THIEF)) {    /* it had better be an intrinsic */
     if (GET_RACE(ch) == RACE_DWARF &&
         (GET_ITEM_TYPE(obj) != ITEM_WEAPON &&
          GET_ITEM_TYPE(obj) != ITEM_TREASURE &&
@@ -3048,25 +3047,25 @@ void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   SPRINTF(buf, "Weight: %d, Value: %d, Ego: %d  %s\n\r",
           obj->obj_flags.weight,
           get_approx(obj->obj_flags.cost,
-                    ch->skills[SKILL_EVALUATE].learned - 10),
+                     ch->skills[SKILL_EVALUATE].learned - 10),
           get_approx(obj->obj_flags.cost_per_day,
-                    ch->skills[SKILL_EVALUATE].learned - 10),
+                     ch->skills[SKILL_EVALUATE].learned - 10),
           obj->obj_flags.cost_per_day > LIM_ITEM_COST_MIN ? "[RARE]" : " ");
   send_to_char(buf, ch);
 
   if (ITEM_TYPE(obj) == ITEM_WEAPON) {
     SPRINTF(buf, "Damage Dice is '%dD%d'\n\r",
             get_approx(obj->obj_flags.value[1],
-                      ch->skills[SKILL_EVALUATE].learned - 10),
+                       ch->skills[SKILL_EVALUATE].learned - 10),
             get_approx(obj->obj_flags.value[2],
-                      ch->skills[SKILL_EVALUATE].learned - 10));
+                       ch->skills[SKILL_EVALUATE].learned - 10));
     send_to_char(buf, ch);
   }
   else if (ITEM_TYPE(obj) == ITEM_ARMOR) {
 
     SPRINTF(buf, "AC-apply is %d\n\r",
             get_approx(obj->obj_flags.value[0],
-                      ch->skills[SKILL_EVALUATE].learned - 10));
+                       ch->skills[SKILL_EVALUATE].learned - 10));
     send_to_char(buf, ch);
   }
 }
@@ -3174,7 +3173,7 @@ char *dam_roll_desc(int a) {
   }
 }
 
-char *desc_ratio(float f) {      /* theirs / yours */
+char *desc_ratio(float f) {     /* theirs / yours */
   if (f > 1.0) {
     return ("More than twice yours");
   }

@@ -427,7 +427,7 @@ int chess_game(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 }
 
 int acid_blob(struct char_data *ch, int cmd, char *UNUSED(arg),
-             struct char_data *UNUSED(mob), int UNUSED(type)) {
+              struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct obj_data *i;
 
   if (cmd || !AWAKE(ch))
@@ -720,7 +720,7 @@ int death_room(int dt_room) {
 }
 
 int youth_potion(struct char_data *ch, int cmd, char *arg,
-                struct char_data *UNUSED(mob), int UNUSED(type)) {
+                 struct char_data *UNUSED(mob), int UNUSED(type)) {
   char buf[MAX_INPUT_LENGTH];
   /*   struct char_data *vict; */
   struct obj_data *obj;

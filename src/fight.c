@@ -594,7 +594,8 @@ void die(struct char_data *ch) {
           GET_LEVEL(ch, i) -= 1;
           ch->specials.spells_to_learn -=
             MAX(1,
-                MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch));
+                MAX(2,
+                    wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch));
           send_to_char("\n\rInsufficient experience has cost you a level.\n\r",
                        ch);
         }
@@ -1039,7 +1040,7 @@ int do_damage(struct char_data *ch, struct char_data *v, int dam, int type) {
 
 
 void damage_messages(struct char_data *ch, struct char_data *v, int dam,
-                    int attacktype) {
+                     int attacktype) {
   int nr, max_hit, i, j;
   struct message_type *messages;
   char buf[500];
@@ -1295,8 +1296,8 @@ int damage_epilog(struct char_data *ch, struct char_data *victim) {
 }
 
 void area_damage(struct char_data *ch, int dam, int attacktype,
-                char *same_room_hitmsg, char *same_room_missmsg,
-                char *global_msg, bool save_negates, bool heat_blinder) {
+                 char *same_room_hitmsg, char *same_room_missmsg,
+                 char *global_msg, bool save_negates, bool heat_blinder) {
 
   struct char_data *tmp_victim, *temp;
   struct obj_data *obj, *next;
@@ -1380,7 +1381,7 @@ void area_damage(struct char_data *ch, int dam, int attacktype,
 
 
 int missile_damage(struct char_data *ch, struct char_data *victim,
-                  int dam, int attacktype) {
+                   int dam, int attacktype) {
 
   if (dam_check_deny(ch, victim, attacktype))
     return (FALSE);
@@ -1664,7 +1665,8 @@ int calc_thaco(struct char_data *ch) {
 
   if (!IS_NPC(ch))
     calc_thaco =
-      thaco[best_fighting_class(ch)][(int)GET_LEVEL(ch, best_fighting_class(ch))];
+      thaco[best_fighting_class(ch)][(int)
+                                     GET_LEVEL(ch, best_fighting_class(ch))];
   else
     /* THAC0 for monsters is set in the HitRoll */
     calc_thaco = 20;
@@ -1720,7 +1722,7 @@ int hit_or_miss(struct char_data *ch, struct char_data *victim, int calc_thaco) 
 }
 
 void miss_victim(struct char_data *ch, struct char_data *v, int type,
-                int w_type, int (*dam_func) ()) {
+                 int w_type, int (*dam_func) ()) {
   struct obj_data *o;
 
   if (type <= 0)
@@ -1972,7 +1974,7 @@ int get_backstab_mult(struct char_data *ch, struct char_data *v) {
 }
 
 void hit_victim(struct char_data *ch, struct char_data *v, int dam,
-               int type, int w_type, int (*dam_func) ()) {
+                int type, int w_type, int (*dam_func) ()) {
   char buf[80];
   extern byte backstab_mult[];
   int dead;
@@ -2033,7 +2035,7 @@ void root_hit(struct char_data *ch, struct char_data *victim, int type,
 
   w_type = get_weapon_type(ch, &wielded);
   if (w_type == TYPE_HIT)
-    w_type = get_form_type(ch);   /* races have different types of attack */
+    w_type = get_form_type(ch); /* races have different types of attack */
 
   thaco = calc_thaco(ch);
 
@@ -2888,7 +2890,7 @@ void damage_all_stuff(struct char_data *ch, int dam_type) {
   for (j = 0; j < MAX_WEAR; j++) {
     if (ch->equipment[j] && ch->equipment[j]->item_number >= 0) {
       obj = ch->equipment[j];
-      if (damage_one_item(ch, dam_type, obj)) {   /* TRUE == destroyed */
+      if (damage_one_item(ch, dam_type, obj)) { /* TRUE == destroyed */
         if ((obj = unequip_char(ch, j)) != NULL) {
           make_scrap(ch, obj);
         }

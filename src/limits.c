@@ -494,7 +494,8 @@ void advance_level(struct char_data *ch, int class) {
                     wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch)));
     else
       ch->specials.spells_to_learn +=
-        MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch));
+        MAX(1,
+            MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch));
   }
   else {
     send_to_char("Practices: Use them or lose them (you just did).\n\r", ch);

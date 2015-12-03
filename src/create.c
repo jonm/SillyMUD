@@ -56,7 +56,7 @@ char *exit_menu = "    1) North                      2) East\n\r"
 
 
 void change_room_flags(struct room_data *rp, struct char_data *ch, char *arg,
-                     int type) {
+                       int type) {
   int i, row, update;
   char buf[255];
 
@@ -248,7 +248,7 @@ void room_edit(struct char_data *ch, char *arg) {
 
 
 void change_room_name(struct room_data *rp, struct char_data *ch, char *arg,
-                    int type) {
+                      int type) {
   char buf[255];
 
   if (type != ENTER_CHECK)
@@ -278,7 +278,7 @@ void change_room_name(struct room_data *rp, struct char_data *ch, char *arg,
 }
 
 void change_room_desc(struct room_data *rp, struct char_data *ch,
-                    char *UNUSED(arg), int type) {
+                      char *UNUSED(arg), int type) {
   char buf[255];
 
   if (type != ENTER_CHECK) {
@@ -304,7 +304,7 @@ void change_room_desc(struct room_data *rp, struct char_data *ch,
 
 
 void change_room_type(struct room_data *rp, struct char_data *ch, char *arg,
-                    int type) {
+                      int type) {
   int i, row, update;
   char buf[255];
 
@@ -453,7 +453,7 @@ void change_exit_dir(struct room_data *rp, struct char_data *ch, char *arg,
 
 
 void add_exit_to_room(struct room_data *rp, struct char_data *ch, char *arg,
-                   int type) {
+                      int type) {
   int update, dir, row, i = 0;
   char buf[255];
 
@@ -549,7 +549,7 @@ void add_exit_to_room(struct room_data *rp, struct char_data *ch, char *arg,
 
 
 void change_exit_number(struct room_data *rp, struct char_data *ch, char *arg,
-                      int type) {
+                        int type) {
   int dir, update;
 
   switch (ch->specials.edit) {
@@ -614,7 +614,7 @@ void change_exit_number(struct room_data *rp, struct char_data *ch, char *arg,
 
 
 void change_key_number(struct room_data *rp, struct char_data *ch, char *arg,
-                     int type) {
+                       int type) {
   int dir, update;
 
   switch (ch->specials.edit) {
@@ -659,7 +659,7 @@ void change_key_number(struct room_data *rp, struct char_data *ch, char *arg,
 }
 
 void delete_exit(struct room_data *UNUSED(rp), struct char_data *ch,
-                char *UNUSED(arg), int UNUSED(type)) {
+                 char *UNUSED(arg), int UNUSED(type)) {
   ch->specials.edit = MAIN_MENU;
   update_room_menu(ch);
 }

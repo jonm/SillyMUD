@@ -140,23 +140,23 @@ struct char_data *find_mob_in_room_with_function(int room, int (*func) ()) {
 /* New consolidated guildmaster code contributed by Kiku, 9/26/93 */
 
 int mage_guild_master(struct char_data *ch, int cmd, char *arg,
-                    struct char_data *mob, int type) {
+                      struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_MAGIC_USER));
 }
 
 int cleric_guild_master(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int type) {
+                        struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_CLERIC));
 }
 
 int thief_guild_master(struct char_data *ch, int cmd, char *arg,
-                     struct char_data *mob, int type) {
+                       struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_THIEF));
 }
 
 
 int warrior_guild_master(struct char_data *ch, int cmd, char *arg,
-                       struct char_data *mob, int type) {
+                         struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_WARRIOR));
 }
 
@@ -170,7 +170,7 @@ int monk_master(struct char_data *ch, int cmd, char *arg,
 }
 
 int druid_guild_master(struct char_data *ch, int cmd, char *arg,
-                     struct char_data *mob, int type) {
+                       struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_DRUID));
 }
 
@@ -1375,7 +1375,7 @@ int snake(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 #define PGShield 25100
 int paladin_guild_guard(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int type) {
+                        struct char_data *mob, int type) {
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1399,7 +1399,7 @@ int paladin_guild_guard(struct char_data *ch, int cmd, char *arg,
 }
 
 int game_guard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type) {
+               int type) {
 
   if (!cmd) {
     if (ch->specials.fighting) {
@@ -1428,7 +1428,7 @@ int game_guard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 }
 
 int grey_paramedic(struct char_data *ch, int cmd, char *UNUSED(arg),
-                  struct char_data *mob, int types) {
+                   struct char_data *mob, int types) {
   struct char_data *vict, *most_hurt;
 
   if (!cmd) {
@@ -1501,7 +1501,7 @@ int grey_paramedic(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 int amber_paramedic(struct char_data *ch, int cmd, char *UNUSED(arg),
-                   struct char_data *mob, int type) {
+                    struct char_data *mob, int type) {
   struct char_data *vict, *most_hurt;
 
   if (!cmd) {
@@ -1592,7 +1592,7 @@ int blink(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 
 int midgaard_citizen(struct char_data *ch, int cmd, char *arg,
-                    struct char_data *mob, int type) {
+                     struct char_data *mob, int type) {
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1649,7 +1649,7 @@ int ghoul(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 int carrion_crawler(struct char_data *ch, int cmd, char *UNUSED(arg),
-                   struct char_data *UNUSED(mob), int UNUSED(type)) {
+                    struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tar;
   int i;
 
@@ -1678,7 +1678,7 @@ int carrion_crawler(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 int wizard_guard(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type) {
+                 struct char_data *mob, int type) {
   struct char_data *tch, *evil;
   int max_evil;
 
@@ -2399,7 +2399,7 @@ int Tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 }
 
 int abbarach_dragon(struct char_data *ch, int cmd, char *arg,
-                   struct char_data *mob, int type) {
+                    struct char_data *mob, int type) {
 
   struct char_data *targ;
 
@@ -2501,7 +2501,7 @@ int tormentor(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 int rust_monster(struct char_data *ch, int cmd, char *UNUSED(arg),
-                struct char_data *UNUSED(mob), int UNUSED(type)) {
+                 struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
   struct obj_data *t_item;
   int t_pos;
@@ -2675,7 +2675,7 @@ int temple_labrynth_sentry(struct char_data *ch, int cmd, char *UNUSED(arg),
 #define NN_STOP   2
 
 int nudge_nudge(struct char_data *ch, int cmd, char *UNUSED(arg),
-               struct char_data *UNUSED(mob), int UNUSED(type)) {
+                struct char_data *UNUSED(mob), int UNUSED(type)) {
 
   struct char_data *vict;
 
@@ -2832,7 +2832,7 @@ int citizen(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 }
 
 int midgaard_cityguard(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int UNUSED(type)) {
+                       struct char_data *mob, int UNUSED(type)) {
   return (generic_cityguardHateUndead(ch, cmd, arg, mob, MIDGAARD));
 }
 
@@ -2978,7 +2978,7 @@ int ringwraith(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 }
 
 int warren_guard(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type) {
+                 struct char_data *mob, int type) {
   struct char_data *tch, *good;
   int max_good;
 
@@ -4100,8 +4100,8 @@ int Keftab(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int storm_giant(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type) {
+int storm_giant(struct char_data *ch, int cmd, char *arg,
+                struct char_data *mob, int type) {
   struct char_data *vict;
 
   if (cmd)
@@ -4183,7 +4183,7 @@ int fighter(struct char_data *ch, int cmd, char *UNUSED(arg),
 #define NTM_FIX     15
 
 int new_thalos_mayor(struct char_data *ch, int cmd, char *UNUSED(arg),
-                   struct char_data *UNUSED(mob), int UNUSED(type)) {
+                     struct char_data *UNUSED(mob), int UNUSED(type)) {
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -4437,13 +4437,13 @@ int new_thalos_mayor(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 int sultan_guard(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int UNUSED(type)) {
+                 struct char_data *mob, int UNUSED(type)) {
   return (generic_cityguard(ch, cmd, arg, mob, NEWTHALOS));
 }
 
 
 int new_thalos_citizen(struct char_data *ch, int cmd, char *arg,
-                     struct char_data *mob, int type) {
+                       struct char_data *mob, int type) {
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -4469,7 +4469,7 @@ int new_thalos_citizen(struct char_data *ch, int cmd, char *arg,
 }
 
 int new_thalos_guild_guard(struct char_data *ch, int cmd, char *arg,
-                        struct char_data *mob, int type) {
+                           struct char_data *mob, int type) {
 
   if (!cmd) {
     if (ch->specials.fighting) {
@@ -4489,7 +4489,8 @@ int new_thalos_guild_guard(struct char_data *ch, int cmd, char *arg,
         return (check_for_blocked_move(ch, cmd, arg, 13526, 2, CLASS_WARRIOR));
         break;
       case 13525:
-        return (check_for_blocked_move(ch, cmd, arg, 13525, 0, CLASS_MAGIC_USER));
+        return (check_for_blocked_move
+                (ch, cmd, arg, 13525, 0, CLASS_MAGIC_USER));
         break;
       }
     }
@@ -4618,12 +4619,12 @@ int magic_user2(struct char_data *ch, int cmd, char *UNUSED(arg),
 /******************Mordilnia citizens************************************/
 
 int mord_guard(struct char_data *ch, int cmd, char *arg,
-              struct char_data *mob, int UNUSED(type)) {
+               struct char_data *mob, int UNUSED(type)) {
   return (generic_cityguardHateUndead(ch, cmd, arg, mob, MORDILNIA));
 }
 
 int mord_guild_guard(struct char_data *ch, int cmd, char *arg,
-                   struct char_data *mob, int type) {
+                     struct char_data *mob, int type) {
 
   if (!cmd) {
     if (ch->specials.fighting) {
@@ -4634,7 +4635,8 @@ int mord_guild_guard(struct char_data *ch, int cmd, char *arg,
     if (cmd >= 1 && cmd <= 6) {
       switch (ch->in_room) {
       case 18266:
-        return (check_for_blocked_move(ch, cmd, arg, 18266, 2, CLASS_MAGIC_USER));
+        return (check_for_blocked_move
+                (ch, cmd, arg, 18266, 2, CLASS_MAGIC_USER));
         break;
       case 18276:
         return (check_for_blocked_move(ch, cmd, arg, 18276, 2, CLASS_CLERIC));
@@ -4656,7 +4658,7 @@ int mord_guild_guard(struct char_data *ch, int cmd, char *arg,
 
 
 int caravan_guild_guard(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int type) {
+                        struct char_data *mob, int type) {
 
   if (!cmd) {
     if (ch->specials.fighting) {
@@ -4667,7 +4669,8 @@ int caravan_guild_guard(struct char_data *ch, int cmd, char *arg,
     if (cmd >= 1 && cmd <= 6) {
       switch (ch->in_room) {
       case 16115:
-        return (check_for_blocked_move(ch, cmd, arg, 16115, 1, CLASS_MAGIC_USER));
+        return (check_for_blocked_move
+                (ch, cmd, arg, 16115, 1, CLASS_MAGIC_USER));
         break;
       case 16126:
         return (check_for_blocked_move(ch, cmd, arg, 16116, 1, CLASS_CLERIC));
@@ -4692,7 +4695,7 @@ int caravan_guild_guard(struct char_data *ch, int cmd, char *arg,
 /*   added warrior strength and charisma dropped price to 200 */
 
 int stat_teller(struct char_data *ch, int cmd, char *UNUSED(arg),
-               struct char_data *UNUSED(mob), int UNUSED(type)) {
+                struct char_data *UNUSED(mob), int UNUSED(type)) {
   int choice;
   char buf[200];
 
@@ -4808,7 +4811,7 @@ int thrower_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
       vict = ch->specials.fighting;
       switch (ch->in_room) {
       case 13912:
-        throw_char(ch, vict, 1); /* throw chars to the east */
+        throw_char(ch, vict, 1);        /* throw chars to the east */
         return (FALSE);
         break;
       default:

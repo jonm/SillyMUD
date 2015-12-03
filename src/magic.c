@@ -272,8 +272,8 @@ void spell_fireball(byte level, struct char_data *ch,
   dam = dice(level, 8);
 
   area_damage(ch, dam, SPELL_FIREBALL, "",
-             "You dodge the mass of flame!!\n\r",
-             "You feel a blast of hot air.\n\r", FALSE, TRUE);
+              "You dodge the mass of flame!!\n\r",
+              "You feel a blast of hot air.\n\r", FALSE, TRUE);
 
   return;
 }
@@ -314,7 +314,7 @@ void spell_earthquake(byte level, struct char_data *ch,
           act("$N is sucked into a huge hole in the ground!", FALSE,
               ch, 0, tmp_victim, TO_NOTVICT);
           missile_damage(ch, tmp_victim, GET_MAX_HIT(tmp_victim) * 12,
-                        SPELL_EARTHQUAKE);
+                         SPELL_EARTHQUAKE);
         }
       }
       else {
@@ -1325,8 +1325,8 @@ void spell_locate_object(byte level, struct char_data *ch,
       else {
         SPRINTF(buf2, "%s in %s.\n\r", i->short_description,
                 (i->in_room ==
-                 NOWHERE ? "use but uncertain." : real_roomp(i->
-                                                             in_room)->name));
+                 NOWHERE ? "use but uncertain." : real_roomp(i->in_room)->
+                 name));
         strcat(buf, buf2);
         j--;
       }
@@ -1353,7 +1353,7 @@ void spell_poison(byte level, struct char_data *ch,
   if (victim) {
 
     if (is_immune(victim, IMM_POISON) || (!IS_SET(ch->specials.act, ACT_DEADLY)
-                                         && GET_RACE(ch) == RACE_VEGMAN)) {
+                                          && GET_RACE(ch) == RACE_VEGMAN)) {
       act("$N tried to poison you, but you ignore the poison!",
           TRUE, victim, 0, ch, TO_CHAR);
       act("$n tried to poison $N, but $E ignores it!",

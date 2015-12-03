@@ -1062,7 +1062,7 @@ void spell_cone_of_cold(byte level, struct char_data *ch,
       FALSE, ch, 0, 0, TO_ROOM);
 
   area_damage(ch, dam, SPELL_CONE_OF_COLD, "You are chilled to the bone!\n\r",
-             "You are able to avoid the cone!\n\r", "", FALSE, FALSE);
+              "You are able to avoid the cone!\n\r", "", FALSE, FALSE);
 }
 
 void spell_ice_storm(byte level, struct char_data *ch,
@@ -1079,7 +1079,7 @@ void spell_ice_storm(byte level, struct char_data *ch,
   act("$n conjures an ice storm!\n\r", FALSE, ch, 0, 0, TO_ROOM);
 
   area_damage(ch, dam, SPELL_ICE_STORM, "You are blasted by the storm!\n\r",
-             "You are able to dodge the storm.\n\r", "", FALSE, FALSE);
+              "You are able to dodge the storm.\n\r", "", FALSE, FALSE);
 }
 
 
@@ -2247,9 +2247,9 @@ void spell_geyser(byte level, struct char_data *ch,
       FALSE, ch, 0, 0, TO_ROOM);
 
   area_damage(ch, dam, SPELL_GEYSER,
-             "You are seared by the boiling water!!\n\r",
-             "You are almost seared by the boiling water!!\n\r",
-             "You hear Old Faithful off in the distance.\n\r", FALSE, FALSE);
+              "You are seared by the boiling water!!\n\r",
+              "You are almost seared by the boiling water!!\n\r",
+              "You hear Old Faithful off in the distance.\n\r", FALSE, FALSE);
 }
 
 void spell_green_slime(byte level, struct char_data *ch,

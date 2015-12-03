@@ -2163,8 +2163,8 @@ void spell_firestorm(byte level, struct char_data *ch,
       FALSE, ch, 0, 0, TO_ROOM);
 
   area_damage(ch, dam, SPELL_BURNING_HANDS,
-             "You are seared by the burning flame!\n\r",
-             "You are able to avoid the flames!\n\r", "", FALSE, TRUE);
+              "You are seared by the burning flame!\n\r",
+              "You are able to avoid the flames!\n\r", "", FALSE, TRUE);
 }
 
 void spell_teleport_wo_error(byte level, struct char_data *ch,

@@ -343,7 +343,7 @@ int raw_move(struct char_data *ch, int dir) {
     if (MOUNTED(ch))
       nail_this_sucker(MOUNTED(ch));
     nail_this_sucker(ch);
-    death_room(new_r);           /* sends junk about the mud :) */
+    death_room(new_r);          /* sends junk about the mud :) */
 
     return (FALSE);
   }
@@ -376,7 +376,7 @@ int move_one(struct char_data *ch, int dir) {
   int was_in;
 
   was_in = ch->in_room;
-  if (raw_move(ch, dir)) {       /* no error */
+  if (raw_move(ch, dir)) {      /* no error */
     display_one_move(ch, dir, was_in);
     return TRUE;
   }
@@ -395,7 +395,7 @@ void move_group(struct char_data *ch, int dir) {
    */
 
   was_in = ch->in_room;
-  if (raw_move(ch, dir)) {       /* no error */
+  if (raw_move(ch, dir)) {      /* no error */
     display_one_move(ch, dir, was_in);
     if (ch->followers) {
       heap_top = 0;
@@ -412,7 +412,8 @@ void move_group(struct char_data *ch, int dir) {
           }
           else {
             if (raw_move(k->follower, dir)) {
-              if (!add_to_char_heap(heap_ptr, &heap_top, heap_tot, k->follower)) {
+              if (!add_to_char_heap
+                  (heap_ptr, &heap_top, heap_tot, k->follower)) {
                 display_one_move(k->follower, dir, was_in);
               }
             }
@@ -625,7 +626,7 @@ void display_move(struct char_data *ch, int dir, int was_in, int total) {
 
 
 int add_to_char_heap(struct char_data *heap[50], int *top, int total[50],
-                  struct char_data *k) {
+                     struct char_data *k) {
   int found, i;
 
   if (*top > 50) {

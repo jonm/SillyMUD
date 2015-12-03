@@ -447,15 +447,15 @@ void assign_mobiles() {
     {3657, new_thalos_guild_guard},
     {3658, new_thalos_guild_guard},
     {3659, new_thalos_guild_guard},
-    {3661, sultan_guard},        /* wandering */
-    {3662, sultan_guard},        /* not */
-    {3682, sultan_guard},        /* royal */
+    {3661, sultan_guard},       /* wandering */
+    {3662, sultan_guard},       /* not */
+    {3682, sultan_guard},       /* royal */
     {3670, breath_weapon_mob},  /* Cryohydra */
     {3674, breath_weapon_mob},  /* Behir */
     {3675, breath_weapon_mob},  /* Chimera */
     {3676, breath_weapon_mob},  /* Couatl */
     {3681, cleric},             /* High priest */
-    {3689, new_thalos_mayor},     /* Guess */
+    {3689, new_thalos_mayor},   /* Guess */
     {3644, fido},
     {3635, thief},
 /*
@@ -499,11 +499,11 @@ void assign_mobiles() {
     {25001, Keftab},
     {25009, breath_weapon_mob}, /* hydra */
     {25002, vampire},           /* Crimson */
-    {25003, storm_giant},        /* MistDaemon */
-    {25006, storm_giant},        /* Storm giant */
-    {25014, storm_giant},        /* DeathKnight */
+    {25003, storm_giant},       /* MistDaemon */
+    {25006, storm_giant},       /* Storm giant */
+    {25014, storm_giant},       /* DeathKnight */
     {25009, breath_weapon_mob}, /* hydra */
-    {25017, abyss_gate_keeper},   /* Abyss Gate Keeper */
+    {25017, abyss_gate_keeper}, /* Abyss Gate Keeper */
     {25013, fighter},           /* kalas */
     {25008, magic_user},        /* efreeti */
     {25034, fighter},           /* marilith */
@@ -557,7 +557,7 @@ void assign_mobiles() {
 **  Draagdim
 */
 
-    {2500, nudge_nudge},         /* jailer */
+    {2500, nudge_nudge},        /* jailer */
 /*
 **  mordilnia
 */
@@ -567,10 +567,10 @@ void assign_mobiles() {
     {18207, cleric_guild_master},
     {18208, thief_guild_master},
     {18209, warrior_guild_master},
-    {18210, mord_guild_guard},    /*18266 3 */
-    {18211, mord_guild_guard},    /*18276 1 */
-    {18212, mord_guild_guard},    /*18272 0 */
-    {18213, mord_guild_guard},    /*18256 2 */
+    {18210, mord_guild_guard},  /*18266 3 */
+    {18211, mord_guild_guard},  /*18276 1 */
+    {18212, mord_guild_guard},  /*18272 0 */
+    {18213, mord_guild_guard},  /*18256 2 */
     {18215, mord_guard},
     {18216, janitor},
     {18217, fido},
@@ -784,7 +784,7 @@ void assign_mobiles() {
     {3027, guild_guard},
     {3070, repair_guy},
     {3071, repair_guy},
-    {3069, midgaard_cityguard},  /* post guard */
+    {3069, midgaard_cityguard}, /* post guard */
     {3068, ninja_master},
     {3073, loremaster},
     {3074, hunter},

@@ -1162,7 +1162,7 @@ void do_quaff(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   for (i = 1; i < 4; i++)
     if (temp->obj_flags.value[i] >= 1)
-      if (!item_magic_failure(ch, temp->obj_flags.value[i]))      /* dwarf & gnome */
+      if (!item_magic_failure(ch, temp->obj_flags.value[i]))    /* dwarf & gnome */
         ((*skill_info[temp->obj_flags.value[i]].spell_pointer)
          ((byte) temp->obj_flags.value[0], ch, "", SPELL_TYPE_POTION, ch,
           temp));

@@ -1291,8 +1291,7 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
       sprinttype(GET_POS(k), position_types, buf2);
       SPRINTF(buf, "Position: %s, Fighting: %s", buf2,
-              ((k->specials.fighting) ? GET_NAME(k->
-                                                 specials.fighting) :
+              ((k->specials.fighting) ? GET_NAME(k->specials.fighting) :
                "Nobody"));
       if (k->desc) {
         sprinttype(k->desc->connected, connected_types, buf2);

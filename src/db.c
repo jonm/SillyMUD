@@ -1617,7 +1617,7 @@ struct char_data *read_mobile(int nr, int type) {
 
   /* set up things that all members of the race have */
   mob->specials.intrinsics = 0;
-  set_racial_stuff(mob);          /* this sets intrinsics */
+  set_racial_stuff(mob);        /* this sets intrinsics */
   mob->specials.affected_by |= mob->specials.intrinsics;
 
   /* change exp for wimpy mobs (lower) */
@@ -1988,9 +1988,8 @@ void reset_zone(int zone) {
 
           if (GET_RACE(mob) > RACE_GNOME)
             if (!strchr(zone_table[ZCMD.arg1].races, GET_RACE(mob))) {
-              zone_table[ZCMD.
-                         arg1].races[strlen(zone_table[ZCMD.arg1].races)] =
-                GET_RACE(mob);
+              zone_table[ZCMD.arg1].
+                races[strlen(zone_table[ZCMD.arg1].races)] = GET_RACE(mob);
             }
         }
         break;
@@ -2816,7 +2815,7 @@ void reset_char(struct char_data *ch) {
      racial stuff
    */
   ch->specials.intrinsics = 0;
-  set_racial_stuff(ch);           /* this sets intrinsics */
+  set_racial_stuff(ch);         /* this sets intrinsics */
   ch->specials.affected_by |= ch->specials.intrinsics;
 
 /*
@@ -3415,7 +3414,8 @@ void read_text_zone(FILE * fl) {
       switch (c) {
       case 'M':                /* read a mobile */
         i = real_mobile(i);
-        if ((mob_index[i].number < j) && !check_kill_file(mob_index[i].virtual)) {
+        if ((mob_index[i].number < j)
+            && !check_kill_file(mob_index[i].virtual)) {
           mob = read_mobile(i, REAL);
           char_to_room(mob, k);
 
@@ -3428,7 +3428,8 @@ void read_text_zone(FILE * fl) {
 
       case 'C':                /* read a mobile.  Charm them to follow prev. */
         i = real_mobile(i);
-        if ((mob_index[i].number < j) && !check_kill_file(mob_index[i].virtual)) {
+        if ((mob_index[i].number < j)
+            && !check_kill_file(mob_index[i].virtual)) {
           mob = read_mobile(i, REAL);
           if (master) {
             char_to_room(mob, master->in_room);

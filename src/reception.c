@@ -35,7 +35,8 @@ int add_obj_cost(struct char_data *ch, struct char_data *re,
   int temp;
 
   if (obj) {
-    if ((obj->item_number > -1) && (cost->ok) && item_ego_clash(ch, obj, 0) > -5) {
+    if ((obj->item_number > -1) && (cost->ok)
+        && item_ego_clash(ch, obj, 0) > -5) {
       temp = MAX(0, obj->obj_flags.cost_per_day);
       cost->total_cost += temp;
       cost->no_carried++;

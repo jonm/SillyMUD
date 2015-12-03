@@ -105,7 +105,7 @@ int druid_protector(struct char_data *ch, int cmd, char *UNUSED(arg),
 }                               /* end druid_protector */
 
 int magic__fountain(struct char_data *ch, int cmd, char *arg,
-                   struct room_data *UNUSED(rp), int UNUSED(type)) {
+                    struct room_data *UNUSED(rp), int UNUSED(type)) {
 
   char buf[MAX_INPUT_LENGTH];
 
@@ -237,7 +237,8 @@ int magic__fountain(struct char_data *ch, int cmd, char *arg,
 
 /* Bjs Shit End */
 
-int druid_attack_spells(struct char_data *ch, struct char_data *vict, int level) {
+int druid_attack_spells(struct char_data *ch, struct char_data *vict,
+                        int level) {
   switch (level) {
   case 1:
   case 2:
@@ -1530,7 +1531,8 @@ int samah(struct char_data *ch, int cmd, char *arg,
         get_max_level(ch) == LOKI)
       return (FALSE);
 
-    Sammy = (struct char_data *)find_mob_in_room_with_function(ch->in_room, samah);
+    Sammy =
+      (struct char_data *)find_mob_in_room_with_function(ch->in_room, samah);
 
     for (; *arg == ' '; arg++); /* skip whitespace */
     strcpy(buf, arg);
@@ -1685,7 +1687,7 @@ int samah(struct char_data *ch, int cmd, char *arg,
 #if EGO
 
 int bitter_blade(struct char_data *ch, int cmd, char *arg,
-                struct obj_data *UNUSED(tobj), int type) {
+                 struct obj_data *UNUSED(tobj), int type) {
   extern struct str_app_type str_app[];
   struct obj_data *obj, *blade;
   struct char_data *joe, *holder;
@@ -1924,8 +1926,8 @@ int bitter_blade(struct char_data *ch, int cmd, char *arg,
 #define GIVE 72
 #define GAIN 243
 
-int make_quest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
-              int cmd) {
+int make_quest(struct char_data *ch, struct char_data *gm, int Class,
+               char *arg, int cmd) {
   char obj_name[50], vict_name[50];
   struct char_data *vict;
   struct obj_data *obj;
@@ -2013,8 +2015,8 @@ int make_quest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
              (QuestList[Class][(int)GET_LEVEL(ch, Class)].item)].number > 5
             && GET_LEVEL(ch, Class) < 40)
           obj_index[real_object
-                    (QuestList[Class][(int)GET_LEVEL(ch, Class)].
-                     item)].number = 0;
+                    (QuestList[Class][(int)GET_LEVEL(ch, Class)].item)].
+            number = 0;
         return (FALSE);
       }
     }
@@ -2029,7 +2031,7 @@ int make_quest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
 
 
 int abyss_gate_keeper(struct char_data *ch, int cmd, char *arg,
-                    struct char_data *mob, int type) {
+                      struct char_data *mob, int type) {
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2321,7 +2323,7 @@ void greet_people(struct char_data *ch) {
 
 
 int generic_cityguardHateUndead(struct char_data *ch, int cmd, char *arg,
-                               struct char_data *mob, int type) {
+                                struct char_data *mob, int type) {
   struct char_data *tch, *evil;
   int max_evil;
 
@@ -2406,7 +2408,7 @@ int generic_cityguardHateUndead(struct char_data *ch, int cmd, char *arg,
 
 
 int generic_cityguard(struct char_data *ch, int cmd, char *arg,
-                     struct char_data *mob, int type) {
+                      struct char_data *mob, int type) {
   struct char_data *tch, *evil;
   int max_evil;
 
@@ -2463,7 +2465,7 @@ int generic_cityguard(struct char_data *ch, int cmd, char *arg,
 }
 
 int prydain_guard(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int UNUSED(type)) {
+                  struct char_data *mob, int UNUSED(type)) {
   return (generic_cityguardHateUndead(ch, cmd, arg, mob, PRYDAIN));
 }
 
@@ -2731,7 +2733,7 @@ void druid_mob(struct char_data *ch) {
 }
 
 int druid_challenger(struct char_data *ch, int cmd, char *UNUSED(arg),
-                    struct char_data *UNUSED(mob), int UNUSED(type)) {
+                     struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct room_data *rp;
   int level;
   struct char_data *vict;
@@ -2926,7 +2928,7 @@ int druid_challenger(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 int monk_challenger(struct char_data *ch, int cmd, char *UNUSED(arg),
-                   struct char_data *UNUSED(mob), int UNUSED(type)) {
+                    struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
 
   if (cmd)
@@ -3391,7 +3393,7 @@ int attack_rats(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
 
   if (type == EVENT_WINTER) {
     ch->generic = ATTACK_ROOM + number(0, 26);
-    add_hatred(ch, OP_RACE, RACE_HUMAN); /* so they'll attack beggars, etc */
+    add_hatred(ch, OP_RACE, RACE_HUMAN);        /* so they'll attack beggars, etc */
   }
 
   if (type == EVENT_SPRING)
@@ -3415,8 +3417,8 @@ int attack_rats(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
 #define WHO_TO_CALL  3063       /* mercenary */
 
 int dragon_hunter_leader(struct char_data *ch, int UNUSED(cmd),
-                       char *UNUSED(arg), struct char_data *UNUSED(mob),
-                       int type) {
+                         char *UNUSED(arg), struct char_data *UNUSED(mob),
+                         int type) {
   register struct char_data *i, *j;
   int found = FALSE, dir, count;
   char buf[255];
@@ -3573,7 +3575,7 @@ int dragon_hunter_leader(struct char_data *ch, int UNUSED(cmd),
 }
 
 int hunting_mercenary(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
-                     struct char_data *mob, int type) {
+                      struct char_data *mob, int type) {
   int dir;
 
   if (type == PULSE_COMMAND)
@@ -3626,7 +3628,7 @@ int hunting_mercenary(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
 long jackpot = 25;
 
 int slot_machine(struct char_data *ch, int cmd, char *UNUSED(arg),
-                struct obj_data *UNUSED(obj), int UNUSED(type)) {
+                 struct obj_data *UNUSED(obj), int UNUSED(type)) {
   int c, i[3], ind;
   char buf[255];
 
@@ -3863,7 +3865,7 @@ extern int gevent;
 extern float shop_multiplier;
 
 int dwarven_miners(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
-                  struct char_data *UNUSED(mob), int type) {
+                   struct char_data *UNUSED(mob), int type) {
   void do_emote(struct char_data *ch, char *arg, int cmd);
   void do_stand(struct char_data *ch, char *arg, int cmd);
   void do_sit(struct char_data *ch, char *arg, int cmd);

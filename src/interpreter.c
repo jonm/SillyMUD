@@ -645,7 +645,7 @@ void assign_command_pointers() {
   add_command("practice", do_practice, 164, POSITION_RESTING, 1);
   add_command("pat", do_action, 165, POSITION_RESTING, 0);
   add_command("examine", do_examine, 166, POSITION_SITTING, 0);
-  add_command("take", do_get, 167, POSITION_RESTING, 1); /* TAKE */
+  add_command("take", do_get, 167, POSITION_RESTING, 1);        /* TAKE */
   add_command("info", do_info, 168, POSITION_SLEEPING, 0);
   add_command("'", do_say, 169, POSITION_RESTING, 0);
   add_command("practise", do_practice, 170, POSITION_RESTING, 1);
