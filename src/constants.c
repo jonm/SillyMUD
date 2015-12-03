@@ -1180,7 +1180,7 @@ const int RacialMax[MAX_RACE + 1][6] = {
 
 /*  fire cold elec blow acid */
 
-int ItemSaveThrows[22][5] = {
+int item_saveThrows[22][5] = {
   {15, 2, 10, 10, 10},
   {19, 2, 16, 2, 7},
   {11, 2, 2, 13, 9},

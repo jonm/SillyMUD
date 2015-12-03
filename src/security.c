@@ -11,7 +11,7 @@
 
 void log_msg(char *);
 
-int SecCheck(char *arg, char *site) {
+int sec_check(char *arg, char *site) {
   char buf[255], buf2[255];
   FILE *f1;
 

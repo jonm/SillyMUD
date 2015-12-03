@@ -189,7 +189,7 @@ void command_interpreter(struct char_data *ch, char *argument) {
 
 /* New parser by DM */
   if (*buf1)
-    n = FindValidCommand(buf1);
+    n = find_valid_command(buf1);
   else
     n = NULL;
 /*  
@@ -478,329 +478,329 @@ int special(struct char_data *ch, int cmd, char *arg) {
 }
 
 void assign_command_pointers() {
-  InitRadix();
-  AddCommand("north", do_move, 1, POSITION_STANDING, 0);
-  AddCommand("east", do_move, 2, POSITION_STANDING, 0);
-  AddCommand("south", do_move, 3, POSITION_STANDING, 0);
-  AddCommand("west", do_move, 4, POSITION_STANDING, 0);
-  AddCommand("up", do_move, 5, POSITION_STANDING, 0);
-  AddCommand("down", do_move, 6, POSITION_STANDING, 0);
-  AddCommand("enter", do_enter, 7, POSITION_STANDING, 0);
-  AddCommand("exits", do_exits, 8, POSITION_RESTING, 0);
-  AddCommand("kiss", do_action, 9, POSITION_RESTING, 0);
-  AddCommand("get", do_get, 10, POSITION_RESTING, 1);
-  AddCommand("drink", do_drink, 11, POSITION_RESTING, 1);
-  AddCommand("eat", do_eat, 12, POSITION_RESTING, 1);
-  AddCommand("wear", do_wear, 13, POSITION_RESTING, 0);
-  AddCommand("wield", do_wield, 14, POSITION_RESTING, 1);
-  AddCommand("look", do_look, 15, POSITION_RESTING, 0);
-  AddCommand("score", do_score, 16, POSITION_DEAD, 0);
-  AddCommand("say", do_say, 17, POSITION_RESTING, 0);
-  AddCommand("shout", do_shout, 18, POSITION_RESTING, 2);
-  AddCommand("tell", do_tell, 19, POSITION_RESTING, 0);
-  AddCommand("inventory", do_inventory, 20, POSITION_DEAD, 0);
-  AddCommand("qui", do_qui, 21, POSITION_DEAD, 0);
-  AddCommand("bounce", do_action, 22, POSITION_STANDING, 0);
-  AddCommand("smile", do_action, 23, POSITION_RESTING, 0);
-  AddCommand("dance", do_action, 24, POSITION_STANDING, 0);
-  AddCommand("kill", do_kill, 25, POSITION_FIGHTING, 1);
-  AddCommand("cackle", do_action, 26, POSITION_RESTING, 0);
-  AddCommand("laugh", do_action, 27, POSITION_RESTING, 0);
-  AddCommand("giggle", do_action, 28, POSITION_RESTING, 0);
-  AddCommand("shake", do_action, 29, POSITION_RESTING, 0);
-  AddCommand("puke", do_action, 30, POSITION_RESTING, 0);
-  AddCommand("growl", do_action, 31, POSITION_RESTING, 0);
-  AddCommand("scream", do_action, 32, POSITION_RESTING, 0);
-  AddCommand("insult", do_insult, 33, POSITION_RESTING, 0);
-  AddCommand("comfort", do_action, 34, POSITION_RESTING, 0);
-  AddCommand("nod", do_action, 35, POSITION_RESTING, 0);
-  AddCommand("sigh", do_action, 36, POSITION_RESTING, 0);
-  AddCommand("sulk", do_action, 37, POSITION_RESTING, 0);
-  AddCommand("help", do_help, 38, POSITION_DEAD, 0);
-  AddCommand("who", do_who, 39, POSITION_DEAD, 0);
-  AddCommand("emote", do_emote, 40, POSITION_SLEEPING, 0);
-  AddCommand("echo", do_echo, 41, POSITION_SLEEPING, 1);
-  AddCommand("stand", do_stand, 42, POSITION_RESTING, 0);
-  AddCommand("sit", do_sit, 43, POSITION_RESTING, 0);
-  AddCommand("rest", do_rest, 44, POSITION_RESTING, 0);
-  AddCommand("sleep", do_sleep, 45, POSITION_SLEEPING, 0);
-  AddCommand("wake", do_wake, 46, POSITION_SLEEPING, 0);
-  AddCommand("force", do_force, 47, POSITION_SLEEPING, LESSER_GOD);
-  AddCommand("transfer", do_trans, 48, POSITION_SLEEPING, DEMIGOD);
-  AddCommand("hug", do_action, 49, POSITION_RESTING, 0);
-  AddCommand("snuggle", do_action, 50, POSITION_RESTING, 0);
-  AddCommand("cuddle", do_action, 51, POSITION_RESTING, 0);
-  AddCommand("nuzzle", do_action, 52, POSITION_RESTING, 0);
-  AddCommand("cry", do_action, 53, POSITION_RESTING, 0);
-  AddCommand("news", do_news, 54, POSITION_SLEEPING, 0);
-  AddCommand("equipment", do_equipment, 55, POSITION_SLEEPING, 0);
-  AddCommand("buy", do_not_here, 56, POSITION_STANDING, 0);
-  AddCommand("sell", do_not_here, 57, POSITION_STANDING, 0);
-  AddCommand("value", do_value, 58, POSITION_RESTING, 0);
-  AddCommand("list", do_not_here, 59, POSITION_STANDING, 0);
-  AddCommand("drop", do_drop, 60, POSITION_RESTING, 1);
-  AddCommand("goto", do_goto, 61, POSITION_SLEEPING, 0);
-  AddCommand("weather", do_weather, 62, POSITION_RESTING, 0);
-  AddCommand("read", do_read, 63, POSITION_RESTING, 0);
-  AddCommand("pour", do_pour, 64, POSITION_STANDING, 0);
-  AddCommand("grab", do_grab, 65, POSITION_RESTING, 0);
-  AddCommand("remove", do_remove, 66, POSITION_RESTING, 0);
-  AddCommand("put", do_put, 67, POSITION_RESTING, 0);
-  AddCommand("shutdow", do_shutdow, 68, POSITION_DEAD, SILLYLORD);
-  AddCommand("save", do_save, 69, POSITION_SLEEPING, 0);
-  AddCommand("hit", do_hit, 70, POSITION_FIGHTING, 1);
-  AddCommand("string", do_string, 71, POSITION_SLEEPING, SAINT);
-  AddCommand("give", do_give, 72, POSITION_RESTING, 1);
-  AddCommand("quit", do_quit, 73, POSITION_DEAD, 0);
-  AddCommand("stat", do_stat, 74, POSITION_DEAD, CREATOR);
-  AddCommand("guard", do_guard, 75, POSITION_STANDING, 1);
-  AddCommand("time", do_time, 76, POSITION_DEAD, 0);
-  AddCommand("load", do_load, 77, POSITION_DEAD, SAINT);
-  AddCommand("purge", do_purge, 78, POSITION_DEAD, LOW_IMMORTAL);
-  AddCommand("shutdown", do_shutdown, 79, POSITION_DEAD, SILLYLORD);
-  AddCommand("idea", do_idea, 80, POSITION_DEAD, 0);
-  AddCommand("typo", do_typo, 81, POSITION_DEAD, 0);
-  AddCommand("bug", do_bug, 82, POSITION_DEAD, 0);
-  AddCommand("whisper", do_whisper, 83, POSITION_RESTING, 0);
-  AddCommand("cast", do_cast, 84, POSITION_SITTING, 1);
-  AddCommand("at", do_at, 85, POSITION_DEAD, CREATOR);
-  AddCommand("ask", do_ask, 86, POSITION_RESTING, 0);
-  AddCommand("order", do_order, 87, POSITION_RESTING, 1);
-  AddCommand("sip", do_sip, 88, POSITION_RESTING, 0);
-  AddCommand("taste", do_taste, 89, POSITION_RESTING, 0);
-  AddCommand("snoop", do_snoop, 90, POSITION_DEAD, GOD);
-  AddCommand("follow", do_follow, 91, POSITION_RESTING, 0);
-  AddCommand("rent", do_not_here, 92, POSITION_STANDING, 1);
-  AddCommand("offer", do_not_here, 93, POSITION_STANDING, 1);
-  AddCommand("poke", do_action, 94, POSITION_RESTING, 0);
-  AddCommand("advance", do_advance, 95, POSITION_DEAD, IMPLEMENTOR);
-  AddCommand("accuse", do_action, 96, POSITION_SITTING, 0);
-  AddCommand("grin", do_action, 97, POSITION_RESTING, 0);
-  AddCommand("bow", do_action, 98, POSITION_STANDING, 0);
-  AddCommand("open", do_open, 99, POSITION_SITTING, 0);
-  AddCommand("close", do_close, 100, POSITION_SITTING, 0);
-  AddCommand("lock", do_lock, 101, POSITION_SITTING, 0);
-  AddCommand("unlock", do_unlock, 102, POSITION_SITTING, 0);
-  AddCommand("leave", do_leave, 103, POSITION_STANDING, 0);
-  AddCommand("applaud", do_action, 104, POSITION_RESTING, 0);
-  AddCommand("blush", do_action, 105, POSITION_RESTING, 0);
-  AddCommand("burp", do_action, 106, POSITION_RESTING, 0);
-  AddCommand("chuckle", do_action, 107, POSITION_RESTING, 0);
-  AddCommand("clap", do_action, 108, POSITION_RESTING, 0);
-  AddCommand("cough", do_action, 109, POSITION_RESTING, 0);
-  AddCommand("curtsey", do_action, 110, POSITION_STANDING, 0);
-  AddCommand("fart", do_action, 111, POSITION_RESTING, 0);
-  AddCommand("flip", do_action, 112, POSITION_STANDING, 0);
-  AddCommand("fondle", do_action, 113, POSITION_RESTING, 0);
-  AddCommand("frown", do_action, 114, POSITION_RESTING, 0);
-  AddCommand("gasp", do_action, 115, POSITION_RESTING, 0);
-  AddCommand("glare", do_action, 116, POSITION_RESTING, 0);
-  AddCommand("groan", do_action, 117, POSITION_RESTING, 0);
-  AddCommand("grope", do_action, 118, POSITION_RESTING, 0);
-  AddCommand("hiccup", do_action, 119, POSITION_RESTING, 0);
-  AddCommand("lick", do_action, 120, POSITION_RESTING, 0);
-  AddCommand("love", do_action, 121, POSITION_RESTING, 0);
-  AddCommand("moan", do_action, 122, POSITION_RESTING, 0);
-  AddCommand("nibble", do_action, 123, POSITION_RESTING, 0);
-  AddCommand("pout", do_action, 124, POSITION_RESTING, 0);
-  AddCommand("purr", do_action, 125, POSITION_RESTING, 0);
-  AddCommand("ruffle", do_action, 126, POSITION_STANDING, 0);
-  AddCommand("shiver", do_action, 127, POSITION_RESTING, 0);
-  AddCommand("shrug", do_action, 128, POSITION_RESTING, 0);
-  AddCommand("sing", do_action, 129, POSITION_RESTING, 0);
-  AddCommand("slap", do_action, 130, POSITION_RESTING, 0);
-  AddCommand("smirk", do_action, 131, POSITION_RESTING, 0);
-  AddCommand("snap", do_action, 132, POSITION_RESTING, 0);
-  AddCommand("sneeze", do_action, 133, POSITION_RESTING, 0);
-  AddCommand("snicker", do_action, 134, POSITION_RESTING, 0);
-  AddCommand("sniff", do_action, 135, POSITION_RESTING, 0);
-  AddCommand("snore", do_action, 136, POSITION_SLEEPING, 0);
-  AddCommand("spit", do_action, 137, POSITION_STANDING, 0);
-  AddCommand("squeeze", do_action, 138, POSITION_RESTING, 0);
-  AddCommand("stare", do_action, 139, POSITION_RESTING, 0);
-  AddCommand("strut", do_action, 140, POSITION_STANDING, 0);
-  AddCommand("thank", do_action, 141, POSITION_RESTING, 0);
-  AddCommand("twiddle", do_action, 142, POSITION_RESTING, 0);
-  AddCommand("wave", do_action, 143, POSITION_RESTING, 0);
-  AddCommand("whistle", do_action, 144, POSITION_RESTING, 0);
-  AddCommand("wiggle", do_action, 145, POSITION_STANDING, 0);
-  AddCommand("wink", do_action, 146, POSITION_RESTING, 0);
-  AddCommand("yawn", do_action, 147, POSITION_RESTING, 0);
-  AddCommand("snowball", do_action, 148, POSITION_STANDING, DEMIGOD);
-  AddCommand("write", do_write, 149, POSITION_STANDING, 1);
-  AddCommand("hold", do_grab, 150, POSITION_RESTING, 1);
-  AddCommand("flee", do_flee, 151, POSITION_SITTING, 1);
-  AddCommand("sneak", do_sneak, 152, POSITION_STANDING, 1);
-  AddCommand("hide", do_hide, 153, POSITION_RESTING, 1);
-  AddCommand("backstab", do_backstab, 154, POSITION_STANDING, 1);
-  AddCommand("pick", do_pick, 155, POSITION_STANDING, 1);
-  AddCommand("steal", do_steal, 156, POSITION_STANDING, 1);
-  AddCommand("bash", do_bash, 157, POSITION_FIGHTING, 1);
-  AddCommand("rescue", do_rescue, 158, POSITION_FIGHTING, 1);
-  AddCommand("kick", do_kick, 159, POSITION_FIGHTING, 1);
-  AddCommand("french", do_action, 160, POSITION_RESTING, 0);
-  AddCommand("comb", do_action, 161, POSITION_RESTING, 0);
-  AddCommand("massage", do_action, 162, POSITION_RESTING, 0);
-  AddCommand("tickle", do_action, 163, POSITION_RESTING, 0);
-  AddCommand("practice", do_practice, 164, POSITION_RESTING, 1);
-  AddCommand("pat", do_action, 165, POSITION_RESTING, 0);
-  AddCommand("examine", do_examine, 166, POSITION_SITTING, 0);
-  AddCommand("take", do_get, 167, POSITION_RESTING, 1); /* TAKE */
-  AddCommand("info", do_info, 168, POSITION_SLEEPING, 0);
-  AddCommand("'", do_say, 169, POSITION_RESTING, 0);
-  AddCommand("practise", do_practice, 170, POSITION_RESTING, 1);
-  AddCommand("curse", do_action, 171, POSITION_RESTING, 0);
-  AddCommand("use", do_use, 172, POSITION_SITTING, 1);
-  AddCommand("where", do_where, 173, POSITION_DEAD, 1);
-  AddCommand("levels", do_levels, 174, POSITION_DEAD, 0);
-  AddCommand("reroll", do_reroll, 175, POSITION_DEAD, SILLYLORD);
-  AddCommand("pray", do_action, 176, POSITION_SITTING, 0);
-  AddCommand(",", do_emote, 177, POSITION_SLEEPING, 0);
-  AddCommand("beg", do_action, 178, POSITION_RESTING, 0);
-  AddCommand("bleed", do_not_here, 179, POSITION_RESTING, 0);
-  AddCommand("cringe", do_action, 180, POSITION_RESTING, 0);
-  AddCommand("daydream", do_action, 181, POSITION_SLEEPING, 0);
-  AddCommand("fume", do_action, 182, POSITION_RESTING, 0);
-  AddCommand("grovel", do_action, 183, POSITION_RESTING, 0);
-  AddCommand("hop", do_action, 184, POSITION_RESTING, 0);
-  AddCommand("nudge", do_action, 185, POSITION_RESTING, 0);
-  AddCommand("peer", do_action, 186, POSITION_RESTING, 0);
-  AddCommand("point", do_action, 187, POSITION_RESTING, 0);
-  AddCommand("ponder", do_action, 188, POSITION_RESTING, 0);
-  AddCommand("punch", do_action, 189, POSITION_RESTING, 0);
-  AddCommand("snarl", do_action, 190, POSITION_RESTING, 0);
-  AddCommand("spank", do_action, 191, POSITION_RESTING, 0);
-  AddCommand("steam", do_action, 192, POSITION_RESTING, 0);
-  AddCommand("tackle", do_action, 193, POSITION_RESTING, 0);
-  AddCommand("taunt", do_action, 194, POSITION_RESTING, 0);
-  AddCommand("think", do_commune, 195, POSITION_RESTING, LOW_IMMORTAL);
-  AddCommand("whine", do_action, 196, POSITION_RESTING, 0);
-  AddCommand("worship", do_action, 197, POSITION_RESTING, 0);
-  AddCommand("yodel", do_action, 198, POSITION_RESTING, 0);
-  AddCommand("brief", do_brief, 199, POSITION_DEAD, 0);
-  AddCommand("wizlist", do_wizlist, 200, POSITION_DEAD, 0);
-  AddCommand("consider", do_consider, 201, POSITION_RESTING, 0);
-  AddCommand("group", do_group, 202, POSITION_RESTING, 1);
-  AddCommand("restore", do_restore, 203, POSITION_DEAD, DEMIGOD);
-  AddCommand("return", do_return, 204, POSITION_DEAD, 0);
-  AddCommand("switch", do_switch, 205, POSITION_DEAD, 52);
-  AddCommand("quaff", do_quaff, 206, POSITION_RESTING, 0);
-  AddCommand("recite", do_recite, 207, POSITION_STANDING, 0);
-  AddCommand("users", do_users, 208, POSITION_DEAD, LOW_IMMORTAL);
-  AddCommand("pose", do_pose, 209, POSITION_STANDING, 0);
-  AddCommand("noshout", do_noshout, 210, POSITION_SLEEPING, LOW_IMMORTAL);
-  AddCommand("wizhelp", do_wizhelp, 211, POSITION_SLEEPING, LOW_IMMORTAL);
-  AddCommand("credits", do_credits, 212, POSITION_DEAD, 0);
-  AddCommand("compact", do_compact, 213, POSITION_DEAD, 0);
-  AddCommand(":", do_emote, 214, POSITION_SLEEPING, 0);
-  AddCommand("deafen", do_plr_noshout, 215, POSITION_SLEEPING, 1);
-  AddCommand("slay", do_kill, 216, POSITION_STANDING, SILLYLORD);
-  AddCommand("wimpy", do_wimp, 217, POSITION_DEAD, 0);
-  AddCommand("junk", do_junk, 218, POSITION_RESTING, 1);
-  AddCommand("deposit", do_not_here, 219, POSITION_RESTING, 1);
-  AddCommand("withdraw", do_not_here, 220, POSITION_RESTING, 1);
-  AddCommand("balance", do_not_here, 221, POSITION_RESTING, 1);
-  AddCommand("nohassle", do_nohassle, 222, POSITION_DEAD, LOW_IMMORTAL);
-  AddCommand("system", do_system, 223, POSITION_DEAD, SILLYLORD);
-  AddCommand("pull", do_not_here, 224, POSITION_STANDING, 1);
-  AddCommand("stealth", do_stealth, 225, POSITION_DEAD, LOW_IMMORTAL);
-  AddCommand("edit", do_edit, 226, POSITION_DEAD, CREATOR);
+  init_radix();
+  add_command("north", do_move, 1, POSITION_STANDING, 0);
+  add_command("east", do_move, 2, POSITION_STANDING, 0);
+  add_command("south", do_move, 3, POSITION_STANDING, 0);
+  add_command("west", do_move, 4, POSITION_STANDING, 0);
+  add_command("up", do_move, 5, POSITION_STANDING, 0);
+  add_command("down", do_move, 6, POSITION_STANDING, 0);
+  add_command("enter", do_enter, 7, POSITION_STANDING, 0);
+  add_command("exits", do_exits, 8, POSITION_RESTING, 0);
+  add_command("kiss", do_action, 9, POSITION_RESTING, 0);
+  add_command("get", do_get, 10, POSITION_RESTING, 1);
+  add_command("drink", do_drink, 11, POSITION_RESTING, 1);
+  add_command("eat", do_eat, 12, POSITION_RESTING, 1);
+  add_command("wear", do_wear, 13, POSITION_RESTING, 0);
+  add_command("wield", do_wield, 14, POSITION_RESTING, 1);
+  add_command("look", do_look, 15, POSITION_RESTING, 0);
+  add_command("score", do_score, 16, POSITION_DEAD, 0);
+  add_command("say", do_say, 17, POSITION_RESTING, 0);
+  add_command("shout", do_shout, 18, POSITION_RESTING, 2);
+  add_command("tell", do_tell, 19, POSITION_RESTING, 0);
+  add_command("inventory", do_inventory, 20, POSITION_DEAD, 0);
+  add_command("qui", do_qui, 21, POSITION_DEAD, 0);
+  add_command("bounce", do_action, 22, POSITION_STANDING, 0);
+  add_command("smile", do_action, 23, POSITION_RESTING, 0);
+  add_command("dance", do_action, 24, POSITION_STANDING, 0);
+  add_command("kill", do_kill, 25, POSITION_FIGHTING, 1);
+  add_command("cackle", do_action, 26, POSITION_RESTING, 0);
+  add_command("laugh", do_action, 27, POSITION_RESTING, 0);
+  add_command("giggle", do_action, 28, POSITION_RESTING, 0);
+  add_command("shake", do_action, 29, POSITION_RESTING, 0);
+  add_command("puke", do_action, 30, POSITION_RESTING, 0);
+  add_command("growl", do_action, 31, POSITION_RESTING, 0);
+  add_command("scream", do_action, 32, POSITION_RESTING, 0);
+  add_command("insult", do_insult, 33, POSITION_RESTING, 0);
+  add_command("comfort", do_action, 34, POSITION_RESTING, 0);
+  add_command("nod", do_action, 35, POSITION_RESTING, 0);
+  add_command("sigh", do_action, 36, POSITION_RESTING, 0);
+  add_command("sulk", do_action, 37, POSITION_RESTING, 0);
+  add_command("help", do_help, 38, POSITION_DEAD, 0);
+  add_command("who", do_who, 39, POSITION_DEAD, 0);
+  add_command("emote", do_emote, 40, POSITION_SLEEPING, 0);
+  add_command("echo", do_echo, 41, POSITION_SLEEPING, 1);
+  add_command("stand", do_stand, 42, POSITION_RESTING, 0);
+  add_command("sit", do_sit, 43, POSITION_RESTING, 0);
+  add_command("rest", do_rest, 44, POSITION_RESTING, 0);
+  add_command("sleep", do_sleep, 45, POSITION_SLEEPING, 0);
+  add_command("wake", do_wake, 46, POSITION_SLEEPING, 0);
+  add_command("force", do_force, 47, POSITION_SLEEPING, LESSER_GOD);
+  add_command("transfer", do_trans, 48, POSITION_SLEEPING, DEMIGOD);
+  add_command("hug", do_action, 49, POSITION_RESTING, 0);
+  add_command("snuggle", do_action, 50, POSITION_RESTING, 0);
+  add_command("cuddle", do_action, 51, POSITION_RESTING, 0);
+  add_command("nuzzle", do_action, 52, POSITION_RESTING, 0);
+  add_command("cry", do_action, 53, POSITION_RESTING, 0);
+  add_command("news", do_news, 54, POSITION_SLEEPING, 0);
+  add_command("equipment", do_equipment, 55, POSITION_SLEEPING, 0);
+  add_command("buy", do_not_here, 56, POSITION_STANDING, 0);
+  add_command("sell", do_not_here, 57, POSITION_STANDING, 0);
+  add_command("value", do_value, 58, POSITION_RESTING, 0);
+  add_command("list", do_not_here, 59, POSITION_STANDING, 0);
+  add_command("drop", do_drop, 60, POSITION_RESTING, 1);
+  add_command("goto", do_goto, 61, POSITION_SLEEPING, 0);
+  add_command("weather", do_weather, 62, POSITION_RESTING, 0);
+  add_command("read", do_read, 63, POSITION_RESTING, 0);
+  add_command("pour", do_pour, 64, POSITION_STANDING, 0);
+  add_command("grab", do_grab, 65, POSITION_RESTING, 0);
+  add_command("remove", do_remove, 66, POSITION_RESTING, 0);
+  add_command("put", do_put, 67, POSITION_RESTING, 0);
+  add_command("shutdow", do_shutdow, 68, POSITION_DEAD, SILLYLORD);
+  add_command("save", do_save, 69, POSITION_SLEEPING, 0);
+  add_command("hit", do_hit, 70, POSITION_FIGHTING, 1);
+  add_command("string", do_string, 71, POSITION_SLEEPING, SAINT);
+  add_command("give", do_give, 72, POSITION_RESTING, 1);
+  add_command("quit", do_quit, 73, POSITION_DEAD, 0);
+  add_command("stat", do_stat, 74, POSITION_DEAD, CREATOR);
+  add_command("guard", do_guard, 75, POSITION_STANDING, 1);
+  add_command("time", do_time, 76, POSITION_DEAD, 0);
+  add_command("load", do_load, 77, POSITION_DEAD, SAINT);
+  add_command("purge", do_purge, 78, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("shutdown", do_shutdown, 79, POSITION_DEAD, SILLYLORD);
+  add_command("idea", do_idea, 80, POSITION_DEAD, 0);
+  add_command("typo", do_typo, 81, POSITION_DEAD, 0);
+  add_command("bug", do_bug, 82, POSITION_DEAD, 0);
+  add_command("whisper", do_whisper, 83, POSITION_RESTING, 0);
+  add_command("cast", do_cast, 84, POSITION_SITTING, 1);
+  add_command("at", do_at, 85, POSITION_DEAD, CREATOR);
+  add_command("ask", do_ask, 86, POSITION_RESTING, 0);
+  add_command("order", do_order, 87, POSITION_RESTING, 1);
+  add_command("sip", do_sip, 88, POSITION_RESTING, 0);
+  add_command("taste", do_taste, 89, POSITION_RESTING, 0);
+  add_command("snoop", do_snoop, 90, POSITION_DEAD, GOD);
+  add_command("follow", do_follow, 91, POSITION_RESTING, 0);
+  add_command("rent", do_not_here, 92, POSITION_STANDING, 1);
+  add_command("offer", do_not_here, 93, POSITION_STANDING, 1);
+  add_command("poke", do_action, 94, POSITION_RESTING, 0);
+  add_command("advance", do_advance, 95, POSITION_DEAD, IMPLEMENTOR);
+  add_command("accuse", do_action, 96, POSITION_SITTING, 0);
+  add_command("grin", do_action, 97, POSITION_RESTING, 0);
+  add_command("bow", do_action, 98, POSITION_STANDING, 0);
+  add_command("open", do_open, 99, POSITION_SITTING, 0);
+  add_command("close", do_close, 100, POSITION_SITTING, 0);
+  add_command("lock", do_lock, 101, POSITION_SITTING, 0);
+  add_command("unlock", do_unlock, 102, POSITION_SITTING, 0);
+  add_command("leave", do_leave, 103, POSITION_STANDING, 0);
+  add_command("applaud", do_action, 104, POSITION_RESTING, 0);
+  add_command("blush", do_action, 105, POSITION_RESTING, 0);
+  add_command("burp", do_action, 106, POSITION_RESTING, 0);
+  add_command("chuckle", do_action, 107, POSITION_RESTING, 0);
+  add_command("clap", do_action, 108, POSITION_RESTING, 0);
+  add_command("cough", do_action, 109, POSITION_RESTING, 0);
+  add_command("curtsey", do_action, 110, POSITION_STANDING, 0);
+  add_command("fart", do_action, 111, POSITION_RESTING, 0);
+  add_command("flip", do_action, 112, POSITION_STANDING, 0);
+  add_command("fondle", do_action, 113, POSITION_RESTING, 0);
+  add_command("frown", do_action, 114, POSITION_RESTING, 0);
+  add_command("gasp", do_action, 115, POSITION_RESTING, 0);
+  add_command("glare", do_action, 116, POSITION_RESTING, 0);
+  add_command("groan", do_action, 117, POSITION_RESTING, 0);
+  add_command("grope", do_action, 118, POSITION_RESTING, 0);
+  add_command("hiccup", do_action, 119, POSITION_RESTING, 0);
+  add_command("lick", do_action, 120, POSITION_RESTING, 0);
+  add_command("love", do_action, 121, POSITION_RESTING, 0);
+  add_command("moan", do_action, 122, POSITION_RESTING, 0);
+  add_command("nibble", do_action, 123, POSITION_RESTING, 0);
+  add_command("pout", do_action, 124, POSITION_RESTING, 0);
+  add_command("purr", do_action, 125, POSITION_RESTING, 0);
+  add_command("ruffle", do_action, 126, POSITION_STANDING, 0);
+  add_command("shiver", do_action, 127, POSITION_RESTING, 0);
+  add_command("shrug", do_action, 128, POSITION_RESTING, 0);
+  add_command("sing", do_action, 129, POSITION_RESTING, 0);
+  add_command("slap", do_action, 130, POSITION_RESTING, 0);
+  add_command("smirk", do_action, 131, POSITION_RESTING, 0);
+  add_command("snap", do_action, 132, POSITION_RESTING, 0);
+  add_command("sneeze", do_action, 133, POSITION_RESTING, 0);
+  add_command("snicker", do_action, 134, POSITION_RESTING, 0);
+  add_command("sniff", do_action, 135, POSITION_RESTING, 0);
+  add_command("snore", do_action, 136, POSITION_SLEEPING, 0);
+  add_command("spit", do_action, 137, POSITION_STANDING, 0);
+  add_command("squeeze", do_action, 138, POSITION_RESTING, 0);
+  add_command("stare", do_action, 139, POSITION_RESTING, 0);
+  add_command("strut", do_action, 140, POSITION_STANDING, 0);
+  add_command("thank", do_action, 141, POSITION_RESTING, 0);
+  add_command("twiddle", do_action, 142, POSITION_RESTING, 0);
+  add_command("wave", do_action, 143, POSITION_RESTING, 0);
+  add_command("whistle", do_action, 144, POSITION_RESTING, 0);
+  add_command("wiggle", do_action, 145, POSITION_STANDING, 0);
+  add_command("wink", do_action, 146, POSITION_RESTING, 0);
+  add_command("yawn", do_action, 147, POSITION_RESTING, 0);
+  add_command("snowball", do_action, 148, POSITION_STANDING, DEMIGOD);
+  add_command("write", do_write, 149, POSITION_STANDING, 1);
+  add_command("hold", do_grab, 150, POSITION_RESTING, 1);
+  add_command("flee", do_flee, 151, POSITION_SITTING, 1);
+  add_command("sneak", do_sneak, 152, POSITION_STANDING, 1);
+  add_command("hide", do_hide, 153, POSITION_RESTING, 1);
+  add_command("backstab", do_backstab, 154, POSITION_STANDING, 1);
+  add_command("pick", do_pick, 155, POSITION_STANDING, 1);
+  add_command("steal", do_steal, 156, POSITION_STANDING, 1);
+  add_command("bash", do_bash, 157, POSITION_FIGHTING, 1);
+  add_command("rescue", do_rescue, 158, POSITION_FIGHTING, 1);
+  add_command("kick", do_kick, 159, POSITION_FIGHTING, 1);
+  add_command("french", do_action, 160, POSITION_RESTING, 0);
+  add_command("comb", do_action, 161, POSITION_RESTING, 0);
+  add_command("massage", do_action, 162, POSITION_RESTING, 0);
+  add_command("tickle", do_action, 163, POSITION_RESTING, 0);
+  add_command("practice", do_practice, 164, POSITION_RESTING, 1);
+  add_command("pat", do_action, 165, POSITION_RESTING, 0);
+  add_command("examine", do_examine, 166, POSITION_SITTING, 0);
+  add_command("take", do_get, 167, POSITION_RESTING, 1); /* TAKE */
+  add_command("info", do_info, 168, POSITION_SLEEPING, 0);
+  add_command("'", do_say, 169, POSITION_RESTING, 0);
+  add_command("practise", do_practice, 170, POSITION_RESTING, 1);
+  add_command("curse", do_action, 171, POSITION_RESTING, 0);
+  add_command("use", do_use, 172, POSITION_SITTING, 1);
+  add_command("where", do_where, 173, POSITION_DEAD, 1);
+  add_command("levels", do_levels, 174, POSITION_DEAD, 0);
+  add_command("reroll", do_reroll, 175, POSITION_DEAD, SILLYLORD);
+  add_command("pray", do_action, 176, POSITION_SITTING, 0);
+  add_command(",", do_emote, 177, POSITION_SLEEPING, 0);
+  add_command("beg", do_action, 178, POSITION_RESTING, 0);
+  add_command("bleed", do_not_here, 179, POSITION_RESTING, 0);
+  add_command("cringe", do_action, 180, POSITION_RESTING, 0);
+  add_command("daydream", do_action, 181, POSITION_SLEEPING, 0);
+  add_command("fume", do_action, 182, POSITION_RESTING, 0);
+  add_command("grovel", do_action, 183, POSITION_RESTING, 0);
+  add_command("hop", do_action, 184, POSITION_RESTING, 0);
+  add_command("nudge", do_action, 185, POSITION_RESTING, 0);
+  add_command("peer", do_action, 186, POSITION_RESTING, 0);
+  add_command("point", do_action, 187, POSITION_RESTING, 0);
+  add_command("ponder", do_action, 188, POSITION_RESTING, 0);
+  add_command("punch", do_action, 189, POSITION_RESTING, 0);
+  add_command("snarl", do_action, 190, POSITION_RESTING, 0);
+  add_command("spank", do_action, 191, POSITION_RESTING, 0);
+  add_command("steam", do_action, 192, POSITION_RESTING, 0);
+  add_command("tackle", do_action, 193, POSITION_RESTING, 0);
+  add_command("taunt", do_action, 194, POSITION_RESTING, 0);
+  add_command("think", do_commune, 195, POSITION_RESTING, LOW_IMMORTAL);
+  add_command("whine", do_action, 196, POSITION_RESTING, 0);
+  add_command("worship", do_action, 197, POSITION_RESTING, 0);
+  add_command("yodel", do_action, 198, POSITION_RESTING, 0);
+  add_command("brief", do_brief, 199, POSITION_DEAD, 0);
+  add_command("wizlist", do_wizlist, 200, POSITION_DEAD, 0);
+  add_command("consider", do_consider, 201, POSITION_RESTING, 0);
+  add_command("group", do_group, 202, POSITION_RESTING, 1);
+  add_command("restore", do_restore, 203, POSITION_DEAD, DEMIGOD);
+  add_command("return", do_return, 204, POSITION_DEAD, 0);
+  add_command("switch", do_switch, 205, POSITION_DEAD, 52);
+  add_command("quaff", do_quaff, 206, POSITION_RESTING, 0);
+  add_command("recite", do_recite, 207, POSITION_STANDING, 0);
+  add_command("users", do_users, 208, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("pose", do_pose, 209, POSITION_STANDING, 0);
+  add_command("noshout", do_noshout, 210, POSITION_SLEEPING, LOW_IMMORTAL);
+  add_command("wizhelp", do_wizhelp, 211, POSITION_SLEEPING, LOW_IMMORTAL);
+  add_command("credits", do_credits, 212, POSITION_DEAD, 0);
+  add_command("compact", do_compact, 213, POSITION_DEAD, 0);
+  add_command(":", do_emote, 214, POSITION_SLEEPING, 0);
+  add_command("deafen", do_plr_noshout, 215, POSITION_SLEEPING, 1);
+  add_command("slay", do_kill, 216, POSITION_STANDING, SILLYLORD);
+  add_command("wimpy", do_wimp, 217, POSITION_DEAD, 0);
+  add_command("junk", do_junk, 218, POSITION_RESTING, 1);
+  add_command("deposit", do_not_here, 219, POSITION_RESTING, 1);
+  add_command("withdraw", do_not_here, 220, POSITION_RESTING, 1);
+  add_command("balance", do_not_here, 221, POSITION_RESTING, 1);
+  add_command("nohassle", do_nohassle, 222, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("system", do_system, 223, POSITION_DEAD, SILLYLORD);
+  add_command("pull", do_not_here, 224, POSITION_STANDING, 1);
+  add_command("stealth", do_stealth, 225, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("edit", do_edit, 226, POSITION_DEAD, CREATOR);
 #ifdef TEST_SERVER
-  AddCommand("@", do_set, 227, POSITION_DEAD, CREATOR);
+  add_command("@", do_set, 227, POSITION_DEAD, CREATOR);
 #else
-  AddCommand("@", do_set, 227, POSITION_DEAD, SILLYLORD);
+  add_command("@", do_set, 227, POSITION_DEAD, SILLYLORD);
 #endif
-  AddCommand("rsave", do_rsave, 228, POSITION_DEAD, CREATOR);
-  AddCommand("rload", do_rload, 229, POSITION_DEAD, CREATOR);
-  AddCommand("track", do_track, 230, POSITION_DEAD, 1);
-  AddCommand("wizlock", do_wizlock, 231, POSITION_DEAD, DEMIGOD);
-  AddCommand("highfive", do_highfive, 232, POSITION_DEAD, 0);
-  AddCommand("title", do_title, 233, POSITION_DEAD, 43);
-  AddCommand("whozone", do_who, 234, POSITION_DEAD, 0);
-  AddCommand("assist", do_assist, 235, POSITION_FIGHTING, 1);
-  AddCommand("attribute", do_attribute, 236, POSITION_DEAD, 5);
-  AddCommand("world", do_world, 237, POSITION_DEAD, 0);
-  AddCommand("allspells", do_spells, 238, POSITION_DEAD, 0);
-  AddCommand("breath", do_breath, 239, POSITION_FIGHTING, 1);
-  AddCommand("show", do_show, 240, POSITION_DEAD, CREATOR);
-  AddCommand("debug", do_debug, 241, POSITION_DEAD, IMPLEMENTOR);
-  AddCommand("invisible", do_invis, 242, POSITION_DEAD, LOW_IMMORTAL);
-  AddCommand("gain", do_gain, 243, POSITION_DEAD, 1);
-  AddCommand("instazone", do_instazone, 244, POSITION_DEAD, CREATOR);
-  AddCommand("disarm", do_disarm, 245, POSITION_FIGHTING, 1);
-  AddCommand("bonk", do_action, 246, POSITION_SITTING, 1);
-  AddCommand("chpwd", do_passwd, 247, POSITION_SITTING, IMPLEMENTOR);
-  AddCommand("fill", do_not_here, 248, POSITION_SITTING, 0);
-  AddCommand("imptest", do_doorbash, 249, POSITION_SITTING, IMPLEMENTOR);
-  AddCommand("shoot", do_shoot, 250, POSITION_STANDING, 1);
-  AddCommand("silence", do_silence, 251, POSITION_STANDING, DEMIGOD);
-  AddCommand("teams", do_not_here, 252, POSITION_STANDING, LOKI);
-  AddCommand("player", do_not_here, 253, POSITION_STANDING, LOKI);
-  AddCommand("create", do_create, 254, POSITION_STANDING, GOD);
-  AddCommand("bamfin", do_bamfin, 255, POSITION_STANDING, LOW_IMMORTAL);
-  AddCommand("bamfout", do_bamfout, 256, POSITION_STANDING, LOW_IMMORTAL);
-  AddCommand("vis", do_invis, 257, POSITION_STANDING, 0);
-  AddCommand("doorbash", do_doorbash, 258, POSITION_STANDING, 1);
-  AddCommand("mosh", do_action, 259, POSITION_FIGHTING, 1);
+  add_command("rsave", do_rsave, 228, POSITION_DEAD, CREATOR);
+  add_command("rload", do_rload, 229, POSITION_DEAD, CREATOR);
+  add_command("track", do_track, 230, POSITION_DEAD, 1);
+  add_command("wizlock", do_wizlock, 231, POSITION_DEAD, DEMIGOD);
+  add_command("highfive", do_highfive, 232, POSITION_DEAD, 0);
+  add_command("title", do_title, 233, POSITION_DEAD, 43);
+  add_command("whozone", do_who, 234, POSITION_DEAD, 0);
+  add_command("assist", do_assist, 235, POSITION_FIGHTING, 1);
+  add_command("attribute", do_attribute, 236, POSITION_DEAD, 5);
+  add_command("world", do_world, 237, POSITION_DEAD, 0);
+  add_command("allspells", do_spells, 238, POSITION_DEAD, 0);
+  add_command("breath", do_breath, 239, POSITION_FIGHTING, 1);
+  add_command("show", do_show, 240, POSITION_DEAD, CREATOR);
+  add_command("debug", do_debug, 241, POSITION_DEAD, IMPLEMENTOR);
+  add_command("invisible", do_invis, 242, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("gain", do_gain, 243, POSITION_DEAD, 1);
+  add_command("instazone", do_instazone, 244, POSITION_DEAD, CREATOR);
+  add_command("disarm", do_disarm, 245, POSITION_FIGHTING, 1);
+  add_command("bonk", do_action, 246, POSITION_SITTING, 1);
+  add_command("chpwd", do_passwd, 247, POSITION_SITTING, IMPLEMENTOR);
+  add_command("fill", do_not_here, 248, POSITION_SITTING, 0);
+  add_command("imptest", do_doorbash, 249, POSITION_SITTING, IMPLEMENTOR);
+  add_command("shoot", do_shoot, 250, POSITION_STANDING, 1);
+  add_command("silence", do_silence, 251, POSITION_STANDING, DEMIGOD);
+  add_command("teams", do_not_here, 252, POSITION_STANDING, LOKI);
+  add_command("player", do_not_here, 253, POSITION_STANDING, LOKI);
+  add_command("create", do_create, 254, POSITION_STANDING, GOD);
+  add_command("bamfin", do_bamfin, 255, POSITION_STANDING, LOW_IMMORTAL);
+  add_command("bamfout", do_bamfout, 256, POSITION_STANDING, LOW_IMMORTAL);
+  add_command("vis", do_invis, 257, POSITION_STANDING, 0);
+  add_command("doorbash", do_doorbash, 258, POSITION_STANDING, 1);
+  add_command("mosh", do_action, 259, POSITION_FIGHTING, 1);
 
 /* alias commands */
-  AddCommand("alias", do_alias, 260, POSITION_SLEEPING, 1);
-  AddCommand("1", do_alias, 261, POSITION_DEAD, 1);
-  AddCommand("2", do_alias, 262, POSITION_DEAD, 1);
-  AddCommand("3", do_alias, 263, POSITION_DEAD, 1);
-  AddCommand("4", do_alias, 264, POSITION_DEAD, 1);
-  AddCommand("5", do_alias, 265, POSITION_DEAD, 1);
-  AddCommand("6", do_alias, 266, POSITION_DEAD, 1);
-  AddCommand("7", do_alias, 267, POSITION_DEAD, 1);
-  AddCommand("8", do_alias, 268, POSITION_DEAD, 1);
-  AddCommand("9", do_alias, 269, POSITION_DEAD, 1);
-  AddCommand("0", do_alias, 270, POSITION_DEAD, 1);
-  AddCommand("swim", do_swim, 271, POSITION_STANDING, 1);
-  AddCommand("spy", do_spy, 272, POSITION_STANDING, 1);
-  AddCommand("springleap", do_springleap, 273, POSITION_RESTING, 1);
-  AddCommand("quivering palm", do_quivering_palm, 274, POSITION_FIGHTING, 30);
-  AddCommand("feign death", do_feign_death, 275, POSITION_FIGHTING, 1);
-  AddCommand("mount", do_mount, 276, POSITION_STANDING, 1);
-  AddCommand("dismount", do_mount, 277, POSITION_MOUNTED, 1);
-  AddCommand("ride", do_mount, 278, POSITION_STANDING, 1);
-  AddCommand("sign", do_sign, 279, POSITION_RESTING, 1);
-  AddCommand("setsev", do_setsev, 280, POSITION_DEAD, IMMORTAL);
-  AddCommand("first aid", do_first_aid, 281, POSITION_RESTING, 1);
-  AddCommand("log", do_set_log, 282, POSITION_DEAD, 58);
-  AddCommand("recall", do_cast, 283, POSITION_DEAD, LOKI);
-  AddCommand("reload", reboot_text, 284, POSITION_DEAD, 57);
-  AddCommand("event", do_event, 285, POSITION_DEAD, 59);
-  AddCommand("disguise", do_disguise, 286, POSITION_STANDING, 1);
-  AddCommand("climb", do_climb, 287, POSITION_STANDING, 1);
-  AddCommand("beep", do_beep, 288, POSITION_DEAD, 51);
-  AddCommand("bite", do_bite, 289, POSITION_RESTING, 1);
-  AddCommand("redit", do_redit, 290, POSITION_SLEEPING, CREATOR);
-  AddCommand("display", do_display, 291, POSITION_SLEEPING, 1);
-  AddCommand("resize", do_resize, 292, POSITION_SLEEPING, 1);
-  AddCommand("\"", do_commune, 293, POSITION_SLEEPING, LOW_IMMORTAL);
-  AddCommand("#", do_cset, 294, POSITION_DEAD, 59);
-  AddCommand("inset", do_inset, 295, POSITION_RESTING, 1);
-  AddCommand("showexits", do_show_exits, 296, POSITION_DEAD, 1);
-  AddCommand("split", do_split, 297, POSITION_RESTING, 1);
-  AddCommand("report", do_report, 298, POSITION_RESTING, 1);
-  AddCommand("gname", do_gname, 299, POSITION_RESTING, 1);
+  add_command("alias", do_alias, 260, POSITION_SLEEPING, 1);
+  add_command("1", do_alias, 261, POSITION_DEAD, 1);
+  add_command("2", do_alias, 262, POSITION_DEAD, 1);
+  add_command("3", do_alias, 263, POSITION_DEAD, 1);
+  add_command("4", do_alias, 264, POSITION_DEAD, 1);
+  add_command("5", do_alias, 265, POSITION_DEAD, 1);
+  add_command("6", do_alias, 266, POSITION_DEAD, 1);
+  add_command("7", do_alias, 267, POSITION_DEAD, 1);
+  add_command("8", do_alias, 268, POSITION_DEAD, 1);
+  add_command("9", do_alias, 269, POSITION_DEAD, 1);
+  add_command("0", do_alias, 270, POSITION_DEAD, 1);
+  add_command("swim", do_swim, 271, POSITION_STANDING, 1);
+  add_command("spy", do_spy, 272, POSITION_STANDING, 1);
+  add_command("springleap", do_springleap, 273, POSITION_RESTING, 1);
+  add_command("quivering palm", do_quivering_palm, 274, POSITION_FIGHTING, 30);
+  add_command("feign death", do_feign_death, 275, POSITION_FIGHTING, 1);
+  add_command("mount", do_mount, 276, POSITION_STANDING, 1);
+  add_command("dismount", do_mount, 277, POSITION_MOUNTED, 1);
+  add_command("ride", do_mount, 278, POSITION_STANDING, 1);
+  add_command("sign", do_sign, 279, POSITION_RESTING, 1);
+  add_command("setsev", do_setsev, 280, POSITION_DEAD, IMMORTAL);
+  add_command("first aid", do_first_aid, 281, POSITION_RESTING, 1);
+  add_command("log", do_set_log, 282, POSITION_DEAD, 58);
+  add_command("recall", do_cast, 283, POSITION_DEAD, LOKI);
+  add_command("reload", reboot_text, 284, POSITION_DEAD, 57);
+  add_command("event", do_event, 285, POSITION_DEAD, 59);
+  add_command("disguise", do_disguise, 286, POSITION_STANDING, 1);
+  add_command("climb", do_climb, 287, POSITION_STANDING, 1);
+  add_command("beep", do_beep, 288, POSITION_DEAD, 51);
+  add_command("bite", do_bite, 289, POSITION_RESTING, 1);
+  add_command("redit", do_redit, 290, POSITION_SLEEPING, CREATOR);
+  add_command("display", do_display, 291, POSITION_SLEEPING, 1);
+  add_command("resize", do_resize, 292, POSITION_SLEEPING, 1);
+  add_command("\"", do_commune, 293, POSITION_SLEEPING, LOW_IMMORTAL);
+  add_command("#", do_cset, 294, POSITION_DEAD, 59);
+  add_command("inset", do_inset, 295, POSITION_RESTING, 1);
+  add_command("showexits", do_show_exits, 296, POSITION_DEAD, 1);
+  add_command("split", do_split, 297, POSITION_RESTING, 1);
+  add_command("report", do_report, 298, POSITION_RESTING, 1);
+  add_command("gname", do_gname, 299, POSITION_RESTING, 1);
 #if STUPID
   /* this command is a little flawed.  Heavy usage generates obscenely 
      long linked lists in the "donation room" which cause the mud to 
      lag a horrible death. */
-  AddCommand("donate", do_donate, 300, POSITION_STANDING, 1);
+  add_command("donate", do_donate, 300, POSITION_STANDING, 1);
 #endif
-  AddCommand("auto", do_auto, 301, POSITION_RESTING, 1);
-  AddCommand("brew", do_makepotion, 302, POSITION_RESTING, 1);
-  AddCommand("changeform", do_changeform, 303, POSITION_STANDING, 1);
-  AddCommand("walk", do_walk, 301, POSITION_STANDING, 1);
-  AddCommand("fly", do_fly, 302, POSITION_STANDING, 1);
-  AddCommand("berserk", do_berserk, 303, POSITION_FIGHTING, 1);
-  AddCommand("palm", do_palm, 304, POSITION_STANDING, 1);
-  AddCommand("peek", do_peek, 305, POSITION_STANDING, 1);
-  AddCommand("prompt", do_prompt, 306, POSITION_RESTING, 1);
+  add_command("auto", do_auto, 301, POSITION_RESTING, 1);
+  add_command("brew", do_makepotion, 302, POSITION_RESTING, 1);
+  add_command("changeform", do_changeform, 303, POSITION_STANDING, 1);
+  add_command("walk", do_walk, 301, POSITION_STANDING, 1);
+  add_command("fly", do_fly, 302, POSITION_STANDING, 1);
+  add_command("berserk", do_berserk, 303, POSITION_FIGHTING, 1);
+  add_command("palm", do_palm, 304, POSITION_STANDING, 1);
+  add_command("peek", do_peek, 305, POSITION_STANDING, 1);
+  add_command("prompt", do_prompt, 306, POSITION_RESTING, 1);
 #if PLAYER_AUTH
-  AddCommand("auth", do_auth, 399, POSITION_SLEEPING, LOW_IMMORTAL);
+  add_command("auth", do_auth, 399, POSITION_SLEEPING, LOW_IMMORTAL);
 #endif
 }
 
@@ -972,7 +972,7 @@ void nanny(struct descriptor_data *d, char *arg) {
     if (!*arg) {
       SEND_TO_Q(VT_HOMECLR, d);
       SEND_TO_Q("Choose A Race:\n\r\n\r", d);
-      DisplayRaces(d);
+      display_races(d);
       STATE(d) = CON_QRACE;
     }
     else {
@@ -1008,7 +1008,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             SEND_TO_Q(VT_HOMECLR, d);
             do_help(d->character, help_thing, 0);
             SEND_TO_Q("Level limits (NVC = Not a Valid Class):\n\r", d);
-            if (CheckValidClass(d, CLASS_MAGIC_USER)) {
+            if (check_valid_class(d, CLASS_MAGIC_USER)) {
               SPRINTF(buf, "Mage: %d  ",
                       RacialMax[RaceList[choice].race_num][0]);
               SEND_TO_Q(buf, d);
@@ -1016,7 +1016,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             else
               SEND_TO_Q("Mage: NVC  ", d);
 
-            if (CheckValidClass(d, CLASS_CLERIC)) {
+            if (check_valid_class(d, CLASS_CLERIC)) {
               SPRINTF(buf, "Cleric: %d  ",
                       RacialMax[RaceList[choice].race_num][1]);
               SEND_TO_Q(buf, d);
@@ -1025,7 +1025,7 @@ void nanny(struct descriptor_data *d, char *arg) {
               SEND_TO_Q("Cleric: NVC  ", d);
 
 
-            if (CheckValidClass(d, CLASS_WARRIOR)) {
+            if (check_valid_class(d, CLASS_WARRIOR)) {
               SPRINTF(buf, "Warrior: %d  ",
                       RacialMax[RaceList[choice].race_num][2]);
               SEND_TO_Q(buf, d);
@@ -1034,7 +1034,7 @@ void nanny(struct descriptor_data *d, char *arg) {
               SEND_TO_Q("Warrior: NVC  ", d);
 
 
-            if (CheckValidClass(d, CLASS_THIEF)) {
+            if (check_valid_class(d, CLASS_THIEF)) {
               SPRINTF(buf, "Thief: %d  ",
                       RacialMax[RaceList[choice].race_num][3]);
               SEND_TO_Q(buf, d);
@@ -1042,7 +1042,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             else
               SEND_TO_Q("Thief: NVC  ", d);
 
-            if (CheckValidClass(d, CLASS_DRUID)) {
+            if (check_valid_class(d, CLASS_DRUID)) {
               SPRINTF(buf, "Druid: %d  ",
                       RacialMax[RaceList[choice].race_num][4]);
               SEND_TO_Q(buf, d);
@@ -1051,7 +1051,7 @@ void nanny(struct descriptor_data *d, char *arg) {
               SEND_TO_Q("Druid: NVC  ", d);
 
 
-            if (CheckValidClass(d, CLASS_MONK)) {
+            if (check_valid_class(d, CLASS_MONK)) {
               SPRINTF(buf, "Monk: %d  ",
                       RacialMax[RaceList[choice].race_num][0]);
               SEND_TO_Q(buf, d);
@@ -1089,7 +1089,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       }
       else {
         GET_RACE(d->character) = RaceList[choice - 1].race_num;
-        if (CheckValidClass(d, CLASS_DRUID))
+        if (check_valid_class(d, CLASS_DRUID))
           SEND_TO_Q("Reminder:  Druids must be neutral.\n\r", d);
         if (!get_racial_alignment(d)) { /* neutral chars can choose */
           SEND_TO_Q
@@ -1270,7 +1270,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 #if IMPL_SECURITY
       if (top_of_p_table > 0) {
         if (get_max_level(d->character) >= 58) {
-          switch (SecCheck(GET_NAME(d->character), d->host)) {
+          switch (sec_check(GET_NAME(d->character), d->host)) {
           case -1:
           case 0:
             SEND_TO_Q("Security check reveals invalid site\n\r", d);
@@ -1366,7 +1366,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       write(d->descriptor, echo_on, 6);
 
       SEND_TO_Q("Choose A Race:\n\r\n\r", d);
-      DisplayRaces(d);
+      display_races(d);
       STATE(d) = CON_QRACE;
     }
     break;
@@ -1475,7 +1475,7 @@ void nanny(struct descriptor_data *d, char *arg) {
     else {
       SEND_TO_Q("Ok.. all chosen.\n\r", d);
       SEND_TO_Q("\n\r", d);
-      DisplayRaceClasses(d);
+      display_race_classes(d);
 #if PLAYER_AUTH
       /* set the AUTH flags */
       /* (3 chances) */
@@ -1484,7 +1484,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       STATE(d) = CON_QCLASS;
       break;
     }
-    DisplayRaceClasses(d);
+    display_race_classes(d);
 
 #if PLAYER_AUTH
     /* set the AUTH flags */
@@ -1506,7 +1506,7 @@ void nanny(struct descriptor_data *d, char *arg) {
         switch (*arg) {
         case 'm':
         case 'M':{
-            if (CheckValidClass(d, CLASS_MAGIC_USER)) {
+            if (check_valid_class(d, CLASS_MAGIC_USER)) {
               if (!IS_SET(d->character->player.class, CLASS_MAGIC_USER))
                 d->character->player.class += CLASS_MAGIC_USER;
               count++;
@@ -1515,7 +1515,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             else {
               SEND_TO_Q(VT_HOMECLR, d);
               SEND_TO_Q("Your race may not be a magic user.\n\r", d);
-              DisplayRaceClasses(d);
+              display_race_classes(d);
               STATE(d) = CON_QCLASS;
               return;
             }
@@ -1523,7 +1523,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           }
         case 'c':
         case 'C':{
-            if (CheckValidClass(d, CLASS_CLERIC)) {
+            if (check_valid_class(d, CLASS_CLERIC)) {
               if (!IS_SET(d->character->player.class, CLASS_CLERIC))
                 d->character->player.class += CLASS_CLERIC;
               count++;
@@ -1532,7 +1532,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             else {
               SEND_TO_Q(VT_HOMECLR, d);
               SEND_TO_Q("Your race may not be a cleric.\n\r", d);
-              DisplayRaceClasses(d);
+              display_race_classes(d);
               STATE(d) = CON_QCLASS;
               return;
 
@@ -1541,7 +1541,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           }
         case 'k':
         case 'K':{
-            if (CheckValidClass(d, CLASS_MONK)) {
+            if (check_valid_class(d, CLASS_MONK)) {
               if (!IS_SET(d->character->player.class, CLASS_MONK)) {
                 d->character->player.class = CLASS_MONK;
                 count = 4;
@@ -1552,7 +1552,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             else {
               SEND_TO_Q(VT_HOMECLR, d);
               SEND_TO_Q("Only humans may be monks.\n\r", d);
-              DisplayRaceClasses(d);
+              display_race_classes(d);
               STATE(d) = CON_QCLASS;
               return;
             }
@@ -1560,7 +1560,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           }
         case 'd':
         case 'D':{
-            if (CheckValidClass(d, CLASS_DRUID)) {
+            if (check_valid_class(d, CLASS_DRUID)) {
               if (!IS_SET(d->character->player.class, CLASS_DRUID))
                 d->character->player.class += CLASS_DRUID;
               count++;
@@ -1569,7 +1569,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             else {
               SEND_TO_Q(VT_HOMECLR, d);
               SEND_TO_Q("Your race may not be druids.\n\r", d);
-              DisplayRaceClasses(d);
+              display_race_classes(d);
               STATE(d) = CON_QCLASS;
               return;
             }
@@ -1579,7 +1579,7 @@ void nanny(struct descriptor_data *d, char *arg) {
         case 'F':
         case 'w':
         case 'W':{
-            if (CheckValidClass(d, CLASS_WARRIOR)) {
+            if (check_valid_class(d, CLASS_WARRIOR)) {
               if (!IS_SET(d->character->player.class, CLASS_WARRIOR))
                 d->character->player.class += CLASS_WARRIOR;
               count++;
@@ -1588,7 +1588,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             else {
               SEND_TO_Q(VT_HOMECLR, d);
               SEND_TO_Q("Your race may not be warriors.\n\r", d);
-              DisplayRaceClasses(d);
+              display_race_classes(d);
               STATE(d) = CON_QCLASS;
               return;
             }
@@ -1596,7 +1596,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           }
         case 't':
         case 'T':{
-            if (CheckValidClass(d, CLASS_THIEF)) {
+            if (check_valid_class(d, CLASS_THIEF)) {
               if (!IS_SET(d->character->player.class, CLASS_THIEF))
                 d->character->player.class += CLASS_THIEF;
               count++;
@@ -1605,7 +1605,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             else {
               SEND_TO_Q(VT_HOMECLR, d);
               SEND_TO_Q("Your race may not be a thieves.\n\r", d);
-              DisplayRaceClasses(d);
+              display_race_classes(d);
               STATE(d) = CON_QCLASS;
               return;
             }
@@ -1632,7 +1632,7 @@ void nanny(struct descriptor_data *d, char *arg) {
             ("Monks:        Masters of the martial arts.  They can only be single classed\n\r",
              d);
           SEND_TO_Q("\n\r", d);
-          DisplayRaceClasses(d);
+          display_race_classes(d);
           STATE(d) = CON_QCLASS;
           return;
           break;
@@ -1647,7 +1647,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       if (count == 0) {
         SEND_TO_Q("You must choose at least one class!\n\r", d);
         SEND_TO_Q("\n\r", d);
-        DisplayRaceClasses(d);
+        display_race_classes(d);
         STATE(d) = CON_QCLASS;
         break;
       }
@@ -2169,7 +2169,7 @@ char *class_selections[] = {
   "\n"
 };
 
-int CheckValidClass(struct descriptor_data *d, int class) {
+int check_valid_class(struct descriptor_data *d, int class) {
   extern int RacialMax[][6];
 
   if (GET_RACE(d->character) == RACE_HUMANTWO)
@@ -2200,7 +2200,7 @@ int CheckValidClass(struct descriptor_data *d, int class) {
   return (FALSE);
 }
 
-void DisplayRaceClasses(struct descriptor_data *d) {
+void display_race_classes(struct descriptor_data *d) {
   extern int RacialMax[][6];
   int i;
   bool bart = FALSE;
@@ -2225,7 +2225,7 @@ void DisplayRaceClasses(struct descriptor_data *d) {
     ("The number in brackets is the maximum level your race can attain.\n\r",
      d);
   for (i = bart = 0; i < MAX_CLASS; i++) {
-    if (CheckValidClass(d, classes[i])) {
+    if (check_valid_class(d, classes[i])) {
       if (bart)
         SEND_TO_Q(", ", d);
       SPRINTF(buf, "%s [%d]", class_selections[i],
@@ -2240,7 +2240,7 @@ void DisplayRaceClasses(struct descriptor_data *d) {
   SEND_TO_Q("Enter ? for help.\n\rYour choice: ", d);
 }
 
-void DisplayRaces(struct descriptor_data *d) {
+void display_races(struct descriptor_data *d) {
   int i;
   char buf[80];
 

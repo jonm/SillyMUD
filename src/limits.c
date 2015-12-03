@@ -26,7 +26,7 @@ extern struct weather_data weather_info;
 extern struct time_info_data time_info;
 
 
-char *ClassTitles(struct char_data *ch) {
+char *class_titles(struct char_data *ch) {
   unsigned char i, count = 0;
   char *buf = malloc(256);
 
@@ -78,30 +78,30 @@ int mana_limit(struct char_data *ch) {
   if (IS_NPC(ch))
     return (100);
 
-  if (HasClass(ch, CLASS_MAGIC_USER)) {
+  if (has_class(ch, CLASS_MAGIC_USER)) {
     max += 100;
     max += GET_LEVEL(ch, MAGE_LEVEL_IND) * 5;
   }
 
-  if (HasClass(ch, CLASS_CLERIC)) {
+  if (has_class(ch, CLASS_CLERIC)) {
     max += 100;
     max += (GET_LEVEL(ch, CLERIC_LEVEL_IND) / 3) * 5;
   }
-  if (HasClass(ch, CLASS_DRUID)) {
+  if (has_class(ch, CLASS_DRUID)) {
     max += 100;
     max += (GET_LEVEL(ch, DRUID_LEVEL_IND) / 3) * 5;
   }
-  if (HasClass(ch, CLASS_THIEF)) {
+  if (has_class(ch, CLASS_THIEF)) {
     max += 100;
   }
-  if (HasClass(ch, CLASS_WARRIOR)) {
+  if (has_class(ch, CLASS_WARRIOR)) {
     max += 100;
   }
-  if (HasClass(ch, CLASS_MONK)) {
+  if (has_class(ch, CLASS_MONK)) {
     max += 100;
   }
 
-  max /= HowManyClasses(ch);
+  max /= how_many_classes(ch);
 
 /*
   new classes should be inserted here.
@@ -148,7 +148,7 @@ int move_limit(struct char_data *ch) {
     max = ch->points.max_move;
   }
 
-  if (IsRideable(ch))
+  if (is_rideable(ch))
     max *= 2;
 
 
@@ -347,7 +347,7 @@ int move_gain(struct char_data *ch)
 
   if (IS_NPC(ch)) {
     gain = 22;
-    if (IsRideable(ch))
+    if (is_rideable(ch))
       gain += gain / 2;
 
     /* Neat and fast */
@@ -481,7 +481,7 @@ void advance_level(struct char_data *ch, int class) {
 
   }
 
-  add_hp /= HowManyClasses(ch);
+  add_hp /= how_many_classes(ch);
 
   ch->points.max_hit += MAX(1, add_hp);
 
@@ -491,16 +491,16 @@ void advance_level(struct char_data *ch, int class) {
         MIN(3,
             MAX(1,
                 MAX(2,
-                    wis_app[(int)GET_RWIS(ch)].bonus) / HowManyClasses(ch)));
+                    wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch)));
     else
       ch->specials.spells_to_learn +=
-        MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / HowManyClasses(ch));
+        MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch));
   }
   else {
     send_to_char("Practices: Use them or lose them (you just did).\n\r", ch);
   }
 
-  ClassSpecificStuff(ch);
+  class_specific_stuff(ch);
 
   if (get_max_level(ch) >= LOW_IMMORTAL)
     for (i = 0; i < 3; i++)
@@ -607,7 +607,7 @@ void drop_level(struct char_data *ch, int class) {
   if (lin_class == DRUID_LEVEL_IND)
     add_hp = MAX(add_hp, 5);
 
-  add_hp /= HowManyClasses(ch);
+  add_hp /= how_many_classes(ch);
 
   if (add_hp <= 2)
     add_hp = 3;
@@ -617,7 +617,7 @@ void drop_level(struct char_data *ch, int class) {
     ch->points.max_hit = 1;
 
   ch->specials.spells_to_learn -=
-    MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / HowManyClasses(ch));
+    MAX(1, MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch));
 
   ch->points.exp =
     MIN(titles[lin_class][(int)GET_LEVEL(ch, lin_class)].exp, GET_EXP(ch));
@@ -634,7 +634,7 @@ void set_title(struct char_data *ch) {
 
   char buf[256];
 
-  SPRINTF(buf, "the %s %s", RaceName[ch->race], ClassTitles(ch));
+  SPRINTF(buf, "the %s %s", RaceName[ch->race], class_titles(ch));
 
   if (GET_TITLE(ch)) {
     free(GET_TITLE(ch));
@@ -670,7 +670,7 @@ void gain_exp(struct char_data *ch, int gain) {
 
   if (!IS_IMMORTAL(ch)) {
     if (gain > 0) {
-      gain /= HowManyClasses(ch);
+      gain /= how_many_classes(ch);
 
       if (get_max_level(ch) == 1 && IS_PC(ch)) {
         gain *= 2;
@@ -861,7 +861,7 @@ void check_idling(struct char_data *ch) {
 
 
 
-void ObjFromCorpse(struct obj_data *c) {
+void obj_from_corpse(struct obj_data *c) {
   struct obj_data *jj, *next_thing;
 
   for (jj = c->contains; jj; jj = next_thing) {
@@ -887,7 +887,7 @@ void ObjFromCorpse(struct obj_data *c) {
        **  don't extract it.
        */
       c->contains = 0;
-      log_msg("Memory lost in ObjFromCorpse.");
+      log_msg("Memory lost in obj_from_corpse.");
       return;
     }
   }
@@ -896,19 +896,19 @@ void ObjFromCorpse(struct obj_data *c) {
 
 
 
-void ClassSpecificStuff(struct char_data *ch) {
+void class_specific_stuff(struct char_data *ch) {
 
-  if (HasClass(ch, CLASS_WARRIOR) || HasClass(ch, CLASS_MONK)) {
+  if (has_class(ch, CLASS_WARRIOR) || has_class(ch, CLASS_MONK)) {
 
     ch->mult_att = 1.0;
 
-    if (HasClass(ch, CLASS_WARRIOR)) {
+    if (has_class(ch, CLASS_WARRIOR)) {
 
       ch->mult_att += (GET_LEVEL(ch, WARRIOR_LEVEL_IND) * .05);
       /* ch->mult_att+=(MIN(50,(GET_LEVEL(ch, WARRIOR_LEVEL_IND)))*.05); */
     }
     else {
-      if (HasClass(ch, CLASS_MONK)) {
+      if (has_class(ch, CLASS_MONK)) {
         ch->mult_att += (GET_LEVEL(ch, MONK_LEVEL_IND) / 16.0);
       }
       /* fix up damage stuff */
@@ -1015,7 +1015,7 @@ void ClassSpecificStuff(struct char_data *ch) {
 
   /* other stuff.. immunities, etc, are set here */
 
-  if (HasClass(ch, CLASS_MONK)) {
+  if (has_class(ch, CLASS_MONK)) {
     if (GET_LEVEL(ch, MONK_LEVEL_IND) > 10)
       SET_BIT(ch->M_immune, IMM_HOLD);
 
@@ -1030,7 +1030,7 @@ void ClassSpecificStuff(struct char_data *ch) {
       SET_BIT(ch->immune, IMM_CHARM);
   }
   else {
-    if (HasClass(ch, CLASS_DRUID)) {
+    if (has_class(ch, CLASS_DRUID)) {
       if (GET_LEVEL(ch, DRUID_LEVEL_IND) >= 14) {
         SET_BIT(ch->immune, IMM_CHARM);
       }
@@ -1051,23 +1051,23 @@ void ClassSpecificStuff(struct char_data *ch) {
       }
     }
 
-    if (HasClass(ch, CLASS_THIEF)) {
+    if (has_class(ch, CLASS_THIEF)) {
 
-      if (OnlyClass(ch, CLASS_THIEF))
+      if (only_class(ch, CLASS_THIEF))
         GET_CHR(ch) += 1;
 
       GET_CHR(ch) += GET_LEVEL(ch, THIEF_LEVEL_IND) / 10;
     }
 
-    if (!HasClass(ch, CLASS_WARRIOR)) {
+    if (!has_class(ch, CLASS_WARRIOR)) {
       ch->mult_att = 1.0;
-      if (HasClass(ch, CLASS_CLERIC)) {
+      if (has_class(ch, CLASS_CLERIC)) {
         ch->mult_att += (GET_LEVEL(ch, CLERIC_LEVEL_IND) * .03);
       }
-      else if (HasClass(ch, CLASS_DRUID)) {
+      else if (has_class(ch, CLASS_DRUID)) {
         ch->mult_att += (GET_LEVEL(ch, DRUID_LEVEL_IND) * .03);
       }
-      else if (HasClass(ch, CLASS_THIEF)) {
+      else if (has_class(ch, CLASS_THIEF)) {
         ch->mult_att += (GET_LEVEL(ch, THIEF_LEVEL_IND) / 100.0);
       }
     }

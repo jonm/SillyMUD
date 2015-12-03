@@ -16,7 +16,7 @@
 extern struct obj_data *object_list;
 extern struct char_data *character_list;
 
-int RecGetObjRoom(struct obj_data *obj) {
+int rec_get_obj_room(struct obj_data *obj) {
   if (obj->in_room != NOWHERE) {
     return (obj->in_room);
   }
@@ -27,12 +27,12 @@ int RecGetObjRoom(struct obj_data *obj) {
     return (obj->equipped_by->in_room);
   }
   if (obj->in_obj) {
-    return (RecGetObjRoom(obj->in_obj));
+    return (rec_get_obj_room(obj->in_obj));
   }
   return (0);
 }
 
-void MakeNoise(int room, char *local_snd, char *distant_snd) {
+void make_noise(int room, char *local_snd, char *distant_snd) {
   int door;
   struct char_data *ch;
   struct room_data *rp, *orp;
@@ -59,7 +59,7 @@ void MakeNoise(int room, char *local_snd, char *distant_snd) {
   }
 }
 
-void MakeSound(int pulse) {
+void make_sound(int pulse) {
   int room;
   char buffer[128];
   struct obj_data *obj;
@@ -83,14 +83,14 @@ void MakeSound(int pulse) {
           room = obj->in_room;
         }
         else {
-          room = RecGetObjRoom(obj);
+          room = rec_get_obj_room(obj);
         }
         /*
          *  broadcast to room
          */
 
         if (obj->action_description) {
-          MakeNoise(room, obj->action_description, obj->action_description);
+          make_noise(room, obj->action_description, obj->action_description);
         }
       }
     }
@@ -107,21 +107,21 @@ void MakeSound(int pulse) {
           /*
            *  Make the sound;
            */
-          MakeNoise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
+          make_noise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
         }
         else if (GET_POS(ch) == POSITION_SLEEPING) {
           /*
            * snore 
            */
           SPRINTF(buffer, "%s snores loudly.\n\r", ch->player.short_descr);
-          MakeNoise(ch->in_room, buffer, "You hear a loud snore nearby.\n\r");
+          make_noise(ch->in_room, buffer, "You hear a loud snore nearby.\n\r");
         }
       }
       else if (GET_POS(ch) == ch->specials.default_pos) {
         /*
          * Make the sound
          */
-        MakeNoise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
+        make_noise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
       }
     }
   }

@@ -70,7 +70,7 @@ void spell_resurrection(byte UNUSED(level), struct char_data *ch,
          should be charmed and follower ch
        */
 
-      if (IsImmune(victim, IMM_CHARM) || IsResist(victim, IMM_CHARM)) {
+      if (is_immune(victim, IMM_CHARM) || is_resist(victim, IMM_CHARM)) {
         act("$n says 'Thank you'", FALSE, ch, 0, victim, TO_ROOM);
 
       }
@@ -181,7 +181,7 @@ void spell_resurrection(byte UNUSED(level), struct char_data *ch,
         send_to_char("You collapse from the effort\n\r", ch);
         fseek(fl, obj->char_f_pos * sizeof(struct char_file_u), 0);
         fwrite(&st, sizeof(struct char_file_u), 1, fl);
-        ObjFromCorpse(obj);
+        obj_from_corpse(obj);
 
       }
       else {
@@ -203,7 +203,7 @@ void spell_cause_light(byte level, struct char_data *ch,
 
   dam = dice(1, 8);
 
-  if (!HitOrMiss(ch, victim, CalcThaco(ch)))
+  if (!hit_or_miss(ch, victim, calc_thaco(ch)))
     dam = 0;
 
   damage(ch, victim, dam, SPELL_CAUSE_LIGHT);
@@ -220,7 +220,7 @@ void spell_cause_critical(byte level, struct char_data *ch,
 
   dam = dice(3, 8) + 3;
 
-  if (!HitOrMiss(ch, victim, CalcThaco(ch)))
+  if (!hit_or_miss(ch, victim, calc_thaco(ch)))
     dam = 0;
 
   damage(ch, victim, dam, SPELL_CAUSE_CRITICAL);
@@ -237,7 +237,7 @@ void spell_cause_serious(byte level, struct char_data *ch,
 
   dam = dice(2, 8) + 2;
 
-  if (!HitOrMiss(ch, victim, CalcThaco(ch)))
+  if (!hit_or_miss(ch, victim, calc_thaco(ch)))
     dam = 0;
 
   damage(ch, victim, dam, SPELL_CAUSE_SERIOUS);
@@ -314,7 +314,7 @@ void spell_flamestrike(byte level, struct char_data *ch,
 
   dam = dice(level, 4);
 
-  MissileDamage(ch, victim, dam, SPELL_FLAMESTRIKE);
+  missile_damage(ch, victim, dam, SPELL_FLAMESTRIKE);
 
 }
 
@@ -325,7 +325,7 @@ void spell_dispel_good(byte level, struct char_data *ch,
   assert(ch && victim);
   assert((level >= 1) && (level <= ABS_MAX_LVL));
 
-  if (IsExtraPlanar(victim)) {
+  if (is_extra_planar(victim)) {
     if (IS_GOOD(ch)) {
       victim = ch;
     }
@@ -360,7 +360,7 @@ void spell_turn(byte level, struct char_data *ch,
 
   turned = FALSE;
 
-  if (IsUndead(victim)) {
+  if (is_undead(victim)) {
     diff = level - get_max_level(victim);
     if (diff <= -4) {           /* The puny girly girly clerics just don't cut it */
       act("You are powerless to affect $N", TRUE, ch, 0, victim, TO_CHAR);
@@ -384,20 +384,20 @@ void spell_turn(byte level, struct char_data *ch,
       if ((number(1, 100)) <= chance) {
         for (i = 0; i < diff; i++) {
           if ((!saves_spell(victim, SAVING_SPELL)) &&
-              ((diff >= 25) && (GetTotLevel(victim) <= 10))) {
+              ((diff >= 25) && (get_tot_level(victim) <= 10))) {
             act("$n turns $N into a smoldering pile of dust!",
                 TRUE, ch, 0, victim, TO_NOTVICT);
             act("You disintegrate $N!!!", TRUE, ch, 0, victim, TO_CHAR);
             act("$n has just undone your life force!",
                 TRUE, ch, 0, victim, TO_VICT);
             GET_POS(victim) = POSITION_DEAD;
-            DamageEpilog(ch, victim);
+            damage_epilog(ch, victim);
             turned = TRUE;
             break;
           }
           else if (!saves_spell(victim, SAVING_SPELL)) {
             if (IS_EVIL(ch) &&
-                !(IsImmune(victim, IMM_CHARM) || WeaponImmune(victim))) {
+                !(is_immune(victim, IMM_CHARM) || weapon_immune(victim))) {
               act("$n has taken control of $N.", TRUE, ch, 0, victim,
                   TO_NOTVICT);
               act("You take over as master of $N.", TRUE, ch, 0, victim,
@@ -433,7 +433,7 @@ void spell_turn(byte level, struct char_data *ch,
                   TRUE, ch, 0, victim, TO_CHAR);
               act("$n forces you from this room.",
                   TRUE, ch, 0, victim, TO_VICT);
-              AddFeared(victim, ch);
+              add_feared(victim, ch);
               do_flee(victim, "", 0);
               turned = TRUE;
               break;
@@ -523,7 +523,7 @@ void spell_holy_word(byte level, struct char_data *ch,
         continue;
       }
       else if (!affected_by_spell(ch, SPELL_HOLY_WORD)) {
-        if (IsExtraPlanar(t)) {
+        if (is_extra_planar(t)) {
           holy_banish(level, ch, t, obj);
           continue;
         }
@@ -574,7 +574,7 @@ void holy_destroy(byte UNUSED(level), struct char_data *ch,
       TO_CHAR);
   act("You are ripped to shreds by $n's power!", 0, ch, 0, victim, TO_VICT);
   GET_POS(victim) = POSITION_DEAD;
-  DamageEpilog(ch, victim);
+  damage_epilog(ch, victim);
 }
 
 void holy_bigdif(byte level, struct char_data *ch,
@@ -591,7 +591,7 @@ void holy_bigdif(byte level, struct char_data *ch,
   act("You scream out as $n blasts you. You are paralyzed with fear!",
       0, ch, 0, victim, TO_VICT);
 
-  MissileDamage(ch, victim, damg, SPELL_EARTHQUAKE);
+  missile_damage(ch, victim, damg, SPELL_EARTHQUAKE);
 
   af.type = SPELL_HOLY_WORD;
   af.bitvector = AFF_PARALYSIS;
@@ -629,7 +629,7 @@ void holy_meddif(byte level, struct char_data *ch,
   act("You are knocked to your knees as $n's word blasts your spirit", 0,
       ch, 0, victim, TO_VICT);
 
-  MissileDamage(ch, victim, damg, SPELL_EARTHQUAKE);
+  missile_damage(ch, victim, damg, SPELL_EARTHQUAKE);
   GET_POS(victim) = POSITION_SITTING;
   send_to_char("You have been blinded!\n\r", victim);
 
@@ -788,7 +788,7 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 
   char_to_room(mob, ch->in_room);
 
-  SwitchStuff(ch, mob);
+  switch_stuff(ch, mob);
 
   /*
    *  move char to storage
@@ -1043,7 +1043,7 @@ void spell_acid_blast(byte level, struct char_data *ch,
   if (saves_spell(victim, SAVING_SPELL))
     dam >>= 1;
 
-  MissileDamage(ch, victim, dam, SPELL_ACID_BLAST);
+  missile_damage(ch, victim, dam, SPELL_ACID_BLAST);
 
 }
 
@@ -1061,7 +1061,7 @@ void spell_cone_of_cold(byte level, struct char_data *ch,
   act("$n sends a cone of ice shooting from the fingertips!\n\r",
       FALSE, ch, 0, 0, TO_ROOM);
 
-  AreaDamage(ch, dam, SPELL_CONE_OF_COLD, "You are chilled to the bone!\n\r",
+  area_damage(ch, dam, SPELL_CONE_OF_COLD, "You are chilled to the bone!\n\r",
              "You are able to avoid the cone!\n\r", "", FALSE, FALSE);
 }
 
@@ -1078,7 +1078,7 @@ void spell_ice_storm(byte level, struct char_data *ch,
   send_to_char("You conjure a storm of ice.\n\r", ch);
   act("$n conjures an ice storm!\n\r", FALSE, ch, 0, 0, TO_ROOM);
 
-  AreaDamage(ch, dam, SPELL_ICE_STORM, "You are blasted by the storm!\n\r",
+  area_damage(ch, dam, SPELL_ICE_STORM, "You are blasted by the storm!\n\r",
              "You are able to dodge the storm.\n\r", "", FALSE, FALSE);
 }
 
@@ -1113,7 +1113,7 @@ void spell_meteor_swarm(byte level, struct char_data *ch,
   if (saves_spell(victim, SAVING_SPELL))
     dam >>= 1;
 
-  MissileDamage(ch, victim, dam, SPELL_METEOR_SWARM);
+  missile_damage(ch, victim, dam, SPELL_METEOR_SWARM);
 
 }
 
@@ -1284,7 +1284,7 @@ void spell_fly(byte UNUSED(level), struct char_data *ch,
   act("$N's feet rise off the ground.", TRUE, ch, 0, victim, TO_NOTVICT);
 
   af.type = SPELL_FLY;
-  af.duration = GET_LEVEL(ch, BestMagicClass(ch)) + 3;
+  af.duration = GET_LEVEL(ch, best_magic_class(ch)) + 3;
   af.modifier = 0;
   af.location = 0;
   af.bitvector = AFF_FLYING;
@@ -1315,7 +1315,7 @@ void spell_fly_group(byte UNUSED(level), struct char_data *ch,
       act("$N's feet rise off the ground.", TRUE, ch, 0, tch, TO_NOTVICT);
 
       af.type = SPELL_FLY;
-      af.duration = GET_LEVEL(ch, BestMagicClass(ch)) + 3;
+      af.duration = GET_LEVEL(ch, best_magic_class(ch)) + 3;
       af.modifier = 0;
       af.location = 0;
       af.bitvector = AFF_FLYING;
@@ -1357,7 +1357,7 @@ void spell_water_breath(byte UNUSED(level), struct char_data *ch,
   act("$N makes a face like a fish.", TRUE, ch, 0, victim, TO_NOTVICT);
 
   af.type = SPELL_WATER_BREATH;
-  af.duration = GET_LEVEL(ch, BestMagicClass(ch)) + 3;
+  af.duration = GET_LEVEL(ch, best_magic_class(ch)) + 3;
   af.modifier = 0;
   af.location = 0;
   af.bitvector = AFF_WATERBREATH;
@@ -1806,23 +1806,23 @@ void spell_paralyze(byte level, struct char_data *ch,
 
 
   if (!IS_AFFECTED(victim, AFF_PARALYSIS)) {
-    if (IsImmune(victim, IMM_HOLD)) {
-      FailPara(victim, ch);
+    if (is_immune(victim, IMM_HOLD)) {
+      fail_para(victim, ch);
       return;
     }
-    if (IsResist(victim, IMM_HOLD)) {
+    if (is_resist(victim, IMM_HOLD)) {
       if (saves_spell(victim, SAVING_PARA)) {
-        FailPara(victim, ch);
+        fail_para(victim, ch);
         return;
       }
       if (saves_spell(victim, SAVING_PARA)) {
-        FailPara(victim, ch);
+        fail_para(victim, ch);
         return;
       }
     }
-    else if (!IsSusc(victim, IMM_HOLD)) {
+    else if (!is_susc(victim, IMM_HOLD)) {
       if (saves_spell(victim, SAVING_PARA)) {
-        FailPara(victim, ch);
+        fail_para(victim, ch);
         return;
       }
     }
@@ -1853,7 +1853,7 @@ void spell_fear(byte UNUSED(level), struct char_data *ch,
     if (!saves_spell(victim, SAVING_SPELL)) {
       do_flee(victim, "", 0);
       if (!IS_PC(victim))
-        AddFeared(victim, ch);
+        add_feared(victim, ch);
     }
     else {
       send_to_char("You feel afraid, but the effect fades.\n\r", victim);
@@ -1870,7 +1870,7 @@ void spell_calm(byte UNUSED(level), struct char_data *ch,
 */
   if (IS_NPC(victim)) {
     if (IS_SET(victim->specials.act, ACT_AGGRESSIVE)) {
-      if (HitOrMiss(ch, victim, CalcThaco(ch))) {
+      if (hit_or_miss(ch, victim, calc_thaco(ch))) {
         REMOVE_BIT(victim->specials.act, ACT_AGGRESSIVE);
         send_to_char("You sense peace.\n\r", ch);
       }
@@ -1912,7 +1912,7 @@ void spell_web(byte level, struct char_data *ch,
     big = TRUE;
 
   if (IS_SET(real_roomp(ch->in_room)->room_flags, INDOORS)) {
-    if (IsSmall(victim) && !fail && !number(0, 3))
+    if (is_small(victim) && !fail && !number(0, 3))
       pissed = TRUE;            /* 25% */
     else if (big) {
       if (fail) {
@@ -1938,7 +1938,7 @@ void spell_web(byte level, struct char_data *ch,
   else {                        /* assume if not indoors, outdoors and */
     /* web is less affective at blocking the */
     /* victim from the caster. */
-    if (IsSmall(victim) && !fail && !number(0, 2))
+    if (is_small(victim) && !fail && !number(0, 2))
       pissed = TRUE;            /* 33% */
     else if (big) {
       if (fail) {
@@ -2246,7 +2246,7 @@ void spell_geyser(byte level, struct char_data *ch,
   act("The Geyser erupts in a huge column of steam!\n\r",
       FALSE, ch, 0, 0, TO_ROOM);
 
-  AreaDamage(ch, dam, SPELL_GEYSER,
+  area_damage(ch, dam, SPELL_GEYSER,
              "You are seared by the boiling water!!\n\r",
              "You are almost seared by the boiling water!!\n\r",
              "You hear Old Faithful off in the distance.\n\r", FALSE, FALSE);

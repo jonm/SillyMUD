@@ -432,7 +432,7 @@ void game_loop(int s) {
             command_interpreter(point->character, comm);
         }
         else if (point->connected == CON_EDITING)
-          RoomEdit(point->character, comm);
+          room_edit(point->character, comm);
         else
           nanny(point, comm);
       }
@@ -504,7 +504,7 @@ void game_loop(int s) {
               }
 
               if (update)
-                UpdateScreen(ch, update);
+                update_screen(ch, update);
             }
 
             if (point->character->term != VT100) {
@@ -572,11 +572,11 @@ void game_loop(int s) {
 
 
     if (!(pulse % PULSE_RIVER)) {
-      RiverPulseStuff(pulse);
+      river_pulse_stuff(pulse);
     }
 
     if (!(pulse % PULSE_TELEPORT)) {
-      TeleportPulseStuff(pulse);
+      teleport_pulse_stuff(pulse);
     }
 
     if (!(pulse % PULSE_VIOLENCE))
@@ -1526,7 +1526,7 @@ void raw_force_all(char *to_force) {
 }
 
 
-void UpdateScreen(struct char_data *ch, int update) {
+void update_screen(struct char_data *ch, int update) {
   char buf[255];
   int size;
 
@@ -1609,7 +1609,7 @@ void UpdateScreen(struct char_data *ch, int update) {
 }
 
 
-void InitScreen(struct char_data *ch) {
+void init_screen(struct char_data *ch) {
   char buf[255];
   int size;
 

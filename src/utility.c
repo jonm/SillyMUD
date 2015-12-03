@@ -33,7 +33,7 @@ extern int RacialMax[][6];
 
 
 #if EGO
-int EgoBladeSave(struct char_data *ch) {
+int ego_blade_save(struct char_data *ch) {
   int total;
 
   if (get_max_level(ch) <= 10)
@@ -59,7 +59,7 @@ int MAX(int a, int b) {
   return a > b ? a : b;
 }
 
-int GetItemClassRestrictions(struct obj_data *obj) {
+int get_item_class_restrictions(struct obj_data *obj) {
   int total = 0;
 
   if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_MAGE)) {
@@ -120,7 +120,7 @@ int CAN_SEE(struct char_data *s, struct char_data *o) {
       (!IS_AFFECTED(s, AFF_INFRAVISION)))
     return (FALSE);
 
-  if (IS_AFFECTED2(o, AFF2_ANIMAL_INVIS) && IsAnimal(s))
+  if (IS_AFFECTED2(o, AFF2_ANIMAL_INVIS) && is_animal(s))
     return (FALSE);
 
   return (TRUE);
@@ -162,7 +162,7 @@ int exit_ok(struct room_direction_data *exit, struct room_data **rpp) {
   return (*rpp != NULL);
 }
 
-int MobVnum(struct char_data *c) {
+int mob_vnum(struct char_data *c) {
   if (IS_NPC(c)) {
     return (mob_index[c->nr].virtual);
   }
@@ -171,7 +171,7 @@ int MobVnum(struct char_data *c) {
   }
 }
 
-int ObjVnum(struct obj_data *o) {
+int obj_vnum(struct obj_data *o) {
   if (o->item_number >= 0)
     return (obj_index[o->item_number].virtual);
   else
@@ -179,7 +179,7 @@ int ObjVnum(struct obj_data *o) {
 }
 
 
-void Zwrite(FILE * fp, char cmd, int tf, int arg1, int arg2, int arg3,
+void zwrite(FILE * fp, char cmd, int tf, int arg1, int arg2, int arg3,
             char *desc) {
   char buf[100];
 
@@ -198,8 +198,8 @@ void rec_zwrite_obj(FILE * fp, struct obj_data *o) {
 
   if (ITEM_TYPE(o) == ITEM_CONTAINER) {
     for (t = o->contains; t; t = t->next_content) {
-      Zwrite(fp, 'P', 1, ObjVnum(t), obj_index[t->item_number].number,
-             ObjVnum(o), t->short_description);
+      zwrite(fp, 'P', 1, obj_vnum(t), obj_index[t->item_number].number,
+             obj_vnum(o), t->short_description);
       rec_zwrite_obj(fp, t);
     }
   }
@@ -208,7 +208,7 @@ void rec_zwrite_obj(FILE * fp, struct obj_data *o) {
   }
 }
 
-FILE *MakeZoneFile(struct char_data * c) {
+FILE *make_zone_file(struct char_data * c) {
   char buf[256];
   FILE *fp;
 
@@ -221,7 +221,7 @@ FILE *MakeZoneFile(struct char_data * c) {
 
 }
 
-int WeaponImmune(struct char_data *ch) {
+int weapon_immune(struct char_data *ch) {
 
   if (IS_SET(IMM_NONMAG, ch->M_immune) ||
       IS_SET(IMM_PLUS1, ch->M_immune) ||
@@ -232,15 +232,15 @@ int WeaponImmune(struct char_data *ch) {
 
 }
 
-unsigned IsImmune(struct char_data *ch, int bit) {
+unsigned is_immune(struct char_data *ch, int bit) {
   return (IS_SET(bit, ch->M_immune));
 }
 
-unsigned IsResist(struct char_data *ch, int bit) {
+unsigned is_resist(struct char_data *ch, int bit) {
   return (IS_SET(bit, ch->immune));
 }
 
-unsigned IsSusc(struct char_data *ch, int bit) {
+unsigned is_susc(struct char_data *ch, int bit) {
   return (IS_SET(bit, ch->susc));
 }
 
@@ -1017,8 +1017,8 @@ void down_river(int pulse) {
                     if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
                         get_max_level(ch) < LOW_IMMORTAL) {
                       if (RIDDEN(ch))
-                        NailThisSucker(RIDDEN(ch));
-                      NailThisSucker(ch);
+                        nail_this_sucker(RIDDEN(ch));
+                      nail_this_sucker(ch);
                     }
                   }
                 }
@@ -1030,7 +1030,7 @@ void down_river(int pulse) {
   }
 }
 
-void RoomSave(struct char_data *ch, int start, int end) {
+void room_save(struct char_data *ch, int start, int end) {
   char fn[80], temp[2048], dots[500];
   int rstart, rend, i, j, x;
   size_t k;
@@ -1206,7 +1206,7 @@ void RoomSave(struct char_data *ch, int start, int end) {
 }
 
 
-void RoomLoad(struct char_data *ch, int start, int end) {
+void room_load(struct char_data *ch, int start, int end) {
   FILE *fp;
   int vnum, found = FALSE, x;
   char buf[80];
@@ -1284,7 +1284,7 @@ void fake_setup_dir(FILE * fl, int UNUSED(room), int UNUSED(dir)) {
 }
 
 
-int IsHumanoid(struct char_data *ch) {
+int is_humanoid(struct char_data *ch) {
 /* these are all very arbitrary */
 
   switch (GET_RACE(ch)) {
@@ -1332,7 +1332,7 @@ int IsHumanoid(struct char_data *ch) {
 
 }
 
-int IsRideable(struct char_data *ch) {
+int is_rideable(struct char_data *ch) {
   if (IS_NPC(ch) && !IS_PC(ch)) {
     switch (GET_RACE(ch)) {
     case RACE_HORSE:
@@ -1348,7 +1348,7 @@ int IsRideable(struct char_data *ch) {
     return (FALSE);
 }
 
-int IsAnimal(struct char_data *ch) {
+int is_animal(struct char_data *ch) {
 
   switch (GET_RACE(ch)) {
   case RACE_PREDATOR:
@@ -1369,7 +1369,7 @@ int IsAnimal(struct char_data *ch) {
 
 }
 
-int IsVeggie(struct char_data *ch) {
+int is_veggie(struct char_data *ch) {
 
   switch (GET_RACE(ch)) {
   case RACE_PARASITE:
@@ -1386,7 +1386,7 @@ int IsVeggie(struct char_data *ch) {
 
 }
 
-int IsUndead(struct char_data *ch) {
+int is_undead(struct char_data *ch) {
 
   switch (GET_RACE(ch)) {
   case RACE_UNDEAD:
@@ -1401,7 +1401,7 @@ int IsUndead(struct char_data *ch) {
 
 }
 
-int IsLycanthrope(struct char_data *ch) {
+int is_lycanthrope(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_LYCANTH:
     return (TRUE);
@@ -1413,7 +1413,7 @@ int IsLycanthrope(struct char_data *ch) {
 
 }
 
-int IsDiabolic(struct char_data *ch) {
+int is_diabolic(struct char_data *ch) {
 
   switch (GET_RACE(ch)) {
   case RACE_DEMON:
@@ -1427,7 +1427,7 @@ int IsDiabolic(struct char_data *ch) {
 
 }
 
-int IsReptile(struct char_data *ch) {
+int is_reptile(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_REPTILE:
   case RACE_DRAGON:
@@ -1443,22 +1443,22 @@ int IsReptile(struct char_data *ch) {
   }
 }
 
-int HasHands(struct char_data *ch) {
+int has_hands(struct char_data *ch) {
 
-  if (IsHumanoid(ch))
+  if (is_humanoid(ch))
     return (TRUE);
-  if (IsUndead(ch))
+  if (is_undead(ch))
     return (TRUE);
-  if (IsLycanthrope(ch))
+  if (is_lycanthrope(ch))
     return (TRUE);
-  if (IsDiabolic(ch))
+  if (is_diabolic(ch))
     return (TRUE);
   if (GET_RACE(ch) == RACE_GOLEM)
     return (TRUE);
   return (FALSE);
 }
 
-int IsPerson(struct char_data *ch) {
+int is_person(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_HUMAN:
   case RACE_ELVEN:
@@ -1484,7 +1484,7 @@ int IsPerson(struct char_data *ch) {
   }
 }
 
-int IsGiantish(struct char_data *ch) {
+int is_giantish(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_ENFAN:
   case RACE_GOBLIN:
@@ -1499,7 +1499,7 @@ int IsGiantish(struct char_data *ch) {
   }
 }
 
-int IsSmall(struct char_data *ch) {
+int is_small(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_SMURF:
   case RACE_GNOME:
@@ -1512,7 +1512,7 @@ int IsSmall(struct char_data *ch) {
   }
 }
 
-int IsGiant(struct char_data *ch) {
+int is_giant(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_GIANT:
   case RACE_TYTAN:
@@ -1523,7 +1523,7 @@ int IsGiant(struct char_data *ch) {
   }
 }
 
-int IsExtraPlanar(struct char_data *ch) {
+int is_extra_planar(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_DEMON:
   case RACE_DEVIL:
@@ -1538,7 +1538,7 @@ int IsExtraPlanar(struct char_data *ch) {
     break;
   }
 }
-int IsOther(struct char_data *ch) {
+int is_other(struct char_data *ch) {
 
   switch (GET_RACE(ch)) {
   case RACE_MFLAYER:
@@ -1553,7 +1553,7 @@ int IsOther(struct char_data *ch) {
     break;
   }
 }
-int IsGodly(struct char_data *ch) {
+int is_godly(struct char_data *ch) {
 
   if (GET_RACE(ch) == RACE_GOD)
     return (TRUE);
@@ -1564,15 +1564,15 @@ int IsGodly(struct char_data *ch) {
 }
 
 /*
-int IsUndead( struct char_data *ch)
-int IsUndead( struct char_data *ch)
-int IsUndead( struct char_data *ch)
-int IsUndead( struct char_data *ch)
+int is_undead( struct char_data *ch)
+int is_undead( struct char_data *ch)
+int is_undead( struct char_data *ch)
+int is_undead( struct char_data *ch)
 
 */
 
 
-void SetHunting(struct char_data *ch, struct char_data *tch) {
+void set_hunting(struct char_data *ch, struct char_data *tch) {
   int persist, dist;
 
 #if NOTRACK
@@ -1598,7 +1598,7 @@ void SetHunting(struct char_data *ch, struct char_data *tch) {
 }
 
 
-void CallForGuard
+void call_for_guard
   (struct char_data *ch, struct char_data *vict, int lev, int area) {
   struct char_data *i;
   int type1, type2;
@@ -1643,7 +1643,7 @@ void CallForGuard
           if (number(1, 6) == 1) {
             if (!IS_SET(i->specials.act, ACT_HUNTING)) {
               if (vict) {
-                SetHunting(i, vict);
+                set_hunting(i, vict);
                 lev--;
               }
             }
@@ -1653,7 +1653,7 @@ void CallForGuard
           if (number(1, 6) == 1) {
             if (!IS_SET(i->specials.act, ACT_HUNTING)) {
               if (vict) {
-                SetHunting(i, vict);
+                set_hunting(i, vict);
                 lev -= 2;
               }
             }
@@ -1677,11 +1677,11 @@ void stand_up(struct char_data *ch) {
 }
 
 
-void MakeNiftyAttack(struct char_data *ch) {
+void make_nifty_attack(struct char_data *ch) {
   int num;
 
   if (!ch->skills)
-    SpaceForSkills(ch);
+    space_for_skills(ch);
 
   if (!ch->specials.fighting)
     return;
@@ -1712,18 +1712,18 @@ void MakeNiftyAttack(struct char_data *ch) {
 }
 
 
-void FighterMove(struct char_data *ch) {
+void fighter_move(struct char_data *ch) {
   struct char_data *friend;
 
   if (!ch->skills) {
     SET_BIT(ch->player.class, CLASS_WARRIOR);
-    SpaceForSkills(ch);
+    space_for_skills(ch);
   }
 
   if (ch->specials.fighting && ch->specials.fighting->specials.fighting != 0) {
     friend = ch->specials.fighting->specials.fighting;
     if (friend == ch) {
-      MakeNiftyAttack(ch);
+      make_nifty_attack(ch);
     }
     else {
       /* rescue on a 1 or 2, other on a 3 or 4 */
@@ -1734,11 +1734,11 @@ void FighterMove(struct char_data *ch) {
           do_rescue(ch, GET_NAME(friend), 0);
         }
         else {
-          MakeNiftyAttack(ch);
+          make_nifty_attack(ch);
         }
       }
       else {
-        MakeNiftyAttack(ch);
+        make_nifty_attack(ch);
       }
     }
   }
@@ -1749,10 +1749,10 @@ void FighterMove(struct char_data *ch) {
 }
 
 
-void MonkMove(struct char_data *ch) {
+void monk_move(struct char_data *ch) {
 
   if (!ch->skills) {
-    SpaceForSkills(ch);
+    space_for_skills(ch);
     ch->skills[SKILL_DODGE].learned = get_max_level(ch) + 50;
     SET_BIT(ch->player.class, CLASS_MONK);
   }
@@ -1815,7 +1815,7 @@ void MonkMove(struct char_data *ch) {
   }
 }
 
-void DevelopHatred(struct char_data *ch, struct char_data *v) {
+void develop_hatred(struct char_data *ch, struct char_data *v) {
   int diff, patience, var;
 
   if (Hates(ch, v))
@@ -1840,11 +1840,11 @@ void DevelopHatred(struct char_data *ch, struct char_data *v) {
   var = number(1, 40) - 20;
 
   if (patience + var < diff)
-    AddHated(ch, v);
+    add_hated(ch, v);
 
 }
 
-int HasObject(struct char_data *ch, int ob_num) {
+int has_object(struct char_data *ch, int ob_num) {
   int j, found;
   struct obj_data *i;
 
@@ -1915,7 +1915,7 @@ int rec_comp_obj_num(struct obj_data *o, int obj_num) {
 
 }
 
-void RestoreChar(struct char_data *ch) {
+void restore_char(struct char_data *ch) {
 
   GET_MANA(ch) = GET_MAX_MANA(ch);
   GET_HIT(ch) = GET_MAX_HIT(ch);
@@ -1932,12 +1932,12 @@ void RestoreChar(struct char_data *ch) {
 }
 
 
-void RemAllAffects(struct char_data *ch) {
+void rem_all_affects(struct char_data *ch) {
   spell_dispel_magic(IMPLEMENTOR, ch, ch, 0);
 
 }
 
-int CheckForBlockedMove(struct char_data *ch, int cmd, char *UNUSED(arg),
+int check_for_blocked_move(struct char_data *ch, int cmd, char *UNUSED(arg),
                         int room, int dir, int class) {
   char buf[256], buf2[256];
 
@@ -1953,7 +1953,7 @@ int CheckForBlockedMove(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 
   if ((ch->in_room == room) && (cmd == dir + 1)) {
-    if (!HasClass(ch, class)) {
+    if (!has_class(ch, class)) {
       act(buf2, FALSE, ch, 0, 0, TO_ROOM);
       send_to_char(buf, ch);
       return TRUE;
@@ -1964,7 +1964,7 @@ int CheckForBlockedMove(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 
-void TeleportPulseStuff(int pulse) {
+void teleport_pulse_stuff(int pulse) {
 
   /*
      check_mobile_activity(pulse);
@@ -2040,7 +2040,7 @@ void TeleportPulseStuff(int pulse) {
           if (IS_SET(dest->room_flags, DEATH) && (!IS_IMMORTAL(tmp))) {
             if (tmp == next)
               next = tmp->next;
-            NailThisSucker(tmp);
+            nail_this_sucker(tmp);
             continue;
           }
           if (dest->sector_type == SECT_AIR) {
@@ -2063,10 +2063,10 @@ void TeleportPulseStuff(int pulse) {
   }
 }
 
-void RiverPulseStuff(int pulse) {
+void river_pulse_stuff(int pulse) {
   /*
      down_river(pulse);
-     MakeSound();
+     make_sound();
    */
   struct descriptor_data *i;
   register struct char_data *ch;
@@ -2146,9 +2146,9 @@ void RiverPulseStuff(int pulse) {
 
                           if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
                               get_max_level(ch) < LOW_IMMORTAL) {
-                            NailThisSucker(ch);
+                            nail_this_sucker(ch);
                             if (RIDDEN(ch))
-                              NailThisSucker(RIDDEN(ch));
+                              nail_this_sucker(RIDDEN(ch));
                           }
                         }
                       }
@@ -2175,14 +2175,14 @@ void RiverPulseStuff(int pulse) {
             /*
              *  Make the sound;
              */
-            MakeNoise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
+            make_noise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
           }
           else if (GET_POS(ch) == POSITION_SLEEPING) {
             /*
              * snore 
              */
             SPRINTF(buffer, "%s snores loudly.\n\r", ch->player.short_descr);
-            MakeNoise(ch->in_room, buffer,
+            make_noise(ch->in_room, buffer,
                       "You hear a loud snore nearby.\n\r");
           }
         }
@@ -2190,7 +2190,7 @@ void RiverPulseStuff(int pulse) {
           /*
            * Make the sound
            */
-          MakeNoise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
+          make_noise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
         }
       }
     }
@@ -2250,7 +2250,7 @@ int check_soundproof(struct char_data *ch) {
   return (FALSE);
 }
 
-int MobCountInRoom(struct char_data *list) {
+int mob_count_in_room(struct char_data *list) {
   int i;
   struct char_data *tmp;
 
@@ -2260,7 +2260,7 @@ int MobCountInRoom(struct char_data *list) {
 
 }
 
-void *Mymalloc(long size) {
+void *mymalloc(long size) {
   if (size < 1) {
     fprintf(stderr, "attempt to malloc negative memory - %ld\n", size);
     assert(0);
@@ -2268,7 +2268,7 @@ void *Mymalloc(long size) {
   return (malloc(size));
 }
 
-void SpaceForSkills(struct char_data *ch) {
+void space_for_skills(struct char_data *ch) {
 
   /*
      create space for the skills for some mobile or character.
@@ -2280,16 +2280,16 @@ void SpaceForSkills(struct char_data *ch) {
   memset(ch->skills, 0, sz);
 }
 
-int CountLims(struct obj_data *obj) {
+int count_lims(struct obj_data *obj) {
   int total = 0;
 
   if (!obj)
     return (0);
 
   if (obj->contains)
-    total += CountLims(obj->contains);
+    total += count_lims(obj->contains);
   if (obj->next_content)
-    total += CountLims(obj->next_content);
+    total += count_lims(obj->next_content);
   if (obj->obj_flags.cost_per_day > LIM_ITEM_COST_MIN)
     total += 1;
   return (total);
@@ -2312,7 +2312,7 @@ char *lower(char *s) {
   return (p);
 }
 
-int getFreeAffSlot(struct obj_data *obj) {
+int getfree_aff_slot(struct obj_data *obj) {
   int i;
 
   for (i = 0; i < MAX_OBJ_AFFECT; i++)
@@ -2322,7 +2322,7 @@ int getFreeAffSlot(struct obj_data *obj) {
   assert(0);
 }
 
-void SetRacialStuff(struct char_data *mob) {
+void set_racial_stuff(struct char_data *mob) {
 
   switch (GET_RACE(mob)) {
   case RACE_VEGMAN:
@@ -2505,7 +2505,7 @@ int check_nomagic(struct char_data *ch, char *msg_ch, char *msg_rm) {
   return 0;
 }
 
-int NumCharmedFollowersInRoom(struct char_data *ch) {
+int num_charmed_followers_in_room(struct char_data *ch) {
   struct char_data *t;
   long count = 0;
   struct room_data *rp;
@@ -2526,7 +2526,7 @@ int NumCharmedFollowersInRoom(struct char_data *ch) {
 }
 
 
-struct char_data *FindMobDiffZoneSameRace(struct char_data *ch) {
+struct char_data *find_mob_diff_zone_same_race(struct char_data *ch) {
   int num;
   struct char_data *t;
   struct room_data *rp1, *rp2;
@@ -2544,7 +2544,7 @@ struct char_data *FindMobDiffZoneSameRace(struct char_data *ch) {
   return (0);
 }
 
-int NoSummon(struct char_data *ch) {
+int no_summon(struct char_data *ch) {
   struct room_data *rp;
 
   rp = real_roomp(ch->in_room);
@@ -2569,7 +2569,7 @@ int NoSummon(struct char_data *ch) {
   return (FALSE);
 }
 
-int GetNewRace() {
+int get_new_race() {
   int ok, newrace, i;
 
   while (1) {
@@ -2591,7 +2591,7 @@ int GetNewRace() {
   }
 }
 
-int GetApprox(int num, int perc) {
+int get_approx(int num, int perc) {
   /* perc = 0 - 100 */
   int adj, r;
   float fnum, fadj;
@@ -2614,7 +2614,7 @@ int GetApprox(int num, int perc) {
   return (num);
 }
 
-int MountEgoCheck(struct char_data *ch, struct char_data *horse) {
+int mount_ego_check(struct char_data *ch, struct char_data *horse) {
   int ride_ego, drag_ego, align, check;
 
   if (GET_RACE(horse) == RACE_DRAGON) {
@@ -2670,7 +2670,7 @@ int MountEgoCheck(struct char_data *ch, struct char_data *horse) {
   }
 }
 
-int RideCheck(struct char_data *ch, int mod) {
+int ride_check(struct char_data *ch, int mod) {
   if (ch->skills) {
     if (!IS_AFFECTED(ch, AFF_DRAGON_RIDE)) {
       if (number(1, 90) > ch->skills[SKILL_RIDE].learned + mod) {
@@ -2686,7 +2686,7 @@ int RideCheck(struct char_data *ch, int mod) {
     }
     else {
       if (number(1, 90) > (ch->skills[SKILL_RIDE].learned +
-                           GET_LEVEL(ch, BestMagicClass(ch)) + mod))
+                           GET_LEVEL(ch, best_magic_class(ch)) + mod))
         return (FALSE);
     }
   }
@@ -2696,14 +2696,14 @@ int RideCheck(struct char_data *ch, int mod) {
   return (FALSE);
 }
 
-void FallOffMount(struct char_data *ch, struct char_data *h) {
+void fall_off_mount(struct char_data *ch, struct char_data *h) {
   act("$n loses control and falls off of $N", FALSE, ch, 0, h, TO_NOTVICT);
   act("$n loses control and falls off of you", FALSE, ch, 0, h, TO_VICT);
   act("You lose control and fall off of $N", FALSE, ch, 0, h, TO_CHAR);
 
 }
 
-int EqWBits(struct char_data *ch, int bits) {
+int eq_w_bits(struct char_data *ch, int bits) {
   int i;
 
   for (i = 0; i < MAX_WEAR; i++) {
@@ -2714,7 +2714,7 @@ int EqWBits(struct char_data *ch, int bits) {
   return (FALSE);
 }
 
-int InvWBits(struct char_data *ch, int bits) {
+int inv_w_bits(struct char_data *ch, int bits) {
   struct obj_data *o;
 
   for (o = ch->carrying; o; o = o->next_content) {
@@ -2724,20 +2724,20 @@ int InvWBits(struct char_data *ch, int bits) {
   return (FALSE);
 }
 
-int HasWBits(struct char_data *ch, int bits) {
-  if (EqWBits(ch, bits))
+int has_w_bits(struct char_data *ch, int bits) {
+  if (eq_w_bits(ch, bits))
     return (TRUE);
-  if (InvWBits(ch, bits))
+  if (inv_w_bits(ch, bits))
     return (TRUE);
   return (FALSE);
 }
 
-void LearnFromMistake(struct char_data *ch, int sknum, int silent, int max) {
+void learn_from_mistake(struct char_data *ch, int sknum, int silent, int max) {
   if (!ch->skills)
     return;
 
   if (!IS_SET(ch->skills[sknum].flags, SKILL_KNOWN)) {
-    if (HasClass(ch, CLASS_MONK)) {
+    if (has_class(ch, CLASS_MONK)) {
       SET_BIT(ch->skills[sknum].flags, SKILL_KNOWN);
     }
     return;
@@ -2771,11 +2771,11 @@ int is_on_pmp(int room_nr) {
 
 }
 
-int IsOnSamePlane(struct char_data *ch, struct char_data *v) {
+int is_on_same_plane(struct char_data *ch, struct char_data *v) {
   extern struct zone_data *zone_table;
 
   if (real_roomp(ch->in_room) && real_roomp(v->in_room)) {
-    if (GetPlane(ch) == GetPlane(v))
+    if (get_plane(ch) == get_plane(v))
       return (TRUE);
     else
       return (FALSE);
@@ -2785,7 +2785,7 @@ int IsOnSamePlane(struct char_data *ch, struct char_data *v) {
   }
 }
 
-int GetPlane(struct char_data *ch) {
+int get_plane(struct char_data *ch) {
   extern struct zone_data *zone_table;
   int i;
 
@@ -2813,7 +2813,7 @@ int GetPlane(struct char_data *ch) {
   }
 }
 
-int IsInSameZone(struct char_data *ch, struct char_data *v) {
+int is_in_same_zone(struct char_data *ch, struct char_data *v) {
   if (real_roomp(ch->in_room) && real_roomp(v->in_room)) {
     if (real_roomp(ch->in_room)->zone == real_roomp(v->in_room)->zone)
       return (TRUE);
@@ -2822,7 +2822,7 @@ int IsInSameZone(struct char_data *ch, struct char_data *v) {
   return (FALSE);
 }
 
-int GetSumRaceMaxLevInRoom(struct char_data *ch) {
+int get_sum_race_max_lev_in_room(struct char_data *ch) {
   struct room_data *rp;
   struct char_data *i;
   int sum = 0;
@@ -2861,7 +2861,7 @@ int follow_time(struct char_data *ch) {
   return fol_time;
 }
 
-int ItemAlignClash(struct char_data *ch, struct obj_data *obj) {
+int item_align_clash(struct char_data *ch, struct obj_data *obj) {
   if ((IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_EVIL(ch)) ||
       (IS_OBJ_STAT(obj, ITEM_ANTI_GOOD) && IS_GOOD(ch)) ||
       (IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_NEUTRAL(ch))) {
@@ -2870,7 +2870,7 @@ int ItemAlignClash(struct char_data *ch, struct obj_data *obj) {
   return (FALSE);
 }
 
-int ItemEgoClash(struct char_data *ch, struct obj_data *obj, int bon) {
+int item_ego_clash(struct char_data *ch, struct obj_data *obj, int bon) {
 
   int obj_ego, p_ego;
 
@@ -2926,9 +2926,9 @@ int GET_EGO(struct char_data *ch) {
     /* triple class character is considered 6 levels above his max */
     /* dual class, 3 */
 
-    if (HowManyClasses(ch) > 2)
+    if (how_many_classes(ch) > 2)
       p_ego += 6;
-    else if (HowManyClasses(ch) > 1)
+    else if (how_many_classes(ch) > 1)
       p_ego += 3;
 
     if (get_max_level(ch) > 12 && !IS_IMMORTAL(ch))
@@ -2999,7 +2999,7 @@ void increment_zone_nr(int nr) {
   }
 }
 
-int IsDarkOutside(struct room_data *rp) {
+int is_dark_outside(struct room_data *rp) {
   extern int gLightLevel;
 
   if (gLightLevel >= 4)
@@ -3022,36 +3022,36 @@ int IsDarkOutside(struct room_data *rp) {
 /* will look at char's classes and chose the "best" stat to increment. */
 /* Man, there are more bugs at campsites than anywhere else. */
 
-void ImprovePreferedStat(struct char_data *ch, int num, bool onelifer) {
-  if (HasClass(ch, CLASS_WARRIOR)) {
+void improve_prefered_stat(struct char_data *ch, int num, bool onelifer) {
+  if (has_class(ch, CLASS_WARRIOR)) {
     if (GET_RSTR(ch) < 18) {
       GET_RSTR(ch) += 1;
       num--;
     }
   }
 
-  if (HasClass(ch, CLASS_MONK)) {
+  if (has_class(ch, CLASS_MONK)) {
     if (GET_RCON(ch) < 18) {
       GET_RCON(ch) += 1;
       num--;
     }
   }
 
-  if (HasClass(ch, CLASS_CLERIC) || HasClass(ch, CLASS_DRUID)) {
+  if (has_class(ch, CLASS_CLERIC) || has_class(ch, CLASS_DRUID)) {
     if (GET_RWIS(ch) < 18) {
       GET_RWIS(ch) += 1;
       num--;
     }
   }
 
-  if (HasClass(ch, CLASS_MAGIC_USER)) {
+  if (has_class(ch, CLASS_MAGIC_USER)) {
     if (GET_RINT(ch) < 18) {
       GET_RINT(ch) += 1;
       num--;
     }
   }
 
-  if (HasClass(ch, CLASS_THIEF)) {
+  if (has_class(ch, CLASS_THIEF)) {
     if (GET_RDEX(ch) < 18) {
       GET_RDEX(ch) += 1;
       num--;
@@ -3069,7 +3069,7 @@ void ImprovePreferedStat(struct char_data *ch, int num, bool onelifer) {
 
   if (num > 0) {                /* humans here allready have an 18 str */
     /* and con, what more do they want? */
-    if (HasClass(ch, CLASS_WARRIOR)) {
+    if (has_class(ch, CLASS_WARRIOR)) {
       if (GET_RSTR(ch) <= 17) {
         GET_RSTR(ch) = 18;
         if (GET_RADD(ch) < 100) {
@@ -3091,7 +3091,7 @@ void ImprovePreferedStat(struct char_data *ch, int num, bool onelifer) {
 
 }
 
-int IsGoblinoid(struct char_data *ch) {
+int is_goblinoid(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_ORC:
   case RACE_GOBLIN:
@@ -3103,7 +3103,7 @@ int IsGoblinoid(struct char_data *ch) {
   }
 }
 
-int IsArticle(char *c) {
+int is_article(char *c) {
   register int i;
 
   for (i = 0; article_list[i][0] != '\n'; i++)
@@ -3142,7 +3142,7 @@ int IsArticle(char *c) {
     25               35
 */
 
-void ChangeStrength(struct char_data *ch, int delta) {
+void change_strength(struct char_data *ch, int delta) {
   int str;
   int ex;
 
@@ -3185,7 +3185,7 @@ void ChangeStrength(struct char_data *ch, int delta) {
 
 }
 
-char *MovementType(struct char_data *ch, bool enter) {
+char *movement_type(struct char_data *ch, bool enter) {
   if (real_roomp(ch->in_room)->sector_type == SECT_UNDERWATER)
     return (enter ? "swims in" : "swims");
 

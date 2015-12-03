@@ -47,8 +47,8 @@ extern char *spells[];
 struct time_info_data age(struct char_data *ch);
 void page_string(struct descriptor_data *d, char *str, int keep_internal);
 int track(struct char_data *ch, struct char_data *vict);
-int GetApprox(int num, int perc);
-int SpyCheck(struct char_data *ch);
+int get_approx(int num, int perc);
+int spy_check(struct char_data *ch);
 int remove_trap(struct char_data *ch, struct obj_data *trap);
 
 struct obj_data *get_obj_in_list_vis(struct char_data *ch, char *name,
@@ -60,14 +60,14 @@ void list_groups(struct char_data *ch);
 
 void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode,
                       bool show);
-char *DescDamage(float dam);
-char *DescRatio(float f);       /* theirs / yours */
-char *DamRollDesc(int a);
-char *HitRollDesc(int a);
-char *ArmorDesc(int a);
-char *AlignDesc(int a);
-char *DescAttacks(float a);
-char *EgoDesc(int a);
+char *desc_damage(float dam);
+char *desc_ratio(float f);       /* theirs / yours */
+char *dam_roll_desc(int a);
+char *hit_roll_desc(int a);
+char *armor_desc(int a);
+char *align_desc(int a);
+char *desc_attacks(float a);
+char *ego_desc(int a);
 
 int singular(struct obj_data *o) {
 
@@ -679,7 +679,7 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode) {
         }
       }
     }
-    if (HasClass(ch, CLASS_THIEF) && (ch != i) && (!IS_IMMORTAL(ch))) {
+    if (has_class(ch, CLASS_THIEF) && (ch != i) && (!IS_IMMORTAL(ch))) {
       found = FALSE;
       send_to_char("\n\rYou attempt to peek at the inventory:\n\r", ch);
       for (tmp_obj = i->carrying; tmp_obj; tmp_obj = tmp_obj->next_content) {
@@ -921,7 +921,7 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch,
         }
       }
     }
-    if ((HasClass(ch, CLASS_THIEF)) && (ch != i)) {
+    if ((has_class(ch, CLASS_THIEF)) && (ch != i)) {
       found = FALSE;
       send_to_char("\n\rYou attempt to peek at the inventory:\n\r", ch);
       for (tmp_obj = i->carrying; tmp_obj; tmp_obj = tmp_obj->next_content) {
@@ -1343,7 +1343,7 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
           list_obj_in_room(real_roomp(ch->in_room)->contents, ch);
           list_char_in_room(real_roomp(ch->in_room)->people, ch);
-          KillTheOrcs(ch);
+          kill_the_orcs(ch);
         }
         break;
 
@@ -1568,15 +1568,15 @@ void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
           GET_MANA(ch), GET_MAX_MANA(ch), GET_MOVE(ch), GET_MAX_MOVE(ch));
   send_to_char(buf, ch);
 
-  if (HasClass(ch, CLASS_DRUID))
+  if (has_class(ch, CLASS_DRUID))
     SPRINTF(buf, "Your alignment is: %s (%d).\n\r",
-            AlignDesc(GET_ALIGNMENT(ch)), GET_ALIGNMENT(ch));
+            align_desc(GET_ALIGNMENT(ch)), GET_ALIGNMENT(ch));
   else
-    SPRINTF(buf, "Your alignment is: %s.\n\r", AlignDesc(GET_ALIGNMENT(ch)));
+    SPRINTF(buf, "Your alignment is: %s.\n\r", align_desc(GET_ALIGNMENT(ch)));
 
   send_to_char(buf, ch);
 
-  SPRINTF(buf, "Your ego is of %s proportions.\n\r", EgoDesc(GET_EGO(ch)));
+  SPRINTF(buf, "Your ego is of %s proportions.\n\r", ego_desc(GET_EGO(ch)));
   send_to_char(buf, ch);
 
   SPRINTF(buf, "You have scored %d exp, and have %d gold coins.\n\r",
@@ -1585,27 +1585,27 @@ void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 
   buf[0] = '\0';
   SPRINTF(buf, "Your levels:");
-  if (HasClass(ch, CLASS_MAGIC_USER)) {
+  if (has_class(ch, CLASS_MAGIC_USER)) {
     SPRINTF(buf2, " M:%d", GET_LEVEL(ch, MAGE_LEVEL_IND));
     strcat(buf, buf2);
   }
-  if (HasClass(ch, CLASS_CLERIC)) {
+  if (has_class(ch, CLASS_CLERIC)) {
     SPRINTF(buf2, " C:%d", GET_LEVEL(ch, CLERIC_LEVEL_IND));
     strcat(buf, buf2);
   }
-  if (HasClass(ch, CLASS_WARRIOR)) {
+  if (has_class(ch, CLASS_WARRIOR)) {
     SPRINTF(buf2, " W:%d", GET_LEVEL(ch, WARRIOR_LEVEL_IND));
     strcat(buf, buf2);
   }
-  if (HasClass(ch, CLASS_THIEF)) {
+  if (has_class(ch, CLASS_THIEF)) {
     SPRINTF(buf2, " T:%d", GET_LEVEL(ch, THIEF_LEVEL_IND));
     strcat(buf, buf2);
   }
-  if (HasClass(ch, CLASS_DRUID)) {
+  if (has_class(ch, CLASS_DRUID)) {
     SPRINTF(buf2, " D:%d", GET_LEVEL(ch, DRUID_LEVEL_IND));
     strcat(buf, buf2);
   }
-  if (HasClass(ch, CLASS_MONK)) {
+  if (has_class(ch, CLASS_MONK)) {
     SPRINTF(buf2, " K:%d", GET_LEVEL(ch, MONK_LEVEL_IND));
     strcat(buf, buf2);
   }
@@ -1945,27 +1945,27 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
                 skip = TRUE;
             }
             if (index(arg, '1') != NULL) {
-              if (!HasClass(person, CLASS_MAGIC_USER))
+              if (!has_class(person, CLASS_MAGIC_USER))
                 skip = TRUE;
             }
             if (index(arg, '2') != NULL) {
-              if (!HasClass(person, CLASS_CLERIC))
+              if (!has_class(person, CLASS_CLERIC))
                 skip = TRUE;
             }
             if (index(arg, '3') != NULL) {
-              if (!HasClass(person, CLASS_WARRIOR))
+              if (!has_class(person, CLASS_WARRIOR))
                 skip = TRUE;
             }
             if (index(arg, '4') != NULL) {
-              if (!HasClass(person, CLASS_THIEF))
+              if (!has_class(person, CLASS_THIEF))
                 skip = TRUE;
             }
             if (index(arg, '5') != NULL) {
-              if (!HasClass(person, CLASS_DRUID))
+              if (!has_class(person, CLASS_DRUID))
                 skip = TRUE;
             }
             if (index(arg, '6') != NULL) {
-              if (!HasClass(person, CLASS_MONK))
+              if (!has_class(person, CLASS_MONK))
                 skip = TRUE;
             }
             if (!skip) {
@@ -2377,7 +2377,7 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
     SPRINTF(buf, "You have scored %d experience points.\n\r", GET_EXP(ch));
     send_to_char(buf, ch);
-    if (HasClass(ch, CLASS_MAGIC_USER)) {
+    if (has_class(ch, CLASS_MAGIC_USER)) {
       exp = (titles[MAGE_LEVEL_IND][GET_LEVEL(ch, MAGE_LEVEL_IND) + 1].exp);
       SPRINTF(buf,
               "You need %d experience points to become a level %d mage.\n\r",
@@ -2385,7 +2385,7 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char(buf, ch);
     }
 
-    if (HasClass(ch, CLASS_CLERIC)) {
+    if (has_class(ch, CLASS_CLERIC)) {
       exp =
         (titles[CLERIC_LEVEL_IND][GET_LEVEL(ch, CLERIC_LEVEL_IND) + 1].exp);
       SPRINTF(buf,
@@ -2394,7 +2394,7 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char(buf, ch);
     }
 
-    if (HasClass(ch, CLASS_WARRIOR)) {
+    if (has_class(ch, CLASS_WARRIOR)) {
       exp =
         titles[WARRIOR_LEVEL_IND][GET_LEVEL(ch, WARRIOR_LEVEL_IND) + 1].exp;
       SPRINTF(buf,
@@ -2402,21 +2402,21 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
               exp - GET_EXP(ch), GET_LEVEL(ch, WARRIOR_LEVEL_IND) + 1);
       send_to_char(buf, ch);
     }
-    if (HasClass(ch, CLASS_THIEF)) {
+    if (has_class(ch, CLASS_THIEF)) {
       exp = titles[THIEF_LEVEL_IND][GET_LEVEL(ch, THIEF_LEVEL_IND) + 1].exp;
       SPRINTF(buf,
               "You need %d experience points to become a level %d thief.\n\r",
               exp - GET_EXP(ch), GET_LEVEL(ch, THIEF_LEVEL_IND) + 1);
       send_to_char(buf, ch);
     }
-    if (HasClass(ch, CLASS_DRUID)) {
+    if (has_class(ch, CLASS_DRUID)) {
       exp = titles[DRUID_LEVEL_IND][GET_LEVEL(ch, DRUID_LEVEL_IND) + 1].exp;
       SPRINTF(buf,
               "You need %d experience points to become a level %d druid.\n\r",
               exp - GET_EXP(ch), GET_LEVEL(ch, DRUID_LEVEL_IND) + 1);
       send_to_char(buf, ch);
     }
-    if (HasClass(ch, CLASS_MONK)) {
+    if (has_class(ch, CLASS_MONK)) {
       exp = titles[MONK_LEVEL_IND][GET_LEVEL(ch, MONK_LEVEL_IND) + 1].exp;
       SPRINTF(buf,
               "You need %d experience points to become a level %d monk.\n\r",
@@ -2508,7 +2508,7 @@ void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   diff = GET_AVE_LEVEL(victim) - GET_AVE_LEVEL(ch);
 
-  diff += MobLevBonus(victim);
+  diff += mob_lev_bonus(victim);
 
   if (diff <= -10)
     send_to_char("Too easy to be believed.\n\r", ch);
@@ -2545,52 +2545,52 @@ void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     int num, num2;
     float fnum;
 
-    if (IsAnimal(victim) && ch->skills[SKILL_CONS_ANIMAL].learned) {
+    if (is_animal(victim) && ch->skills[SKILL_CONS_ANIMAL].learned) {
       skill = SKILL_CONS_ANIMAL;
       learn = ch->skills[skill].learned;
       act("$N seems to be an animal", FALSE, ch, 0, victim, TO_CHAR);
     }
-    if (IsVeggie(victim) && ch->skills[SKILL_CONS_VEGGIE].learned) {
+    if (is_veggie(victim) && ch->skills[SKILL_CONS_VEGGIE].learned) {
       if (!skill)
         skill = SKILL_CONS_VEGGIE;
       learn = MAX(learn, ch->skills[SKILL_CONS_VEGGIE].learned);
       act("$N seems to be an ambulatory vegetable",
           FALSE, ch, 0, victim, TO_CHAR);
     }
-    if (IsDiabolic(victim) && ch->skills[SKILL_CONS_DEMON].learned) {
+    if (is_diabolic(victim) && ch->skills[SKILL_CONS_DEMON].learned) {
       if (!skill)
         skill = SKILL_CONS_DEMON;
       learn = MAX(learn, ch->skills[SKILL_CONS_DEMON].learned);
       act("$N seems to be a demon!", FALSE, ch, 0, victim, TO_CHAR);
     }
-    if (IsReptile(victim) && ch->skills[SKILL_CONS_REPTILE].learned) {
+    if (is_reptile(victim) && ch->skills[SKILL_CONS_REPTILE].learned) {
       if (!skill)
         skill = SKILL_CONS_REPTILE;
       learn = MAX(learn, ch->skills[SKILL_CONS_REPTILE].learned);
       act("$N seems to be a reptilian creature",
           FALSE, ch, 0, victim, TO_CHAR);
     }
-    if (IsUndead(victim) && ch->skills[SKILL_CONS_UNDEAD].learned) {
+    if (is_undead(victim) && ch->skills[SKILL_CONS_UNDEAD].learned) {
       if (!skill)
         skill = SKILL_CONS_UNDEAD;
       learn = MAX(learn, ch->skills[SKILL_CONS_UNDEAD].learned);
       act("$N seems to be undead", FALSE, ch, 0, victim, TO_CHAR);
     }
 
-    if (IsGiantish(victim) && ch->skills[SKILL_CONS_GIANT].learned) {
+    if (is_giantish(victim) && ch->skills[SKILL_CONS_GIANT].learned) {
       if (!skill)
         skill = SKILL_CONS_GIANT;
       learn = MAX(learn, ch->skills[SKILL_CONS_GIANT].learned);
       act("$N seems to be a giantish creature", FALSE, ch, 0, victim, TO_CHAR);
     }
-    if (IsPerson(victim) && ch->skills[SKILL_CONS_PEOPLE].learned) {
+    if (is_person(victim) && ch->skills[SKILL_CONS_PEOPLE].learned) {
       if (!skill)
         skill = SKILL_CONS_PEOPLE;
       learn = MAX(learn, ch->skills[SKILL_CONS_PEOPLE].learned);
       act("$N seems to be a human or demi-human",
           FALSE, ch, 0, victim, TO_CHAR);
     }
-    if (IsOther(victim) && ch->skills[SKILL_CONS_OTHER].learned) {
+    if (is_other(victim) && ch->skills[SKILL_CONS_OTHER].learned) {
       if (!skill)
         skill = SKILL_CONS_OTHER;
       learn = MAX(learn, ch->skills[SKILL_CONS_OTHER].learned / 2);
@@ -2606,52 +2606,52 @@ void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
     WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 
-    num = GetApprox(GET_MAX_HIT(victim), learn);
+    num = get_approx(GET_MAX_HIT(victim), learn);
     fnum = ((float)num / (float)GET_MAX_HIT(ch));
 
-    SPRINTF(buf, "Est Max hits are: %s\n\r", DescRatio(fnum));
+    SPRINTF(buf, "Est Max hits are: %s\n\r", desc_ratio(fnum));
     send_to_char(buf, ch);
 
-    num = GetApprox(GET_AC(victim), learn);
+    num = get_approx(GET_AC(victim), learn);
     fnum = ((float)num / (float)GET_AC(ch));
 
-    SPRINTF(buf, "Est. armor class is : %s\n\r", DescRatio(fnum));
+    SPRINTF(buf, "Est. armor class is : %s\n\r", desc_ratio(fnum));
     send_to_char(buf, ch);
 
     if (learn > 60) {
       SPRINTF(buf, "Est. # of attacks: %s\n\r",
-              DescAttacks(GetApprox((int)victim->mult_att, learn)));
+              desc_attacks(get_approx((int)victim->mult_att, learn)));
       send_to_char(buf, ch);
     }
     if (learn > 70) {
 
-      num = GetApprox((int)victim->specials.damnodice, learn);
-      num2 = GetApprox((int)victim->specials.damsizedice, learn);
+      num = get_approx((int)victim->specials.damnodice, learn);
+      num2 = get_approx((int)victim->specials.damsizedice, learn);
 
       fnum = (float)num *(num2 / 2.0);
-      SPRINTF(buf, "Est. damage of attacks is %s\n\r", DescDamage(fnum));
+      SPRINTF(buf, "Est. damage of attacks is %s\n\r", desc_damage(fnum));
 
       send_to_char(buf, ch);
     }
 
     if (learn > 80) {
 
-      num = GetApprox(GET_HITROLL(victim), learn);
-      num2 = 21 - CalcThaco(ch);
+      num = get_approx(GET_HITROLL(victim), learn);
+      num2 = 21 - calc_thaco(ch);
       if (num2 > 0)
         fnum = ((float)num / (float)num2);
       else
         fnum = 2.0;
 
-      SPRINTF(buf, "Est. Thaco: %s\n\r", DescRatio(fnum));
+      SPRINTF(buf, "Est. Thaco: %s\n\r", desc_ratio(fnum));
 
       send_to_char(buf, ch);
 
-      num = GetApprox(GET_DAMROLL(victim), learn);
+      num = get_approx(GET_DAMROLL(victim), learn);
       num2 = GET_DAMROLL(ch);
       fnum = (num / (float)num2);
 
-      SPRINTF(buf, "Est. Dam bonus is: %s\n\r", DescRatio(fnum));
+      SPRINTF(buf, "Est. Dam bonus is: %s\n\r", desc_ratio(fnum));
 
       send_to_char(buf, ch);
     }
@@ -2906,12 +2906,12 @@ void do_attribute(struct char_data *ch, char *UNUSED(argument),
   SPRINTF(buf, "You are carrying %d lbs of equipment.\n\r", IS_CARRYING_W(ch));
   send_to_char(buf, ch);
 
-  SPRINTF(buf, "You are %s \n\r", ArmorDesc(ch->points.armor));
+  SPRINTF(buf, "You are %s \n\r", armor_desc(ch->points.armor));
   send_to_char(buf, ch);
 
-  if ((get_max_level(ch) > 15) || (HasClass(ch, CLASS_MAGIC_USER) ||
-                                   HasClass(ch, CLASS_MONK))) {
-    if ((GET_STR(ch) == 18) && (HasClass(ch, CLASS_WARRIOR))) {
+  if ((get_max_level(ch) > 15) || (has_class(ch, CLASS_MAGIC_USER) ||
+                                   has_class(ch, CLASS_MONK))) {
+    if ((GET_STR(ch) == 18) && (has_class(ch, CLASS_WARRIOR))) {
       SPRINTF(buf,
               "You have %d/%d STR, %d INT, %d WIS, %d DEX, %d CON, %d CHR\n\r",
               GET_STR(ch), GET_ADD(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch),
@@ -2928,7 +2928,7 @@ void do_attribute(struct char_data *ch, char *UNUSED(argument),
 
   SPRINTF(buf,
           "Your hit bonus and damage bonus are %s and %s respectively.\n\r",
-          HitRollDesc(GET_HITROLL(ch)), DamRollDesc(GET_DAMROLL(ch)));
+          hit_roll_desc(GET_HITROLL(ch)), dam_roll_desc(GET_DAMROLL(ch)));
   send_to_char(buf, ch);
 
   /*
@@ -2966,7 +2966,7 @@ void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   extern char *extra_bits[];
   extern char *affected_bits[];
 
-  if (!HasClass(ch, CLASS_THIEF) && !IsIntrinsic(ch, SKILL_EVALUATE)) {
+  if (!has_class(ch, CLASS_THIEF) && !is_intrinsic(ch, SKILL_EVALUATE)) {
     send_to_char("Sorry, you can't do that here", ch);
     return;
   }
@@ -2991,7 +2991,7 @@ void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 
-  if (!SpyCheck(ch)) {          /* failed spying check */
+  if (!spy_check(ch)) {          /* failed spying check */
     if (obj && vict) {
       act("$n looks at you, and $s eyes linger on $p",
           FALSE, ch, obj, vict, TO_VICT);
@@ -3006,7 +3006,7 @@ void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
   }
 
-  if (!HasClass(ch, CLASS_THIEF)) {     /* it had better be an intrinsic */
+  if (!has_class(ch, CLASS_THIEF)) {     /* it had better be an intrinsic */
     if (GET_RACE(ch) == RACE_DWARF &&
         (GET_ITEM_TYPE(obj) != ITEM_WEAPON &&
          GET_ITEM_TYPE(obj) != ITEM_TREASURE &&
@@ -3047,31 +3047,31 @@ void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   SPRINTF(buf, "Weight: %d, Value: %d, Ego: %d  %s\n\r",
           obj->obj_flags.weight,
-          GetApprox(obj->obj_flags.cost,
+          get_approx(obj->obj_flags.cost,
                     ch->skills[SKILL_EVALUATE].learned - 10),
-          GetApprox(obj->obj_flags.cost_per_day,
+          get_approx(obj->obj_flags.cost_per_day,
                     ch->skills[SKILL_EVALUATE].learned - 10),
           obj->obj_flags.cost_per_day > LIM_ITEM_COST_MIN ? "[RARE]" : " ");
   send_to_char(buf, ch);
 
   if (ITEM_TYPE(obj) == ITEM_WEAPON) {
     SPRINTF(buf, "Damage Dice is '%dD%d'\n\r",
-            GetApprox(obj->obj_flags.value[1],
+            get_approx(obj->obj_flags.value[1],
                       ch->skills[SKILL_EVALUATE].learned - 10),
-            GetApprox(obj->obj_flags.value[2],
+            get_approx(obj->obj_flags.value[2],
                       ch->skills[SKILL_EVALUATE].learned - 10));
     send_to_char(buf, ch);
   }
   else if (ITEM_TYPE(obj) == ITEM_ARMOR) {
 
     SPRINTF(buf, "AC-apply is %d\n\r",
-            GetApprox(obj->obj_flags.value[0],
+            get_approx(obj->obj_flags.value[0],
                       ch->skills[SKILL_EVALUATE].learned - 10));
     send_to_char(buf, ch);
   }
 }
 
-char *AlignDesc(int a) {
+char *align_desc(int a) {
   if (a <= -900) {
     return ("Really really bad");
   }
@@ -3102,7 +3102,7 @@ char *AlignDesc(int a) {
 }
 
 
-char *ArmorDesc(int a) {
+char *armor_desc(int a) {
   if (a >= 90) {
     return ("barely armored");
   }
@@ -3132,7 +3132,7 @@ char *ArmorDesc(int a) {
   }
 }
 
-char *HitRollDesc(int a) {
+char *hit_roll_desc(int a) {
   if (a < -5) {
     return ("Quite bad");
   }
@@ -3153,7 +3153,7 @@ char *HitRollDesc(int a) {
   }
 }
 
-char *DamRollDesc(int a) {
+char *dam_roll_desc(int a) {
   if (a < -5) {
     return ("Quite bad");
   }
@@ -3174,7 +3174,7 @@ char *DamRollDesc(int a) {
   }
 }
 
-char *DescRatio(float f) {      /* theirs / yours */
+char *desc_ratio(float f) {      /* theirs / yours */
   if (f > 1.0) {
     return ("More than twice yours");
   }
@@ -3198,7 +3198,7 @@ char *DescRatio(float f) {      /* theirs / yours */
   }
 }
 
-char *EgoDesc(int a) {
+char *ego_desc(int a) {
   if (a > 1470) {
     return ("Loki-sized");
   }
@@ -3304,7 +3304,7 @@ char *EgoDesc(int a) {
 }
 
 
-char *DescDamage(float dam) {
+char *desc_damage(float dam) {
   if (dam < 1.0) {
     return ("Minimal Damage");
   }
@@ -3331,7 +3331,7 @@ char *DescDamage(float dam) {
   }
 }
 
-char *DescAttacks(float a) {
+char *desc_attacks(float a) {
   if (a < 1.0) {
     return ("Not many");
   }
@@ -3377,7 +3377,7 @@ void do_display(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       return;
     }
     ch->term = VT100;
-    InitScreen(ch);
+    init_screen(ch);
     send_to_char("Display now set to VT100.\n\r", ch);
     return;
 
@@ -3416,14 +3416,14 @@ void do_resize(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
   if (ch->term == VT100) {
     screen_off(ch);
-    InitScreen(ch);
+    init_screen(ch);
   }
 
   send_to_char("Ok.\n\r", ch);
   return;
 }
 
-int MobLevBonus(struct char_data *ch) {
+int mob_lev_bonus(struct char_data *ch) {
   int t = 0;
   extern struct index_data *mob_index;
 

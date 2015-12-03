@@ -124,13 +124,13 @@ void do_imptest(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   if (get_max_level(ch) < IMPLEMENTOR)
     return;
 
-  H = InitHeap();
+  H = init_heap();
 
   for (i = character_list; i && x++ < 100; i = i->next) {
-    StringHeap(i->player.short_descr, H);
+    string_heap(i->player.short_descr, H);
   }
 
-  DisplayStringHeap(H, ch, TO_CHAR, TRUE);
+  display_string_heap(H, ch, TO_CHAR, TRUE);
 
 }
 
@@ -384,7 +384,7 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
     return;
   }
 
-  fp = (FILE *) MakeZoneFile(ch);
+  fp = (FILE *) make_zone_file(ch);
 
   if (!fp) {
     send_to_char("Couldn't make file.. try again later\n\r", ch);
@@ -400,19 +400,19 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
       for (p = room->people; p; p = p->next_in_room) {
         if (IS_NPC(p)) {
           cmd = 'M';
-          arg1 = MobVnum(p);
+          arg1 = mob_vnum(p);
           arg2 = mob_index[p->nr].number;
           arg3 = i;
-          Zwrite(fp, cmd, 0, arg1, arg2, arg3, p->player.short_descr);
+          zwrite(fp, cmd, 0, arg1, arg2, arg3, p->player.short_descr);
           for (j = 0; j < MAX_WEAR; j++) {
             if (p->equipment[j]) {
               if (p->equipment[j]->item_number >= 0) {
                 cmd = 'E';
-                arg1 = ObjVnum(p->equipment[j]);
+                arg1 = obj_vnum(p->equipment[j]);
                 arg2 = obj_index[p->equipment[j]->item_number].number;
                 arg3 = j;
                 strcpy(buf, p->equipment[j]->short_description);
-                Zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
+                zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
                 rec_zwrite_obj(fp, p->equipment[j]);
               }
             }
@@ -420,11 +420,11 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
           for (o = p->carrying; o; o = o->next_content) {
             if (o->item_number >= 0) {
               cmd = 'G';
-              arg1 = ObjVnum(o);
+              arg1 = obj_vnum(o);
               arg2 = obj_index[o->item_number].number;
               arg3 = 0;
               strcpy(buf, o->short_description);
-              Zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
+              zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
               rec_zwrite_obj(fp, o);
             }
           }
@@ -436,11 +436,11 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
       for (o = room->contents; o; o = o->next_content) {
         if (o->item_number >= 0) {
           cmd = 'O';
-          arg1 = ObjVnum(o);
+          arg1 = obj_vnum(o);
           arg2 = obj_index[o->item_number].number;
           arg3 = i;
           strcpy(buf, o->short_description);
-          Zwrite(fp, cmd, 0, arg1, arg2, arg3, buf);
+          zwrite(fp, cmd, 0, arg1, arg2, arg3, buf);
           rec_zwrite_obj(fp, o);
         }
       }
@@ -464,7 +464,7 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
             if (IS_SET(room->dir_option[j]->exit_info, EX_LOCKED)) {
               arg3 = 2;
             }
-            Zwrite(fp, cmd, 0, arg1, arg2, arg3, room->name);
+            zwrite(fp, cmd, 0, arg1, arg2, arg3, room->name);
           }
         }
       }
@@ -722,7 +722,7 @@ void do_rload(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   sscanf(argument, "%d %d", &start, &end);
 
   if ((start <= end) && (start != -1) && (end != -2)) {
-    RoomLoad(ch, start, end);
+    room_load(ch, start, end);
   }
 }
 
@@ -745,7 +745,7 @@ void do_rsave(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   if ((start <= end) && (start != -1) && (end != -2)) {
     SPRINTF(buf, "mv rooms/%s rooms/%s.bak", GET_NAME(ch), GET_NAME(ch));
     system(buf);
-    RoomSave(ch, start, end);
+    room_save(ch, start, end);
   }
 }
 
@@ -950,7 +950,7 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         if (loc_nr < WORLD_SIZE) {
 #endif
           send_to_char("You form order out of chaos.\n\r", ch);
-          CreateOneRoom(loc_nr);
+          create_one_room(loc_nr);
 
 #if HASH
 #else
@@ -2052,7 +2052,7 @@ void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
       char_from_room(per);
       char_to_room(per, mob->in_room);
 
-      SwitchStuff(mob, per);
+      switch_stuff(mob, per);
 
     }
 
@@ -2227,10 +2227,10 @@ void do_load(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
     switch (sscanf(num, "%d %d", &start, &end)) {
     case 2:                    /* we got both numbers */
-      RoomLoad(ch, start, end);
+      room_load(ch, start, end);
       break;
     case 1:                    /* we only got one, load it */
-      RoomLoad(ch, start, start);
+      room_load(ch, start, start);
       break;
     default:
       send_to_char("Load? Fine!  Load we must, But what?\n\r", ch);
@@ -2494,37 +2494,37 @@ void roll_abilities(struct char_data *ch) {
   ch->abilities.str_add = 0;
 
   if (get_max_level(ch) < 2) {
-    ch->points.max_hit = HowManyClasses(ch) * 10;
+    ch->points.max_hit = how_many_classes(ch) * 10;
 
-    if (HasClass(ch, CLASS_MAGIC_USER)) {
+    if (has_class(ch, CLASS_MAGIC_USER)) {
       ch->points.max_hit += number(1, 4);
     }
-    if (HasClass(ch, CLASS_CLERIC)) {
+    if (has_class(ch, CLASS_CLERIC)) {
       ch->points.max_hit += number(1, 8);
     }
-    if (HasClass(ch, CLASS_WARRIOR)) {
+    if (has_class(ch, CLASS_WARRIOR)) {
       ch->points.max_hit += number(1, 10);
       if (ch->abilities.str == 18)
         ch->abilities.str_add = number(0, 100);
     }
-    if (HasClass(ch, CLASS_THIEF)) {
+    if (has_class(ch, CLASS_THIEF)) {
       ch->points.max_hit += number(1, 6);
     }
-    if (HasClass(ch, CLASS_MONK)) {
+    if (has_class(ch, CLASS_MONK)) {
       ch->points.max_hit += number(1, 6);
     }
-    if (HasClass(ch, CLASS_DRUID)) {
+    if (has_class(ch, CLASS_DRUID)) {
       ch->points.max_hit += number(1, 8);
     }
 
-    ch->points.max_hit /= HowManyClasses(ch);
+    ch->points.max_hit /= how_many_classes(ch);
   }
 
   if (GET_RACE(ch) == RACE_HUMANTWO) {
-    ImprovePreferedStat(ch, 1, FALSE);
+    improve_prefered_stat(ch, 1, FALSE);
   }
   else if (GET_RACE(ch) == RACE_HALFELF && number(0, 1)) {
-    ImprovePreferedStat(ch, 1, FALSE);
+    improve_prefered_stat(ch, 1, FALSE);
   }
   else if (GET_RACE(ch) == RACE_ELVEN) {
     ch->abilities.dex++;
@@ -2596,7 +2596,7 @@ void roll_abilities(struct char_data *ch) {
   }
 
 
-  if (HasClass(ch, CLASS_WARRIOR)) {
+  if (has_class(ch, CLASS_WARRIOR)) {
     if (ch->abilities.str >= 18) {
       ch->abilities.str = 18;
       if (ch->abilities.str_add == 0)
@@ -2627,7 +2627,7 @@ void do_start(struct char_data *ch) {
   send_to_char("Welcome to SillyMud.  Enjoy the game...\n\r", ch);
   ch->specials.start_room = NOWHERE;
 
-  StartLevels(ch);
+  start_levels(ch);
 
   GET_EXP(ch) = 1;
 
@@ -2658,11 +2658,11 @@ void do_start(struct char_data *ch) {
     obj_to_char(obj, ch);       /* water   */
   }
 
-  if (HasClass(ch, CLASS_CLERIC) || HasClass(ch, CLASS_MAGIC_USER)) {
+  if (has_class(ch, CLASS_CLERIC) || has_class(ch, CLASS_MAGIC_USER)) {
     ch->skills[SKILL_READ_MAGIC].learned = 95;
   }
 
-  if (OnlyClass(ch, CLASS_THIEF))
+  if (only_class(ch, CLASS_THIEF))
     ch->skills[SKILL_CONS_PEOPLE].learned = 95;
 
   if (IS_SET(ch->player.class, CLASS_THIEF)) {
@@ -3377,13 +3377,13 @@ void do_create(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   send_to_char("You form much order out of Chaos\n\r", ch);
   for (i = start; i <= end; i++) {
     if (!real_roomp(i))
-      CreateOneRoom(i);
+      create_one_room(i);
   }
 
 }
 
 
-void CreateOneRoom(int loc_nr) {
+void create_one_room(int loc_nr) {
   struct room_data *rp;
   extern int top_of_zone_table;
 
@@ -3533,7 +3533,7 @@ void do_cset(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       return;
     }
 
-    n = SearchForNodeByName(radix_head[radix].next, buf2, strlen(buf2));
+    n = search_for_node_by_name(radix_head[radix].next, buf2, strlen(buf2));
     if (!n) {
       send_to_char("Sorry, command not found.\n\r", ch);
       return;
@@ -3553,7 +3553,7 @@ void do_cset(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       return;
     }
 
-    n = SearchForNodeByName(radix_head[radix].next, buf2, strlen(buf2));
+    n = search_for_node_by_name(radix_head[radix].next, buf2, strlen(buf2));
     if (!n) {
       send_to_char("Sorry, command not found.\n\r", ch);
       return;
@@ -3591,7 +3591,7 @@ void do_cset(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       return;
     }
 
-    n = SearchForNodeByName(radix_head[radix].next, buf2, strlen(buf2));
+    n = search_for_node_by_name(radix_head[radix].next, buf2, strlen(buf2));
     if (!n) {
       send_to_char("Sorry, command not found.\n\r", ch);
       return;

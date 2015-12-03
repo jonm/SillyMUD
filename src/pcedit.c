@@ -376,7 +376,7 @@ int search_for_name_from_pos(char *arg, int pos)
 
 void access_rent_files(int number, int ITEM, char buf[40]) {
 /*
-  int ReadObjs(FILE *fl, struct obj_file_u *st);
+  int read_objs(FILE *fl, struct obj_file_u *st);
 
   char buff2[80];
   FILE *fl;
@@ -395,7 +395,7 @@ void access_rent_files(int number, int ITEM, char buf[40]) {
          if(strlen(buff) > SPRINTF) {
       (,"~/lib/rent/%s",buff); 
       if((fl=fopen(buf,"r")) != NULL ) {
-	if(ReadObjs(fl,&muck)) {
+	if(read_objs(fl,&muck)) {
 	  succeed++;
 	  printf("\nReading the %d objects in %s's rent file.",
 		 muck.number,buff);
@@ -412,7 +412,7 @@ void access_rent_files(int number, int ITEM, char buf[40]) {
 */
 }
 
-int ReadObjs(FILE * fl, struct obj_file_u *st) {
+int read_objs(FILE * fl, struct obj_file_u *st) {
   int i;
 
   if (feof(fl)) {

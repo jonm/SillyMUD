@@ -41,20 +41,20 @@ void assign_mobiles() {
   static struct special_proc_entry specials[] = {
 
     {1, puff},
-    {2, Ringwraith},
+    {2, ringwraith},
     {3, tormentor},
     {4, Inquisitor},
-    {6, AcidBlob},
+    {6, acid_blob},
     {25, magic_user},
 
-    {30, MageGuildMaster},
-    {31, ClericGuildMaster},
-    {32, ThiefGuildMaster},
-    {33, WarriorGuildMaster},
-    {34, MageGuildMaster},
-    {35, ClericGuildMaster},
-    {36, ThiefGuildMaster},
-    {37, WarriorGuildMaster},
+    {30, mage_guild_master},
+    {31, cleric_guild_master},
+    {32, thief_guild_master},
+    {33, warrior_guild_master},
+    {34, mage_guild_master},
+    {35, cleric_guild_master},
+    {36, thief_guild_master},
+    {37, warrior_guild_master},
     {38, fighter},              /* armor golem */
     {39, creeping_death},
 
@@ -80,7 +80,7 @@ void assign_mobiles() {
     {240, snake},               /* toad      */
     {243, breath_weapon_mob},   /* teenage white */
     {247, fighter},             /* minotaur */
-    {251, CarrionCrawler},
+    {251, carrion_crawler},
     {261, fighter},
     {262, regenerator},
     {264, fighter},
@@ -94,90 +94,90 @@ void assign_mobiles() {
     {250, snake},               /* snake       */
     {257, magic_user},          /* magic_user  */
 
-    {600, DruidChallenger},
-    {601, DruidChallenger},
-    {602, DruidChallenger},
-    {603, DruidChallenger},
-    {604, DruidChallenger},
-    {605, DruidChallenger},
-    {606, DruidChallenger},
-    {607, DruidChallenger},
-    {608, DruidChallenger},
-    {609, DruidChallenger},
-    {610, DruidChallenger},
-    {611, DruidChallenger},
-    {612, DruidChallenger},
-    {613, DruidChallenger},
-    {614, DruidChallenger},
-    {615, DruidChallenger},
-    {616, DruidChallenger},
-    {617, DruidChallenger},
-    {618, DruidChallenger},
-    {619, DruidChallenger},
-    {620, DruidChallenger},
-    {621, DruidChallenger},
-    {622, DruidChallenger},
-    {623, DruidChallenger},
-    {624, DruidChallenger},
-    {625, DruidChallenger},
-    {626, DruidChallenger},
-    {627, DruidChallenger},
-    {628, DruidChallenger},
-    {629, DruidChallenger},
-    {630, DruidChallenger},
-    {631, DruidChallenger},
-    {632, DruidChallenger},
-    {633, DruidChallenger},
-    {634, DruidChallenger},
-    {635, DruidChallenger},
-    {636, DruidChallenger},
-    {637, DruidChallenger},
-    {638, DruidChallenger},
-    {639, DruidChallenger},
-    {640, DruidChallenger},
-    {641, DruidGuildMaster},
-    {642, DruidGuildMaster},
+    {600, druid_challenger},
+    {601, druid_challenger},
+    {602, druid_challenger},
+    {603, druid_challenger},
+    {604, druid_challenger},
+    {605, druid_challenger},
+    {606, druid_challenger},
+    {607, druid_challenger},
+    {608, druid_challenger},
+    {609, druid_challenger},
+    {610, druid_challenger},
+    {611, druid_challenger},
+    {612, druid_challenger},
+    {613, druid_challenger},
+    {614, druid_challenger},
+    {615, druid_challenger},
+    {616, druid_challenger},
+    {617, druid_challenger},
+    {618, druid_challenger},
+    {619, druid_challenger},
+    {620, druid_challenger},
+    {621, druid_challenger},
+    {622, druid_challenger},
+    {623, druid_challenger},
+    {624, druid_challenger},
+    {625, druid_challenger},
+    {626, druid_challenger},
+    {627, druid_challenger},
+    {628, druid_challenger},
+    {629, druid_challenger},
+    {630, druid_challenger},
+    {631, druid_challenger},
+    {632, druid_challenger},
+    {633, druid_challenger},
+    {634, druid_challenger},
+    {635, druid_challenger},
+    {636, druid_challenger},
+    {637, druid_challenger},
+    {638, druid_challenger},
+    {639, druid_challenger},
+    {640, druid_challenger},
+    {641, druid_guild_master},
+    {642, druid_guild_master},
 
-    {651, MonkChallenger},
-    {652, MonkChallenger},
-    {653, MonkChallenger},
-    {654, MonkChallenger},
-    {655, MonkChallenger},
-    {656, MonkChallenger},
-    {657, MonkChallenger},
-    {658, MonkChallenger},
-    {659, MonkChallenger},
-    {660, MonkChallenger},
-    {661, MonkChallenger},
-    {662, MonkChallenger},
-    {663, MonkChallenger},
-    {664, MonkChallenger},
-    {665, MonkChallenger},
-    {666, MonkChallenger},
-    {667, MonkChallenger},
-    {668, MonkChallenger},
-    {669, MonkChallenger},
-    {670, MonkChallenger},
-    {671, MonkChallenger},
-    {672, MonkChallenger},
-    {673, MonkChallenger},
-    {674, MonkChallenger},
-    {675, MonkChallenger},
-    {676, MonkChallenger},
-    {677, MonkChallenger},
-    {678, MonkChallenger},
-    {679, MonkChallenger},
-    {680, MonkChallenger},
-    {681, MonkChallenger},
-    {682, MonkChallenger},
-    {683, MonkChallenger},
-    {684, MonkChallenger},
-    {685, MonkChallenger},
-    {686, MonkChallenger},
-    {687, MonkChallenger},
-    {688, MonkChallenger},
-    {689, MonkChallenger},
-    {690, MonkChallenger},
+    {651, monk_challenger},
+    {652, monk_challenger},
+    {653, monk_challenger},
+    {654, monk_challenger},
+    {655, monk_challenger},
+    {656, monk_challenger},
+    {657, monk_challenger},
+    {658, monk_challenger},
+    {659, monk_challenger},
+    {660, monk_challenger},
+    {661, monk_challenger},
+    {662, monk_challenger},
+    {663, monk_challenger},
+    {664, monk_challenger},
+    {665, monk_challenger},
+    {666, monk_challenger},
+    {667, monk_challenger},
+    {668, monk_challenger},
+    {669, monk_challenger},
+    {670, monk_challenger},
+    {671, monk_challenger},
+    {672, monk_challenger},
+    {673, monk_challenger},
+    {674, monk_challenger},
+    {675, monk_challenger},
+    {676, monk_challenger},
+    {677, monk_challenger},
+    {678, monk_challenger},
+    {679, monk_challenger},
+    {680, monk_challenger},
+    {681, monk_challenger},
+    {682, monk_challenger},
+    {683, monk_challenger},
+    {684, monk_challenger},
+    {685, monk_challenger},
+    {686, monk_challenger},
+    {687, monk_challenger},
+    {688, monk_challenger},
+    {689, monk_challenger},
+    {690, monk_challenger},
     {691, monk_master},
 
 /*
@@ -203,8 +203,8 @@ void assign_mobiles() {
     {9419, breath_weapon_mob},
     {9420, fighter},
     {9421, fighter},
-    {9424, StormGiant},
-    {9426, MonkChallenger},
+    {9424, storm_giant},
+    {9426, monk_challenger},
     {9427, cleric},
     {9428, magic_user},
     {9429, fighter},
@@ -265,18 +265,18 @@ void assign_mobiles() {
 /*
   prydain
 */
-    {6601, PrydainGuard},
-    {6602, PrydainGuard},
+    {6601, prydain_guard},
+    {6602, prydain_guard},
     {6604, fighter},
-    {6605, PrydainGuard},
-    {6606, PrydainGuard},
+    {6605, prydain_guard},
+    {6606, prydain_guard},
     {6608, fighter},
     {6613, fighter},
-    {6619, PrydainGuard},
-    {6620, PrydainGuard},
+    {6619, prydain_guard},
+    {6620, prydain_guard},
     {6621, fighter},
     {6622, fighter},
-    {6614, PrydainGuard},
+    {6614, prydain_guard},
     {6609, breath_weapon_mob},
     {6642, breath_weapon_mob},
     {6640, jugglernaut},
@@ -288,7 +288,7 @@ void assign_mobiles() {
     {6634, fighter},
     {6635, breath_weapon_mob},
     {6625, Demon},
-    {6638, StatTeller},
+    {6638, stat_teller},
 
 /*
   deadhame
@@ -308,7 +308,7 @@ void assign_mobiles() {
     {9211, fighter},
     {9212, fighter},
     {9216, fighter},
-    {9213, CarrionCrawler},
+    {9213, carrion_crawler},
     {9208, cleric},
     {9217, breath_weapon_mob},
     {9218, fighter},
@@ -399,7 +399,7 @@ void assign_mobiles() {
 **  Valley of the Mage
 */
     {21106, snake},
-    {21107, RustMonster},
+    {21107, rust_monster},
     {21108, wraith},
     {21111, web_slinger},
     {21112, trapper},
@@ -424,15 +424,15 @@ void assign_mobiles() {
     {21144, troguard},
     {21145, troguard},
     {21146, coldcaster},
-    {21147, RustMonster},
+    {21147, rust_monster},
 
 /*
 **  New Thalos
 */
-    {3600, MageGuildMaster},
-    {3601, ClericGuildMaster},
-    {3602, WarriorGuildMaster},
-    {3603, ThiefGuildMaster},
+    {3600, mage_guild_master},
+    {3601, cleric_guild_master},
+    {3602, warrior_guild_master},
+    {3603, thief_guild_master},
     {3604, receptionist},
     {3619, fighter},
     {3620, fighter},
@@ -443,19 +443,19 @@ void assign_mobiles() {
     {3639, fighter},            /* caramon */
     {3641, cleric},             /* curley g. */
     {3640, magic_user},         /* raist */
-    {3656, NewThalosGuildGuard},
-    {3657, NewThalosGuildGuard},
-    {3658, NewThalosGuildGuard},
-    {3659, NewThalosGuildGuard},
-    {3661, SultanGuard},        /* wandering */
-    {3662, SultanGuard},        /* not */
-    {3682, SultanGuard},        /* royal */
+    {3656, new_thalos_guild_guard},
+    {3657, new_thalos_guild_guard},
+    {3658, new_thalos_guild_guard},
+    {3659, new_thalos_guild_guard},
+    {3661, sultan_guard},        /* wandering */
+    {3662, sultan_guard},        /* not */
+    {3682, sultan_guard},        /* royal */
     {3670, breath_weapon_mob},  /* Cryohydra */
     {3674, breath_weapon_mob},  /* Behir */
     {3675, breath_weapon_mob},  /* Chimera */
     {3676, breath_weapon_mob},  /* Couatl */
     {3681, cleric},             /* High priest */
-    {3689, NewThalosMayor},     /* Guess */
+    {3689, new_thalos_mayor},     /* Guess */
     {3644, fido},
     {3635, thief},
 /*
@@ -499,11 +499,11 @@ void assign_mobiles() {
     {25001, Keftab},
     {25009, breath_weapon_mob}, /* hydra */
     {25002, vampire},           /* Crimson */
-    {25003, StormGiant},        /* MistDaemon */
-    {25006, StormGiant},        /* Storm giant */
-    {25014, StormGiant},        /* DeathKnight */
+    {25003, storm_giant},        /* MistDaemon */
+    {25006, storm_giant},        /* Storm giant */
+    {25014, storm_giant},        /* DeathKnight */
     {25009, breath_weapon_mob}, /* hydra */
-    {25017, AbyssGateKeeper},   /* Abyss Gate Keeper */
+    {25017, abyss_gate_keeper},   /* Abyss Gate Keeper */
     {25013, fighter},           /* kalas */
     {25008, magic_user},        /* efreeti */
     {25034, fighter},           /* marilith */
@@ -511,14 +511,14 @@ void assign_mobiles() {
 /*
 **  Paladin's guild
 */
-    {25100, PaladinGuildGuard},
-    {25101, PaladinGuildGuard},
+    {25100, paladin_guild_guard},
+    {25101, paladin_guild_guard},
 /*
 ** Shark's Junk
 */
-    {196, GreyParamedic},
-    {197, AmberParamedic},
-    {198, GameGuard},
+    {196, grey_paramedic},
+    {197, amber_paramedic},
+    {198, game_guard},
 /*
 **  Abyss Fire Giants
 */
@@ -542,42 +542,42 @@ void assign_mobiles() {
 */
 
     {16106, fido},
-    {16107, CaravanGuildGuard},
-    {16108, CaravanGuildGuard},
-    {16109, CaravanGuildGuard},
-    {16110, CaravanGuildGuard},
-    {16111, WarriorGuildMaster},
-    {16112, MageGuildMaster},
-    {16113, ThiefGuildMaster},
-    {16114, ClericGuildMaster},
+    {16107, caravan_guild_guard},
+    {16108, caravan_guild_guard},
+    {16109, caravan_guild_guard},
+    {16110, caravan_guild_guard},
+    {16111, warrior_guild_master},
+    {16112, mage_guild_master},
+    {16113, thief_guild_master},
+    {16114, cleric_guild_master},
     {16122, receptionist},
-    {16105, StatTeller},
+    {16105, stat_teller},
 
 /*
 **  Draagdim
 */
 
-    {2500, NudgeNudge},         /* jailer */
+    {2500, nudge_nudge},         /* jailer */
 /*
 **  mordilnia
 */
     {18200, magic_user},
     {18205, receptionist},
-    {18206, MageGuildMaster},
-    {18207, ClericGuildMaster},
-    {18208, ThiefGuildMaster},
-    {18209, WarriorGuildMaster},
-    {18210, MordGuildGuard},    /*18266 3 */
-    {18211, MordGuildGuard},    /*18276 1 */
-    {18212, MordGuildGuard},    /*18272 0 */
-    {18213, MordGuildGuard},    /*18256 2 */
-    {18215, MordGuard},
+    {18206, mage_guild_master},
+    {18207, cleric_guild_master},
+    {18208, thief_guild_master},
+    {18209, warrior_guild_master},
+    {18210, mord_guild_guard},    /*18266 3 */
+    {18211, mord_guild_guard},    /*18276 1 */
+    {18212, mord_guild_guard},    /*18272 0 */
+    {18213, mord_guild_guard},    /*18256 2 */
+    {18215, mord_guard},
     {18216, janitor},
     {18217, fido},
     {18218, fighter},
     {18221, fighter},
-    {18222, MordGuard},
-    {18223, MordGuard},
+    {18222, mord_guard},
+    {18223, mord_guard},
 
 /*
 **  Graecia:
@@ -635,9 +635,9 @@ void assign_mobiles() {
     {16048, fighter},
     {16056, cleric},
     {16057, magic_user},
-    {16037, DwarvenMiners},
+    {16037, dwarven_miners},
     {16014, magic_user},
-    {16039, Tyrannosaurus_swallower},
+    {16039, tyrannosaurus_swallower},
 
 /*
 **  undercaves.. level 1
@@ -656,8 +656,8 @@ void assign_mobiles() {
 /*
 ** Sauria
 */
-    {21803, Tyrannosaurus_swallower},
-    {21810, Tyrannosaurus_swallower},
+    {21803, tyrannosaurus_swallower},
+    {21810, tyrannosaurus_swallower},
 
 /*
 **  Bay Isle
@@ -671,8 +671,8 @@ void assign_mobiles() {
 **  Sewer Rats
 */
     {7002, attack_rats},
-    {2531, DragonHunterLeader},
-    {3063, HuntingMercenary},
+    {2531, dragon_hunter_leader},
+    {3063, hunting_mercenary},
 
 /*
 **  Mages Tower
@@ -765,17 +765,17 @@ void assign_mobiles() {
 */
 
     {3000, magic_user},
-    {3060, MidgaardCityguard},
+    {3060, midgaard_cityguard},
     {3080, fighter},
-    {3067, MidgaardCityguard},
+    {3067, midgaard_cityguard},
     {3061, janitor},
     {3062, fido},
     {3066, fido},
     {3005, receptionist},
-    {3020, MageGuildMaster},
-    {3021, ClericGuildMaster},
-    {3022, ThiefGuildMaster},
-    {3023, WarriorGuildMaster},
+    {3020, mage_guild_master},
+    {3021, cleric_guild_master},
+    {3022, thief_guild_master},
+    {3023, warrior_guild_master},
 
     {3007, sailor},             /* Sailor */
     {3024, guild_guard},
@@ -784,7 +784,7 @@ void assign_mobiles() {
     {3027, guild_guard},
     {3070, repair_guy},
     {3071, repair_guy},
-    {3069, MidgaardCityguard},  /* post guard */
+    {3069, midgaard_cityguard},  /* post guard */
     {3068, ninja_master},
     {3073, loremaster},
     {3074, hunter},
@@ -793,7 +793,7 @@ void assign_mobiles() {
 **  Lower city
 */
     {3143, mayor},
-    {7009, MidgaardCityguard},
+    {7009, midgaard_cityguard},
 
 /*
 **   Hammor's Stuff
@@ -817,7 +817,7 @@ void assign_mobiles() {
 **  Pyramid
 */
 
-    {5308, RustMonster},
+    {5308, rust_monster},
     {5303, vampire},
 
 /*
@@ -897,7 +897,7 @@ void assign_mobiles() {
     {11006, fighter},
     {11007, fighter},
     {11016, receptionist},
-    {11017, NudgeNudge},
+    {11017, nudge_nudge},
 
 /*
 **  miscellaneous
@@ -966,12 +966,12 @@ void assign_mobiles() {
     {27005, magic_user},
     {27006, Tytan},
     {27007, replicant},
-    {27016, AbbarachDragon},
+    {27016, abbarach_dragon},
     {27014, magic_user},
     {27017, magic_user},
     {27018, magic_user},
     {27019, magic_user},
-    {27025, Samah},             /* in skills.c ... shoot me */
+    {27025, samah},             /* in skills.c ... shoot me */
 
     {27401, fighter},
     {27403, fighter},
@@ -1034,7 +1034,7 @@ struct object_proc {
   int (*func) ();
 };
 static struct object_proc obj_procs[] = {
-  {15, SlotMachine},
+  {15, slot_machine},
   {29, warpstone},
   {30, scraps},
   {23, jive_box},
@@ -1049,9 +1049,9 @@ static struct object_proc obj_procs[] = {
   {3099, board},
   {25102, board},
   {21122, nodrop},
-  {21130, YouthPotion},
+  {21130, youth_potion},
 #if EGO
-  {40000, BitterBlade},
+  {40000, bitter_blade},
 #endif
   {-1, NULL}
 };
@@ -1091,8 +1091,8 @@ void assign_rooms() {
     {13547, dump},
     {3054, pray_for_items},
 
-    {2188, Magic_Fountain},
-    {2189, Magic_Fountain},
+    {2188, magic__fountain},
+    {2189, magic__fountain},
 
     {13518, Fountain},
     {11014, Fountain},

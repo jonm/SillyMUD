@@ -55,7 +55,7 @@ char *exit_menu = "    1) North                      2) East\n\r"
   "    5) Up                         6) Down\n\r" "\n\r";
 
 
-void ChangeRoomFlags(struct room_data *rp, struct char_data *ch, char *arg,
+void change_room_flags(struct room_data *rp, struct char_data *ch, char *arg,
                      int type) {
   int i, row, update;
   char buf[255];
@@ -63,7 +63,7 @@ void ChangeRoomFlags(struct room_data *rp, struct char_data *ch, char *arg,
   if (type != ENTER_CHECK)
     if (!*arg || (*arg == '\n')) {
       ch->specials.edit = MAIN_MENU;
-      UpdateRoomMenu(ch);
+      update_room_menu(ch);
       return;
     }
 
@@ -130,11 +130,11 @@ void do_redit(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
 
   act("$n has begun editing.", FALSE, ch, 0, 0, TO_ROOM);
 
-  UpdateRoomMenu(ch);
+  update_room_menu(ch);
 }
 
 
-void UpdateRoomMenu(struct char_data *ch) {
+void update_room_menu(struct char_data *ch) {
   char buf[255];
   struct room_data *rp;
 
@@ -161,7 +161,7 @@ void UpdateRoomMenu(struct char_data *ch) {
 }
 
 
-void RoomEdit(struct char_data *ch, char *arg) {
+void room_edit(struct char_data *ch, char *arg) {
   if (ch->specials.edit == MAIN_MENU) {
     if (!*arg || *arg == '\n') {
       ch->desc->connected = CON_PLYNG;
@@ -170,48 +170,48 @@ void RoomEdit(struct char_data *ch, char *arg) {
     }
     switch (atoi(arg)) {
     case 0:
-      UpdateRoomMenu(ch);
+      update_room_menu(ch);
       return;
     case CHANGE_NAME:
       ch->specials.edit = CHANGE_NAME;
-      ChangeRoomName(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
+      change_room_name(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
       return;
     case CHANGE_DESC:
       ch->specials.edit = CHANGE_DESC;
-      ChangeRoomDesc(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
+      change_room_desc(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
       return;
     case CHANGE_FLAGS:
       ch->specials.edit = CHANGE_FLAGS;
-      ChangeRoomFlags(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
+      change_room_flags(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
       return;
     case CHANGE_TYPE:
       ch->specials.edit = CHANGE_TYPE;
-      ChangeRoomType(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
+      change_room_type(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
       return;
     case 5:
       ch->specials.edit = CHANGE_EXIT;
       change_exit_dir(real_roomp(ch->in_room), ch, "", ENTER_CHECK);
       return;
     default:
-      UpdateRoomMenu(ch);
+      update_room_menu(ch);
       return;
     }
   }
 
   switch (ch->specials.edit) {
   case CHANGE_NAME:
-    ChangeRoomName(real_roomp(ch->in_room), ch, arg, 0);
+    change_room_name(real_roomp(ch->in_room), ch, arg, 0);
     return;
   case CHANGE_DESC:
-    ChangeRoomDesc(real_roomp(ch->in_room), ch, arg, 0);
+    change_room_desc(real_roomp(ch->in_room), ch, arg, 0);
     return;
   case CHANGE_FLAGS:
-    ChangeRoomFlags(real_roomp(ch->in_room), ch, arg, 0);
+    change_room_flags(real_roomp(ch->in_room), ch, arg, 0);
     return;
   case CHANGE_TYPE:
   case CHANGE_TYPE2:
   case CHANGE_TYPE3:
-    ChangeRoomType(real_roomp(ch->in_room), ch, arg, 0);
+    change_room_type(real_roomp(ch->in_room), ch, arg, 0);
     return;
   case CHANGE_EXIT:
     change_exit_dir(real_roomp(ch->in_room), ch, arg, 0);
@@ -222,7 +222,7 @@ void RoomEdit(struct char_data *ch, char *arg) {
   case CHANGE_EXIT_WEST:
   case CHANGE_EXIT_UP:
   case CHANGE_EXIT_DOWN:
-    AddExitToRoom(real_roomp(ch->in_room), ch, arg, 0);
+    add_exit_to_room(real_roomp(ch->in_room), ch, arg, 0);
     return;
   case CHANGE_KEY_NORTH:
   case CHANGE_KEY_EAST:
@@ -230,7 +230,7 @@ void RoomEdit(struct char_data *ch, char *arg) {
   case CHANGE_KEY_WEST:
   case CHANGE_KEY_UP:
   case CHANGE_KEY_DOWN:
-    ChangeKeyNumber(real_roomp(ch->in_room), ch, arg, 0);
+    change_key_number(real_roomp(ch->in_room), ch, arg, 0);
     return;
   case CHANGE_NUMBER_NORTH:
   case CHANGE_NUMBER_EAST:
@@ -238,23 +238,23 @@ void RoomEdit(struct char_data *ch, char *arg) {
   case CHANGE_NUMBER_WEST:
   case CHANGE_NUMBER_UP:
   case CHANGE_NUMBER_DOWN:
-    ChangeExitNumber(real_roomp(ch->in_room), ch, arg, 0);
+    change_exit_number(real_roomp(ch->in_room), ch, arg, 0);
     return;
   default:
-    log_msg("Got to bad spot in RoomEdit");
+    log_msg("Got to bad spot in room_edit");
     return;
   }
 }
 
 
-void ChangeRoomName(struct room_data *rp, struct char_data *ch, char *arg,
+void change_room_name(struct room_data *rp, struct char_data *ch, char *arg,
                     int type) {
   char buf[255];
 
   if (type != ENTER_CHECK)
     if (!*arg || (*arg == '\n')) {
       ch->specials.edit = MAIN_MENU;
-      UpdateRoomMenu(ch);
+      update_room_menu(ch);
       return;
     }
 
@@ -263,7 +263,7 @@ void ChangeRoomName(struct room_data *rp, struct char_data *ch, char *arg,
       free(rp->name);
     rp->name = (char *)strdup(arg);
     ch->specials.edit = MAIN_MENU;
-    UpdateRoomMenu(ch);
+    update_room_menu(ch);
     return;
   }
 
@@ -277,13 +277,13 @@ void ChangeRoomName(struct room_data *rp, struct char_data *ch, char *arg,
   return;
 }
 
-void ChangeRoomDesc(struct room_data *rp, struct char_data *ch,
+void change_room_desc(struct room_data *rp, struct char_data *ch,
                     char *UNUSED(arg), int type) {
   char buf[255];
 
   if (type != ENTER_CHECK) {
     ch->specials.edit = MAIN_MENU;
-    UpdateRoomMenu(ch);
+    update_room_menu(ch);
     return;
   }
 
@@ -303,7 +303,7 @@ void ChangeRoomDesc(struct room_data *rp, struct char_data *ch,
 }
 
 
-void ChangeRoomType(struct room_data *rp, struct char_data *ch, char *arg,
+void change_room_type(struct room_data *rp, struct char_data *ch, char *arg,
                     int type) {
   int i, row, update;
   char buf[255];
@@ -311,7 +311,7 @@ void ChangeRoomType(struct room_data *rp, struct char_data *ch, char *arg,
   if (type != ENTER_CHECK)
     if (!*arg || (*arg == '\n')) {
       ch->specials.edit = MAIN_MENU;
-      UpdateRoomMenu(ch);
+      update_room_menu(ch);
       return;
     }
 
@@ -331,7 +331,7 @@ void ChangeRoomType(struct room_data *rp, struct char_data *ch, char *arg,
         }
         else {
           ch->specials.edit = MAIN_MENU;
-          UpdateRoomMenu(ch);
+          update_room_menu(ch);
         }
         return;
       }
@@ -348,7 +348,7 @@ void ChangeRoomType(struct room_data *rp, struct char_data *ch, char *arg,
       }
       rp->river_dir = update;
       ch->specials.edit = MAIN_MENU;
-      UpdateRoomMenu(ch);
+      update_room_menu(ch);
       return;
     }
   }
@@ -383,7 +383,7 @@ void change_exit_dir(struct room_data *rp, struct char_data *ch, char *arg,
   if (type != ENTER_CHECK) {
     if (!*arg || (*arg == '\n')) {
       ch->specials.edit = MAIN_MENU;
-      UpdateRoomMenu(ch);
+      update_room_menu(ch);
       return;
     }
 
@@ -396,37 +396,37 @@ void change_exit_dir(struct room_data *rp, struct char_data *ch, char *arg,
     switch (update) {
     case 0:
       ch->specials.edit = CHANGE_EXIT_NORTH;
-      AddExitToRoom(rp, ch, "", ENTER_CHECK);
+      add_exit_to_room(rp, ch, "", ENTER_CHECK);
       return;
       break;
     case 1:
       ch->specials.edit = CHANGE_EXIT_EAST;
-      AddExitToRoom(rp, ch, "", ENTER_CHECK);
+      add_exit_to_room(rp, ch, "", ENTER_CHECK);
       return;
       break;
     case 2:
       ch->specials.edit = CHANGE_EXIT_SOUTH;
-      AddExitToRoom(rp, ch, "", ENTER_CHECK);
+      add_exit_to_room(rp, ch, "", ENTER_CHECK);
       return;
       break;
     case 3:
       ch->specials.edit = CHANGE_EXIT_WEST;
-      AddExitToRoom(rp, ch, "", ENTER_CHECK);
+      add_exit_to_room(rp, ch, "", ENTER_CHECK);
       return;
       break;
     case 4:
       ch->specials.edit = CHANGE_EXIT_UP;
-      AddExitToRoom(rp, ch, "", ENTER_CHECK);
+      add_exit_to_room(rp, ch, "", ENTER_CHECK);
       return;
       break;
     case 5:
       ch->specials.edit = CHANGE_EXIT_DOWN;
-      AddExitToRoom(rp, ch, "", ENTER_CHECK);
+      add_exit_to_room(rp, ch, "", ENTER_CHECK);
       return;
       break;
     case 6:
       ch->specials.edit = CHANGE_EXIT_DELETE;
-      DeleteExit(rp, ch, "", ENTER_CHECK);
+      delete_exit(rp, ch, "", ENTER_CHECK);
       return;
       break;
     default:
@@ -452,7 +452,7 @@ void change_exit_dir(struct room_data *rp, struct char_data *ch, char *arg,
 }
 
 
-void AddExitToRoom(struct room_data *rp, struct char_data *ch, char *arg,
+void add_exit_to_room(struct room_data *rp, struct char_data *ch, char *arg,
                    int type) {
   int update, dir, row, i = 0;
   char buf[255];
@@ -503,7 +503,7 @@ void AddExitToRoom(struct room_data *rp, struct char_data *ch, char *arg,
         break;
       }
       send_to_char("\n\r\n\rExit to Room: ", ch);
-      ChangeExitNumber(rp, ch, "", ENTER_CHECK);
+      change_exit_number(rp, ch, "", ENTER_CHECK);
       return;
     }
 
@@ -548,7 +548,7 @@ void AddExitToRoom(struct room_data *rp, struct char_data *ch, char *arg,
 }
 
 
-void ChangeExitNumber(struct room_data *rp, struct char_data *ch, char *arg,
+void change_exit_number(struct room_data *rp, struct char_data *ch, char *arg,
                       int type) {
   int dir, update;
 
@@ -609,11 +609,11 @@ void ChangeExitNumber(struct room_data *rp, struct char_data *ch, char *arg,
 
   send_to_char("\n\rKey Number (0 for none): ", ch);
 
-  ChangeKeyNumber(rp, ch, "", ENTER_CHECK);
+  change_key_number(rp, ch, "", ENTER_CHECK);
 }
 
 
-void ChangeKeyNumber(struct room_data *rp, struct char_data *ch, char *arg,
+void change_key_number(struct room_data *rp, struct char_data *ch, char *arg,
                      int type) {
   int dir, update;
 
@@ -658,8 +658,8 @@ void ChangeKeyNumber(struct room_data *rp, struct char_data *ch, char *arg,
   change_exit_dir(rp, ch, "", ENTER_CHECK);
 }
 
-void DeleteExit(struct room_data *UNUSED(rp), struct char_data *ch,
+void delete_exit(struct room_data *UNUSED(rp), struct char_data *ch,
                 char *UNUSED(arg), int UNUSED(type)) {
   ch->specials.edit = MAIN_MENU;
-  UpdateRoomMenu(ch);
+  update_room_menu(ch);
 }

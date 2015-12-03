@@ -323,7 +323,7 @@ void do_sneak(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
     send_to_char("You are no longer sneaky.\n\r", ch);
     return;
   }
-  if (!HasClass(ch, CLASS_THIEF) && !(HasClass(ch, CLASS_MONK))) {
+  if (!has_class(ch, CLASS_THIEF) && !(has_class(ch, CLASS_MONK))) {
     send_to_char("You're no thief!\n\r", ch);
     return;
   }
@@ -334,11 +334,11 @@ void do_sneak(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 
   if (!IS_AFFECTED(ch, AFF_SILENCE)) {
-    if (EqWBits(ch, ITEM_ANTI_THIEF)) {
+    if (eq_w_bits(ch, ITEM_ANTI_THIEF)) {
       send_to_char("Gonna be hard to sneak around in that!\n\r", ch);
       return;
     }
-    if (HasWBits(ch, ITEM_HUM)) {
+    if (has_w_bits(ch, ITEM_HUM)) {
       send_to_char("Gonna be hard to sneak around with that thing humming\n\r",
                    ch);
       return;
@@ -357,13 +357,13 @@ void do_sneak(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 
   if (percent > ch->skills[SKILL_SNEAK].learned +
       dex_app_skill[(int)GET_DEX(ch)].sneak) {
-    LearnFromMistake(ch, SKILL_SNEAK, 1, 90);
+    learn_from_mistake(ch, SKILL_SNEAK, 1, 90);
     WAIT_STATE(ch, PULSE_VIOLENCE / 2);
     return;
   }
 
   af.type = SKILL_SNEAK;
-  af.duration = GET_LEVEL(ch, BestThiefClass(ch));
+  af.duration = GET_LEVEL(ch, best_thief_class(ch));
   af.modifier = 0;
   af.location = APPLY_NONE;
   af.bitvector = AFF_SNEAK;
@@ -381,7 +381,7 @@ void do_hide(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   if (IS_AFFECTED(ch, AFF_HIDE))
     REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
-  if (!HasClass(ch, CLASS_THIEF) && !(HasClass(ch, CLASS_MONK))) {
+  if (!has_class(ch, CLASS_THIEF) && !(has_class(ch, CLASS_MONK))) {
     send_to_char("You're no thief!\n\r", ch);
     return;
   }
@@ -398,7 +398,7 @@ void do_hide(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 
   if (percent > ch->skills[SKILL_HIDE].learned +
       dex_app_skill[(int)GET_DEX(ch)].hide) {
-    LearnFromMistake(ch, SKILL_HIDE, 1, 90);
+    learn_from_mistake(ch, SKILL_HIDE, 1, 90);
     WAIT_STATE(ch, PULSE_VIOLENCE * 1);
     return;
   }
@@ -427,7 +427,7 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   argument = one_argument(argument, obj_name);
   only_argument(argument, victim_name);
 
-  if (!HasClass(ch, CLASS_THIEF)) {
+  if (!has_class(ch, CLASS_THIEF)) {
     send_to_char("You're no thief!\n\r", ch);
     return;
   }
@@ -524,7 +524,7 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       if (AWAKE(victim) && (percent > ch->skills[SKILL_STEAL].learned)) {
         ohoh = TRUE;
         act("Oops..", FALSE, ch, 0, 0, TO_CHAR);
-        LearnFromMistake(ch, SKILL_STEAL, 0, 90);
+        learn_from_mistake(ch, SKILL_STEAL, 0, 90);
         act("$n tried to steal something from you!", FALSE, ch, 0, victim,
             TO_VICT);
         act("$n tries to steal something from $N.", TRUE, ch, 0, victim,
@@ -632,12 +632,12 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
   case 'S':
     arg++;
     if (LOWER(*arg) == 'p') {
-      if (!HasClass(ch, CLASS_MAGIC_USER) && !HasClass(ch, CLASS_CLERIC) &&
-          !HasClass(ch, CLASS_DRUID)) {
+      if (!has_class(ch, CLASS_MAGIC_USER) && !has_class(ch, CLASS_CLERIC) &&
+          !has_class(ch, CLASS_DRUID)) {
         send_to_char("You have the following intrinsic spell abilities:\n\r",
                      ch);
         for (i = 0; *spells[i] != '\n' && i < (MAX_EXIST_SPELL + 1); i++)
-          if (IsIntrinsic(ch, i + 1)) {
+          if (is_intrinsic(ch, i + 1)) {
             SPRINTF(buf, "%-30s %s \n\r", spells[i],
                     how_good(ch->skills[i + 1].learned));
             if (strlen(buf) + strlen(buffer) > (MAX_STRING_LENGTH * 2) - 2)
@@ -652,14 +652,14 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
         send_to_char("You know of these spells:\n\r", ch);
         for (i = 0; *spells[i] != '\n'; i++)
           if (skill_info[i + 1].spell_pointer && (ch->skills[i + 1].learned ||
-                                                  IsIntrinsic(ch, i + 1))) {
+                                                  is_intrinsic(ch, i + 1))) {
             SPRINTF(buf, "[%-3d] %-25s %s",
                     (skill_info[i + 1].min_level[MIN_LEVEL_MAGIC] <
                      skill_info[i + 1].min_level[MIN_LEVEL_CLERIC] ?
                      skill_info[i + 1].min_level[MIN_LEVEL_MAGIC] :
                      skill_info[i + 1].min_level[MIN_LEVEL_CLERIC]),
                     spells[i], how_good(ch->skills[i + 1].learned));
-            if (IsIntrinsic(ch, i + 1))
+            if (is_intrinsic(ch, i + 1))
               strcat(buf, " (intrinsic)\n\r");
             else
               strcat(buf, "\n\r");
@@ -678,7 +678,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
       for (i = 0; *spells[i] != '\n' && i < (MAX_EXIST_SPELL + 1); i++)
         if (!skill_info[i + 1].spell_pointer &&
             (IS_SET(ch->player.class, skill_info[i + 1].class_use) ||
-             IsIntrinsic(ch, i + 1))) {
+             is_intrinsic(ch, i + 1))) {
           SPRINTF(buf, "%-30s %s \n\r", spells[i],
                   how_good(ch->skills[i + 1].learned));
           if (strlen(buf) + strlen(buffer) > (MAX_STRING_LENGTH * 2) - 2)
@@ -695,7 +695,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
   case 'f':
   case 'F':
     {
-      if (!HasClass(ch, CLASS_WARRIOR)) {
+      if (!has_class(ch, CLASS_WARRIOR)) {
         send_to_char("I bet you think you're a warrior.\n\r", ch);
         return;
       }
@@ -717,7 +717,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
   case 'T':
     {
 
-      if (!HasClass(ch, CLASS_THIEF)) {
+      if (!has_class(ch, CLASS_THIEF)) {
         send_to_char("I bet you think you're a thief.\n\r", ch);
         return;
       }
@@ -738,7 +738,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
   case 'M':
   case 'm':
     {
-      if (!HasClass(ch, CLASS_MAGIC_USER)) {
+      if (!has_class(ch, CLASS_MAGIC_USER)) {
         send_to_char("I bet you think you're a magic-user.\n\r", ch);
         return;
       }
@@ -764,7 +764,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
   case 'P':
   case 'p':
     {
-      if (!HasClass(ch, CLASS_CLERIC)) {
+      if (!has_class(ch, CLASS_CLERIC)) {
         send_to_char("I bet you think you're a cleric.\n\r", ch);
         return;
       }
@@ -789,7 +789,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
   case 'D':
   case 'd':
     {
-      if (!HasClass(ch, CLASS_DRUID)) {
+      if (!has_class(ch, CLASS_DRUID)) {
         send_to_char("I bet you think you're a druid.\n\r", ch);
         return;
       }
@@ -812,7 +812,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd) {
     break;
   case 'K':
   case 'k':{
-      if (!HasClass(ch, CLASS_MONK)) {
+      if (!has_class(ch, CLASS_MONK)) {
         send_to_char("I bet you think you're a monk.\n\r", ch);
         return;
       }
@@ -1162,7 +1162,7 @@ void do_quaff(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   for (i = 1; i < 4; i++)
     if (temp->obj_flags.value[i] >= 1)
-      if (!ItemMagicFailure(ch, temp->obj_flags.value[i]))      /* dwarf & gnome */
+      if (!item_magic_failure(ch, temp->obj_flags.value[i]))      /* dwarf & gnome */
         ((*skill_info[temp->obj_flags.value[i]].spell_pointer)
          ((byte) temp->obj_flags.value[0], ch, "", SPELL_TYPE_POTION, ch,
           temp));
@@ -1218,7 +1218,7 @@ void do_recite(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     victim = ch;
   }
 
-  if (!HasClass(ch, CLASS_MAGIC_USER) && !HasClass(ch, CLASS_CLERIC)) {
+  if (!has_class(ch, CLASS_MAGIC_USER) && !has_class(ch, CLASS_CLERIC)) {
     if (ch->skills[SKILL_READ_MAGIC].learned < number(1, 95)) {
       send_to_char
         ("after several seconds of study, you realize that you can't understand this\n\r",
@@ -1243,7 +1243,7 @@ void do_recite(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         if (check_nomagic(ch, "The magic is blocked by unknown forces.\n\r",
                           "The magic dissolves powerlessly"))
           continue;
-        if (!ItemMagicFailure(ch, scroll->obj_flags.value[i]))
+        if (!item_magic_failure(ch, scroll->obj_flags.value[i]))
           ((*skill_info[scroll->obj_flags.value[i]].spell_pointer)
            ((byte) scroll->obj_flags.value[0], ch, "", SPELL_TYPE_SCROLL,
             victim, obj));
@@ -1360,7 +1360,7 @@ void do_use(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       if (check_nomagic(ch, "The magic is blocked by unknown forces.",
                         "The magic is blocked by unknown forces."))
         return;
-      if (!ItemMagicFailure(ch, stick->obj_flags.value[3]))
+      if (!item_magic_failure(ch, stick->obj_flags.value[3]))
         ((*skill_info[stick->obj_flags.value[3]].spell_pointer)
          ((byte) stick->obj_flags.value[0], ch, "", SPELL_TYPE_STAFF, 0, 0));
       WAIT_STATE(ch, PULSE_VIOLENCE);
@@ -1397,7 +1397,7 @@ void do_use(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         if (check_nomagic(ch, "The magic is blocked by unknown forces.",
                           "The magic is blocked by unknown forces."))
           return;
-        if (!ItemMagicFailure(ch, stick->obj_flags.value[0]))
+        if (!item_magic_failure(ch, stick->obj_flags.value[0]))
           ((*spellp->spell_pointer)
            ((byte) stick->obj_flags.value[0], ch, "", SPELL_TYPE_WAND,
             tmp_char, tmp_object));
@@ -1633,12 +1633,12 @@ void do_mount(struct char_data *ch, char *arg, int cmd) {
       return;
     }
 
-    if (!IsHumanoid(ch)) {
+    if (!is_humanoid(ch)) {
       send_to_char("You can't ride things!\n\r", ch);
       return;
     }
 
-    if (IsRideable(horse)) {
+    if (is_rideable(horse)) {
 
       if (GET_POS(horse) < POSITION_STANDING) {
         send_to_char("Your mount must be standing\n\r", ch);
@@ -1654,7 +1654,7 @@ void do_mount(struct char_data *ch, char *arg, int cmd) {
         return;
       }
 
-      check = MountEgoCheck(ch, horse);
+      check = mount_ego_check(ch, horse);
       if (check > 5) {
         act("$N snarls and attacks!", FALSE, ch, 0, horse, TO_CHAR);
         act("as $n tries to mount $N, $N attacks $n!",
@@ -1674,7 +1674,7 @@ void do_mount(struct char_data *ch, char *arg, int cmd) {
       }
 
 
-      if (RideCheck(ch, 50)) {
+      if (ride_check(ch, 50)) {
         act("You hop on $N's back", FALSE, ch, 0, horse, TO_CHAR);
         act("$n hops on $N's back", FALSE, ch, 0, horse, TO_NOTVICT);
         act("$n hops on your back!", FALSE, ch, 0, horse, TO_VICT);

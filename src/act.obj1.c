@@ -136,7 +136,7 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         /*
            check for a trap (traps fire often)
          */
-        if (CheckForAnyTrap(ch, obj_object))
+        if (check_for_any_trap(ch, obj_object))
           return;
         if (CAN_SEE_OBJ(ch, obj_object)) {
           if ((IS_CARRYING_N(ch) + 1) <= CAN_CARRY_N(ch)) {
@@ -258,7 +258,7 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           for (obj_object = sub_object->contains;
                obj_object; obj_object = next_obj) {
             /* check for trap (jdb - 11/9) */
-            if (CheckForGetTrap(ch, obj_object))
+            if (check_for_get_trap(ch, obj_object))
               return;
             next_obj = obj_object->next_content;
             if (CAN_SEE_OBJ(ch, obj_object)) {
@@ -347,7 +347,7 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             obj_object = get_obj_in_list_vis(ch, arg1, sub_object->contains);
             if (obj_object) {
               /* check for trap (jdb - 11/9) */
-              if (CheckForInsideTrap(ch, sub_object))
+              if (check_for_inside_trap(ch, sub_object))
                 return;
               if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch))) {
                 if (has || (IS_CARRYING_W(ch) + obj_object->obj_flags.weight) <

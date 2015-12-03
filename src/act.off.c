@@ -71,7 +71,7 @@ void do_hit(struct char_data *ch, char *argument, int UNUSED(cmd)) {
                   ("You try to switch opponents, but you become confused!\n\r",
                    ch);
                 stop_fighting(ch);
-                LearnFromMistake(ch, SKILL_SWITCH_OPP, 0, 95);
+                learn_from_mistake(ch, SKILL_SWITCH_OPP, 0, 95);
                 WAIT_STATE(ch, PULSE_VIOLENCE * 2);
               }
             }
@@ -144,7 +144,7 @@ void do_backstab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
 
-  if (!HasClass(ch, CLASS_THIEF)) {
+  if (!has_class(ch, CLASS_THIEF)) {
     send_to_char("You're no thief!\n\r", ch);
     return;
   }
@@ -258,22 +258,22 @@ void do_backstab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         }
         if (AWAKE(victim)) {
           damage(ch, victim, 0, SKILL_BACKSTAB);
-          AddHated(victim, ch);
+          add_hated(victim, ch);
         }
         else {
           base += 2;
           GET_HITROLL(ch) += base;
           hit(ch, victim, SKILL_BACKSTAB);
           GET_HITROLL(ch) -= base;
-          AddHated(victim, ch);
+          add_hated(victim, ch);
         }
-        LearnFromMistake(ch, SKILL_BACKSTAB, 0, 95);
+        learn_from_mistake(ch, SKILL_BACKSTAB, 0, 95);
       }
       else {
         GET_HITROLL(ch) += base;
         hit(ch, victim, SKILL_BACKSTAB);
         GET_HITROLL(ch) -= base;
-        AddHated(victim, ch);
+        add_hated(victim, ch);
         if (IS_PC(ch) && IS_PC(victim))
           GET_ALIGNMENT(ch) -= 50;
       }
@@ -282,7 +282,7 @@ void do_backstab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char("Hey, you don't know how to backstab anyone!\n\r", ch);
       send_to_char("But you sure did piss them off trying.\n\r", ch);
       damage(ch, victim, 0, SKILL_BACKSTAB);
-      AddHated(victim, ch);
+      add_hated(victim, ch);
     }
   }
   else {
@@ -332,9 +332,9 @@ void do_order(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       if ((victim->master != ch) || !IS_AFFECTED(victim, AFF_CHARM))
         if (RIDDEN(victim) == ch) {
           int check;
-          check = MountEgoCheck(ch, victim);
+          check = mount_ego_check(ch, victim);
           if (check > 5) {
-            if (RideCheck(ch, -5)) {
+            if (ride_check(ch, -5)) {
               act("$n has an indifferent look.", FALSE, victim, 0, 0, TO_ROOM);
             }
             else {
@@ -554,7 +554,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
               || (number(1, 101) > ch->skills[SKILL_RETREAT].learned)) {
             act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);
             panic = TRUE;
-            LearnFromMistake(ch, SKILL_RETREAT, 0, 90);
+            learn_from_mistake(ch, SKILL_RETREAT, 0, 90);
           }
           else {
             /*
@@ -612,7 +612,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           if (die == 1) {
             /* The escape has succeded. We'll be nice. */
             if (get_max_level(ch) > 3) {
-              if (panic || !HasClass(ch, CLASS_WARRIOR)) {
+              if (panic || !has_class(ch, CLASS_WARRIOR)) {
                 loose = get_max_level(ch) + (get_sec_max_lev(ch) / 2) +
                   (get_third_max_lev(ch) / 3);
                 loose -= get_max_level(ch->specials.fighting) +
@@ -630,26 +630,26 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
             if (IS_NPC(ch) && !(IS_SET(ch->specials.act, ACT_POLYSELF) &&
                                 !(IS_SET(ch->specials.act, ACT_AGGRESSIVE)))) {
-              AddFeared(ch, ch->specials.fighting);
+              add_feared(ch, ch->specials.fighting);
             }
             else {
               percent = (int)100 *(float)GET_HIT(ch->specials.fighting) /
                 (float)GET_MAX_HIT(ch->specials.fighting);
               if (Hates(ch->specials.fighting, ch)) {
-                SetHunting(ch->specials.fighting, ch);
+                set_hunting(ch->specials.fighting, ch);
               }
               else if ((IS_GOOD(ch) && (IS_EVIL(ch->specials.fighting))) ||
                        (IS_EVIL(ch) && (IS_GOOD(ch->specials.fighting)))) {
-                AddHated(ch->specials.fighting, ch);
-                SetHunting(ch->specials.fighting, ch);
+                add_hated(ch->specials.fighting, ch);
+                set_hunting(ch->specials.fighting, ch);
               }
               else if (number(1, 101) < percent) {
-                AddHated(ch->specials.fighting, ch);
-                SetHunting(ch->specials.fighting, ch);
+                add_hated(ch->specials.fighting, ch);
+                set_hunting(ch->specials.fighting, ch);
               }
             }
             if (IS_PC(ch) && panic) {
-              if (HasClass(ch, CLASS_MONK) || !HasClass(ch, CLASS_WARRIOR))
+              if (has_class(ch, CLASS_MONK) || !has_class(ch, CLASS_WARRIOR))
                 gain_exp(ch, -loose);
             }
 
@@ -798,7 +798,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             || (number(1, 101) > ch->skills[SKILL_RETREAT].learned)) {
           act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);
           panic = TRUE;
-          LearnFromMistake(ch, SKILL_RETREAT, 0, 90);
+          learn_from_mistake(ch, SKILL_RETREAT, 0, 90);
         }
         else {
           /*
@@ -836,7 +836,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         if (die == 1) {
           /* The escape has succeded. We'll be nice. */
           if (get_max_level(ch) > 3) {
-            if (panic || !HasClass(ch, CLASS_WARRIOR)) {
+            if (panic || !has_class(ch, CLASS_WARRIOR)) {
               loose = get_max_level(ch) + (get_sec_max_lev(ch) / 2) +
                 (get_third_max_lev(ch) / 3);
               loose -= get_max_level(ch->specials.fighting) +
@@ -852,26 +852,26 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             loose = 1;
           if (IS_NPC(ch) && !(IS_SET(ch->specials.act, ACT_POLYSELF) &&
                               !(IS_SET(ch->specials.act, ACT_AGGRESSIVE)))) {
-            AddFeared(ch, ch->specials.fighting);
+            add_feared(ch, ch->specials.fighting);
           }
           else {
             percent = (int)100 *(float)GET_HIT(ch->specials.fighting) /
               (float)GET_MAX_HIT(ch->specials.fighting);
             if (Hates(ch->specials.fighting, ch)) {
-              SetHunting(ch->specials.fighting, ch);
+              set_hunting(ch->specials.fighting, ch);
             }
             else if ((IS_GOOD(ch) && (IS_EVIL(ch->specials.fighting))) ||
                      (IS_EVIL(ch) && (IS_GOOD(ch->specials.fighting)))) {
-              AddHated(ch->specials.fighting, ch);
-              SetHunting(ch->specials.fighting, ch);
+              add_hated(ch->specials.fighting, ch);
+              set_hunting(ch->specials.fighting, ch);
             }
             else if (number(1, 101) < percent) {
-              AddHated(ch->specials.fighting, ch);
-              SetHunting(ch->specials.fighting, ch);
+              add_hated(ch->specials.fighting, ch);
+              set_hunting(ch->specials.fighting, ch);
             }
           }
           if (IS_PC(ch) && panic) {
-            if (HasClass(ch, CLASS_MONK) || !HasClass(ch, CLASS_WARRIOR))
+            if (has_class(ch, CLASS_MONK) || !has_class(ch, CLASS_WARRIOR))
               gain_exp(ch, -loose);
           }
 
@@ -918,7 +918,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd) {
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;
 
-  if (!HasClass(ch, CLASS_WARRIOR)) {
+  if (!has_class(ch, CLASS_WARRIOR)) {
     send_to_char("You're no warrior!\n\r", ch);
     return;
   }
@@ -992,7 +992,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd) {
       damage(ch, victim, 0, SKILL_BASH);
       GET_POS(ch) = POSITION_SITTING;
     }
-    LearnFromMistake(ch, SKILL_BASH, 0, 90);
+    learn_from_mistake(ch, SKILL_BASH, 0, 90);
   }
   else {
     if (GET_POS(victim) > POSITION_DEAD) {
@@ -1025,7 +1025,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd) {
   if (check_peaceful(ch, "No one should need rescuing here.\n\r"))
     return;
 
-  if (!HasClass(ch, CLASS_WARRIOR)) {
+  if (!has_class(ch, CLASS_WARRIOR)) {
     send_to_char("You're no warrior!\n\r", ch);
     return;
   }
@@ -1075,7 +1075,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd) {
 
   if ((percent > ch->skills[SKILL_RESCUE].learned)) {
     send_to_char("You fail the rescue.\n\r", ch);
-    LearnFromMistake(ch, SKILL_RESCUE, 0, 90);
+    learn_from_mistake(ch, SKILL_RESCUE, 0, 90);
     WAIT_STATE(ch, PULSE_VIOLENCE);
     return;
   }
@@ -1164,7 +1164,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd) {
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;
 
-  if (!HasClass(ch, CLASS_WARRIOR) && !HasClass(ch, CLASS_MONK)) {
+  if (!has_class(ch, CLASS_WARRIOR) && !has_class(ch, CLASS_MONK)) {
     send_to_char("You're no warrior!\n\r", ch);
     return;
   }
@@ -1215,13 +1215,13 @@ void do_kick(struct char_data *ch, char *argument, int cmd) {
 
   if (GET_RACE(victim) == RACE_GHOST) {
     kick_messages(ch, victim, 0);
-    SetVictFighting(ch, victim);
+    set_vict_fighting(ch, victim);
     return;
   }
   else if (!IS_NPC(victim) && (get_max_level(victim) > MAX_MORT)) {
     kick_messages(ch, victim, 0);
-    SetVictFighting(ch, victim);
-    SetCharFighting(ch, victim);
+    set_vict_fighting(ch, victim);
+    set_char_fighting(ch, victim);
     return;
   }
 
@@ -1233,12 +1233,12 @@ void do_kick(struct char_data *ch, char *argument, int cmd) {
       damage(ch, victim, 0, SKILL_KICK);
       kick_messages(ch, victim, 0);
     }
-    LearnFromMistake(ch, SKILL_KICK, 0, 90);
+    learn_from_mistake(ch, SKILL_KICK, 0, 90);
   }
   else {
     if (GET_POS(victim) > POSITION_DEAD) {
-      dam = GET_LEVEL(ch, BestFightingClass(ch));
-      if (!HasClass(ch, CLASS_MONK))
+      dam = GET_LEVEL(ch, best_fighting_class(ch));
+      if (!has_class(ch, CLASS_MONK))
         dam = dam >> 1;
       /* damage(ch, victim, dam, SKILL_KICK); 
          else
@@ -1454,7 +1454,7 @@ void do_springleap(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;
 
-  if (!HasClass(ch, CLASS_MONK)) {
+  if (!has_class(ch, CLASS_MONK)) {
     send_to_char("You're no monk!\n\r", ch);
     return;
   }
@@ -1502,7 +1502,7 @@ void do_springleap(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   if (percent > ch->skills[SKILL_SPRING_LEAP].learned) {
     if (GET_POS(victim) > POSITION_DEAD) {
       damage(ch, victim, 0, SKILL_KICK);
-      LearnFromMistake(ch, SKILL_SPRING_LEAP, 0, 90);
+      learn_from_mistake(ch, SKILL_SPRING_LEAP, 0, 90);
       send_to_char("You fall on your butt\n\r", ch);
       act("$n falls on $s butt", FALSE, ch, 0, 0, TO_ROOM);
     }
@@ -1511,11 +1511,11 @@ void do_springleap(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   }
   else {
-    if (HitOrMiss(ch, victim, CalcThaco(ch))) {
+    if (hit_or_miss(ch, victim, calc_thaco(ch))) {
       if (GET_POS(victim) > POSITION_DEAD)
-        damage(ch, victim, GET_LEVEL(ch, BestFightingClass(ch)) >> 1,
+        damage(ch, victim, GET_LEVEL(ch, best_fighting_class(ch)) >> 1,
                SKILL_KICK);
-      kick_messages(ch, victim, GET_LEVEL(ch, BestFightingClass(ch)) >> 1);
+      kick_messages(ch, victim, GET_LEVEL(ch, best_fighting_class(ch)) >> 1);
     }
     else {
       damage(ch, victim, 0, SKILL_KICK);
@@ -1541,7 +1541,7 @@ void do_quivering_palm(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;
 
-  if (!HasClass(ch, CLASS_MONK)) {
+  if (!has_class(ch, CLASS_MONK)) {
     send_to_char("You're no monk!\n\r", ch);
     return;
   }
@@ -1571,7 +1571,7 @@ void do_quivering_palm(struct char_data *ch, char *arg, int UNUSED(cmd)) {
     return;
   }
 
-  if (!IsHumanoid(victim)) {
+  if (!is_humanoid(victim)) {
     send_to_char("You can only do this to humanoid opponents\n\r", ch);
     return;
   }
@@ -1588,7 +1588,7 @@ void do_quivering_palm(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   if (percent > ch->skills[SKILL_QUIV_PALM].learned) {
     send_to_char("The vibrations fade ineffectively\n\r", ch);
     if (GET_POS(victim) > POSITION_DEAD) {
-      LearnFromMistake(ch, SKILL_QUIV_PALM, 0, 95);
+      learn_from_mistake(ch, SKILL_QUIV_PALM, 0, 95);
     }
     WAIT_STATE(ch, PULSE_VIOLENCE * 3);
     return;
@@ -1600,7 +1600,7 @@ void do_quivering_palm(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       damage(ch, victim, 0, SKILL_QUIV_PALM);
       return;
     }
-    if (HitOrMiss(ch, victim, CalcThaco(ch))) {
+    if (hit_or_miss(ch, victim, calc_thaco(ch))) {
       if (GET_POS(victim) > POSITION_DEAD)
         damage(ch, victim, GET_MAX_HIT(victim) * 20, SKILL_QUIV_PALM);
     }
@@ -1703,7 +1703,7 @@ void kick_messages(struct char_data *ch, struct char_data *victim, int damage) {
     act(att_kick_miss_room[i], FALSE, ch, ch->equipment[WIELD], victim,
         TO_NOTVICT);
   }
-  else if (GET_HIT(victim) - DamageTrivia(ch, victim, damage, SKILL_KICK) <
+  else if (GET_HIT(victim) - damage_trivia(ch, victim, damage, SKILL_KICK) <
            -10) {
     act(att_kick_kill_ch[i], FALSE, ch, ch->equipment[WIELD], victim, TO_CHAR);
     act(att_kick_kill_victim[i], FALSE, ch, ch->equipment[WIELD], victim,

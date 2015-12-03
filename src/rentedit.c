@@ -10,7 +10,7 @@
 #endif
 
 
-int ReadObjs(FILE * fl, struct obj_file_u *st) {
+int read_objs(FILE * fl, struct obj_file_u *st) {
   int i;
   char buf[128];
 
@@ -106,7 +106,7 @@ void main(int argc, char *argv[]) {
         continue;
 
       num_tried++;
-      if (ReadObjs(rf, &st)) {
+      if (read_objs(rf, &st)) {
         /*      printf("  [%d]\n",st.number); */
         num_succeed++;
 

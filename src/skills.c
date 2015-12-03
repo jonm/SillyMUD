@@ -145,7 +145,7 @@ void do_inset(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   if (perc > ch->skills[SKILL_INSET].learned) {
     act("$n fumbles with $p and breaks it!", 0, ch, gem, gem, TO_ROOM);
     act("You fumble with $p and break it!", 0, ch, gem, gem, TO_CHAR);
-    MakeScrap(ch, gem);
+    make_scrap(ch, gem);
     return;
   }
 
@@ -168,7 +168,7 @@ void do_inset(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   for (i = 0; i < MAX_OBJ_AFFECT; i++) {
     if (gem->affected[i].location != APPLY_NONE) {
-      j = getFreeAffSlot(sword);
+      j = getfree_aff_slot(sword);
       sword->affected[j].location = gem->affected[i].location;
       sword->affected[j].modifier = gem->affected[i].modifier;
     }
@@ -255,7 +255,7 @@ void do_disarm(struct char_data *ch, char *argument, int cmd) {
     return;
   }
 
-  if (!HasClass(ch, CLASS_WARRIOR) && !HasClass(ch, CLASS_MONK)) {
+  if (!has_class(ch, CLASS_WARRIOR) && !has_class(ch, CLASS_MONK)) {
     send_to_char("You're no warrior!\n\r", ch);
     return;
   }
@@ -267,15 +267,15 @@ void do_disarm(struct char_data *ch, char *argument, int cmd) {
 
   percent -= dex_app[(int)GET_DEX(ch)].reaction * 10;
   percent += dex_app[(int)GET_DEX(victim)].reaction * 10;
-  if (!ch->equipment[WIELD] && !HasClass(ch, CLASS_MONK)) {
+  if (!ch->equipment[WIELD] && !has_class(ch, CLASS_MONK)) {
     percent += 50;
   }
 
   percent += get_max_level(victim);
-  if (HasClass(victim, CLASS_MONK))
+  if (has_class(victim, CLASS_MONK))
     percent += get_max_level(victim);
 
-  if (HasClass(ch, CLASS_MONK)) {
+  if (has_class(ch, CLASS_MONK)) {
     percent -= get_max_level(ch);
   }
   else {
@@ -295,7 +295,7 @@ void do_disarm(struct char_data *ch, char *argument, int cmd) {
         (!victim->specials.fighting)) {
       set_fighting(victim, ch);
     }
-    LearnFromMistake(ch, SKILL_DISARM, 0, 95);
+    learn_from_mistake(ch, SKILL_DISARM, 0, 95);
     WAIT_STATE(ch, PULSE_VIOLENCE * 3);
   }
   else {
@@ -680,7 +680,7 @@ int go_direction(struct char_data *ch, int dir) {
   if (!IS_SET(EXIT(ch, dir)->exit_info, EX_CLOSED)) {
     do_move(ch, "", dir + 1);
   }
-  else if (IsHumanoid(ch) && !IS_SET(EXIT(ch, dir)->exit_info, EX_LOCKED)) {
+  else if (is_humanoid(ch) && !IS_SET(EXIT(ch, dir)->exit_info, EX_LOCKED)) {
     open_door(ch, dir);
     return 0;
   }
@@ -785,11 +785,11 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
     char_to_room(ch, exitp->to_room);
     do_look(ch, "", 0);
 
-    DisplayMove(ch, dir, was_in, 1);
+    display_move(ch, dir, was_in, 1);
     if (!check_falling(ch)) {
       if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
           get_max_level(ch) < LOW_IMMORTAL) {
-        NailThisSucker(ch);
+        nail_this_sucker(ch);
         return;
       }
       else {
@@ -821,7 +821,7 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       roll = number(1, 100);
       if (roll > ch->skills[SKILL_DOORBASH].learned) {
         slam_into_wall(ch, exitp);
-        LearnFromMistake(ch, SKILL_DOORBASH, 0, 95);
+        learn_from_mistake(ch, SKILL_DOORBASH, 0, 95);
       }
       else {
         /*
@@ -846,11 +846,11 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
           char_from_room(ch);
           char_to_room(ch, exitp->to_room);
           do_look(ch, "", 0);
-          DisplayMove(ch, dir, was_in, 1);
+          display_move(ch, dir, was_in, 1);
           if (!check_falling(ch)) {
             if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
                 get_max_level(ch) < LOW_IMMORTAL) {
-              NailThisSucker(ch);
+              nail_this_sucker(ch);
               return;
             }
           }
@@ -936,7 +936,7 @@ void do_swim(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
 }
 
 
-int SpyCheck(struct char_data *ch) {
+int spy_check(struct char_data *ch) {
 
   if (!ch->skills)
     return (FALSE);
@@ -967,7 +967,7 @@ void do_spy(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
     return;
 
   if (number(1, 101) > ch->skills[SKILL_SPY].learned) {
-    LearnFromMistake(ch, SKILL_SPY, 0, 95);
+    learn_from_mistake(ch, SKILL_SPY, 0, 95);
 
     af.type = SKILL_SPY;
     af.duration = (ch->skills[SKILL_SPY].learned / 10) + 1;
@@ -1008,7 +1008,7 @@ int remove_trap(struct char_data *ch, struct obj_data *trap) {
   else {
     send_to_char("<Click>\n\r(uh oh)\n\r", ch);
     act("$n attempts to disarm $p, ack!", FALSE, ch, trap, 0, TO_ROOM);
-    TriggerTrap(ch, trap);
+    trigger_trap(ch, trap);
     return (TRUE);
   }
 }
@@ -1025,7 +1025,7 @@ void do_feign_death(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
     return;
   }
 
-  if (!HasClass(ch, CLASS_MONK)) {
+  if (!has_class(ch, CLASS_MONK)) {
     send_to_char("You're no monk!\n\r", ch);
     return;
   }
@@ -1060,7 +1060,7 @@ void do_feign_death(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   else {
     GET_POS(ch) = POSITION_SLEEPING;
     WAIT_STATE(ch, PULSE_VIOLENCE * 3);
-    LearnFromMistake(ch, SKILL_FEIGN_DEATH, 0, 95);
+    learn_from_mistake(ch, SKILL_FEIGN_DEATH, 0, 95);
   }
 }
 
@@ -1083,7 +1083,7 @@ void do_first_aid(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   }
   else {
     af.duration = 6;
-    LearnFromMistake(ch, SKILL_FEIGN_DEATH, TRUE, 95);
+    learn_from_mistake(ch, SKILL_FEIGN_DEATH, TRUE, 95);
   }
 
   af.type = SKILL_FIRST_AID;
@@ -1113,16 +1113,16 @@ void do_disguise(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
       }
       if (number(1, 101) < ch->skills[SKILL_DISGUISE].learned) {
         if (Hates(k, ch)) {
-          ZeroHatred(k, ch);
+          zero_hatred(k, ch);
         }
         if (Fears(k, ch)) {
-          ZeroFeared(k, ch);
+          zero_feared(k, ch);
         }
       }
     }
   }
   else {
-    LearnFromMistake(ch, SKILL_DISGUISE, 0, 95);
+    learn_from_mistake(ch, SKILL_DISGUISE, 0, 95);
   }
 
   af.type = SKILL_DISGUISE;
@@ -1207,7 +1207,7 @@ void do_climb(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       roll = number(1, 100);
       if (roll > ch->skills[SKILL_CLIMB].learned) {
         slip_in_climb(ch, dir, exitp->to_room);
-        LearnFromMistake(ch, SKILL_CLIMB, 0, 95);
+        learn_from_mistake(ch, SKILL_CLIMB, 0, 95);
       }
       else {
 
@@ -1216,11 +1216,11 @@ void do_climb(struct char_data *ch, char *arg, int UNUSED(cmd)) {
         char_from_room(ch);
         char_to_room(ch, exitp->to_room);
         do_look(ch, "", 0);
-        DisplayMove(ch, dir, was_in, 1);
+        display_move(ch, dir, was_in, 1);
         if (!check_falling(ch)) {
           if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
               get_max_level(ch) < LOW_IMMORTAL) {
-            NailThisSucker(ch);
+            nail_this_sucker(ch);
             return;
           }
 
@@ -1282,7 +1282,7 @@ void do_palm(struct char_data *ch, char *arg, int cmd) {
   }
 
   if (number(1, 101) > ch->skills[SKILL_PALM].learned ||
-      !(HasClass(ch, CLASS_THIEF) && !IsIntrinsic(ch, SKILL_SPY))) {
+      !(has_class(ch, CLASS_THIEF) && !is_intrinsic(ch, SKILL_SPY))) {
 
     do_get(ch, arg, cmd);
     return;
@@ -1370,7 +1370,7 @@ void do_palm(struct char_data *ch, char *arg, int cmd) {
       if (GET_ITEM_TYPE(sub_object) == ITEM_CONTAINER) {
         obj_object = get_obj_in_list_vis(ch, arg1, sub_object->contains);
         if (obj_object) {
-          if (CheckForInsideTrap(ch, sub_object))
+          if (check_for_inside_trap(ch, sub_object))
             return;
           if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch))) {
             if (has || (IS_CARRYING_W(ch) + obj_object->obj_flags.weight) <
@@ -1466,9 +1466,9 @@ void do_peek(struct char_data *ch, char *arg, int cmd) {
 
   if (!IS_IMMORTAL(ch)) {
     if (number(1, 101) > ch->skills[SKILL_PEEK].learned ||
-        !(HasClass(ch, CLASS_THIEF) && !IsIntrinsic(ch, SKILL_SPY))) {
+        !(has_class(ch, CLASS_THIEF) && !is_intrinsic(ch, SKILL_SPY))) {
       do_look(ch, arg, cmd);
-      LearnFromMistake(ch, SKILL_PEEK, 0, 95);
+      learn_from_mistake(ch, SKILL_PEEK, 0, 95);
       return;
     }
   }
@@ -1804,7 +1804,7 @@ void assign_skills() {
   add_skill(SKILL_CONS_INSECT, TAUGHT_BY_LORE, CLASS_ALL, 95);
 
   /* Racial access and forbiddance goes below.  Must ensure that */
-  /* skills (spells will) allow these via IsIntrinsic() checks.  */
+  /* skills (spells will) allow these via is_intrinsic() checks.  */
 
   skill_info[SKILL_SWIM].race_deny[0] = RACE_DWARF;
 

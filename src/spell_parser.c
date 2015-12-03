@@ -34,7 +34,7 @@
 
 /* 100 is the MAX_MANA for a character */
 #define USE_MANA(ch, sn) \
-  MAX((int)skill_info[sn].min_usesmana, 100/MAX(2,(2+GET_LEVEL(ch, BestMagicClass(ch))-SPELL_LEVEL(ch,sn))))
+  MAX((int)skill_info[sn].min_usesmana, 100/MAX(2,(2+GET_LEVEL(ch, best_magic_class(ch))-SPELL_LEVEL(ch,sn))))
 
 #define SPELL_MEMORIZED 2
 
@@ -58,8 +58,8 @@ extern int sf_where[];
 void spell_wear_offSoon(int s, struct char_data *ch);
 void check_drowning(struct char_data *ch);
 int check_falling(struct char_data *ch);
-int IsIntrinsic(struct char_data *ch, int spl);
-int CastIntrinsic(struct char_data *ch, int spl);
+int is_intrinsic(struct char_data *ch, int spl);
+int cast_intrinsic(struct char_data *ch, int spl);
 void check_decharm(struct char_data *ch);
 void spell_wear_off(int s, struct char_data *ch);
 void forget(struct char_data *ch, int spl);
@@ -431,15 +431,15 @@ int SPELL_LEVEL(struct char_data *ch, int sn) {
 
   min = ABS_MAX_LVL;
 
-  if (HasClass(ch, CLASS_MAGIC_USER))
+  if (has_class(ch, CLASS_MAGIC_USER))
     min = MIN(min, skill_info[sn].min_level[MIN_LEVEL_MAGIC]);
 
 
-  if (HasClass(ch, CLASS_CLERIC))
+  if (has_class(ch, CLASS_CLERIC))
     min = MIN(min, skill_info[sn].min_level[MIN_LEVEL_CLERIC]);
 
 
-  if (HasClass(ch, CLASS_DRUID))
+  if (has_class(ch, CLASS_DRUID))
     min = MIN(min, skill_info[sn].min_level[MIN_LEVEL_DRUID]);
 
 
@@ -643,7 +643,7 @@ void affect_update(int pulse) {
           act("$p dissolves into a fertile soil.",
               TRUE, real_roomp(j->in_room)->people, j, 0, TO_CHAR);
         }
-        ObjFromCorpse(j);
+        obj_from_corpse(j);
       }
     }
     else {
@@ -664,14 +664,14 @@ void affect_update(int pulse) {
             room = j->in_room;
           }
           else {
-            room = RecGetObjRoom(j);
+            room = rec_get_obj_room(j);
           }
           /*
            *  broadcast to room
            */
 
           if (j->action_description) {
-            MakeNoise(room, j->action_description, j->action_description);
+            make_noise(room, j->action_description, j->action_description);
           }
         }
       }
@@ -894,9 +894,9 @@ bool saves_spell(struct char_data *ch, sh_int save_type) {
 
   if (!IS_NPC(ch)) {
 
-    save += saving_throws[BestMagicClass(ch)][save_type][(int)
+    save += saving_throws[best_magic_class(ch)][save_type][(int)
                                                          GET_LEVEL(ch,
-                                                                   BestMagicClass
+                                                                   best_magic_class
                                                                    (ch))];
     if (get_max_level(ch) > MAX_MORT)
       return (TRUE);
@@ -908,7 +908,7 @@ bool saves_spell(struct char_data *ch, sh_int save_type) {
   return (MAX(1, save) < number(1, 20));
 }
 
-bool ImpSaveSpell(struct char_data * ch, sh_int save_type, int mod) {
+bool imp_save_spell(struct char_data * ch, sh_int save_type, int mod) {
   int save;
 
   /* Positive mod is better for save */
@@ -919,8 +919,8 @@ bool ImpSaveSpell(struct char_data * ch, sh_int save_type, int mod) {
 
   if (!IS_NPC(ch)) {
 
-    save += saving_throws[BestMagicClass(ch)][save_type]
-      [(int)GET_LEVEL(ch, BestMagicClass(ch))];
+    save += saving_throws[best_magic_class(ch)][save_type]
+      [(int)GET_LEVEL(ch, best_magic_class(ch))];
     if (get_max_level(ch) >= LOW_IMMORTAL)
       return (TRUE);
   }
@@ -951,7 +951,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
   if (IS_NPC(ch) && (!IS_SET(ch->specials.act, ACT_POLYSELF)))
     return;
 
-  if (!IsHumanoid(ch)) {
+  if (!is_humanoid(ch)) {
     send_to_char("Sorry, you don't have the right form for that.\n\r", ch);
     return;
   }
@@ -996,14 +996,14 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
     return;
   }
 
-  if (IsIntrinsic(ch, spl))
-    if (CastIntrinsic(ch, spl))
+  if (is_intrinsic(ch, spl))
+    if (cast_intrinsic(ch, spl))
       intrinsic = TRUE;
 
 
   if (!IS_IMMORTAL(ch) && !intrinsic) {
-    if (BestMagicClass(ch) == WARRIOR_LEVEL_IND) {
-      if (IsIntrinsic(ch, spl)) {
+    if (best_magic_class(ch) == WARRIOR_LEVEL_IND) {
+      if (is_intrinsic(ch, spl)) {
         send_to_char("You are unable to draw upon your innate abilities.\n\r",
                      ch);
       }
@@ -1012,8 +1012,8 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
                      ch);
       return;
     }
-    else if (BestMagicClass(ch) == THIEF_LEVEL_IND) {
-      if (IsIntrinsic(ch, spl)) {
+    else if (best_magic_class(ch) == THIEF_LEVEL_IND) {
+      if (is_intrinsic(ch, spl)) {
         send_to_char("You are unable to draw upon your innate abilities.\n\r",
                      ch);
       }
@@ -1022,8 +1022,8 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
                      ch);
       return;
     }
-    else if (BestMagicClass(ch) == MONK_LEVEL_IND) {
-      if (IsIntrinsic(ch, spl)) {
+    else if (best_magic_class(ch) == MONK_LEVEL_IND) {
+      if (is_intrinsic(ch, spl)) {
         send_to_char("You are unable to draw upon your innate abilities.\n\r",
                      ch);
       }
@@ -1255,7 +1255,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
 
       /* assume we have a valid spell & caster */
 
-      if (HasClass(ch, CLASS_DRUID)) {
+      if (has_class(ch, CLASS_DRUID)) {
         if (skill_info[spl].min_level[MIN_LEVEL_MAGIC] <
             skill_info[spl].min_level[MIN_LEVEL_CLERIC] &&
             skill_info[spl].min_level[MIN_LEVEL_MAGIC] <=
@@ -1280,7 +1280,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
           spell_class = CLASS_CLERIC;
       }
 
-      if (OnlyClass(ch, CLASS_DRUID)) {
+      if (only_class(ch, CLASS_DRUID)) {
         spell_class = CLASS_DRUID;
       }
 
@@ -1288,7 +1288,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
 
       if (!IS_IMMORTAL(ch)) {
         if (spell_class == CLASS_DRUID) {
-          if (EqWBits(ch, ITEM_METAL)) {
+          if (eq_w_bits(ch, ITEM_METAL)) {
             send_to_char("You can't cast that spell while touching metal!\n\r",
                          ch);
             return;
@@ -1326,7 +1326,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
         max += skill_info[spl].spellfail / 3;
 
       /* Gecko Druid Spell Fail */
-      if (HasClass(ch, CLASS_DRUID) && !IS_NEUTRAL(ch))
+      if (has_class(ch, CLASS_DRUID) && !IS_NEUTRAL(ch))
         max += MIN(650, MAX(0, abs(GET_ALIGNMENT(ch)) - 350));
 
       if (number(1, max) > (intrinsic ? 95 : ch->skills[spl].learned)) {
@@ -1334,7 +1334,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
         if (!intrinsic) {
           cost = (int)USE_MANA(ch, (int)spl);
           GET_MANA(ch) -= (cost >> 1);
-          LearnFromMistake(ch, spl, 0, 95);
+          learn_from_mistake(ch, spl, 0, 95);
           return;
         }
       }
@@ -1352,7 +1352,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
 
 
       send_to_char("Ok.\n\r", ch);
-      ((*skill_info[spl].spell_pointer) (GET_LEVEL(ch, BestMagicClass(ch)), ch,
+      ((*skill_info[spl].spell_pointer) (GET_LEVEL(ch, best_magic_class(ch)), ch,
                                          argument, SPELL_TYPE_SPELL, tar_char,
                                          tar_obj));
       cost = (int)USE_MANA(ch, (int)spl);
@@ -1967,7 +1967,7 @@ void check_decharm(struct char_data *ch) {
   m = ch->master;
   stop_follower(ch);            /* stop following the master */
   REMOVE_BIT(ch->specials.act, ACT_SENTINEL);
-  AddFeared(ch, m);
+  add_feared(ch, m);
   do_flee(ch, "", 0);
 
 }
@@ -2025,7 +2025,7 @@ int check_falling(struct char_data *ch) {
 /*
   should damage all their stuff
 */
-        DamageAllStuff(ch, BLOW_DAMAGE);
+        damage_all_stuff(ch, BLOW_DAMAGE);
 
         if (!IS_IMMORTAL(ch)) {
           GET_HIT(ch) = 0;
@@ -2047,7 +2047,7 @@ int check_falling(struct char_data *ch) {
 /*
   should damage all their stuff
 */
-        DamageAllStuff(ch, BLOW_DAMAGE);
+        damage_all_stuff(ch, BLOW_DAMAGE);
 
         return (TRUE);
 
@@ -2064,7 +2064,7 @@ int check_falling(struct char_data *ch) {
     do_look(ch, "", 0);
 
     if (IS_SET(targ->room_flags, DEATH) && !IS_IMMORTAL(ch)) {
-      NailThisSucker(ch);
+      nail_this_sucker(ch);
       return (TRUE);
     }
 
@@ -2078,7 +2078,7 @@ int check_falling(struct char_data *ch) {
 /*
   should damage all their stuff
 */
-        DamageAllStuff(ch, BLOW_DAMAGE);
+        damage_all_stuff(ch, BLOW_DAMAGE);
 
         return (TRUE);
 
@@ -2096,7 +2096,7 @@ int check_falling(struct char_data *ch) {
 /*
   should damage all their stuff
 */
-        DamageAllStuff(ch, BLOW_DAMAGE);
+        damage_all_stuff(ch, BLOW_DAMAGE);
 
         if (!IS_IMMORTAL(ch)) {
           GET_HIT(ch) = 0;
@@ -2117,7 +2117,7 @@ int check_falling(struct char_data *ch) {
 /*
   should damage all their stuff
 */
-        DamageAllStuff(ch, BLOW_DAMAGE);
+        damage_all_stuff(ch, BLOW_DAMAGE);
 
         return (TRUE);
 
@@ -2292,7 +2292,7 @@ void check_nature(struct char_data *i) {
 
 }
 
-int IsIntrinsic(struct char_data *ch, int spl) {
+int is_intrinsic(struct char_data *ch, int spl) {
   int i;
 
   for (i = 0; i < MAX_RACE_INTRINSIC; i++)
@@ -2301,14 +2301,14 @@ int IsIntrinsic(struct char_data *ch, int spl) {
   return (FALSE);
 }
 
-int CastIntrinsic(struct char_data *ch, int spl) {
+int cast_intrinsic(struct char_data *ch, int spl) {
   struct affected_type af, *p;
 
   af.duration = 0;
   af.location = APPLY_INTRINSIC;
   af.type = spl;
 
-  if (!IsIntrinsic(ch, spl)) {
+  if (!is_intrinsic(ch, spl)) {
     send_to_char
       ("Hey bozo, what are you doing trying to use an intrinsic?\n\r", ch);
     return (FALSE);
@@ -2379,7 +2379,7 @@ int CastIntrinsic(struct char_data *ch, int spl) {
   }
   else {
     log_msg
-      ("Unaccounted racial intrinsic, no duration set in CastIntrinsic()");
+      ("Unaccounted racial intrinsic, no duration set in cast_intrinsic()");
     return (FALSE);
   }
 

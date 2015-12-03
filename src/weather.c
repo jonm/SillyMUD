@@ -47,10 +47,10 @@ void another_hour(int mode) {
   if (mode) {                   /* tick */
 
     /* as a test, save a piece of the world every mud hour */
-    SaveTheWorld();
+    save_the_world();
     if (tmp == 0) {
       for (i = 0; i < 29; i++)  /* save the rest of the world automatically */
-        SaveTheWorld();
+        save_the_world();
     }
     if (tmp == gMoonRise) {
       if (moontype < 4) {
@@ -84,7 +84,7 @@ void another_hour(int mode) {
       weather_info.sunlight = SUN_LIGHT;
       switch_light(SUN_LIGHT);
       send_to_outdoor("The day has begun.\n\r");
-      GlobalSunProblemCheck(TRUE);
+      global_sun_problem_check(TRUE);
     }
     if (tmp == gSunSet) {
       weather_info.sunlight = SUN_SET;
@@ -95,7 +95,7 @@ void another_hour(int mode) {
       weather_info.sunlight = SUN_DARK;
       switch_light(SUN_DARK);
       send_to_outdoor("Nightime has settled upon the realms.\n\r");
-      GlobalSunProblemCheck(FALSE);
+      global_sun_problem_check(FALSE);
     }
     if (tmp == gMoonSet) {
       if ((moontype > 15) && (moontype < 25)) {
@@ -126,7 +126,7 @@ void another_hour(int mode) {
         break;
       }
       /* check the season */
-      ChangeSeason(time_info.month);
+      change_season(time_info.month);
 
       moontype++;
       if (moontype > 32)
@@ -144,12 +144,12 @@ void another_hour(int mode) {
         }
       }
 
-      ChangeSeason(time_info.month);
+      change_season(time_info.month);
     }
   }
 }
 
-void ChangeSeason(int month) {
+void change_season(int month) {
   extern int gSeason;
   switch (month) {
   case 0:
@@ -434,7 +434,7 @@ void switch_light(byte why) {
 
 }
 
-void GlobalSunProblemCheck(bool light) {
+void global_sun_problem_check(bool light) {
   struct descriptor_data *i;
 
   for (i = descriptor_list; i; i = i->next)
@@ -453,7 +453,7 @@ void GlobalSunProblemCheck(bool light) {
 
 }
 
-void SunProblemCheck(struct char_data *ch) {
+void sun_problem_check(struct char_data *ch) {
   if (SUNPROBLEM(ch)) {
     if ((time_info.hours > 5 && time_info.hours < 18) &&
         (OUTSIDE(ch) && !IS_SET(real_roomp(ch->in_room)->room_flags, DARK))) {

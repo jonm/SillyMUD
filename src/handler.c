@@ -203,7 +203,7 @@ void affect_modify(struct char_data *ch, byte loc, long mod, long bitv,
     break;
 
   case APPLY_STR:
-    ChangeStrength(ch, mod);
+    change_strength(ch, mod);
     break;
 
   case APPLY_DEX:
@@ -496,7 +496,7 @@ void affect_total(struct char_data *ch) {
     }
   }
   else {
-    /* warning: I am counting on ChangeStrength() */
+    /* warning: I am counting on change_strength() */
     /* to be working for this to be safe :) */
     GET_STR(ch) = MIN(22, GET_STR(ch));
   }
@@ -718,7 +718,7 @@ void char_to_room(struct char_data *ch, int room) {
       reset_zone(rp->zone);
     }
 
-    SunProblemCheck(ch);
+    sun_problem_check(ch);
 
   }
 }
@@ -850,7 +850,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos) {
      use some funky function to determine if pc's ego is higher than objs'
      ego.. if it is, proceed.. otherwise, deny.
    */
-  j = ItemEgoClash(ch, obj, 0);
+  j = item_ego_clash(ch, obj, 0);
   if (j < -5) {
     act("$p almost seems to say 'You're much too puny to use me, twerp!'", 0,
         ch, obj, 0, TO_CHAR);
@@ -871,7 +871,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos) {
     return;
   }
 
-  if (ItemAlignClash(ch, obj)) {
+  if (item_align_clash(ch, obj)) {
     if (ch->in_room != NOWHERE) {
 
       act("You are zapped by $p and instantly drop it.",
@@ -889,7 +889,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos) {
   }
 
   if (IS_AFFECTED(ch, AFF_SNEAK) &&
-      IsRestricted(GetItemClassRestrictions(obj), CLASS_THIEF))
+      is_restricted(get_item_class_restrictions(obj), CLASS_THIEF))
     affect_from_char(ch, SKILL_SNEAK);
 
   ch->equipment[pos] = obj;
@@ -907,14 +907,14 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos) {
   if (GET_ITEM_TYPE(obj) == ITEM_WEAPON) {
     /* some nifty manuevering for strength */
     if (IS_NPC(ch) && !IS_SET(ch->specials.act, ACT_POLYSELF))
-      GiveMinStrToWield(obj, ch);
+      give_min_str_to_wield(obj, ch);
   }
 
   affect_total(ch);
 }
 
 
-int GiveMinStrToWield(struct obj_data *obj, struct char_data *ch) {
+int give_min_str_to_wield(struct obj_data *obj, struct char_data *ch) {
   int str = 0;
 
   GET_STR(ch) = 16;             /* nice, semi-reasonable start */
@@ -1524,10 +1524,10 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
           k->specials.hunting = 0;
         }
       if (Hates(k, ch)) {
-        RemHated(k, ch);
+        rem_hated(k, ch);
       }
       if (Fears(k, ch)) {
-        RemFeared(k, ch);
+        rem_feared(k, ch);
       }
       if (k->orig == ch) {
         k->orig = 0;
@@ -1541,10 +1541,10 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
           k->specials.hunting = 0;
         }
       if (Hates(k, ch)) {
-        ZeroHatred(k, ch);
+        zero_hatred(k, ch);
       }
       if (Fears(k, ch)) {
-        ZeroFeared(k, ch);
+        zero_feared(k, ch);
       }
       if (k->orig == ch) {
         k->orig = 0;
@@ -1593,8 +1593,8 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
   if (IS_NPC(ch)) {
     if (ch->nr > -1)            /* if mobile */
       mob_index[ch->nr].number--;
-    FreeHates(ch);
-    FreeFears(ch);
+    free_hates(ch);
+    free_fears(ch);
     mob_count--;
     free_char(ch);
   }
@@ -1956,7 +1956,7 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
   return (0);
 }
 
-void AddAffects(struct char_data *ch, struct obj_data *o) {
+void add_affects(struct char_data *ch, struct obj_data *o) {
   int i;
 
   for (i = 0; i < MAX_OBJ_AFFECT; i++) {

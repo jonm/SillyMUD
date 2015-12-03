@@ -29,15 +29,15 @@ extern struct dex_app_type dex_app[];
 
 
 
-int GetClassLevel(struct char_data *ch, int class) {
+int get_class_level(struct char_data *ch, int class) {
 
   if (IS_SET(ch->player.class, class)) {
-    return (GET_LEVEL(ch, CountBits(class) - 1));
+    return (GET_LEVEL(ch, count_bits(class) - 1));
   }
   return (0);
 }
 
-int CountBits(int class) {
+int count_bits(int class) {
 
   if (class == 1)
     return (1);
@@ -54,11 +54,11 @@ int CountBits(int class) {
   return (0);
 }
 
-int OnlyClass(struct char_data *ch, int class) {
+int only_class(struct char_data *ch, int class) {
   int i;
 
   for (i = 1; i <= 32; i *= 2) {
-    if (GetClassLevel(ch, i) != 0)
+    if (get_class_level(ch, i) != 0)
       if (i != class)
         return (FALSE);
   }
@@ -67,7 +67,7 @@ int OnlyClass(struct char_data *ch, int class) {
 }
 
 
-int HasClass(struct char_data *ch, int class) {
+int has_class(struct char_data *ch, int class) {
 
   if (!IS_PC(ch)) {
     if (!IS_SET(class, CLASS_MONK)) {
@@ -81,7 +81,7 @@ int HasClass(struct char_data *ch, int class) {
   return FALSE;
 }
 
-int HowManyClasses(struct char_data *ch) {
+int how_many_classes(struct char_data *ch) {
   short i, tot = 0;
 
   for (i = 0; i < MAX_CLASS; i++) {
@@ -115,7 +115,7 @@ int HowManyClasses(struct char_data *ch) {
 }
 
 
-int BestFightingClass(struct char_data *ch) {
+int best_fighting_class(struct char_data *ch) {
 
   if (GET_LEVEL(ch, WARRIOR_LEVEL_IND))
     return (WARRIOR_LEVEL_IND);
@@ -137,7 +137,7 @@ int BestFightingClass(struct char_data *ch) {
   return (1);
 }
 
-int BestThiefClass(struct char_data *ch) {
+int best_thief_class(struct char_data *ch) {
 
   if (GET_LEVEL(ch, THIEF_LEVEL_IND))
     return (THIEF_LEVEL_IND);
@@ -159,7 +159,7 @@ int BestThiefClass(struct char_data *ch) {
   return (1);
 }
 
-int BestMagicClass(struct char_data *ch) {
+int best_magic_class(struct char_data *ch) {
 
   if (GET_LEVEL(ch, MAGE_LEVEL_IND))
     return (MAGE_LEVEL_IND);
@@ -182,10 +182,10 @@ int BestMagicClass(struct char_data *ch) {
 }
 
 int get_sec_max_lev(struct char_data *ch) {
-  return (GetALevel(ch, 2));
+  return (get_a_level(ch, 2));
 }
 
-int GetALevel(struct char_data *ch, int which) {
+int get_a_level(struct char_data *ch, int which) {
   byte ind[MAX_CLASS], k;
   int i, j;
 
@@ -214,7 +214,7 @@ int GetALevel(struct char_data *ch, int which) {
 }
 
 int get_third_max_lev(struct char_data *ch) {
-  return (GetALevel(ch, 3));
+  return (get_a_level(ch, 3));
 }
 
 int get_max_level(struct char_data *ch) {
@@ -228,7 +228,7 @@ int get_max_level(struct char_data *ch) {
   return (max);
 }
 
-int GetTotLevel(struct char_data *ch) {
+int get_tot_level(struct char_data *ch) {
   int max = 0, i;
 
   for (i = 0; i < MAX_CLASS; i++)
@@ -238,7 +238,7 @@ int GetTotLevel(struct char_data *ch) {
 
 }
 
-void StartLevels(struct char_data *ch) {
+void start_levels(struct char_data *ch) {
 
   if (IS_SET(ch->player.class, CLASS_MAGIC_USER)) {
     advance_level(ch, MAGE_LEVEL_IND);
@@ -267,7 +267,7 @@ void StartLevels(struct char_data *ch) {
 }
 
 
-int BestClass(struct char_data *ch) {
+int best_class(struct char_data *ch) {
   int max = 0, class = 0, i;
 
   for (i = 0; i < MAX_CLASS; i++)

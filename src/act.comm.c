@@ -340,7 +340,7 @@ void do_write(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-char *RandomWord() {
+char *random_word() {
   static char *string[55] = {
     "argle",
     "bargle",
@@ -422,7 +422,7 @@ void do_sign(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     if (!rp)
       return;
 
-    if (!HasHands(ch)) {
+    if (!has_hands(ch)) {
       send_to_char("Yeah right... WHAT HANDS!!!!!!!!\n\r", ch);
       return;
     }
@@ -443,7 +443,7 @@ void do_sign(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         strcat(buf2, p);
       }
       else {
-        strcat(buf2, RandomWord());
+        strcat(buf2, random_word());
       }
       strcat(buf2, " ");
       diff -= 1;
@@ -528,7 +528,7 @@ void ogre_garble(char *buf, char *buf2, struct char_data *ch) {
   }
 
   while (p) {
-    if (IsArticle(p)) {
+    if (is_article(p)) {
       if (number(1, 20) > GET_INT(ch)) {
         strcat(buf2, p);
         strcat(buf2, " ");

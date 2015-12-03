@@ -426,7 +426,7 @@ int chess_game(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   return FALSE;
 }
 
-int AcidBlob(struct char_data *ch, int cmd, char *UNUSED(arg),
+int acid_blob(struct char_data *ch, int cmd, char *UNUSED(arg),
              struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct obj_data *i;
 
@@ -547,9 +547,9 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
         }
         else {
           if (check_soundproof(ch) || check_nomagic(ch, 0, 0))
-            MakeNiftyAttack(ch);
+            make_nifty_attack(ch);
           else {
-            vict = FindVictim(ch);
+            vict = find_victim(ch);
             if (!vict)
               vict = ch->specials.fighting;
             if (!vict)
@@ -629,7 +629,7 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
             }
             /* well, spells failed or not needed, let's kick someone :) */
 
-            FighterMove(ch);
+            fighter_move(ch);
             return (FALSE);
           }
         }
@@ -657,7 +657,7 @@ int winger(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (ch->specials.fighting) {
 
-    vict = FindVictim(ch);
+    vict = find_victim(ch);
 
     if (!vict)
       vict = ch->specials.fighting;
@@ -681,7 +681,7 @@ int winger(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int DeathRoom(int dt_room) {
+int death_room(int dt_room) {
   struct obj_data *k;
   struct room_data *room;
   char buf[100];
@@ -719,7 +719,7 @@ int DeathRoom(int dt_room) {
   return (FALSE);
 }
 
-int YouthPotion(struct char_data *ch, int cmd, char *arg,
+int youth_potion(struct char_data *ch, int cmd, char *arg,
                 struct char_data *UNUSED(mob), int UNUSED(type)) {
   char buf[MAX_INPUT_LENGTH];
   /*   struct char_data *vict; */

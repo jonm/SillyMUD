@@ -20,7 +20,7 @@
 extern struct index_data *mob_index;
 extern struct room_data *world;
 
-void FreeHates(struct char_data *ch) {
+void free_hates(struct char_data *ch) {
   struct char_list *k, *n;
 
   for (k = ch->hates.clist; k; k = n) {
@@ -31,7 +31,7 @@ void FreeHates(struct char_data *ch) {
 }
 
 
-void FreeFears(struct char_data *ch) {
+void free_fears(struct char_data *ch) {
   struct char_list *k, *n;
 
   for (k = ch->fears.clist; k; k = n) {
@@ -42,7 +42,7 @@ void FreeFears(struct char_data *ch) {
 }
 
 
-int RemHated(struct char_data *ch, struct char_data *pud) {
+int rem_hated(struct char_data *ch, struct char_data *pud) {
   struct char_list *oldpud, *t;
 
   if (pud) {
@@ -97,7 +97,7 @@ int RemHated(struct char_data *ch, struct char_data *pud) {
 
 
 
-int AddHated(struct char_data *ch, struct char_data *pud) {
+int add_hated(struct char_data *ch, struct char_data *pud) {
 
   struct char_list *newpud;
 
@@ -127,7 +127,7 @@ int AddHated(struct char_data *ch, struct char_data *pud) {
   return ((pud) ? TRUE : FALSE);
 }
 
-int AddHatred(struct char_data *ch, int parm_type, int parm) {
+int add_hatred(struct char_data *ch, int parm_type, int parm) {
   switch (parm_type) {
   case OP_SEX:
     if (!IS_SET(ch->hatefield, HATE_SEX))
@@ -213,7 +213,7 @@ int Hates(struct char_data *ch, struct char_data *v) {
       return (TRUE);
   }
   if (IS_SET(ch->hatefield, HATE_CLASS)) {
-    if (HasClass(v, ch->hates.class)) {
+    if (has_class(v, ch->hates.class)) {
       return (TRUE);
     }
   }
@@ -244,7 +244,7 @@ int Fears(struct char_data *ch, struct char_data *v) {
             }
             else {
               /* lets see if this clears the problem */
-              RemFeared(ch, i->op_ch);
+              rem_feared(ch, i->op_ch);
             }
           }
           else {
@@ -276,7 +276,7 @@ int Fears(struct char_data *ch, struct char_data *v) {
       return (TRUE);
   }
   if (IS_SET(ch->fearfield, FEAR_CLASS)) {
-    if (HasClass(v, ch->hates.class)) {
+    if (has_class(v, ch->hates.class)) {
       return (TRUE);
     }
   }
@@ -287,7 +287,7 @@ int Fears(struct char_data *ch, struct char_data *v) {
   return (FALSE);
 }
 
-int RemFeared(struct char_data *ch, struct char_data *pud) {
+int rem_feared(struct char_data *ch, struct char_data *pud) {
 
   struct char_list *oldpud, *t, *tmp;
 
@@ -345,7 +345,7 @@ int RemFeared(struct char_data *ch, struct char_data *pud) {
 
 
 
-int AddFeared(struct char_data *ch, struct char_data *pud) {
+int add_feared(struct char_data *ch, struct char_data *pud) {
 
   struct char_list *newpud;
 
@@ -374,7 +374,7 @@ int AddFeared(struct char_data *ch, struct char_data *pud) {
 }
 
 
-int AddFears(struct char_data *ch, int parm_type, int parm) {
+int add_fears(struct char_data *ch, int parm_type, int parm) {
   switch (parm_type) {
   case OP_SEX:
     if (!IS_SET(ch->fearfield, FEAR_SEX))
@@ -414,7 +414,7 @@ int AddFears(struct char_data *ch, int parm_type, int parm) {
 }
 
 
-struct char_data *FindAHatee(struct char_data *ch) {
+struct char_data *find_a_hatee(struct char_data *ch) {
   struct char_data *tmp_ch;
 
   if (ch->in_room < 0)
@@ -428,7 +428,7 @@ struct char_data *FindAHatee(struct char_data *ch) {
           return (tmp_ch);
         }
         else {
-          RemHated(ch, tmp_ch);
+          rem_hated(ch, tmp_ch);
           return (0);
         }
       }
@@ -437,7 +437,7 @@ struct char_data *FindAHatee(struct char_data *ch) {
   return (0);
 }
 
-struct char_data *FindAFearee(struct char_data *ch) {
+struct char_data *find_a_fearee(struct char_data *ch) {
   struct char_data *tmp_ch;
 
   if (ch->in_room < 0)
@@ -462,7 +462,7 @@ struct char_data *FindAFearee(struct char_data *ch) {
 */
 
 
-void ZeroHatred(struct char_data *ch, struct char_data *v) {
+void zero_hatred(struct char_data *ch, struct char_data *v) {
 
   struct char_list *oldpud;
 
@@ -478,7 +478,7 @@ void ZeroHatred(struct char_data *ch, struct char_data *v) {
 }
 
 
-void ZeroFeared(struct char_data *ch, struct char_data *v) {
+void zero_feared(struct char_data *ch, struct char_data *v) {
 
   struct char_list *oldpud;
 
@@ -497,32 +497,32 @@ void ZeroFeared(struct char_data *ch, struct char_data *v) {
 /*
   these two are to make the monsters completely forget about them.
 */
-void DeleteHatreds(struct char_data *ch) {
+void delete_hatreds(struct char_data *ch) {
 
   struct char_data *i;
   extern struct char_data *character_list;
 
   for (i = character_list; i; i = i->next) {
     if (Hates(i, ch))
-      RemHated(i, ch);
+      rem_hated(i, ch);
   }
 
 }
 
 
-void DeleteFears(struct char_data *ch) {
+void delete_fears(struct char_data *ch) {
   struct char_data *i;
   extern struct char_data *character_list;
 
 
   for (i = character_list; i; i = i->next) {
     if (Fears(i, ch))
-      RemFeared(i, ch);
+      rem_feared(i, ch);
   }
 
 }
 
-void KillTheOrcs(struct char_data *ch) {
+void kill_the_orcs(struct char_data *ch) {
 
   struct char_data *tmp_victim;
 

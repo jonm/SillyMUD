@@ -737,7 +737,7 @@ struct room_data {
 #define APPLY_MOVE_BONUS       53
 #define APPLY_INTRINSIC        54       /* This is somewhat of a hack, does nada */
                                 /* just a marker that I check for in  */
-                                /* CastIntrinsic() in spell_parser.c -Rip */
+                                /* cast_intrinsic() in spell_parser.c -Rip */
 /* 'class' for PC's */
 #define CLASS_MAGIC_USER  1
 #define CLASS_CLERIC      2

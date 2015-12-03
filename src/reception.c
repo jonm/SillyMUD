@@ -35,7 +35,7 @@ int add_obj_cost(struct char_data *ch, struct char_data *re,
   int temp;
 
   if (obj) {
-    if ((obj->item_number > -1) && (cost->ok) && ItemEgoClash(ch, obj, 0) > -5) {
+    if ((obj->item_number > -1) && (cost->ok) && item_ego_clash(ch, obj, 0) > -5) {
       temp = MAX(0, obj->obj_flags.cost_per_day);
       cost->total_cost += temp;
       cost->no_carried++;
@@ -43,7 +43,7 @@ int add_obj_cost(struct char_data *ch, struct char_data *re,
       hoarder = add_obj_cost(ch, re, obj->next_content, cost, hoarder);
     }
     else {
-      if (ItemEgoClash(ch, obj, 0) < 0 && obj->obj_flags.cost_per_day > 0) {
+      if (item_ego_clash(ch, obj, 0) < 0 && obj->obj_flags.cost_per_day > 0) {
         if (re)
           act("$p refuses to be rented with a wimp like you!",
               TRUE, ch, obj, 0, TO_CHAR);
@@ -116,7 +116,7 @@ bool recep_offer(struct char_data * ch, struct char_data * receptionist,
     return (FALSE);
   }
 
-  if (HasClass(ch, CLASS_MONK)) {
+  if (has_class(ch, CLASS_MONK)) {
     if (cost->no_carried > 20) {
       send_to_char("Your vows forbid you to carry more than 20 items\n\r", ch);
       return (FALSE);
@@ -172,7 +172,7 @@ void update_file(struct char_data *ch, struct obj_file_u *st) {
 
   strcpy(st->owner, GET_NAME(ch));
 
-  WriteObjs(fl, st);
+  write_objs(fl, st);
 
   fclose(fl);
 
@@ -254,7 +254,7 @@ void load_char_objs(struct char_data *ch) {
 
   rewind(fl);
 
-  if (!ReadObjs(fl, &st)) {
+  if (!read_objs(fl, &st)) {
     log_msg("No objects found");
     fclose(fl);
     return;
@@ -273,10 +273,10 @@ void load_char_objs(struct char_data *ch) {
 */
 
   if (st.last_update + 12 * SECS_PER_REAL_HOUR < time(0))
-    RestoreChar(ch);
+    restore_char(ch);
 
   if (st.last_update + 24 * SECS_PER_REAL_HOUR < time(0))
-    RemAllAffects(ch);
+    rem_all_affects(ch);
 
   if (ch->in_room == NOWHERE &&
       st.last_update + 1 * SECS_PER_REAL_HOUR > time(0)) {
@@ -507,7 +507,7 @@ void update_obj_file() {
     /* r+b is for Binary Reading/Writing */
     if ((fl = fopen(buf, "r+b")) != NULL) {
 
-      if (ReadObjs(fl, &st)) {
+      if (read_objs(fl, &st)) {
         if (str_cmp(st.owner, player_table[i].name) != 0) {
           SPRINTF(buf, "Ack!  Wrong person written into object file! (%s/%s)",
                   st.owner, player_table[i].name);
@@ -533,7 +533,7 @@ void update_obj_file() {
 
 #if LIMITED_ITEMS
             fprintf(stderr, "Counting limited items\n");
-            CountLimitedItems(&st);
+            count_limited_items(&st);
             fprintf(stderr, "Done\n");
 #endif
             fseek(char_file, (long)(player_table[i].nr *
@@ -568,7 +568,7 @@ void update_obj_file() {
                 st.last_update = time(0) - secs_lost;
                 fclose(fl);
 #if LIMITED_ITEMS
-                CountLimitedItems(&st);
+                count_limited_items(&st);
 #endif
 
               }
@@ -576,7 +576,7 @@ void update_obj_file() {
             else {
 
 #if LIMITED_ITEMS
-              CountLimitedItems(&st);
+              count_limited_items(&st);
 #endif
               SPRINTF(buf, "  same day update on %s", st.owner);
               log_msg(buf);
@@ -594,7 +594,7 @@ void update_obj_file() {
 }
 
 
-void CountLimitedItems(struct obj_file_u *st) {
+void count_limited_items(struct obj_file_u *st) {
   int i, cost_per_day;
   struct obj_data *obj;
 
@@ -629,7 +629,7 @@ void CountLimitedItems(struct obj_file_u *st) {
 }
 
 
-void PrintLimitedItems() {
+void print_limited_items() {
 }
 
 
@@ -818,7 +818,7 @@ void zero_rent_by_name(char *n) {
 
 }
 
-int ReadObjs(FILE * fl, struct obj_file_u *st) {
+int read_objs(FILE * fl, struct obj_file_u *st) {
   int i;
 
   if (feof(fl)) {
@@ -863,7 +863,7 @@ int ReadObjs(FILE * fl, struct obj_file_u *st) {
   return (TRUE);
 }
 
-void WriteObjs(FILE * fl, struct obj_file_u *st) {
+void write_objs(FILE * fl, struct obj_file_u *st) {
   int i;
 
   fwrite(st->owner, sizeof(st->owner), 1, fl);
@@ -1060,7 +1060,7 @@ void load_room_objs(int room) {
 
   rewind(fl);
 
-  if (!ReadObjs(fl, &st)) {
+  if (!read_objs(fl, &st)) {
     log_msg("No objects found");
     fclose(fl);
     return;
@@ -1103,7 +1103,7 @@ void save_room(int room) {
     st.total_cost = 0;
     st.last_update = 0;
     st.minimum_stay = 0;
-    WriteObjs(f1, &st);
+    write_objs(f1, &st);
   }
 }
 

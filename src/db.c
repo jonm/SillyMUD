@@ -123,8 +123,8 @@ void boot_db() {
 
   /* some machines are pre-allocation specific when dealing with realloc */
   script_data = (struct scripts *)malloc(sizeof(struct scripts));
-  CommandSetup();
-  InitScripts();
+  command_setup();
+  init_scripts();
   log_msg("Opening mobile, object and help files.");
   if (!(mob_f = fopen(MOB_FILE, "r"))) {
     perror("boot");
@@ -141,7 +141,7 @@ void boot_db() {
     help_index = build_help_index(help_fl, &top_of_helpt);
 
   log_msg("Booting Figurine Table.");
-  BootFigurines();
+  boot_figurines();
 
   log_msg("Loading zone table.");
   boot_zones();
@@ -188,10 +188,10 @@ void boot_db() {
   log_msg("Updating characters with saved items:");
   update_obj_file();
   log_msg("Loading saved rooms.");
-  ReloadRooms();
+  reload_rooms();
 
 #if LIMITED_ITEMS
-  PrintLimitedItems();
+  print_limited_items();
 #endif
   for (i = 0; i <= top_of_zone_table; i++) {
     char *s;
@@ -1272,9 +1272,9 @@ struct char_data *read_mobile(int nr, int type) {
       GET_EXP(mob) = tmp;
       fscanf(mob_f, " %ld \n", &tmp);
       GET_RACE(mob) = tmp;
-      if (IsGiant(mob))
+      if (is_giant(mob))
         mob->abilities.str += number(1, 4);
-      if (IsSmall(mob))
+      if (is_small(mob))
         mob->abilities.str -= 1;
     }
     else {
@@ -1388,9 +1388,9 @@ struct char_data *read_mobile(int nr, int type) {
         GET_EXP(mob) = -tmp;
       fscanf(mob_f, " %ld ", &tmp);
       GET_RACE(mob) = tmp;
-      if (IsGiant(mob))
+      if (is_giant(mob))
         mob->abilities.str += number(1, 4);
-      if (IsSmall(mob))
+      if (is_small(mob))
         mob->abilities.str -= 1;
     }
     else {
@@ -1617,7 +1617,7 @@ struct char_data *read_mobile(int nr, int type) {
 
   /* set up things that all members of the race have */
   mob->specials.intrinsics = 0;
-  SetRacialStuff(mob);          /* this sets intrinsics */
+  set_racial_stuff(mob);          /* this sets intrinsics */
   mob->specials.affected_by |= mob->specials.intrinsics;
 
   /* change exp for wimpy mobs (lower) */
@@ -1901,7 +1901,7 @@ void reset_zone(int zone) {
         log_msg("Unable to load scratch zone file for update.");
         return;
       }
-      ReadTextZone(fl);
+      read_text_zone(fl);
       fclose(fl);
     }
 #endif
@@ -1933,7 +1933,7 @@ void reset_zone(int zone) {
       switch (ZCMD.command) {
       case 'M':                /* read a mobile */
         if ((mob_index[ZCMD.arg1].number < ZCMD.arg2)
-            && !CheckKillFile(mob_index[ZCMD.arg1].virtual)) {
+            && !check_kill_file(mob_index[ZCMD.arg1].virtual)) {
           mob = read_mobile(ZCMD.arg1, REAL);
           mob->specials.zone = zone;
           char_to_room(mob, ZCMD.arg3);
@@ -1953,7 +1953,7 @@ void reset_zone(int zone) {
 
       case 'C':                /* read a mobile.  Charm them to follow prev. */
         if ((mob_index[ZCMD.arg1].number < ZCMD.arg2)
-            && !CheckKillFile(mob_index[ZCMD.arg1].virtual)) {
+            && !check_kill_file(mob_index[ZCMD.arg1].virtual)) {
           mob = read_mobile(ZCMD.arg1, REAL);
           mob->specials.zone = zone;
 
@@ -1999,9 +1999,9 @@ void reset_zone(int zone) {
         if (obj_index[ZCMD.arg1].number < ZCMD.arg2) {
           if (ZCMD.arg3 >= 0 && ((rp = real_roomp(ZCMD.arg3)) != NULL)) {
             if ((ZCMD.if_flag > 0
-                 && ObjRoomCount(ZCMD.arg1, rp) < ZCMD.if_flag)
+                 && obj_room_count(ZCMD.arg1, rp) < ZCMD.if_flag)
                 || (ZCMD.if_flag <= 0
-                    && ObjRoomCount(ZCMD.arg1, rp) < (-ZCMD.if_flag) + 1)) {
+                    && obj_room_count(ZCMD.arg1, rp) < (-ZCMD.if_flag) + 1)) {
               if ((obj = read_object(ZCMD.arg1, REAL)) != NULL) {
                 obj_to_room(obj, ZCMD.arg3);
                 last_cmd = 1;
@@ -2053,7 +2053,7 @@ void reset_zone(int zone) {
 
       case 'H':                /* hatred to char */
 
-        if (AddHatred(mob, ZCMD.arg1, ZCMD.arg2))
+        if (add_hatred(mob, ZCMD.arg1, ZCMD.arg2))
           last_cmd = 1;
         else
           last_cmd = 0;
@@ -2061,7 +2061,7 @@ void reset_zone(int zone) {
 
       case 'F':                /* fear to char */
 
-        if (AddFears(mob, ZCMD.arg1, ZCMD.arg2))
+        if (add_fears(mob, ZCMD.arg1, ZCMD.arg2))
           last_cmd = 1;
         else
           last_cmd = 0;
@@ -2233,16 +2233,16 @@ void store_to_char(struct char_file_u *st, struct char_data *ch) {
 
   ch->points = st->points;
 
-  SpaceForSkills(ch);
+  space_for_skills(ch);
 
   if (get_max_level(ch) >= LOW_IMMORTAL) {
     max = 100;
   }
   else {
-    if (HowManyClasses(ch) >= 3) {
+    if (how_many_classes(ch) >= 3) {
       max = 80;
     }
-    else if (HowManyClasses(ch) == 2) {
+    else if (how_many_classes(ch) == 2) {
       max = 87;
     }
     else {
@@ -2791,21 +2791,21 @@ void reset_char(struct char_data *ch) {
      Class specific Stuff
    */
 
-  ClassSpecificStuff(ch);
+  class_specific_stuff(ch);
 
-  if (HasClass(ch, CLASS_MONK)) {
+  if (has_class(ch, CLASS_MONK)) {
     GET_AC(ch) -= MIN(150, (GET_LEVEL(ch, MONK_LEVEL_IND) * 5));
     ch->points.max_move += GET_LEVEL(ch, MONK_LEVEL_IND);
   }
   else if (GET_RACE(ch) == RACE_OGRE)
     GET_AC(ch) -= 15;
 
-  if (HasClass(ch, CLASS_MAGIC_USER) ||
-      HasClass(ch, CLASS_CLERIC) || HasClass(ch, CLASS_DRUID)) {
+  if (has_class(ch, CLASS_MAGIC_USER) ||
+      has_class(ch, CLASS_CLERIC) || has_class(ch, CLASS_DRUID)) {
     ch->specials.prompt = 7;    /* these are bit types */
   }
-  else if (HasClass(ch, CLASS_THIEF) ||
-           HasClass(ch, CLASS_WARRIOR) || HasClass(ch, CLASS_MONK)) {
+  else if (has_class(ch, CLASS_THIEF) ||
+           has_class(ch, CLASS_WARRIOR) || has_class(ch, CLASS_MONK)) {
     ch->specials.prompt = 3;
   }
   else {
@@ -2816,7 +2816,7 @@ void reset_char(struct char_data *ch) {
      racial stuff
    */
   ch->specials.intrinsics = 0;
-  SetRacialStuff(ch);           /* this sets intrinsics */
+  set_racial_stuff(ch);           /* this sets intrinsics */
   ch->specials.affected_by |= ch->specials.intrinsics;
 
 /*
@@ -2833,7 +2833,7 @@ void reset_char(struct char_data *ch) {
   for (af = ch->affected; af; af = af->next)
     affect_modify(ch, af->location, (int)af->modifier, af->bitvector, TRUE);
 
-  if (!HasClass(ch, CLASS_MONK))
+  if (!has_class(ch, CLASS_MONK))
     GET_AC(ch) += dex_app[(int)GET_DEX(ch)].defensive;
   if (GET_AC(ch) > 100)
     GET_AC(ch) = 100;
@@ -2970,7 +2970,7 @@ void init_char(struct char_data *ch) {
   ch->points.armor = 100;
 
   if (!ch->skills)
-    SpaceForSkills(ch);
+    space_for_skills(ch);
 
   for (i = 0; i <= MAX_SKILLS - 1; i++) {
     if (get_max_level(ch) < IMPLEMENTOR) {
@@ -3054,7 +3054,7 @@ int real_object(int virtual) {
   }
 }
 
-int ObjRoomCount(int nr, struct room_data *rp) {
+int obj_room_count(int nr, struct room_data *rp) {
   struct obj_data *o;
   int count = 0;
 
@@ -3120,7 +3120,7 @@ void reboot_text(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   obj_index = generate_indices(obj_f, &top_of_objt);
 
 /* log_msg("Initializing Scripts.");
- InitScripts();
+ init_scripts();
 */
 /* jdb -- you don't appear to re-install the scripts after you
    reset the script db
@@ -3142,7 +3142,7 @@ void reboot_text(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
 }
 
 
-void InitScripts() {
+void init_scripts() {
   char buf[255], buf2[255];
   FILE *f1, *f2;
   int i, count;
@@ -3256,7 +3256,7 @@ void InitScripts() {
   fclose(f1);
 }
 
-int CheckKillFile(int virtual) {
+int check_kill_file(int virtual) {
   FILE *f1;
   char buf[255];
   int i;
@@ -3278,7 +3278,7 @@ int CheckKillFile(int virtual) {
   return (0);
 }
 
-void ReloadRooms() {
+void reload_rooms() {
   int i;
 
   for (i = 0; i < number_of_saved_rooms; i++)
@@ -3286,7 +3286,7 @@ void ReloadRooms() {
 }
 
 
-void SaveTheWorld() {
+void save_the_world() {
 #if SAVE_WORLD
   static int ctl = 0;
   char cmd, buf[80];
@@ -3319,10 +3319,10 @@ void SaveTheWorld() {
       for (p = room->people; p; p = p->next_in_room) {
         if (!IS_PC(p)) {
           cmd = 'M';
-          arg1 = MobVnum(p);
+          arg1 = mob_vnum(p);
           arg2 = mob_index[p->nr].number;
           arg3 = i;
-          Zwrite(fp, cmd, 0, arg1, arg2, arg3, p->player.short_descr);
+          zwrite(fp, cmd, 0, arg1, arg2, arg3, p->player.short_descr);
           fprintf(fp, "Z 1 %d 1\n", p->specials.zone);
 
           /* save hatreds && fears */
@@ -3356,11 +3356,11 @@ void SaveTheWorld() {
             if (p->equipment[j]) {
               if (p->equipment[j]->item_number >= 0) {
                 cmd = 'E';
-                arg1 = ObjVnum(p->equipment[j]);
+                arg1 = obj_vnum(p->equipment[j]);
                 arg2 = obj_index[p->equipment[j]->item_number].number;
                 arg3 = j;
                 strcpy(buf, p->equipment[j]->short_description);
-                Zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
+                zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
                 rec_zwrite_obj(fp, p->equipment[j]);
               }
             }
@@ -3368,11 +3368,11 @@ void SaveTheWorld() {
           for (o = p->carrying; o; o = o->next_content) {
             if (o->item_number >= 0) {
               cmd = 'G';
-              arg1 = ObjVnum(o);
+              arg1 = obj_vnum(o);
               arg2 = obj_index[o->item_number].number;
               arg3 = 0;
               strcpy(buf, o->short_description);
-              Zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
+              zwrite(fp, cmd, 1, arg1, arg2, arg3, buf);
               rec_zwrite_obj(fp, o);
             }
           }
@@ -3385,7 +3385,7 @@ void SaveTheWorld() {
 #endif
 }
 
-void ReadTextZone(FILE * fl) {
+void read_text_zone(FILE * fl) {
   while (1) {
     char c, buf[255], count = 0, last_cmd = 1;
     int i, j, k, tmp, zone = 0;
@@ -3415,7 +3415,7 @@ void ReadTextZone(FILE * fl) {
       switch (c) {
       case 'M':                /* read a mobile */
         i = real_mobile(i);
-        if ((mob_index[i].number < j) && !CheckKillFile(mob_index[i].virtual)) {
+        if ((mob_index[i].number < j) && !check_kill_file(mob_index[i].virtual)) {
           mob = read_mobile(i, REAL);
           char_to_room(mob, k);
 
@@ -3428,7 +3428,7 @@ void ReadTextZone(FILE * fl) {
 
       case 'C':                /* read a mobile.  Charm them to follow prev. */
         i = real_mobile(i);
-        if ((mob_index[i].number < j) && !CheckKillFile(mob_index[i].virtual)) {
+        if ((mob_index[i].number < j) && !check_kill_file(mob_index[i].virtual)) {
           mob = read_mobile(i, REAL);
           if (master) {
             char_to_room(mob, master->in_room);
@@ -3468,8 +3468,8 @@ void ReadTextZone(FILE * fl) {
         i = real_object(i);
         if (obj_index[i].number < j) {
           if (j >= 0 && ((rp = real_roomp(j)) != NULL)) {
-            if ((tmp > 0 && ObjRoomCount(i, rp) < tmp) ||
-                (tmp <= 0 && ObjRoomCount(i, rp) < (-tmp) + 1)) {
+            if ((tmp > 0 && obj_room_count(i, rp) < tmp) ||
+                (tmp <= 0 && obj_room_count(i, rp) < (-tmp) + 1)) {
               if ((obj = read_object(i, REAL)) != NULL) {
                 obj_to_room(obj, k);
                 last_cmd = 1;
@@ -3525,7 +3525,7 @@ void ReadTextZone(FILE * fl) {
 
       case 'H':                /* hatred to char */
 
-        if (AddHatred(mob, i, j))
+        if (add_hatred(mob, i, j))
           last_cmd = 1;
         else
           last_cmd = 0;
@@ -3533,7 +3533,7 @@ void ReadTextZone(FILE * fl) {
 
       case 'F':                /* fear to char */
 
-        if (AddFears(mob, i, j))
+        if (add_fears(mob, i, j))
           last_cmd = 1;
         else
           last_cmd = 0;
@@ -3591,7 +3591,7 @@ void ReadTextZone(FILE * fl) {
 
 }
 
-void BootFigurines() {
+void boot_figurines() {
   FILE *f1;
   char buf[255];
 

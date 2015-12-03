@@ -99,7 +99,7 @@ char *how_good(int percent) {
   return (buf);
 }
 
-int GainLevel(struct char_data *ch, int class) {
+int gain_level(struct char_data *ch, int class) {
 
   if (GET_EXP(ch) >= titles[class][GET_LEVEL(ch, class) + 1].exp) {
     if (GET_LEVEL(ch, class) < RacialMax[GET_RACE(ch)][class]) {
@@ -119,7 +119,7 @@ int GainLevel(struct char_data *ch, int class) {
   return (FALSE);
 }
 
-struct char_data *FindMobInRoomWithFunction(int room, int (*func) ()) {
+struct char_data *find_mob_in_room_with_function(int room, int (*func) ()) {
   struct char_data *temp_char, *targ;
 
   targ = 0;
@@ -139,37 +139,37 @@ struct char_data *FindMobInRoomWithFunction(int room, int (*func) ()) {
 
 /* New consolidated guildmaster code contributed by Kiku, 9/26/93 */
 
-int MageGuildMaster(struct char_data *ch, int cmd, char *arg,
+int mage_guild_master(struct char_data *ch, int cmd, char *arg,
                     struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_MAGIC_USER));
 }
 
-int ClericGuildMaster(struct char_data *ch, int cmd, char *arg,
+int cleric_guild_master(struct char_data *ch, int cmd, char *arg,
                       struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_CLERIC));
 }
 
-int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg,
+int thief_guild_master(struct char_data *ch, int cmd, char *arg,
                      struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_THIEF));
 }
 
 
-int WarriorGuildMaster(struct char_data *ch, int cmd, char *arg,
+int warrior_guild_master(struct char_data *ch, int cmd, char *arg,
                        struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_WARRIOR));
 }
 
 int monk_master(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type) {
-  if (!HasClass(ch, CLASS_MONK))
+  if (!has_class(ch, CLASS_MONK))
     return (Teacher(ch, cmd, arg, mob, type, TAUGHT_BY_MONK,
                     "monk guildmaster"));
   else
     return (Guildmaster(ch, cmd, arg, mob, type, CLASS_MONK));
 }
 
-int DruidGuildMaster(struct char_data *ch, int cmd, char *arg,
+int druid_guild_master(struct char_data *ch, int cmd, char *arg,
                      struct char_data *mob, int type) {
   return (Guildmaster(ch, cmd, arg, mob, type, CLASS_DRUID));
 }
@@ -239,7 +239,7 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
 
   for (; *arg == ' '; arg++);
 
-  if (HasClass(ch, class)) {
+  if (has_class(ch, class)) {
     if (cmd == 243 || cmd == 72) {      /* gain or give */
       switch (class) {
       case CLASS_MAGIC_USER:
@@ -247,7 +247,7 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
       case CLASS_WARRIOR:
       case CLASS_THIEF:
         if (GET_LEVEL(ch, class_level_ind) < get_max_level(guildmaster) - 10) {
-          MakeQuest(ch, guildmaster, class_level_ind, arg, cmd);
+          make_quest(ch, guildmaster, class_level_ind, arg, cmd);
         }
         else {
           send_to_char("You have learned all that I can teach you.\n\r", ch);
@@ -257,7 +257,7 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
       case CLASS_MONK:
         if (cmd == 243) {
           if (GET_LEVEL(ch, class_level_ind) <= 9) {
-            GainLevel(ch, class_level_ind);
+            gain_level(ch, class_level_ind);
           }
           else {
             if (class == CLASS_DRUID) {
@@ -745,7 +745,7 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg,
     }
 
     if (scan->actflag & ACT_OVER_21 && GET_AGE(ch) < 21) {
-      if (IS_IMMORTAL(ch) || HasClass(ch, CLASS_THIEF)) {
+      if (IS_IMMORTAL(ch) || has_class(ch, CLASS_THIEF)) {
         act("$N manages to slip a fake ID past $n.",
             FALSE, andy, 0, ch, TO_NOTVICT);
       }
@@ -897,8 +897,8 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
         act("$N is out cold.", FALSE, eric, 0, target, TO_NOTVICT);
         act("You are out cold.", FALSE, eric, 0, target, TO_VICT);
         GET_POS(target) = POSITION_SLEEPING;
-        RemHated(eric, target);
-        RemHated(target, eric);
+        rem_hated(eric, target);
+        rem_hated(target, eric);
       }
       return FALSE;
     }
@@ -1374,7 +1374,7 @@ int snake(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 #define PGShield 25100
-int PaladinGuildGuard(struct char_data *ch, int cmd, char *arg,
+int paladin_guild_guard(struct char_data *ch, int cmd, char *arg,
                       struct char_data *mob, int type) {
 
   if (cmd || !AWAKE(ch))
@@ -1388,7 +1388,7 @@ int PaladinGuildGuard(struct char_data *ch, int cmd, char *arg,
   else if (cmd >= 1 && cmd <= 6) {
     if (cmd == 4)
       return (FALSE);           /* can always go west */
-    if (!HasObject(ch, PGShield)) {
+    if (!has_object(ch, PGShield)) {
       send_to_char("The guard shakes his head, and blocks your way.\n\r", ch);
       act("The guard shakes his head, and blocks $n's way.",
           TRUE, ch, 0, 0, TO_ROOM);
@@ -1398,7 +1398,7 @@ int PaladinGuildGuard(struct char_data *ch, int cmd, char *arg,
   return (FALSE);
 }
 
-int GameGuard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int game_guard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
               int type) {
 
   if (!cmd) {
@@ -1427,7 +1427,7 @@ int GameGuard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     return (FALSE);
 }
 
-int GreyParamedic(struct char_data *ch, int cmd, char *UNUSED(arg),
+int grey_paramedic(struct char_data *ch, int cmd, char *UNUSED(arg),
                   struct char_data *mob, int types) {
   struct char_data *vict, *most_hurt;
 
@@ -1500,7 +1500,7 @@ int GreyParamedic(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int AmberParamedic(struct char_data *ch, int cmd, char *UNUSED(arg),
+int amber_paramedic(struct char_data *ch, int cmd, char *UNUSED(arg),
                    struct char_data *mob, int type) {
   struct char_data *vict, *most_hurt;
 
@@ -1591,7 +1591,7 @@ int blink(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 
 
-int MidgaardCitizen(struct char_data *ch, int cmd, char *arg,
+int midgaard_citizen(struct char_data *ch, int cmd, char *arg,
                     struct char_data *mob, int type) {
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1610,7 +1610,7 @@ int MidgaardCitizen(struct char_data *ch, int cmd, char *arg,
     }
 
     if (ch->specials.fighting)
-      CallForGuard(ch, ch->specials.fighting, 3, MIDGAARD);
+      call_for_guard(ch, ch->specials.fighting, 3, MIDGAARD);
 
     return (TRUE);
 
@@ -1635,7 +1635,7 @@ int ghoul(struct char_data *ch, int cmd, char *UNUSED(arg),
   if (tar && (tar->in_room == ch->in_room)) {
     if (!affected_by_spell(tar, SPELL_PROTECT_FROM_EVIL) &&
         (!IS_AFFECTED(tar, AFF_SANCTUARY))) {
-      if (HitOrMiss(ch, tar, CalcThaco(ch))) {
+      if (hit_or_miss(ch, tar, calc_thaco(ch))) {
         act("$n touches $N!", 1, ch, 0, tar, TO_NOTVICT);
         act("$n touches you!", 1, ch, 0, tar, TO_VICT);
         if (!IS_AFFECTED(tar, AFF_PARALYSIS)) {
@@ -1648,7 +1648,7 @@ int ghoul(struct char_data *ch, int cmd, char *UNUSED(arg),
   return FALSE;
 }
 
-int CarrionCrawler(struct char_data *ch, int cmd, char *UNUSED(arg),
+int carrion_crawler(struct char_data *ch, int cmd, char *UNUSED(arg),
                    struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tar;
   int i;
@@ -1660,11 +1660,11 @@ int CarrionCrawler(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 
   for (i = 0; i < 8; i++) {
-    if ((tar = FindAHatee(ch)) == NULL)
-      tar = FindVictim(ch);
+    if ((tar = find_a_hatee(ch)) == NULL)
+      tar = find_victim(ch);
 
     if (tar && (tar->in_room == ch->in_room)) {
-      if (HitOrMiss(ch, tar, CalcThaco(ch))) {
+      if (hit_or_miss(ch, tar, calc_thaco(ch))) {
         act("$n touches $N!", 1, ch, 0, tar, TO_NOTVICT);
         act("$n touches you!", 1, ch, 0, tar, TO_VICT);
         if (!IS_AFFECTED(tar, AFF_PARALYSIS)) {
@@ -1677,7 +1677,7 @@ int CarrionCrawler(struct char_data *ch, int cmd, char *UNUSED(arg),
   return FALSE;
 }
 
-int WizardGuard(struct char_data *ch, int cmd, char *arg,
+int wizard_guard(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type) {
   struct char_data *tch, *evil;
   int max_evil;
@@ -1687,7 +1687,7 @@ int WizardGuard(struct char_data *ch, int cmd, char *arg,
 
   if (ch->specials.fighting) {
     fighter(ch, cmd, arg, mob, type);
-    CallForGuard(ch, ch->specials.fighting, 9, MIDGAARD);
+    call_for_guard(ch, ch->specials.fighting, 9, MIDGAARD);
   }
   max_evil = 1000;
   evil = 0;
@@ -1856,16 +1856,16 @@ int guild_guard(struct char_data *ch, int cmd, char *arg,
 
     switch (ch->in_room) {
     case 3017:
-      return (CheckForBlockedMove(ch, cmd, arg, 3017, 2, CLASS_MAGIC_USER));
+      return (check_for_blocked_move(ch, cmd, arg, 3017, 2, CLASS_MAGIC_USER));
       break;
     case 3004:
-      return (CheckForBlockedMove(ch, cmd, arg, 3004, 0, CLASS_CLERIC));
+      return (check_for_blocked_move(ch, cmd, arg, 3004, 0, CLASS_CLERIC));
       break;
     case 3027:
-      return (CheckForBlockedMove(ch, cmd, arg, 3027, 1, CLASS_THIEF));
+      return (check_for_blocked_move(ch, cmd, arg, 3027, 1, CLASS_THIEF));
       break;
     case 3021:
-      return (CheckForBlockedMove(ch, cmd, arg, 3021, 1, CLASS_WARRIOR));
+      return (check_for_blocked_move(ch, cmd, arg, 3021, 1, CLASS_WARRIOR));
       break;
     }
   }
@@ -2032,7 +2032,7 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (1);
   case 10:
     {
-      tmp_ch = (struct char_data *)FindAnyVictim(ch);
+      tmp_ch = (struct char_data *)find_any_victim(ch);
       if (!IS_NPC(ch)) {
         SPRINTF(buf, "Party on, %s", GET_NAME(tmp_ch));
         do_say(ch, buf, 0);
@@ -2331,9 +2331,9 @@ int Tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   else {
     switch (ch->generic) {
     case TYT_NONE:
-      if ((vict = FindVictim(ch)) != NULL) {
+      if ((vict = find_victim(ch)) != NULL) {
         ch->generic = TYT_CIT;
-        SetHunting(ch, vict);
+        set_hunting(ch, vict);
       }
       break;
     case TYT_CIT:
@@ -2398,7 +2398,7 @@ int Tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   return (FALSE);
 }
 
-int AbbarachDragon(struct char_data *ch, int cmd, char *arg,
+int abbarach_dragon(struct char_data *ch, int cmd, char *arg,
                    struct char_data *mob, int type) {
 
   struct char_data *targ;
@@ -2407,7 +2407,7 @@ int AbbarachDragon(struct char_data *ch, int cmd, char *arg,
     return (FALSE);
 
   if (!ch->specials.fighting) {
-    targ = (struct char_data *)FindAnyVictim(ch);
+    targ = (struct char_data *)find_any_victim(ch);
     if (targ && !check_peaceful(ch, "")) {
       hit(ch, targ, TYPE_UNDEFINED);
       act("You have now payed the price of crossing.",
@@ -2500,7 +2500,7 @@ int tormentor(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 }
 
-int RustMonster(struct char_data *ch, int cmd, char *UNUSED(arg),
+int rust_monster(struct char_data *ch, int cmd, char *UNUSED(arg),
                 struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
   struct obj_data *t_item;
@@ -2516,7 +2516,7 @@ int RustMonster(struct char_data *ch, int cmd, char *UNUSED(arg),
     vict = ch->specials.fighting;
   }
   else {
-    vict = FindVictim(ch);
+    vict = find_victim(ch);
     if (!vict) {
       return (FALSE);
     }
@@ -2564,13 +2564,13 @@ int RustMonster(struct char_data *ch, int cmd, char *UNUSED(arg),
 /*
 **  item makes save (or not)
 */
-  if (DamageOneItem(vict, ACID_DAMAGE, t_item)) {
+  if (damage_one_item(vict, ACID_DAMAGE, t_item)) {
     t_item = unequip_char(vict, t_pos);
     if (t_item) {
 /*
 **  if it doesn't make save, falls into a pile of scraps
 */
-      MakeScrap(vict, t_item);
+      make_scrap(vict, t_item);
     }
   }
 
@@ -2674,7 +2674,7 @@ int temple_labrynth_sentry(struct char_data *ch, int cmd, char *UNUSED(arg),
 #define NN_FOLLOW 1
 #define NN_STOP   2
 
-int NudgeNudge(struct char_data *ch, int cmd, char *UNUSED(arg),
+int nudge_nudge(struct char_data *ch, int cmd, char *UNUSED(arg),
                struct char_data *UNUSED(mob), int UNUSED(type)) {
 
   struct char_data *vict;
@@ -2692,7 +2692,7 @@ int NudgeNudge(struct char_data *ch, int cmd, char *UNUSED(arg),
     /*
      ** find a victim
      */
-    vict = FindVictim(ch);
+    vict = find_victim(ch);
     if (!vict)
       return (FALSE);
     /* start following */
@@ -2831,13 +2831,13 @@ int citizen(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   return (FALSE);
 }
 
-int MidgaardCityguard(struct char_data *ch, int cmd, char *arg,
+int midgaard_cityguard(struct char_data *ch, int cmd, char *arg,
                       struct char_data *mob, int UNUSED(type)) {
-  return (GenericCityguardHateUndead(ch, cmd, arg, mob, MIDGAARD));
+  return (generic_cityguardHateUndead(ch, cmd, arg, mob, MIDGAARD));
 }
 
 #define ONE_RING 1105
-int Ringwraith(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int ringwraith(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
                int type) {
   static char buf[256];
   struct char_data *victim;
@@ -2977,7 +2977,7 @@ int Ringwraith(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
 }
 
-int WarrenGuard(struct char_data *ch, int cmd, char *arg,
+int warren_guard(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type) {
   struct char_data *tch, *good;
   int max_good;
@@ -3145,7 +3145,7 @@ int zombie_master(struct char_data *ch, int cmd, char *UNUSED(arg),
           spell_animate_dead(get_max_level(zmaster), ch, NULL, temp1);
           if (zmaster->followers) {
             /* assume the new follower is top of the list? */
-            AddHatred(zmaster->followers->follower, OP_VNUM, ZM_NEMESIS);
+            add_hatred(zmaster->followers->follower, OP_VNUM, ZM_NEMESIS);
           }
         }
       }
@@ -3362,7 +3362,7 @@ int bank(struct char_data *ch, int cmd, char *arg,
 
   /*deposit */
   if (cmd == 219) {
-    if (HasClass(ch, CLASS_MONK) && (get_max_level(ch) < 40)) {
+    if (has_class(ch, CLASS_MONK) && (get_max_level(ch) < 40)) {
       send_to_char("Your vows forbid you to retain personal wealth\n\r", ch);
       return (TRUE);
     }
@@ -3395,7 +3395,7 @@ int bank(struct char_data *ch, int cmd, char *arg,
   }
   else if (cmd == 220) {
 
-    if (HasClass(ch, CLASS_MONK) && (get_max_level(ch) < 40)) {
+    if (has_class(ch, CLASS_MONK) && (get_max_level(ch) < 40)) {
       send_to_char("Your vows forbid you to retain personal wealth\n\r", ch);
       return (TRUE);
     }
@@ -3477,7 +3477,7 @@ int pray_for_items(struct char_data *ch, int cmd, char *arg,
       send_to_char("Odin grants you his blessing.\n\r", ch);
       send_to_char("Odin tells you 'Go out there and kick some butt!'\n\r",
                    ch);
-      ImprovePreferedStat(ch, 3, TRUE);
+      improve_prefered_stat(ch, 3, TRUE);
       SET_BIT(ch->specials.affected_by2, AFF2_ONE_LIFER);
       return (TRUE);
     }
@@ -3700,7 +3700,7 @@ int sisyphus(struct char_data *ch, int cmd, char *UNUSED(arg),
           do_say(ch, "pzar", 0);
           break;
         default:
-          FighterMove(ch);
+          fighter_move(ch);
           break;
         }
       }
@@ -3720,7 +3720,7 @@ int jabberwocky(struct char_data *ch, int cmd, char *UNUSED(arg),
       stand_up(ch);
     }
     else {
-      FighterMove(ch);
+      fighter_move(ch);
     }
   }
   return (FALSE);
@@ -3735,7 +3735,7 @@ int flame(struct char_data *ch, int cmd, char *UNUSED(arg),
       stand_up(ch);
     }
     else {
-      FighterMove(ch);
+      fighter_move(ch);
     }
   }
   return (FALSE);
@@ -4064,9 +4064,9 @@ int Keftab(struct char_data *ch, int cmd, char *UNUSED(arg),
         targ_item = SWORD_ANCIENTS;
         found = FALSE;
         while (!found) {
-          if ((HasObject(i, targ_item)) && (get_max_level(i) < 30)) {
-            AddHated(ch, i);
-            SetHunting(ch, i);
+          if ((has_object(i, targ_item)) && (get_max_level(i) < 30)) {
+            add_hated(ch, i);
+            set_hunting(ch, i);
             return (TRUE);
           }
           else {
@@ -4085,7 +4085,7 @@ int Keftab(struct char_data *ch, int cmd, char *UNUSED(arg),
     found = FALSE;
     targ_item = SWORD_ANCIENTS;
     while (!found) {
-      if (HasObject(ch->specials.hunting, targ_item)) {
+      if (has_object(ch->specials.hunting, targ_item)) {
         return (FALSE);
       }
       else {
@@ -4100,7 +4100,7 @@ int Keftab(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int StormGiant(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int storm_giant(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
                int type) {
   struct char_data *vict;
 
@@ -4117,8 +4117,8 @@ int StormGiant(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       }
       else {
         act("$n creates a lightning bolt", TRUE, ch, 0, 0, TO_ROOM);
-        if ((vict = FindAHatee(ch)) == NULL)
-          vict = FindVictim(ch);
+        if ((vict = find_a_hatee(ch)) == NULL)
+          vict = find_victim(ch);
         if (!vict)
           return (FALSE);
         cast_lightning_bolt(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
@@ -4140,12 +4140,12 @@ int fighter(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (ch->specials.fighting) {
     if (GET_POS(ch) == POSITION_FIGHTING) {
-      FighterMove(ch);
+      fighter_move(ch);
     }
     else {
       stand_up(ch);
     }
-    FindABetterWeapon(ch);
+    find_a_better_weapon(ch);
   }
   return (FALSE);
 }
@@ -4182,7 +4182,7 @@ int fighter(struct char_data *ch, int cmd, char *UNUSED(arg),
 #define NTMSUSP     14
 #define NTM_FIX     15
 
-int NewThalosMayor(struct char_data *ch, int cmd, char *UNUSED(arg),
+int new_thalos_mayor(struct char_data *ch, int cmd, char *UNUSED(arg),
                    struct char_data *UNUSED(mob), int UNUSED(type)) {
 
   if (cmd || !AWAKE(ch))
@@ -4436,13 +4436,13 @@ int NewThalosMayor(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int SultanGuard(struct char_data *ch, int cmd, char *arg,
+int sultan_guard(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int UNUSED(type)) {
-  return (GenericCityguard(ch, cmd, arg, mob, NEWTHALOS));
+  return (generic_cityguard(ch, cmd, arg, mob, NEWTHALOS));
 }
 
 
-int NewThalosCitizen(struct char_data *ch, int cmd, char *arg,
+int new_thalos_citizen(struct char_data *ch, int cmd, char *arg,
                      struct char_data *mob, int type) {
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -4460,7 +4460,7 @@ int NewThalosCitizen(struct char_data *ch, int cmd, char *arg,
       }
 
       if (ch->specials.fighting)
-        CallForGuard(ch, ch->specials.fighting, 3, NEWTHALOS);
+        call_for_guard(ch, ch->specials.fighting, 3, NEWTHALOS);
 
       return (TRUE);
     }
@@ -4468,7 +4468,7 @@ int NewThalosCitizen(struct char_data *ch, int cmd, char *arg,
   return (FALSE);
 }
 
-int NewThalosGuildGuard(struct char_data *ch, int cmd, char *arg,
+int new_thalos_guild_guard(struct char_data *ch, int cmd, char *arg,
                         struct char_data *mob, int type) {
 
   if (!cmd) {
@@ -4480,16 +4480,16 @@ int NewThalosGuildGuard(struct char_data *ch, int cmd, char *arg,
     if (cmd >= 1 && cmd <= 6) {
       switch (ch->in_room) {
       case 13532:
-        return (CheckForBlockedMove(ch, cmd, arg, 13532, 2, CLASS_THIEF));
+        return (check_for_blocked_move(ch, cmd, arg, 13532, 2, CLASS_THIEF));
         break;
       case 13512:
-        return (CheckForBlockedMove(ch, cmd, arg, 13512, 2, CLASS_CLERIC));
+        return (check_for_blocked_move(ch, cmd, arg, 13512, 2, CLASS_CLERIC));
         break;
       case 13526:
-        return (CheckForBlockedMove(ch, cmd, arg, 13526, 2, CLASS_WARRIOR));
+        return (check_for_blocked_move(ch, cmd, arg, 13526, 2, CLASS_WARRIOR));
         break;
       case 13525:
-        return (CheckForBlockedMove(ch, cmd, arg, 13525, 0, CLASS_MAGIC_USER));
+        return (check_for_blocked_move(ch, cmd, arg, 13525, 0, CLASS_MAGIC_USER));
         break;
       }
     }
@@ -4520,7 +4520,7 @@ int magic_user2(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 
 
-  vict = FindVictim(ch);
+  vict = find_victim(ch);
 
   if (!vict)
     vict = ch->specials.fighting;
@@ -4617,12 +4617,12 @@ int magic_user2(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 /******************Mordilnia citizens************************************/
 
-int MordGuard(struct char_data *ch, int cmd, char *arg,
+int mord_guard(struct char_data *ch, int cmd, char *arg,
               struct char_data *mob, int UNUSED(type)) {
-  return (GenericCityguardHateUndead(ch, cmd, arg, mob, MORDILNIA));
+  return (generic_cityguardHateUndead(ch, cmd, arg, mob, MORDILNIA));
 }
 
-int MordGuildGuard(struct char_data *ch, int cmd, char *arg,
+int mord_guild_guard(struct char_data *ch, int cmd, char *arg,
                    struct char_data *mob, int type) {
 
   if (!cmd) {
@@ -4634,16 +4634,16 @@ int MordGuildGuard(struct char_data *ch, int cmd, char *arg,
     if (cmd >= 1 && cmd <= 6) {
       switch (ch->in_room) {
       case 18266:
-        return (CheckForBlockedMove(ch, cmd, arg, 18266, 2, CLASS_MAGIC_USER));
+        return (check_for_blocked_move(ch, cmd, arg, 18266, 2, CLASS_MAGIC_USER));
         break;
       case 18276:
-        return (CheckForBlockedMove(ch, cmd, arg, 18276, 2, CLASS_CLERIC));
+        return (check_for_blocked_move(ch, cmd, arg, 18276, 2, CLASS_CLERIC));
         break;
       case 18272:
-        return (CheckForBlockedMove(ch, cmd, arg, 18272, 2, CLASS_THIEF));
+        return (check_for_blocked_move(ch, cmd, arg, 18272, 2, CLASS_THIEF));
         break;
       case 18256:
-        return (CheckForBlockedMove(ch, cmd, arg, 18256, 0, CLASS_WARRIOR));
+        return (check_for_blocked_move(ch, cmd, arg, 18256, 0, CLASS_WARRIOR));
         break;
       }
     }
@@ -4655,7 +4655,7 @@ int MordGuildGuard(struct char_data *ch, int cmd, char *arg,
 }
 
 
-int CaravanGuildGuard(struct char_data *ch, int cmd, char *arg,
+int caravan_guild_guard(struct char_data *ch, int cmd, char *arg,
                       struct char_data *mob, int type) {
 
   if (!cmd) {
@@ -4667,16 +4667,16 @@ int CaravanGuildGuard(struct char_data *ch, int cmd, char *arg,
     if (cmd >= 1 && cmd <= 6) {
       switch (ch->in_room) {
       case 16115:
-        return (CheckForBlockedMove(ch, cmd, arg, 16115, 1, CLASS_MAGIC_USER));
+        return (check_for_blocked_move(ch, cmd, arg, 16115, 1, CLASS_MAGIC_USER));
         break;
       case 16126:
-        return (CheckForBlockedMove(ch, cmd, arg, 16116, 1, CLASS_CLERIC));
+        return (check_for_blocked_move(ch, cmd, arg, 16116, 1, CLASS_CLERIC));
         break;
       case 16117:
-        return (CheckForBlockedMove(ch, cmd, arg, 16117, 3, CLASS_THIEF));
+        return (check_for_blocked_move(ch, cmd, arg, 16117, 3, CLASS_THIEF));
         break;
       case 16110:
-        return (CheckForBlockedMove(ch, cmd, arg, 16110, 3, CLASS_WARRIOR));
+        return (check_for_blocked_move(ch, cmd, arg, 16110, 3, CLASS_WARRIOR));
         break;
       }
     }
@@ -4691,7 +4691,7 @@ int CaravanGuildGuard(struct char_data *ch, int cmd, char *arg,
 /* Gecko Palmreader */
 /*   added warrior strength and charisma dropped price to 200 */
 
-int StatTeller(struct char_data *ch, int cmd, char *UNUSED(arg),
+int stat_teller(struct char_data *ch, int cmd, char *UNUSED(arg),
                struct char_data *UNUSED(mob), int UNUSED(type)) {
   int choice;
   char buf[200];
@@ -4713,7 +4713,7 @@ int StatTeller(struct char_data *ch, int cmd, char *UNUSED(arg),
       choice = number(0, 3);
       switch (choice) {
       case 0:
-        if (HasClass(ch, CLASS_WARRIOR) && GET_STR(ch) == 18)
+        if (has_class(ch, CLASS_WARRIOR) && GET_STR(ch) == 18)
           SPRINTF(buf, "STR: %d/%d, WIS: %d, DEX: %d\n\r", GET_STR(ch),
                   GET_ADD(ch), GET_WIS(ch), GET_DEX(ch));
         else
@@ -4767,7 +4767,7 @@ int StatTeller(struct char_data *ch, int cmd, char *UNUSED(arg),
 }
 
 
-void ThrowChar(struct char_data *ch, struct char_data *v, int dir) {
+void throw_char(struct char_data *ch, struct char_data *v, int dir) {
   struct room_data *rp;
   int or;
   char buf[200];
@@ -4787,7 +4787,7 @@ void ThrowChar(struct char_data *ch, struct char_data *v, int dir) {
     do_look(v, "\0", 15);
 
     if (IS_SET(RM_FLAGS(v->in_room), DEATH) && get_max_level(v) < LOW_IMMORTAL) {
-      NailThisSucker(v);
+      nail_this_sucker(v);
     }
   }
 }
@@ -4808,7 +4808,7 @@ int thrower_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
       vict = ch->specials.fighting;
       switch (ch->in_room) {
       case 13912:
-        ThrowChar(ch, vict, 1); /* throw chars to the east */
+        throw_char(ch, vict, 1); /* throw chars to the east */
         return (FALSE);
         break;
       default:
@@ -4837,7 +4837,7 @@ int thrower_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
 Swallower special
 */
 
-int Tyrannosaurus_swallower(struct char_data *ch, int cmd, char *UNUSED(arg),
+int tyrannosaurus_swallower(struct char_data *ch, int cmd, char *UNUSED(arg),
                             struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct obj_data *co, *o;
   struct char_data *targ;
@@ -4860,7 +4860,7 @@ int Tyrannosaurus_swallower(struct char_data *ch, int cmd, char *UNUSED(arg),
 */
   DestroyedItems = 0;
 
-  DamageStuff(ch, SPELL_ACID_BLAST, 100);
+  damage_stuff(ch, SPELL_ACID_BLAST, 100);
 
   if (DestroyedItems) {
     act("$n lets off a real rip-roarer!", FALSE, ch, 0, 0, TO_ROOM);
@@ -4872,7 +4872,7 @@ int Tyrannosaurus_swallower(struct char_data *ch, int cmd, char *UNUSED(arg),
 */
 
   if (AWAKE(ch)) {
-    if ((targ = FindAnAttacker(ch)) != NULL) {
+    if ((targ = find_an_attacker(ch)) != NULL) {
       act("$n opens $s gaping mouth", TRUE, ch, 0, 0, TO_ROOM);
       if (!CAN_SEE(ch, targ)) {
         if (saves_spell(targ, SAVING_PARA)) {
@@ -5593,7 +5593,7 @@ int coldcaster(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   /* Find a dude to to evil things upon ! */
 
-  vict = FindVictim(ch);
+  vict = find_victim(ch);
 
   if (!vict)
     vict = ch->specials.fighting;
@@ -5654,7 +5654,7 @@ int trapper(struct char_data *ch, int cmd, char *UNUSED(arg),
       return (FALSE);
 
     /* Equipment must save against crush - will fail 25% of the time */
-    DamageStuff(ch->specials.fighting, TYPE_CRUSH, number(0, 7));
+    damage_stuff(ch->specials.fighting, TYPE_CRUSH, number(0, 7));
 
     /* Make the poor sucker save against paralzyation, or suffocate */
     if (saves_spell(ch->specials.fighting, SAVING_PARA)) {
@@ -5698,7 +5698,7 @@ int trogcook(struct char_data *ch, int cmd, char *UNUSED(arg),
   }
 
   for (tch = real_roomp(ch->in_room)->people; tch; tch = tch->next_in_room)
-    if (IS_NPC(tch) && IsAnimal(tch) && CAN_SEE(ch, tch)) {
+    if (IS_NPC(tch) && is_animal(tch) && CAN_SEE(ch, tch)) {
       if (!check_soundproof(ch))
         act("$n cackles 'Something else for the pot!'", FALSE, ch, 0, 0,
             TO_ROOM);
@@ -5802,7 +5802,7 @@ int troguard(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (ch->specials.fighting) {
     if (GET_POS(ch) == POSITION_FIGHTING) {
-      FighterMove(ch);
+      fighter_move(ch);
     }
     else {
       stand_up(ch);
@@ -5812,7 +5812,7 @@ int troguard(struct char_data *ch, int cmd, char *UNUSED(arg),
       act("$n shouts 'The enemy is upon us! Help me, my brothers!'",
           TRUE, ch, 0, 0, TO_ROOM);
       if (ch->specials.fighting)
-        CallForGuard(ch, ch->specials.fighting, 3, TROGCAVES);
+        call_for_guard(ch, ch->specials.fighting, 3, TROGCAVES);
       return (TRUE);
     }
   }
@@ -5885,12 +5885,12 @@ int keystone(struct char_data *ch, int cmd, char *UNUSED(arg),
         hit(ch, master, TYPE_UNDEFINED);
       }
     if (GET_POS(ch) == POSITION_FIGHTING) {
-      FighterMove(ch);
+      fighter_move(ch);
     }
     else {
       stand_up(ch);
     }
-    CallForGuard(ch, ch->specials.fighting, 3, OUTPOST);
+    call_for_guard(ch, ch->specials.fighting, 3, OUTPOST);
   }
   return (FALSE);
 }
@@ -5946,12 +5946,12 @@ int ghostsoldier(struct char_data *ch, int cmd, char *UNUSED(arg),
         hit(ch, master, TYPE_UNDEFINED);
       }
     if (GET_POS(ch) == POSITION_FIGHTING) {
-      FighterMove(ch);
+      fighter_move(ch);
     }
     else {
       stand_up(ch);
     }
-    CallForGuard(ch, ch->specials.fighting, 3, OUTPOST);
+    call_for_guard(ch, ch->specials.fighting, 3, OUTPOST);
   }
   return (FALSE);
 }
@@ -6069,7 +6069,7 @@ int Valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       return (magic_user(ch, cmd, arg, mob, type));
     }
 
-  vict = FindMobInRoomWithFunction(ch->in_room, Valik);
+  vict = find_mob_in_room_with_function(ch->in_room, Valik);
   assert(vict != 0);
 
   valik = Valik;
@@ -6358,7 +6358,7 @@ int guardian(struct char_data *ch, int cmd, char *arg,
           hit(ch, master, TYPE_UNDEFINED);
         }
       if (GET_POS(ch) == POSITION_FIGHTING) {
-        FighterMove(ch);
+        fighter_move(ch);
       }
       else {
         stand_up(ch);
@@ -6505,7 +6505,7 @@ int web_slinger(struct char_data *ch, int cmd, char *UNUSED(arg),
   }
 
   /* Find a dude to to evil things upon ! */
-  vict = FindVictim(ch);
+  vict = find_victim(ch);
 
   if (!vict)
     vict = ch->specials.fighting;

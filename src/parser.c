@@ -27,7 +27,7 @@ byte HashTable[256];
 
 
 /* Adds a command to the Command List radix. */
-void AddCommand(char *name, void (*func), int number, int min_pos, int min_lev) {
+void add_command(char *name, void (*func), int number, int min_pos, int min_lev) {
   NODE *n;
   int len, radix;
 
@@ -45,14 +45,14 @@ void AddCommand(char *name, void (*func), int number, int min_pos, int min_lev) 
   radix = HashTable[(int)*name];
   len = strlen(name);
 
-  AddNodeTail(n, len, radix);
+  add_node_tail(n, len, radix);
 }
 
 
 /* Generates a hash table that assigns 1 - 26 to 'a' - 'z' and 'A' - 'Z'.
 ** All other results are 0
 */
-void GenerateHash() {
+void generate_hash() {
   register int i;
 
   for (i = 0; i <= 255; i++)
@@ -68,7 +68,7 @@ void GenerateHash() {
 
 /* Adds a node to the end of a radix-sorted linked list.
 */
-void AddNodeTail(NODE * n, int length, int radix) {
+void add_node_tail(NODE * n, int length, int radix) {
   /* Check to see if we're at the beginning, if so, start here. */
   if (radix_head[radix].next == NULL) {
     radix_head[radix].next = n;
@@ -99,7 +99,7 @@ void AddNodeTail(NODE * n, int length, int radix) {
 ** NOTE: This uses partial matching, change strncmp to strcmp for full matching
 ** Return value is the node if it exists, or NULL if it does not.
 */
-NODE *SearchForNodeByName(NODE * head, char *name, int len) {
+NODE *search_for_node_by_name(NODE * head, char *name, int len) {
   register NODE *i;
 
   i = head;
@@ -116,7 +116,7 @@ NODE *SearchForNodeByName(NODE * head, char *name, int len) {
 /* Initialization for the radix sorting routines.  Call this to begin the sort.
 ** This will generate the hash table and sort everything via the hash-table.
 */
-void InitRadix() {
+void init_radix() {
   register int i;
 
   for (i = 0; i <= 26; i++) {
@@ -125,7 +125,7 @@ void InitRadix() {
     radix_head[i].max_len = 0;
   }
 
-  GenerateHash();
+  generate_hash();
 
 }
 
@@ -133,7 +133,7 @@ void InitRadix() {
 /* This will do all of the validation and search for a NODE by name.
 ** Will return a pointer to the NODE if it exists, NULL if it doesn't.
 */
-NODE *FindValidCommand(char *name) {
+NODE *find_valid_command(char *name) {
   register int len;
   register int radix;
 
@@ -141,7 +141,7 @@ NODE *FindValidCommand(char *name) {
   len = strlen(name);
 
   if (radix_head[radix].number && len <= radix_head[radix].max_len)
-    return (SearchForNodeByName(radix_head[radix].next, name, len));
+    return (search_for_node_by_name(radix_head[radix].next, name, len));
 
   return (NULL);
 }

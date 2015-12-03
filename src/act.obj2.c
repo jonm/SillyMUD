@@ -549,7 +549,7 @@ void perform_wear(struct char_data *ch, struct obj_data *obj_object,
 }
 
 
-int IsRestricted(int Mask, int Class) {
+int is_restricted(int Mask, int Class) {
   int i;
 
   /*
@@ -581,7 +581,7 @@ int IsRestricted(int Mask, int Class) {
 
 }
 
-int GetMobClassRestrictions(struct char_data *ch) {
+int get_mob_class_restrictions(struct char_data *ch) {
   int tmp;
   tmp = ch->player.class;
 
@@ -600,9 +600,9 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword) {
 
   if (!IS_IMMORTAL(ch)) {
 
-    BitMask = GetItemClassRestrictions(obj_object);
-    ClMask = GetMobClassRestrictions(ch);
-    if (IsRestricted(BitMask, ClMask) && IS_PC(ch)) {
+    BitMask = get_item_class_restrictions(obj_object);
+    ClMask = get_mob_class_restrictions(ch);
+    if (is_restricted(BitMask, ClMask) && IS_PC(ch)) {
       send_to_char("You are forbidden to do that.\n\r", ch);
       return;
     }
@@ -624,7 +624,7 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword) {
 
   if (IS_PC(ch)) {
     if (IS_SET(obj_object->obj_flags.extra_flags, ITEM_METAL)) {
-      if (OnlyClass(ch, CLASS_DRUID)) {
+      if (only_class(ch, CLASS_DRUID)) {
         send_to_char("You can not use metal.\n\r", ch);
         return;
       }
@@ -633,9 +633,9 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword) {
 
   rp = real_roomp(ch->in_room);
 
-  if (!IsHumanoid(ch)) {
+  if (!is_humanoid(ch)) {
     if ((keyword == 14 || keyword == 13 || keyword == 12 || keyword == 1) &&
-        !HasHands(ch)) {
+        !has_hands(ch)) {
       send_to_char("You can't wear that without having hands!\n\r", ch);
       return;
     }

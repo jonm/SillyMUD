@@ -15,7 +15,7 @@ extern struct char_data *character_list;
 struct room_data *real_roomp(int);
 extern int TrapDir[];
 
-void NailThisSucker(struct char_data *ch);
+void nail_this_sucker(struct char_data *ch);
 
 void do_settrap(struct char_data *UNUSED(ch), char *UNUSED(arg),
                 int UNUSED(cmd)) {
@@ -29,52 +29,52 @@ void do_settrap(struct char_data *UNUSED(ch), char *UNUSED(arg),
 
 }
 
-int CheckForMoveTrap(struct char_data *ch, int dir) {
+int check_for_move_trap(struct char_data *ch, int dir) {
   struct obj_data *i;
 
   for (i = real_roomp(ch->in_room)->contents; i; i = i->next_content) {
     if ((ITEM_TYPE(i) == ITEM_TRAP) &&
         (IS_SET(GET_TRAP_EFF(i), TRAP_EFF_MOVE)) && (GET_TRAP_CHARGES(i) > 0))
       if (IS_SET(GET_TRAP_EFF(i), TrapDir[dir]))
-        return (TriggerTrap(ch, i));
+        return (trigger_trap(ch, i));
   }
   return (FALSE);
 }
 
-int CheckForInsideTrap(struct char_data *ch, struct obj_data *i) {
+int check_for_inside_trap(struct char_data *ch, struct obj_data *i) {
   struct obj_data *t;
 
   for (t = i->contains; t; t = t->next_content) {
     if ((ITEM_TYPE(t) == ITEM_TRAP) &&
         (IS_SET(GET_TRAP_EFF(t), TRAP_EFF_OBJECT)) &&
         (GET_TRAP_CHARGES(t) > 0)) {
-      return (TriggerTrap(ch, t));
+      return (trigger_trap(ch, t));
     }
   }
   return (FALSE);
 }
 
-int CheckForAnyTrap(struct char_data *ch, struct obj_data *i) {
+int check_for_any_trap(struct char_data *ch, struct obj_data *i) {
   if ((ITEM_TYPE(i) == ITEM_TRAP) && (GET_TRAP_CHARGES(i) > 0))
-    return (TriggerTrap(ch, i));
+    return (trigger_trap(ch, i));
 
   return (FALSE);
 }
 
 
 
-int CheckForGetTrap(struct char_data *ch, struct obj_data *i) {
+int check_for_get_trap(struct char_data *ch, struct obj_data *i) {
   if ((ITEM_TYPE(i) == ITEM_TRAP) &&
       (IS_SET(GET_TRAP_EFF(i), TRAP_EFF_OBJECT)) &&
       (GET_TRAP_CHARGES(i) > 0)) {
-    return (TriggerTrap(ch, i));
+    return (trigger_trap(ch, i));
   }
   return (FALSE);
 }
 
 
 
-int TriggerTrap(struct char_data *ch, struct obj_data *i) {
+int trigger_trap(struct char_data *ch, struct obj_data *i) {
   int adj, fireperc, roll;
   struct char_data *v;
 
@@ -123,7 +123,7 @@ void trap_damage(struct char_data *v, int damtype, int amnt,
                  struct obj_data *t) {
   char buf[132];
 
-  amnt = SkipImmortals(v, amnt);
+  amnt = skip_immortals(v, amnt);
   if (amnt == -1) {
     return;
   }
@@ -136,7 +136,7 @@ void trap_damage(struct char_data *v, int damtype, int amnt,
   if (saves_spell(v, SAVING_PETRI))
     amnt = MAX((int)(amnt / 2), 0);
 
-  DamageStuff(v, damtype, amnt);
+  damage_stuff(v, damtype, amnt);
 
   amnt = MAX(amnt, 0);
 
@@ -146,7 +146,7 @@ void trap_damage(struct char_data *v, int damtype, int amnt,
 
   trap_dam(v, damtype, amnt, t);
 
-  InformMess(v);
+  inform_mess(v);
   if (GET_POS(v) == POSITION_DEAD) {
     if (!IS_NPC(v)) {
       if (real_roomp(v->in_room)->name)
@@ -214,16 +214,16 @@ void trap_dam(struct char_data *v, int damtype, int amnt, struct obj_data *t) {
   }
 
   if (damtype == TRAP_DAM_TELEPORT) {
-    TrapTeleport(v);
+    trap_teleport(v);
   }
   else if (damtype == TRAP_DAM_SLEEP) {
-    TrapSleep(v);
+    trap_sleep(v);
   }
 
 }
 
 
-void TrapTeleport(struct char_data *v) {
+void trap_teleport(struct char_data *v) {
   int to_room;
   extern int top_of_world;      /* ref to the top element of world */
 
@@ -245,11 +245,11 @@ void TrapTeleport(struct char_data *v) {
 
   if (IS_SET(real_roomp(to_room)->room_flags, DEATH) &&
       get_max_level(v) < LOW_IMMORTAL) {
-    NailThisSucker(v);
+    nail_this_sucker(v);
   }
 }
 
-void TrapSleep(struct char_data *v) {
+void trap_sleep(struct char_data *v) {
 
   struct affected_type af;
 
@@ -274,7 +274,7 @@ void TrapSleep(struct char_data *v) {
 }
 
 
-void InformMess(struct char_data *v) {
+void inform_mess(struct char_data *v) {
 
   switch (GET_POS(v)) {
   case POSITION_MORTALLYW:

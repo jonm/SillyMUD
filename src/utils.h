@@ -58,11 +58,11 @@
 
 #define IS_DARK(room) (real_roomp(room)->light <= 0 && \
 	((IS_SET(real_roomp(room)->room_flags, DARK)) ||  \
-	 IsDarkOutside(real_roomp(room))))
+	 is_dark_outside(real_roomp(room))))
 
 #define IS_LIGHT(room) (real_roomp(room)->light>0 || \
 	 (!IS_SET(real_roomp(room)->room_flags, DARK) || \
-	  !IsDarkOutside(real_roomp(room))))
+	  !is_dark_outside(real_roomp(room))))
 
 #define SET_BIT(var,bit)  ((var) = (var) | (bit))
 

@@ -35,7 +35,7 @@ char in_group(struct char_data *ch1, struct char_data *ch2);
 void change_weather(int change);
 void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp,
                      int door);
-int NoSummon(struct char_data *ch);
+int no_summon(struct char_data *ch);
 
 struct PolyType PolyList[45] = {
   {"goblin", 4, 201},           /* 1 */
@@ -2133,7 +2133,7 @@ void cast_animate_dead(byte level, struct char_data *ch, char *UNUSED(arg),
                        struct obj_data *tar_obj) {
   struct obj_data *i;
 
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -2439,7 +2439,7 @@ void cast_conjure_elemental(byte level, struct char_data *ch, char *arg,
 
   one_argument(arg, buffer);
 
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   if (!str_cmp(buffer, "fire")) {
@@ -2470,7 +2470,7 @@ void cast_conjure_elemental(byte level, struct char_data *ch, char *arg,
   sac = unequip_char(ch, HOLD);
   if (sac) {
     obj_to_char(sac, ch);
-    if (ObjVnum(sac) != obj) {
+    if (obj_vnum(sac) != obj) {
       send_to_char("You must have the correct item to sacrifice.\n\r", ch);
       return;
     }
@@ -2522,7 +2522,7 @@ void cast_cacaodemon(byte level, struct char_data *ch, char *arg, int type,
 
   one_argument(arg, buffer);
 
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   if (!str_cmp(buffer, "one")) {
@@ -2566,7 +2566,7 @@ void cast_cacaodemon(byte level, struct char_data *ch, char *arg, int type,
   sac = unequip_char(ch, WIELD);
   if (sac) {
     obj_to_char(sac, ch);
-    if (ObjVnum(sac) != obj) {
+    if (obj_vnum(sac) != obj) {
       send_to_char("You must have the correct item to sacrifice.\n\r", ch);
       return;
     }
@@ -2597,7 +2597,7 @@ void cast_mon_sum1(byte UNUSED(level), struct char_data *ch,
                    char *UNUSED(arg), int type,
                    struct char_data *UNUSED(tar_ch),
                    struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -2617,7 +2617,7 @@ void cast_mon_sum2(byte UNUSED(level), struct char_data *ch,
                    char *UNUSED(arg), int type,
                    struct char_data *UNUSED(tar_ch),
                    struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -2637,7 +2637,7 @@ void cast_mon_sum3(byte UNUSED(level), struct char_data *ch,
                    char *UNUSED(arg), int type,
                    struct char_data *UNUSED(tar_ch),
                    struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -2657,7 +2657,7 @@ void cast_mon_sum4(byte UNUSED(level), struct char_data *ch,
                    char *UNUSED(arg), int type,
                    struct char_data *UNUSED(tar_ch),
                    struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -2677,7 +2677,7 @@ void cast_mon_sum5(byte UNUSED(level), struct char_data *ch,
                    char *UNUSED(arg), int type,
                    struct char_data *UNUSED(tar_ch),
                    struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -2697,7 +2697,7 @@ void cast_mon_sum6(byte UNUSED(level), struct char_data *ch,
                    char *UNUSED(arg), int type,
                    struct char_data *UNUSED(tar_ch),
                    struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -2717,7 +2717,7 @@ void cast_mon_sum7(byte UNUSED(level), struct char_data *ch,
                    char *UNUSED(arg), int type,
                    struct char_data *UNUSED(tar_ch),
                    struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -2879,7 +2879,7 @@ void cast_changestaff(byte level, struct char_data *ch, char *arg,
 
   one_argument(arg, buffer);
 
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   if (!ch->equipment[HOLD]) {
@@ -2979,7 +2979,7 @@ void cast_familiar(byte level, struct char_data *ch, char *arg, int type,
                    struct obj_data *UNUSED(tar_obj)) {
   char buf[128];
 
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -3035,7 +3035,7 @@ void cast_holyword(byte level, struct char_data *ch, char *UNUSED(arg),
 void cast_golem(byte level, struct char_data *ch, char *UNUSED(arg),
                 int type, struct char_data *UNUSED(tar_ch),
                 struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -3395,7 +3395,7 @@ void cast_charm_veggie(byte level, struct char_data *ch, char *UNUSED(arg),
 void cast_tree(byte level, struct char_data *ch, char *UNUSED(arg), int type,
                struct char_data *UNUSED(tar_ch),
                struct obj_data *UNUSED(tar_obj)) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   if (IS_NPC(ch))
@@ -3417,7 +3417,7 @@ void cast_tree(byte level, struct char_data *ch, char *UNUSED(arg), int type,
 void cast_animate_rock(byte level, struct char_data *ch, char *UNUSED(arg),
                        int type, struct char_data *UNUSED(tar_ch),
                        struct obj_data *tar_obj) {
-  if (NoSummon(ch))
+  if (no_summon(ch))
     return;
 
   switch (type) {
@@ -3838,7 +3838,7 @@ void cast_thorn_spray(byte level, struct char_data *ch, char *UNUSED(arg),
 
     if (component) {
       obj_to_char(component, ch);
-      if (ObjVnum(component) != THORN) {
+      if (obj_vnum(component) != THORN) {
         send_to_char("You aint holdin no thorn!\n\r", ch);
         return;
       }

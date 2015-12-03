@@ -536,12 +536,12 @@ void spell_golem(byte level, struct char_data *ch,
 
 
   /* add all the effects from all the items to the golem */
-  AddAffects(gol, boots);
-  AddAffects(gol, gloves);
-  AddAffects(gol, jacket);
-  AddAffects(gol, sleeves);
-  AddAffects(gol, leggings);
-  AddAffects(gol, helm);
+  add_affects(gol, boots);
+  add_affects(gol, gloves);
+  add_affects(gol, jacket);
+  add_affects(gol, sleeves);
+  add_affects(gol, leggings);
+  add_affects(gol, helm);
 
   act("$n waves $s hand over a pile of armor on the floor", FALSE, ch, 0, 0,
       TO_ROOM);
@@ -653,7 +653,7 @@ void spell_shillelagh(byte UNUSED(level), struct char_data *ch,
     if (count < 2)
       return;
     /*  find the slots */
-    i = getFreeAffSlot(obj);
+    i = getfree_aff_slot(obj);
 
     SET_BIT(obj->obj_flags.extra_flags, ITEM_MAGIC);
 
@@ -776,7 +776,7 @@ void spell_animal_growth(byte UNUSED(level), struct char_data *ch,
   }
 
 
-  if (!IsAnimal(victim)) {
+  if (!is_animal(victim)) {
     send_to_char("Thats not an animal\n\r", ch);
     return;
   }
@@ -1232,7 +1232,7 @@ void spell_reincarnate(byte UNUSED(level), struct char_data *ch,
         st.talks[2] = TRUE;
         st.abilities.con -= 1;
 
-        st.race = GetNewRace();
+        st.race = get_new_race();
 
         act("The forest comes alive with the sounds of birds and animals",
             TRUE, ch, 0, 0, TO_CHAR);
@@ -1251,7 +1251,7 @@ void spell_reincarnate(byte UNUSED(level), struct char_data *ch,
 
         fseek(fl, obj->char_f_pos * sizeof(struct char_file_u), 0);
         fwrite(&st, sizeof(struct char_file_u), 1, fl);
-        ObjFromCorpse(obj);
+        obj_from_corpse(obj);
 
         CREATE(newch, struct char_data, 1);
         clear_char(newch);
@@ -1316,13 +1316,13 @@ void spell_charm_veggie(byte UNUSED(level), struct char_data *ch,
     return;
   }
 
-  if (!IsVeggie(victim)) {
+  if (!is_veggie(victim)) {
     send_to_char("This can only be used on plants!\n\r", ch);
     return;
   }
 
   if (get_max_level(victim) > get_max_level(ch) + 10) {
-    FailCharm(victim, ch);
+    fail_charm(victim, ch);
     return;
   }
 
@@ -1339,25 +1339,25 @@ void spell_charm_veggie(byte UNUSED(level), struct char_data *ch,
       send_to_char("Sorry, following in circles can not be allowed.\n\r", ch);
       return;
     }
-    if (IsImmune(victim, IMM_CHARM) || (WeaponImmune(victim))) {
-      FailCharm(victim, ch);
+    if (is_immune(victim, IMM_CHARM) || (weapon_immune(victim))) {
+      fail_charm(victim, ch);
       return;
     }
-    if (IsResist(victim, IMM_CHARM)) {
+    if (is_resist(victim, IMM_CHARM)) {
       if (saves_spell(victim, SAVING_PARA)) {
-        FailCharm(victim, ch);
+        fail_charm(victim, ch);
         return;
       }
 
       if (saves_spell(victim, SAVING_PARA)) {
-        FailCharm(victim, ch);
+        fail_charm(victim, ch);
         return;
       }
     }
     else {
-      if (!IsSusc(victim, IMM_CHARM)) {
+      if (!is_susc(victim, IMM_CHARM)) {
         if (saves_spell(victim, SAVING_PARA)) {
-          FailCharm(victim, ch);
+          fail_charm(victim, ch);
           return;
         }
       }
@@ -1389,7 +1389,7 @@ void spell_veggie_growth(byte level, struct char_data *ch,
                          struct obj_data *UNUSED(obj)) {
   struct affected_type af;
 
-  if (!IsVeggie(victim)) {
+  if (!is_veggie(victim)) {
     send_to_char("Thats not a plant-creature!\n\r", ch);
     return;
   }
@@ -1601,7 +1601,7 @@ void spell_animal_friendship(byte level, struct char_data *ch,
     return;
   }
 
-  if (!IsAnimal(victim)) {
+  if (!is_animal(victim)) {
     send_to_char("Thats no animal!\n\r", ch);
     return;
   }
@@ -1625,7 +1625,7 @@ void spell_animal_friendship(byte level, struct char_data *ch,
   }
 
 
-  if (IsImmune(victim, IMM_CHARM)) {
+  if (is_immune(victim, IMM_CHARM)) {
     return;
   }
 
@@ -1722,7 +1722,7 @@ void spell_snare(byte UNUSED(level), struct char_data *ch,
     GET_MOVE(victim) = 0;
   }
   else {
-    FailSnare(ch, victim);
+    fail_snare(ch, victim);
   }
 }
 
@@ -1755,7 +1755,7 @@ void spell_entangle(byte UNUSED(level), struct char_data *ch,
 
   }
   else {
-    FailSnare(ch, victim);
+    fail_snare(ch, victim);
   }
 }
 
@@ -1879,7 +1879,7 @@ void spell_warp_weapon(byte UNUSED(level), struct char_data *ch,
       ch, obj, 0, TO_CHAR);
   act("$p is warped and twisted by the power of the spell", FALSE,
       ch, obj, 0, TO_ROOM);
-  DamageOneItem(victim, BLOW_DAMAGE, obj);
+  damage_one_item(victim, BLOW_DAMAGE, obj);
 
   if (!IS_PC(victim))
     if (!victim->specials.fighting)
@@ -1897,7 +1897,7 @@ void spell_heat_stuff(byte level, struct char_data *ch,
     return;
   }
 
-  if (HitOrMiss(ch, victim, CalcThaco(ch))) {
+  if (hit_or_miss(ch, victim, calc_thaco(ch))) {
     af.type = SPELL_HEAT_STUFF;
     af.duration = level;
     af.modifier = -2;
@@ -2060,12 +2060,12 @@ void spell_know_monster(byte level, struct char_data *ch,
     SPRINTF(buf, "$N belongs to the %s race.", RaceName[GET_RACE(victim)]);
     act(buf, FALSE, ch, 0, victim, TO_CHAR);
     if (level > 5) {
-      exp = GetApprox(GET_EXP(victim), 40 + level);
+      exp = get_approx(GET_EXP(victim), 40 + level);
       SPRINTF(buf, "$N is worth approximately %d experience", exp);
       act(buf, FALSE, ch, 0, victim, TO_CHAR);
     }
     if (level > 10) {
-      lev = GetApprox(get_max_level(victim), 40 + level);
+      lev = get_approx(get_max_level(victim), 40 + level);
       SPRINTF(buf, "$N fights like a %d level warrior, you think", lev);
       act(buf, FALSE, ch, 0, victim, TO_CHAR);
     }
@@ -2082,7 +2082,7 @@ void spell_know_monster(byte level, struct char_data *ch,
       }
     }
     if (level > 20) {
-      hits = GetApprox(GET_MAX_HIT(victim), 40 + level);
+      hits = get_approx(GET_MAX_HIT(victim), 40 + level);
       SPRINTF(buf, "$N probably has about %d hit points", hits);
       act(buf, FALSE, ch, 0, victim, TO_CHAR);
     }
@@ -2109,14 +2109,14 @@ void spell_know_monster(byte level, struct char_data *ch,
     }
     if (level > 40) {
       int att;
-      att = GetApprox((int)victim->mult_att, 30 + level);
+      att = get_approx((int)victim->mult_att, 30 + level);
       SPRINTF(buf, "$N gets approx %d.0 attack(s) per round", att);
       act(buf, FALSE, ch, 0, victim, TO_CHAR);
     }
     if (level > 45) {
       int no, s;
-      no = GetApprox(victim->specials.damnodice, 30 + level);
-      s = GetApprox(victim->specials.damsizedice, 30 + level);
+      no = get_approx(victim->specials.damnodice, 30 + level);
+      s = get_approx(victim->specials.damsizedice, 30 + level);
 
       SPRINTF(buf, "Each does about %dd%d points of damage", no, s);
       act(buf, FALSE, ch, 0, victim, TO_CHAR);
@@ -2162,7 +2162,7 @@ void spell_firestorm(byte level, struct char_data *ch,
   act("$n sends a firestorm whirling across the room!\n\r",
       FALSE, ch, 0, 0, TO_ROOM);
 
-  AreaDamage(ch, dam, SPELL_BURNING_HANDS,
+  area_damage(ch, dam, SPELL_BURNING_HANDS,
              "You are seared by the burning flame!\n\r",
              "You are able to avoid the flames!\n\r", "", FALSE, TRUE);
 }
@@ -2185,7 +2185,7 @@ void spell_teleport_wo_error(byte level, struct char_data *ch,
       IS_SET(rp->room_flags, NO_SUM) ||
       IS_SET(rp->room_flags, NO_MAGIC) ||
       (IS_SET(rp->room_flags, TUNNEL) &&
-       (MobCountInRoom(rp->people) > rp->moblim))) {
+       (mob_count_in_room(rp->people) > rp->moblim))) {
     send_to_char("You failed.\n\r", ch);
     return;
   }
@@ -2217,7 +2217,7 @@ void spell_teleport_wo_error(byte level, struct char_data *ch,
 
     if (IS_SET(real_roomp(ch->in_room)->room_flags, DEATH) &&
         get_max_level(ch) < LOW_IMMORTAL) {
-      NailThisSucker(ch);
+      nail_this_sucker(ch);
       return;
     }
   }
@@ -2393,7 +2393,7 @@ void spell_thorn_spray(byte level, struct char_data *ch,
   if (affected_by_spell(victim, SPELL_SHIELD))
     dam = 0;
 
-  MissileDamage(ch, victim, dam, SPELL_THORN_SPRAY);
+  missile_damage(ch, victim, dam, SPELL_THORN_SPRAY);
 }
 
 void spell_resist_hold(byte UNUSED(level), struct char_data *ch,

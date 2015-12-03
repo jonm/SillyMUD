@@ -16,7 +16,7 @@ extern struct obj_data *object_list;
 extern struct char_data *character_list;
 extern struct skill_data skill_info[MAX_SPL_LIST];
 
-void SwitchStuff(struct char_data *giver, struct char_data *taker) {
+void switch_stuff(struct char_data *giver, struct char_data *taker) {
   struct obj_data *obj, *next;
   float ratio;
   int j;
@@ -73,7 +73,7 @@ void SwitchStuff(struct char_data *giver, struct char_data *taker) {
   if (IS_NPC(taker)) {
     taker->player.class = giver->player.class;
     if (!taker->skills)
-      SpaceForSkills(taker);
+      space_for_skills(taker);
     for (j = 0; j < MAX_SKILLS; j++) {
       taker->skills[j].learned = giver->skills[j].learned;
       taker->skills[j].flags = giver->skills[j].flags;
@@ -90,10 +90,10 @@ void SwitchStuff(struct char_data *giver, struct char_data *taker) {
 }
 
 
-void FailCharm(struct char_data *victim, struct char_data *ch) {
+void fail_charm(struct char_data *victim, struct char_data *ch) {
   if (!IS_PC(victim)) {
 
-    AddHated(victim, ch);
+    add_hated(victim, ch);
 
     if (!victim->specials.fighting) {
       if (GET_POS(victim) > POSITION_SLEEPING)
@@ -113,7 +113,7 @@ void FailCharm(struct char_data *victim, struct char_data *ch) {
   }
 }
 
-void FailSnare(struct char_data *victim, struct char_data *ch) {
+void fail_snare(struct char_data *victim, struct char_data *ch) {
   if (!IS_PC(victim)) {
     if (!victim->specials.fighting) {
       set_fighting(victim, ch);
@@ -124,12 +124,12 @@ void FailSnare(struct char_data *victim, struct char_data *ch) {
   }
 }
 
-void FailSleep(struct char_data *victim, struct char_data *ch) {
+void fail_sleep(struct char_data *victim, struct char_data *ch) {
 
   send_to_char("You feel sleepy for a moment,but then you recover\n\r",
                victim);
   if (!IS_PC(victim)) {
-    AddHated(victim, ch);
+    add_hated(victim, ch);
     if ((!victim->specials.fighting) && (GET_POS(victim) > POSITION_SLEEPING))
       set_fighting(victim, ch);
     else if (GET_POS(victim) == POSITION_SLEEPING) {
@@ -146,11 +146,11 @@ void FailSleep(struct char_data *victim, struct char_data *ch) {
 }
 
 
-void FailPara(struct char_data *victim, struct char_data *ch) {
+void fail_para(struct char_data *victim, struct char_data *ch) {
   send_to_char("You feel frozen for a moment,but then you recover\n\r",
                victim);
   if (!IS_PC(victim)) {
-    AddHated(victim, ch);
+    add_hated(victim, ch);
     if ((!victim->specials.fighting) && (GET_POS(victim) > POSITION_SLEEPING))
       set_fighting(victim, ch);
     else if (GET_POS(victim) == POSITION_SLEEPING) {
@@ -167,7 +167,7 @@ void FailPara(struct char_data *victim, struct char_data *ch) {
 }
 
 
-void FailCalm(struct char_data *victim, struct char_data *ch) {
+void fail_calm(struct char_data *victim, struct char_data *ch) {
   send_to_char("You feel happy and easygoing, but the effect soon fades.\n\r",
                victim);
   if (!IS_PC(victim))
@@ -177,7 +177,7 @@ void FailCalm(struct char_data *victim, struct char_data *ch) {
     }
 }
 
-int ItemMagicFailure(struct char_data *ch, int skill_number) {
+int item_magic_failure(struct char_data *ch, int skill_number) {
 
   /* only gnomes and dwarves have this problem.  Odd considering */
   /* gnomes are one of the 50/50 mage/cleric pairs. */
@@ -187,7 +187,7 @@ int ItemMagicFailure(struct char_data *ch, int skill_number) {
 
   /* clerics using clerical magic are exempt from failure */
 
-  if (HasClass(ch, CLASS_CLERIC)) {
+  if (has_class(ch, CLASS_CLERIC)) {
     if (skill_info[skill_number].spell_pointer)
       if (skill_info[skill_number].min_level[MIN_LEVEL_CLERIC] < 51)
         return (FALSE);

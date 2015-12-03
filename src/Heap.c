@@ -31,7 +31,7 @@ void smart_str_cpy(char *s1, const char *s2) {  /* ignore trailing spaces and \n
 
 }
 
-void StringHeap(char *string, struct StrHeap *Heap) {
+void string_heap(char *string, struct StrHeap *Heap) {
   unsigned char found = FALSE;
   int i;
 
@@ -62,7 +62,7 @@ void StringHeap(char *string, struct StrHeap *Heap) {
 
 }
 
-struct StrHeap *InitHeap() {
+struct StrHeap *init_heap() {
   struct StrHeap *Heap = 0;
 
   Heap = (struct StrHeap *)malloc(sizeof(struct StrHeap));
@@ -76,7 +76,7 @@ struct StrHeap *InitHeap() {
   return (Heap);
 }
 
-void DisplayStringHeap
+void display_string_heap
   (struct StrHeap *Heap, struct char_data *ch, int type, int destroy) {
   char buf[256];
   int i;

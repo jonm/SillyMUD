@@ -55,7 +55,7 @@ void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   one_argument(argument, buf);
 
   if (!*buf) {
-    if (HasClass(ch, CLASS_DRUID)) {
+    if (has_class(ch, CLASS_DRUID)) {
       send_to_char("You are able to change into the following forms:\n\r", ch);
       send_to_char("Format: <level> - <name>\n\r", ch);
       send_to_char("     ", ch);
@@ -91,7 +91,7 @@ void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
 
-  if (HasClass(ch, CLASS_DRUID)) {
+  if (has_class(ch, CLASS_DRUID)) {
     if (IS_EVIL(ch) || IS_GOOD(ch)) {
       send_to_char("You unable to change your form.  You have strayed too\n\r",
                    ch);
@@ -212,7 +212,7 @@ void do_bite(struct char_data *ch, char *argument, int cmd) {
         send_to_char("You think someone is eyeing you for lunch.\n\r", victim);
         return;
       }
-      else if (!IsHumanoid(victim) || IsUndead(victim)) {
+      else if (!is_humanoid(victim) || is_undead(victim)) {
         send_to_char
           ("How on earth could you consider feeding on such a thing?\n\r", ch);
         return;
@@ -257,7 +257,7 @@ void do_bite(struct char_data *ch, char *argument, int cmd) {
     send_to_char("Sink your fangs into who?\n\r", ch);
 }
 
-void MindflayerAttack(struct char_data *ch, struct char_data *v) {
+void mindflayer_attack(struct char_data *ch, struct char_data *v) {
   int loss;
 
   if (ch->specials.bitten)
@@ -282,7 +282,7 @@ void MindflayerAttack(struct char_data *ch, struct char_data *v) {
     }
   }
 
-  if (HitOrMiss(ch, v, CalcThaco(ch)) && get_max_level(v) < LOW_IMMORTAL) {
+  if (hit_or_miss(ch, v, calc_thaco(ch)) && get_max_level(v) < LOW_IMMORTAL) {
     /* ha ha, we suck them */
     act("$N screams out in pain as $n's tentacles suck $S energies!", FALSE,
         ch, 0, v, TO_NOTVICT);
@@ -316,11 +316,11 @@ void MindflayerAttack(struct char_data *ch, struct char_data *v) {
 
     update_pos(v);
     if (GET_POS(v) == POSITION_DEAD)
-      DamageEpilog(ch, v);
+      damage_epilog(ch, v);
   }
 }
 
-void VampireBite(struct char_data *ch, struct char_data *v) {
+void vampire_bite(struct char_data *ch, struct char_data *v) {
   bool to_bite = FALSE;
   float chance;
 
@@ -368,7 +368,7 @@ void VampireBite(struct char_data *ch, struct char_data *v) {
     }
   }
   else {                        /* attemp to bite */
-    if (HitOrMiss(ch, v, CalcThaco(ch))) {
+    if (hit_or_miss(ch, v, calc_thaco(ch))) {
       to_bite = TRUE;
     }
     else {
@@ -435,7 +435,7 @@ void VampireBite(struct char_data *ch, struct char_data *v) {
       GET_HIT(v) -= 20;
       update_pos(v);
       if (GET_POS(v) == POSITION_DEAD)  /* and it damn well better be */
-        DamageEpilog(ch, v);
+        damage_epilog(ch, v);
     }
   }
 }

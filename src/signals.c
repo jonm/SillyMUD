@@ -71,7 +71,7 @@ void hupsig(int UNUSED(sig)) {
   raw_force_all("return");
   raw_force_all("save");
   for (i = 0; i < 30; i++) {
-    SaveTheWorld();
+    save_the_world();
   }
   mudshutdown = should_reboot = 1;
 }

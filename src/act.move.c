@@ -25,12 +25,12 @@ extern int movement_loss[];
 
 
 
-void NotLegalMove(struct char_data *ch) {
+void not_legal_move(struct char_data *ch) {
   send_to_char("Alas, you cannot go that way...\n\r", ch);
 }
 
 
-int ValidMove(struct char_data *ch, int cmd) {
+int valid_move(struct char_data *ch, int cmd) {
   char tmp[256];
   struct room_direction_data *exitp;
 
@@ -71,7 +71,7 @@ int ValidMove(struct char_data *ch, int cmd) {
 */
 
   if (!exit_ok(exitp, NULL)) {
-    NotLegalMove(ch);
+    not_legal_move(ch);
     return (FALSE);
   }
   else if (IS_SET(exitp->exit_info, EX_CLOSED)) {
@@ -83,12 +83,12 @@ int ValidMove(struct char_data *ch, int cmd) {
         return (FALSE);
       }
       else {
-        NotLegalMove(ch);
+        not_legal_move(ch);
         return (FALSE);
       }
     }
     else {
-      NotLegalMove(ch);
+      not_legal_move(ch);
       return (FALSE);
     }
   }
@@ -104,13 +104,13 @@ int ValidMove(struct char_data *ch, int cmd) {
     struct room_data *rp;
     rp = real_roomp(exitp->to_room);
     if (IS_SET(rp->room_flags, TUNNEL)) {
-      if ((MobCountInRoom(rp->people) >= rp->moblim) && (!IS_IMMORTAL(ch))) {
+      if ((mob_count_in_room(rp->people) >= rp->moblim) && (!IS_IMMORTAL(ch))) {
         send_to_char("Sorry, there is no room to get in there.\n\r", ch);
         return (FALSE);
       }
     }
     if (IS_SET(rp->room_flags, PRIVATE)) {
-      if (MobCountInRoom(rp->people) > 2) {
+      if (mob_count_in_room(rp->people) > 2) {
         send_to_char("Sorry, that room is private.\n\r", ch);
         return (FALSE);
       }
@@ -131,7 +131,7 @@ int ValidMove(struct char_data *ch, int cmd) {
   }
 }
 
-int RawMove(struct char_data *ch, int dir) {
+int raw_move(struct char_data *ch, int dir) {
   int need_movement, new_r;
   struct obj_data *obj;
   bool has_boat;
@@ -142,7 +142,7 @@ int RawMove(struct char_data *ch, int dir) {
   if (special(ch, dir + 1, "")) /* Check for special routines(North is 1) */
     return (FALSE);
 
-  if (!ValidMove(ch, dir)) {
+  if (!valid_move(ch, dir)) {
     return (FALSE);
   }
 
@@ -316,11 +316,11 @@ int RawMove(struct char_data *ch, int dir) {
    *  nail the unlucky with traps.
    */
   if (!MOUNTED(ch)) {
-    if (CheckForMoveTrap(ch, dir))
+    if (check_for_move_trap(ch, dir))
       return (FALSE);
   }
   else {
-    if (CheckForMoveTrap(MOUNTED(ch), dir))
+    if (check_for_move_trap(MOUNTED(ch), dir))
       return (FALSE);
   }
 
@@ -341,9 +341,9 @@ int RawMove(struct char_data *ch, int dir) {
 
     new_r = ch->in_room;
     if (MOUNTED(ch))
-      NailThisSucker(MOUNTED(ch));
-    NailThisSucker(ch);
-    DeathRoom(new_r);           /* sends junk about the mud :) */
+      nail_this_sucker(MOUNTED(ch));
+    nail_this_sucker(ch);
+    death_room(new_r);           /* sends junk about the mud :) */
 
     return (FALSE);
   }
@@ -376,8 +376,8 @@ int move_one(struct char_data *ch, int dir) {
   int was_in;
 
   was_in = ch->in_room;
-  if (RawMove(ch, dir)) {       /* no error */
-    DisplayOneMove(ch, dir, was_in);
+  if (raw_move(ch, dir)) {       /* no error */
+    display_one_move(ch, dir, was_in);
     return TRUE;
   }
   else
@@ -385,7 +385,7 @@ int move_one(struct char_data *ch, int dir) {
 
 }
 
-void MoveGroup(struct char_data *ch, int dir) {
+void move_group(struct char_data *ch, int dir) {
   struct char_data *heap_ptr[50];
   int was_in, i, heap_top, heap_tot[50];
   struct follow_type *k, *next_dude;
@@ -395,8 +395,8 @@ void MoveGroup(struct char_data *ch, int dir) {
    */
 
   was_in = ch->in_room;
-  if (RawMove(ch, dir)) {       /* no error */
-    DisplayOneMove(ch, dir, was_in);
+  if (raw_move(ch, dir)) {       /* no error */
+    display_one_move(ch, dir, was_in);
     if (ch->followers) {
       heap_top = 0;
       for (k = ch->followers; k; k = next_dude) {
@@ -408,12 +408,12 @@ void MoveGroup(struct char_data *ch, int dir) {
             (GET_POS(k->follower) >= POSITION_STANDING)) {
           act("You follow $N.", FALSE, k->follower, 0, ch, TO_CHAR);
           if (k->follower->followers) {
-            MoveGroup(k->follower, dir);
+            move_group(k->follower, dir);
           }
           else {
-            if (RawMove(k->follower, dir)) {
-              if (!AddToCharHeap(heap_ptr, &heap_top, heap_tot, k->follower)) {
-                DisplayOneMove(k->follower, dir, was_in);
+            if (raw_move(k->follower, dir)) {
+              if (!add_to_char_heap(heap_ptr, &heap_top, heap_tot, k->follower)) {
+                display_one_move(k->follower, dir, was_in);
               }
             }
           }
@@ -424,34 +424,34 @@ void MoveGroup(struct char_data *ch, int dir) {
        */
       for (i = 0; i < heap_top; i++) {
         if (heap_tot[i] > 1) {
-          DisplayGroupMove(heap_ptr[i], dir, was_in, heap_tot[i]);
+          display_group_move(heap_ptr[i], dir, was_in, heap_tot[i]);
         }
         else {
-          DisplayOneMove(heap_ptr[i], dir, was_in);
+          display_one_move(heap_ptr[i], dir, was_in);
         }
       }
     }
   }
 }
 
-void DisplayOneMove(struct char_data *ch, int dir, int was_in) {
-  DisplayMove(ch, dir, was_in, 1);
+void display_one_move(struct char_data *ch, int dir, int was_in) {
+  display_move(ch, dir, was_in, 1);
 }
 
-void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total) {
-  DisplayMove(ch, dir, was_in, total);
+void display_group_move(struct char_data *ch, int dir, int was_in, int total) {
+  display_move(ch, dir, was_in, total);
 }
 
 
 void do_move(struct char_data *ch, char *argument, int cmd) {
 
   if (RIDDEN(ch)) {
-    if (RideCheck(RIDDEN(ch), 0)) {
+    if (ride_check(RIDDEN(ch), 0)) {
       do_move(RIDDEN(ch), argument, cmd);
       return;
     }
     else {
-      FallOffMount(RIDDEN(ch), ch);
+      fall_off_mount(RIDDEN(ch), ch);
       Dismount(RIDDEN(ch), ch, POSITION_SITTING);
     }
   }
@@ -483,7 +483,7 @@ void do_move(struct char_data *ch, char *argument, int cmd) {
       move_one(ch, cmd);
     }
     else {
-      MoveGroup(ch, cmd);
+      move_group(ch, cmd);
     }
   }
 }
@@ -492,16 +492,16 @@ void do_move(struct char_data *ch, char *argument, int cmd) {
 /*
   
   
-  move_one and MoveGroup print messages.  Raw move sends success or failure.
+  move_one and move_group print messages.  Raw move sends success or failure.
   
   */
 
 
-void DisplayMove(struct char_data *ch, int dir, int was_in, int total) {
+void display_move(struct char_data *ch, int dir, int was_in, int total) {
   struct char_data *tmp_ch;
   char tmp[256], *how;
 
-  how = MovementType(ch, FALSE);
+  how = movement_type(ch, FALSE);
 
   for (tmp_ch = real_roomp(was_in)->people; tmp_ch;
        tmp_ch = tmp_ch->next_in_room) {
@@ -546,7 +546,7 @@ void DisplayMove(struct char_data *ch, int dir, int was_in, int total) {
     }
   }
 
-  how = MovementType(ch, TRUE);
+  how = movement_type(ch, TRUE);
 
   for (tmp_ch = real_roomp(ch->in_room)->people; tmp_ch;
        tmp_ch = tmp_ch->next_in_room) {
@@ -624,7 +624,7 @@ void DisplayMove(struct char_data *ch, int dir, int was_in, int total) {
 }
 
 
-int AddToCharHeap(struct char_data *heap[50], int *top, int total[50],
+int add_to_char_heap(struct char_data *heap[50], int *top, int total[50],
                   struct char_data *k) {
   int found, i;
 
@@ -1088,8 +1088,8 @@ void do_pick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
 
-  if (!HasClass(ch, CLASS_THIEF) && !HasClass(ch, CLASS_MONK) &&
-      !IsIntrinsic(ch, SKILL_PICK_LOCK)) {
+  if (!has_class(ch, CLASS_THIEF) && !has_class(ch, CLASS_MONK) &&
+      !is_intrinsic(ch, SKILL_PICK_LOCK)) {
     send_to_char("You're no thief!\n\r", ch);
     return;
   }
@@ -1117,7 +1117,7 @@ void do_pick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
       if (percent > (ch->skills[SKILL_PICK_LOCK].learned)) {
         send_to_char("You failed to pick the lock.\n\r", ch);
-        LearnFromMistake(ch, SKILL_PICK_LOCK, 0, 90);
+        learn_from_mistake(ch, SKILL_PICK_LOCK, 0, 90);
         WAIT_STATE(ch, PULSE_VIOLENCE * 4);
         return;
       }
@@ -1143,7 +1143,7 @@ void do_pick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
       if (percent > (ch->skills[SKILL_PICK_LOCK].learned)) {
         send_to_char("You failed to pick the lock.\n\r", ch);
-        LearnFromMistake(ch, SKILL_PICK_LOCK, 0, 90);
+        learn_from_mistake(ch, SKILL_PICK_LOCK, 0, 90);
         WAIT_STATE(ch, PULSE_VIOLENCE * 4);
         return;
       }

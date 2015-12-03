@@ -27,7 +27,7 @@ struct char_data *missile_next_dude = 0;        /* Next dude global trick       
 struct zone_data *zone_table;   /* table of reset data             */
 
 char PeacefulWorks = 1;         /* set in @set */
-char DestroyedItems;            /* set in MakeScraps */
+char DestroyedItems;            /* set in make_scraps */
 
 /* External structures */
 #if HASH
@@ -42,7 +42,7 @@ extern struct char_data *character_list;
 extern struct skill_data skill_info[];
 extern struct index_data *obj_index;
 extern char *ItemDamType[];
-extern int ItemSaveThrows[22][5];
+extern int item_saveThrows[22][5];
 extern struct str_app_type str_app[];
 extern int WizLock;
 extern struct descriptor_data *descriptor_list;
@@ -349,7 +349,7 @@ void make_corpse(struct char_data *ch) {
   corpse->item_number = NOWHERE;
   corpse->in_room = NOWHERE;
 
-  if (!IS_NPC(ch) || (!IsUndead(ch))) {
+  if (!IS_NPC(ch) || (!is_undead(ch))) {
     SPRINTF(buf, "corpse %s", ch->player.name);
     corpse->name = strdup(buf);
 
@@ -364,7 +364,7 @@ void make_corpse(struct char_data *ch) {
     ADeadBody = TRUE;
 
   }
-  else if (IsUndead(ch)) {
+  else if (is_undead(ch)) {
     corpse->name = strdup("dust pile");
     corpse->description = strdup("A pile of dust lies here.");
     corpse->short_description = strdup("a pile of dust");
@@ -569,7 +569,7 @@ void die(struct char_data *ch) {
       pers = ch->desc->original;
       char_from_room(pers);
       char_to_room(pers, ch->in_room);
-      SwitchStuff(ch, pers);
+      switch_stuff(ch, pers);
       extract_char(ch);
       ch = pers;
     }
@@ -594,7 +594,7 @@ void die(struct char_data *ch) {
           GET_LEVEL(ch, i) -= 1;
           ch->specials.spells_to_learn -=
             MAX(1,
-                MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / HowManyClasses(ch));
+                MAX(2, wis_app[(int)GET_RWIS(ch)].bonus) / how_many_classes(ch));
           send_to_char("\n\rInsufficient experience has cost you a level.\n\r",
                        ch);
         }
@@ -638,8 +638,8 @@ void die(struct char_data *ch) {
    */
   ch->player.talks[2] = 1;      /* char is dead */
 
-  DeleteHatreds(ch);
-  DeleteFears(ch);
+  delete_hatreds(ch);
+  delete_fears(ch);
 
   onelife = IS_SET(ch->specials.affected_by2, AFF2_ONE_LIFER);
 
@@ -881,7 +881,7 @@ void dam_message(int dam, struct char_data *ch, struct char_data *victim,
 
 }
 
-int DamCheckDeny(struct char_data *ch, struct char_data *victim, int type) {
+int dam_check_deny(struct char_data *ch, struct char_data *victim, int type) {
   struct room_data *rp;
   char buf[MAX_INPUT_LENGTH];
 
@@ -910,7 +910,7 @@ int dam_details_ok(struct char_data *ch, struct char_data *v, int dam,
 
   if (MOUNTED(ch)) {
     if (MOUNTED(ch) == v) {
-      FallOffMount(ch, v);
+      fall_off_mount(ch, v);
       Dismount(ch, MOUNTED(ch), POSITION_SITTING);
     }
   }
@@ -920,7 +920,7 @@ int dam_details_ok(struct char_data *ch, struct char_data *v, int dam,
 }
 
 
-int SetCharFighting(struct char_data *ch, struct char_data *v) {
+int set_char_fighting(struct char_data *ch, struct char_data *v) {
   if (GET_POS(ch) > POSITION_STUNNED) {
     if (!(ch->specials.fighting)) {
       set_fighting(ch, v);
@@ -935,7 +935,7 @@ int SetCharFighting(struct char_data *ch, struct char_data *v) {
 }
 
 
-int SetVictFighting(struct char_data *ch, struct char_data *v) {
+int set_vict_fighting(struct char_data *ch, struct char_data *v) {
 
   if ((v != ch) && (GET_POS(v) > POSITION_STUNNED) &&
       (!(v->specials.fighting))) {
@@ -950,7 +950,7 @@ int SetVictFighting(struct char_data *ch, struct char_data *v) {
   return (TRUE);
 }
 
-int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type) {
+int damage_trivia(struct char_data *ch, struct char_data *v, int dam, int type) {
   if (v->master == ch)
     stop_follower(v);
 
@@ -971,9 +971,9 @@ int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type) {
   dam = pre_proc_dam(v, type, dam);
 
   if (dam > -1) {
-    dam = WeaponCheck(ch, v, type, dam);
+    dam = weapon_check(ch, v, type, dam);
 
-    DamageStuff(v, type, dam);
+    damage_stuff(v, type, dam);
 
     dam = MAX(dam, 0);
 
@@ -991,15 +991,15 @@ int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type) {
     }
 
     if (MOUNTED(v)) {
-      if (!RideCheck(v, -(dam / 2))) {
-        FallOffMount(v, MOUNTED(v));
+      if (!ride_check(v, -(dam / 2))) {
+        fall_off_mount(v, MOUNTED(v));
         WAIT_STATE(v, PULSE_VIOLENCE * 2);
         Dismount(v, MOUNTED(v), POSITION_SITTING);
       }
     }
     else if (RIDDEN(v)) {
-      if (!RideCheck(RIDDEN(v), -dam)) {
-        FallOffMount(RIDDEN(v), v);
+      if (!ride_check(RIDDEN(v), -dam)) {
+        fall_off_mount(RIDDEN(v), v);
         WAIT_STATE(RIDDEN(v), PULSE_VIOLENCE * 2);
         Dismount(RIDDEN(v), v, POSITION_SITTING);
       }
@@ -1009,7 +1009,7 @@ int DamageTrivia(struct char_data *ch, struct char_data *v, int dam, int type) {
   return (dam);
 }
 
-int DoDamage(struct char_data *ch, struct char_data *v, int dam, int type) {
+int do_damage(struct char_data *ch, struct char_data *v, int dam, int type) {
 
   if (dam >= 0) {
     GET_HIT(v) -= dam;
@@ -1038,7 +1038,7 @@ int DoDamage(struct char_data *ch, struct char_data *v, int dam, int type) {
 }
 
 
-void DamageMessages(struct char_data *ch, struct char_data *v, int dam,
+void damage_messages(struct char_data *ch, struct char_data *v, int dam,
                     int attacktype) {
   int nr, max_hit, i, j;
   struct message_type *messages;
@@ -1051,7 +1051,7 @@ void DamageMessages(struct char_data *ch, struct char_data *v, int dam,
   else if ((attacktype >= TYPE_HIT) && (attacktype <= TYPE_BLAST)) {
     dam_message(dam, ch, v, attacktype);
     if (ch->equipment[WIELD]) {
-      BrittleCheck(ch, dam);
+      brittle_check(ch, dam);
     }
   }
   else {
@@ -1164,18 +1164,18 @@ void DamageMessages(struct char_data *ch, struct char_data *v, int dam,
     }
     if (MOUNTED(v)) {
       /* chance they fall off */
-      RideCheck(v, -dam / 2);
+      ride_check(v, -dam / 2);
     }
     if (RIDDEN(v)) {
       /* chance the rider falls off */
-      RideCheck(RIDDEN(v), -dam);
+      ride_check(RIDDEN(v), -dam);
     }
     break;
   }
 }
 
 
-int DamageEpilog(struct char_data *ch, struct char_data *victim) {
+int damage_epilog(struct char_data *ch, struct char_data *victim) {
   int exp, mula;
   char buf[256];
   bool gotsome;
@@ -1294,7 +1294,7 @@ int DamageEpilog(struct char_data *ch, struct char_data *victim) {
 
 }
 
-void AreaDamage(struct char_data *ch, int dam, int attacktype,
+void area_damage(struct char_data *ch, int dam, int attacktype,
                 char *same_room_hitmsg, char *same_room_missmsg,
                 char *global_msg, bool save_negates, bool heat_blinder) {
 
@@ -1322,7 +1322,7 @@ void AreaDamage(struct char_data *ch, int dam, int attacktype,
           send_to_char(same_room_hitmsg, tmp_victim);
           if (heat_blinder)
             heat_blind(tmp_victim);
-          MissileDamage(ch, tmp_victim, dam, attacktype);
+          missile_damage(ch, tmp_victim, dam, attacktype);
         }
         else {
           send_to_char(same_room_missmsg, tmp_victim);
@@ -1348,7 +1348,7 @@ void AreaDamage(struct char_data *ch, int dam, int attacktype,
 
   /* damage stuff on ground */
 
-  dam_type = GetItemDamageType(attacktype);
+  dam_type = get_item_damage_type(attacktype);
 
   if (dam_type) {
 
@@ -1357,16 +1357,16 @@ void AreaDamage(struct char_data *ch, int dam, int attacktype,
       next = obj->next_content;
       if (obj->item_number >= 0 && obj->item_number != ITEM_SCRAPS) {
         int i;
-        i = DamagedByAttack(obj, dam_type);
+        i = damaged_by_attack(obj, dam_type);
 
         if (i == -1)
-          MakeScrap(ch, obj);
+          make_scrap(ch, obj);
         else if (i != 0) {
           SPRINTF(buf, "%s is %s.\n\r", obj->short_description,
                   ItemDamType[dam_type - 1]);
           send_to_room(buf, ch->in_room);
-          if (DamageItem(obj, i)) {
-            MakeScrap(ch, obj);
+          if (damage_item(obj, i)) {
+            make_scrap(ch, obj);
           }
         }
       }
@@ -1379,34 +1379,34 @@ void AreaDamage(struct char_data *ch, int dam, int attacktype,
 
 
 
-int MissileDamage(struct char_data *ch, struct char_data *victim,
+int missile_damage(struct char_data *ch, struct char_data *victim,
                   int dam, int attacktype) {
 
-  if (DamCheckDeny(ch, victim, attacktype))
+  if (dam_check_deny(ch, victim, attacktype))
     return (FALSE);
 
-  dam = SkipImmortals(victim, dam);
+  dam = skip_immortals(victim, dam);
 
   if (!dam_details_ok(ch, victim, dam, attacktype))
     return (FALSE);
 
-  SetVictFighting(ch, victim);
+  set_vict_fighting(ch, victim);
 /*
   make the ch hate the loser who used a missile attack on them.
 */
   if (!IS_PC(victim)) {
     if (!Hates(victim, ch)) {
-      AddHated(victim, ch);
+      add_hated(victim, ch);
     }
   }
-  dam = DamageTrivia(ch, victim, dam, attacktype);
+  dam = damage_trivia(ch, victim, dam, attacktype);
 
-  if (DoDamage(ch, victim, dam, attacktype))
+  if (do_damage(ch, victim, dam, attacktype))
     return (TRUE);
 
-  DamageMessages(ch, victim, dam, attacktype);
+  damage_messages(ch, victim, dam, attacktype);
 
-  if (DamageEpilog(ch, victim))
+  if (damage_epilog(ch, victim))
     return (TRUE);
 
   return (FALSE);               /* not dead */
@@ -1416,32 +1416,32 @@ int MissileDamage(struct char_data *ch, struct char_data *victim,
 int damage(struct char_data *ch, struct char_data *victim,
            int dam, int attacktype) {
 
-  if (DamCheckDeny(ch, victim, attacktype))
+  if (dam_check_deny(ch, victim, attacktype))
     return (FALSE);
 
-  dam = SkipImmortals(victim, dam);
+  dam = skip_immortals(victim, dam);
 
   if (!dam_details_ok(ch, victim, dam, attacktype))
     return (FALSE);
 
-  SetVictFighting(ch, victim);
-  SetCharFighting(ch, victim);
+  set_vict_fighting(ch, victim);
+  set_char_fighting(ch, victim);
 
-  dam = DamageTrivia(ch, victim, dam, attacktype);
+  dam = damage_trivia(ch, victim, dam, attacktype);
 
-  if (DoDamage(ch, victim, dam, attacktype))
+  if (do_damage(ch, victim, dam, attacktype))
     return (TRUE);
 
-  DamageMessages(ch, victim, dam, attacktype);
+  damage_messages(ch, victim, dam, attacktype);
 
-  if (DamageEpilog(ch, victim))
+  if (damage_epilog(ch, victim))
     return (TRUE);
 
   return (FALSE);               /* not dead */
 }
 
 
-int GetWeaponType(struct char_data *ch, struct obj_data **wielded) {
+int get_weapon_type(struct char_data *ch, struct obj_data **wielded) {
   int w_type;
 
   if (ch->equipment[WIELD] &&
@@ -1450,8 +1450,8 @@ int GetWeaponType(struct char_data *ch, struct obj_data **wielded) {
     *wielded = ch->equipment[WIELD];
     w_type = Getw_type(*wielded);
   }
-  else if (HasClass(ch, CLASS_MONK)) {
-    w_type = GetMonkw_type(ch);
+  else if (has_class(ch, CLASS_MONK)) {
+    w_type = get_monkw_type(ch);
   }
   else {
     if (IS_NPC(ch) && (ch->specials.attack_type >= TYPE_HIT))
@@ -1466,7 +1466,7 @@ int GetWeaponType(struct char_data *ch, struct obj_data **wielded) {
 
 }
 
-int GetMonkw_type(struct char_data *ch) {
+int get_monkw_type(struct char_data *ch) {
   int wtype;
 
   switch (number(1, 10) + (int)(GET_LEVEL(ch, MONK_LEVEL_IND) / 10)) {
@@ -1557,7 +1557,7 @@ int Getw_type(struct obj_data *wielded) {
   return (w_type);
 }
 
-int HitCheckDeny(struct char_data *ch, struct char_data *victim) {
+int hit_check_deny(struct char_data *ch, struct char_data *victim) {
   struct room_data *rp;
   char buf[256];
   extern char PeacefulWorks;
@@ -1625,7 +1625,7 @@ int HitCheckDeny(struct char_data *ch, struct char_data *victim) {
 
   if (victim == ch) {
     if (Hates(ch, victim)) {
-      RemHated(ch, victim);
+      rem_hated(ch, victim);
     }
     return (TRUE);
   }
@@ -1634,16 +1634,16 @@ int HitCheckDeny(struct char_data *ch, struct char_data *victim) {
     return (TRUE);
 
   if (MOUNTED(ch)) {
-    if (!RideCheck(ch, -5)) {
-      FallOffMount(ch, MOUNTED(ch));
+    if (!ride_check(ch, -5)) {
+      fall_off_mount(ch, MOUNTED(ch));
       Dismount(ch, MOUNTED(ch), POSITION_SITTING);
       return (TRUE);
     }
   }
   else {
     if (RIDDEN(ch)) {
-      if (!RideCheck(RIDDEN(ch), -10)) {
-        FallOffMount(RIDDEN(ch), ch);
+      if (!ride_check(RIDDEN(ch), -10)) {
+        fall_off_mount(RIDDEN(ch), ch);
         Dismount(RIDDEN(ch), ch, POSITION_SITTING);
         return (TRUE);
       }
@@ -1653,7 +1653,7 @@ int HitCheckDeny(struct char_data *ch, struct char_data *victim) {
   return (FALSE);
 }
 
-int CalcThaco(struct char_data *ch) {
+int calc_thaco(struct char_data *ch) {
   int calc_thaco;
   extern struct str_app_type str_app[];
   extern int thaco[4][ABS_MAX_LVL];
@@ -1664,7 +1664,7 @@ int CalcThaco(struct char_data *ch) {
 
   if (!IS_NPC(ch))
     calc_thaco =
-      thaco[BestFightingClass(ch)][(int)GET_LEVEL(ch, BestFightingClass(ch))];
+      thaco[best_fighting_class(ch)][(int)GET_LEVEL(ch, best_fighting_class(ch))];
   else
     /* THAC0 for monsters is set in the HitRoll */
     calc_thaco = 20;
@@ -1675,7 +1675,7 @@ int CalcThaco(struct char_data *ch) {
   return (calc_thaco);
 }
 
-int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco) {
+int hit_or_miss(struct char_data *ch, struct char_data *victim, int calc_thaco) {
   int diceroll, victim_ac;
 
   extern struct dex_app_type dex_app[];
@@ -1685,10 +1685,10 @@ int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco) {
   /* nifty new dwarf attack stuff. */
 
   if ((GET_RACE(ch) == RACE_DWARF || GET_RACE(ch) == RACE_GNOME) &&
-      IsGoblinoid(victim))
+      is_goblinoid(victim))
     diceroll++;
 
-  if (GET_RACE(victim) == RACE_DWARF && IsGiant(ch))
+  if (GET_RACE(victim) == RACE_DWARF && is_giant(ch))
     diceroll -= 4;
 
   victim_ac = GET_AC(victim) / 10;
@@ -1719,13 +1719,13 @@ int HitOrMiss(struct char_data *ch, struct char_data *victim, int calc_thaco) {
   }
 }
 
-void MissVictim(struct char_data *ch, struct char_data *v, int type,
+void miss_victim(struct char_data *ch, struct char_data *v, int type,
                 int w_type, int (*dam_func) ()) {
   struct obj_data *o;
 
   if (type <= 0)
     type = w_type;
-  if (dam_func == MissileDamage) {
+  if (dam_func == missile_damage) {
     if (ch->equipment[WIELD]) {
       o = unequip_char(ch, WIELD);
       if (o) {
@@ -1750,7 +1750,7 @@ int get_weapon_dam(struct char_data *ch, struct char_data *v,
   dam += GET_DAMROLL(ch);
 
   if (!wielded) {
-    if (IS_NPC(ch) || HasClass(ch, CLASS_MONK))
+    if (IS_NPC(ch) || has_class(ch, CLASS_MONK))
       dam += dice(ch->specials.damnodice, ch->specials.damsizedice);
     else
       dam += number(0, 2);      /* Max. 2 dam with bare hands */
@@ -1776,7 +1776,7 @@ int get_weapon_dam(struct char_data *ch, struct char_data *v,
       act("$p snaps into peices!", TRUE, ch, wielded, 0, TO_CHAR);
       act("$p snaps into peices!", TRUE, ch, wielded, 0, TO_ROOM);
       if ((obj = unequip_char(ch, WIELD)) != NULL) {
-        MakeScrap(ch, obj);
+        make_scrap(ch, obj);
         dam += 1;
       }
     }
@@ -1836,7 +1836,7 @@ int get_weapon_dam(struct char_data *ch, struct char_data *v,
 }
 
 
-int GetBackstabMult(struct char_data *ch, struct char_data *v) {
+int get_backstab_mult(struct char_data *ch, struct char_data *v) {
   int mult, our_skill;
   char buf[80];
 
@@ -1941,7 +1941,7 @@ int GetBackstabMult(struct char_data *ch, struct char_data *v) {
   }
 
   if (!our_skill) {
-    SPRINTF(buf, "Warning, race %d was unaccounted for in GetBackstabMult()",
+    SPRINTF(buf, "Warning, race %d was unaccounted for in get_backstab_mult()",
             GET_RACE(v));
     log_msg(buf);
     return (mult);
@@ -1960,7 +1960,7 @@ int GetBackstabMult(struct char_data *ch, struct char_data *v) {
 
   mult = MAX(mult, 1);
 
-  if (OnlyClass(ch, CLASS_THIEF)) {
+  if (only_class(ch, CLASS_THIEF)) {
 
     if (ch->skills[our_skill].learned > 70)
       mult++;
@@ -1971,7 +1971,7 @@ int GetBackstabMult(struct char_data *ch, struct char_data *v) {
   return (mult);
 }
 
-void HitVictim(struct char_data *ch, struct char_data *v, int dam,
+void hit_victim(struct char_data *ch, struct char_data *v, int dam,
                int type, int w_type, int (*dam_func) ()) {
   char buf[80];
   extern byte backstab_mult[];
@@ -1980,7 +1980,7 @@ void HitVictim(struct char_data *ch, struct char_data *v, int dam,
   if (type == SKILL_BACKSTAB) {
     int tmp;
 
-    tmp = GetBackstabMult(ch, v);
+    tmp = get_backstab_mult(ch, v);
     SPRINTF(buf, "BS multiplier for %dth level char is %d.", get_max_level(ch),
             tmp);
     log_msg(buf);
@@ -1996,14 +1996,14 @@ void HitVictim(struct char_data *ch, struct char_data *v, int dam,
     if (v->skills && v->skills[SKILL_DODGE].learned) {
       if (number(1, 101) <= v->skills[SKILL_DODGE].learned) {
         dam -= number(1, 3);
-        if (HasClass(v, CLASS_MONK)) {
-          MonkDodge(ch, v, &dam);
+        if (has_class(v, CLASS_MONK)) {
+          monk_dodge(ch, v, &dam);
         }
       }
     }
 #endif
     if ((GET_RACE(ch) == RACE_DWARF || GET_RACE(ch) == RACE_GNOME) &&
-        IsGoblinoid(v))
+        is_goblinoid(v))
       dam++;
 
     dead = (*dam_func) (ch, v, dam, w_type);
@@ -2015,7 +2015,7 @@ void HitVictim(struct char_data *ch, struct char_data *v, int dam,
    */
 
   if (!dead) {
-    WeaponSpell(ch, v, w_type);
+    weapon_spell(ch, v, w_type);
 
   }
 }
@@ -2026,33 +2026,33 @@ void root_hit(struct char_data *ch, struct char_data *victim, int type,
   int w_type, thaco, dam;
   struct obj_data *wielded = 0; /* this is rather important. */
 
-  if (HitCheckDeny(ch, victim))
+  if (hit_check_deny(ch, victim))
     return;
 
   GET_MOVE(ch) -= 1;
 
-  w_type = GetWeaponType(ch, &wielded);
+  w_type = get_weapon_type(ch, &wielded);
   if (w_type == TYPE_HIT)
-    w_type = GetFormType(ch);   /* races have different types of attack */
+    w_type = get_form_type(ch);   /* races have different types of attack */
 
-  thaco = CalcThaco(ch);
+  thaco = calc_thaco(ch);
 
-  if (HitOrMiss(ch, victim, thaco)) {
+  if (hit_or_miss(ch, victim, thaco)) {
     if ((dam = get_weapon_dam(ch, victim, wielded)) > 0) {
-      HitVictim(ch, victim, dam, type, w_type, dam_func);
+      hit_victim(ch, victim, dam, type, w_type, dam_func);
     }
     else {
-      MissVictim(ch, victim, type, w_type, dam_func);
+      miss_victim(ch, victim, type, w_type, dam_func);
     }
   }
   else {
-    MissVictim(ch, victim, type, w_type, dam_func);
+    miss_victim(ch, victim, type, w_type, dam_func);
   }
 
 }
 
 void missile_hit(struct char_data *ch, struct char_data *victim, int type) {
-  root_hit(ch, victim, type, MissileDamage);
+  root_hit(ch, victim, type, missile_damage);
 }
 
 void hit(struct char_data *ch, struct char_data *victim, int type) {
@@ -2060,7 +2060,7 @@ void hit(struct char_data *ch, struct char_data *victim, int type) {
 }
 
 
-float WoundWearyness(struct char_data *ch) {
+float wound_wearyness(struct char_data *ch) {
   float zap = 0.000;
 
   if (IS_PC(ch)) {
@@ -2143,7 +2143,7 @@ void perform_violence() {
       }
 
       if (IS_AFFECTED2(ch, AFF2_FEEDING)) {
-        VampireBite(ch, ch->specials.fighting);
+        vampire_bite(ch, ch->specials.fighting);
         continue;
       }
 
@@ -2153,12 +2153,12 @@ void perform_violence() {
 
       if (IS_NPC(ch)) {
         struct char_data *rec;
-        DevelopHatred(ch, ch->specials.fighting);
+        develop_hatred(ch, ch->specials.fighting);
         rec = ch->specials.fighting;
         if (!IS_PC(ch->specials.fighting)) {
           while (rec->master) {
             if (rec->master->in_room == ch->in_room) {
-              AddHated(ch, rec->master);
+              add_hated(ch, rec->master);
               rec = rec->master;
             }
             else {
@@ -2178,7 +2178,7 @@ void perform_violence() {
 
           /* if dude is a monk, and is wielding something */
 
-          if (HasClass(ch, CLASS_MONK)) {
+          if (has_class(ch, CLASS_MONK)) {
             if (ch->equipment[WIELD]) {
               /* set it to one, they only get one attack */
               x = 1.000;
@@ -2191,7 +2191,7 @@ void perform_violence() {
 
 
           /* heavy woundage = fewer attacks */
-          x -= WoundWearyness(ch);
+          x -= wound_wearyness(ch);
 
           /* work through all of their attacks, until there is not
              a full attack left */
@@ -2206,7 +2206,7 @@ void perform_violence() {
           /* have to check for monks holding things. */
           if (ch->equipment[HOLD] && !(ch->equipment[WIELD]) &&
               ITEM_TYPE(ch->equipment[HOLD]) == ITEM_WEAPON &&
-              HasClass(ch, CLASS_MONK)) {
+              has_class(ch, CLASS_MONK)) {
             tmp2 = unequip_char(ch, HOLD);
           }
 
@@ -2221,7 +2221,7 @@ void perform_violence() {
           }
 
           if (GET_RACE(ch) == RACE_MFLAYER && ch->specials.fighting)
-            MindflayerAttack(ch, ch->specials.fighting);
+            mindflayer_attack(ch, ch->specials.fighting);
 
           if (x > .01) {
 
@@ -2291,11 +2291,11 @@ void perform_violence() {
             if (ch->specials.fighting)
               hit(ch, ch->specials.fighting, TYPE_UNDEFINED);
             else {
-              if ((vict = FindAHatee(ch)) != NULL) {
+              if ((vict = find_a_hatee(ch)) != NULL) {
                 if (vict->attackers < 6)
                   hit(ch, vict, TYPE_UNDEFINED);
               }
-              else if ((vict = FindAnAttacker(ch)) != NULL) {
+              else if ((vict = find_an_attacker(ch)) != NULL) {
                 if (vict->attackers < 6)
                   hit(ch, vict, TYPE_UNDEFINED);
               }
@@ -2303,7 +2303,7 @@ void perform_violence() {
             x -= 1.0;
           }
           if (GET_RACE(ch) == RACE_MFLAYER && ch->specials.fighting)
-            MindflayerAttack(ch, ch->specials.fighting);
+            mindflayer_attack(ch, ch->specials.fighting);
 
           if (x > .01) {
 
@@ -2317,11 +2317,11 @@ void perform_violence() {
                 hit(ch, ch->specials.fighting, TYPE_UNDEFINED);
               }
               else {
-                if ((vict = FindAHatee(ch)) != NULL) {
+                if ((vict = find_a_hatee(ch)) != NULL) {
                   if (vict->attackers < 6)
                     hit(ch, vict, TYPE_UNDEFINED);
                 }
-                else if ((vict = FindAnAttacker(ch)) != NULL) {
+                else if ((vict = find_an_attacker(ch)) != NULL) {
                   if (vict->attackers < 6)
                     hit(ch, vict, TYPE_UNDEFINED);
                 }
@@ -2338,7 +2338,7 @@ void perform_violence() {
 }
 
 
-struct char_data *FindVictim(struct char_data *ch) {
+struct char_data *find_victim(struct char_data *ch) {
   struct char_data *tmp_ch;
   unsigned char found = FALSE;
   unsigned short ftot = 0, ttot = 0, ctot = 0, ntot = 0, mtot = 0, ktot =
@@ -2364,17 +2364,17 @@ struct char_data *FindVictim(struct char_data *ch) {
           if (!in_group(ch, tmp_ch)) {
             found = TRUE;       /* a potential victim has been found */
             if (!IS_NPC(tmp_ch)) {
-              if (HasClass(tmp_ch, CLASS_WARRIOR))
+              if (has_class(tmp_ch, CLASS_WARRIOR))
                 ftot++;
-              else if (HasClass(tmp_ch, CLASS_CLERIC))
+              else if (has_class(tmp_ch, CLASS_CLERIC))
                 ctot++;
-              else if (HasClass(tmp_ch, CLASS_MAGIC_USER))
+              else if (has_class(tmp_ch, CLASS_MAGIC_USER))
                 mtot++;
-              else if (HasClass(tmp_ch, CLASS_THIEF))
+              else if (has_class(tmp_ch, CLASS_THIEF))
                 ttot++;
-              else if (HasClass(tmp_ch, CLASS_DRUID))
+              else if (has_class(tmp_ch, CLASS_DRUID))
                 dtot++;
-              else if (HasClass(tmp_ch, CLASS_MONK))
+              else if (has_class(tmp_ch, CLASS_MONK))
                 ktot++;
             }
             else {
@@ -2466,22 +2466,22 @@ struct char_data *FindVictim(struct char_data *ch) {
             if (IS_NPC(tmp_ch)) {
               total -= njump;
             }
-            else if (HasClass(tmp_ch, CLASS_WARRIOR)) {
+            else if (has_class(tmp_ch, CLASS_WARRIOR)) {
               total -= fjump;
             }
-            else if (HasClass(tmp_ch, CLASS_CLERIC)) {
+            else if (has_class(tmp_ch, CLASS_CLERIC)) {
               total -= cjump;
             }
-            else if (HasClass(tmp_ch, CLASS_MAGIC_USER)) {
+            else if (has_class(tmp_ch, CLASS_MAGIC_USER)) {
               total -= mjump;
             }
-            else if (HasClass(tmp_ch, CLASS_THIEF)) {
+            else if (has_class(tmp_ch, CLASS_THIEF)) {
               total -= tjump;
             }
-            else if (HasClass(tmp_ch, CLASS_DRUID)) {
+            else if (has_class(tmp_ch, CLASS_DRUID)) {
               total -= djump;
             }
-            else if (HasClass(tmp_ch, CLASS_MONK)) {
+            else if (has_class(tmp_ch, CLASS_MONK)) {
               total -= kjump;
             }
             if (total <= 0)
@@ -2498,7 +2498,7 @@ struct char_data *FindVictim(struct char_data *ch) {
   return (0);
 }
 
-struct char_data *FindAnyVictim(struct char_data *ch) {
+struct char_data *find_any_victim(struct char_data *ch) {
   struct char_data *tmp_ch;
   unsigned char found = FALSE;
   unsigned short ftot = 0, ttot = 0, ctot = 0, ntot = 0, mtot = 0, ktot =
@@ -2514,20 +2514,20 @@ struct char_data *FindAnyVictim(struct char_data *ch) {
        tmp_ch = tmp_ch->next_in_room) {
     if ((CAN_SEE(ch, tmp_ch)) && (!IS_SET(tmp_ch->specials.act, PLR_NOHASSLE))) {
       if (!(IS_AFFECTED(ch, AFF_CHARM)) || (ch->master != tmp_ch)) {
-        if (!SameRace(ch, tmp_ch) || (!IS_NPC(tmp_ch))) {
+        if (!same_race(ch, tmp_ch) || (!IS_NPC(tmp_ch))) {
           found = TRUE;         /* a potential victim has been found */
           if (!IS_NPC(tmp_ch)) {
-            if (HasClass(tmp_ch, CLASS_WARRIOR))
+            if (has_class(tmp_ch, CLASS_WARRIOR))
               ftot++;
-            else if (HasClass(tmp_ch, CLASS_CLERIC))
+            else if (has_class(tmp_ch, CLASS_CLERIC))
               ctot++;
-            else if (HasClass(tmp_ch, CLASS_MAGIC_USER))
+            else if (has_class(tmp_ch, CLASS_MAGIC_USER))
               mtot++;
-            else if (HasClass(tmp_ch, CLASS_THIEF))
+            else if (has_class(tmp_ch, CLASS_THIEF))
               ttot++;
-            else if (HasClass(tmp_ch, CLASS_DRUID))
+            else if (has_class(tmp_ch, CLASS_DRUID))
               dtot++;
-            else if (HasClass(tmp_ch, CLASS_MONK))
+            else if (has_class(tmp_ch, CLASS_MONK))
               ktot++;
           }
           else {
@@ -2609,26 +2609,26 @@ struct char_data *FindAnyVictim(struct char_data *ch) {
   for (tmp_ch = (real_roomp(ch->in_room))->people; tmp_ch;
        tmp_ch = tmp_ch->next_in_room) {
     if ((CAN_SEE(ch, tmp_ch)) && (!IS_SET(tmp_ch->specials.act, PLR_NOHASSLE))) {
-      if (!SameRace(tmp_ch, ch) || (!IS_NPC(tmp_ch))) {
+      if (!same_race(tmp_ch, ch) || (!IS_NPC(tmp_ch))) {
         if (IS_NPC(tmp_ch)) {
           total -= njump;
         }
-        else if (HasClass(tmp_ch, CLASS_WARRIOR)) {
+        else if (has_class(tmp_ch, CLASS_WARRIOR)) {
           total -= fjump;
         }
-        else if (HasClass(tmp_ch, CLASS_CLERIC)) {
+        else if (has_class(tmp_ch, CLASS_CLERIC)) {
           total -= cjump;
         }
-        else if (HasClass(tmp_ch, CLASS_MAGIC_USER)) {
+        else if (has_class(tmp_ch, CLASS_MAGIC_USER)) {
           total -= mjump;
         }
-        else if (HasClass(tmp_ch, CLASS_THIEF)) {
+        else if (has_class(tmp_ch, CLASS_THIEF)) {
           total -= tjump;
         }
-        else if (HasClass(tmp_ch, CLASS_DRUID)) {
+        else if (has_class(tmp_ch, CLASS_DRUID)) {
           total -= djump;
         }
-        else if (HasClass(tmp_ch, CLASS_MONK)) {
+        else if (has_class(tmp_ch, CLASS_MONK)) {
           total -= kjump;
         }
         if (total <= 0)
@@ -2675,13 +2675,13 @@ void break_life_saver_obj(struct char_data *ch) {
             ch->equipment[found]->name);
     send_to_char(buf, ch);
     if ((o = unequip_char(ch, found)) != NULL) {
-      MakeScrap(ch, o);
+      make_scrap(ch, o);
     }
   }
 
 }
 
-int BrittleCheck(struct char_data *ch, int dam) {
+int brittle_check(struct char_data *ch, int dam) {
   char buf[200];
   struct obj_data *obj;
 
@@ -2693,7 +2693,7 @@ int BrittleCheck(struct char_data *ch, int dam) {
       if ((obj = unequip_char(ch, WIELD)) != NULL) {
         SPRINTF(buf, "%s shatters.\n\r", obj->short_description);
         send_to_char(buf, ch);
-        MakeScrap(ch, obj);
+        make_scrap(ch, obj);
         return (TRUE);
       }
     }
@@ -2800,11 +2800,11 @@ int pre_proc_dam(struct char_data *ch, int type, int dam) {
 }
 
 
-int DamageOneItem(struct char_data *ch, int dam_type, struct obj_data *obj) {
+int damage_one_item(struct char_data *ch, int dam_type, struct obj_data *obj) {
   int num;
   char buf[256];
 
-  num = DamagedByAttack(obj, dam_type);
+  num = damaged_by_attack(obj, dam_type);
 
   if (num == -1) {              /* destroy object */
     return (TRUE);
@@ -2813,7 +2813,7 @@ int DamageOneItem(struct char_data *ch, int dam_type, struct obj_data *obj) {
     SPRINTF(buf, "%s is %s.\n\r", obj->short_description,
             ItemDamType[dam_type - 1]);
     send_to_char(buf, ch);
-    if (DamageItem(obj, num)) {
+    if (damage_item(obj, num)) {
       return (TRUE);
     }
   }
@@ -2821,7 +2821,7 @@ int DamageOneItem(struct char_data *ch, int dam_type, struct obj_data *obj) {
 }
 
 
-void MakeScrap(struct char_data *ch, struct obj_data *obj) {
+void make_scrap(struct char_data *ch, struct obj_data *obj) {
   char buf[200];
   struct obj_data *t, *x;
 
@@ -2876,7 +2876,7 @@ void MakeScrap(struct char_data *ch, struct obj_data *obj) {
 
 }
 
-void DamageAllStuff(struct char_data *ch, int dam_type) {
+void damage_all_stuff(struct char_data *ch, int dam_type) {
   int j;
   struct obj_data *obj, *next;
 
@@ -2888,9 +2888,9 @@ void DamageAllStuff(struct char_data *ch, int dam_type) {
   for (j = 0; j < MAX_WEAR; j++) {
     if (ch->equipment[j] && ch->equipment[j]->item_number >= 0) {
       obj = ch->equipment[j];
-      if (DamageOneItem(ch, dam_type, obj)) {   /* TRUE == destroyed */
+      if (damage_one_item(ch, dam_type, obj)) {   /* TRUE == destroyed */
         if ((obj = unequip_char(ch, j)) != NULL) {
-          MakeScrap(ch, obj);
+          make_scrap(ch, obj);
         }
         else {
           log_msg("hmm, really wierd!");
@@ -2905,8 +2905,8 @@ void DamageAllStuff(struct char_data *ch, int dam_type) {
   while (obj) {
     next = obj->next_content;
     if (obj->item_number >= 0) {
-      if (DamageOneItem(ch, dam_type, obj)) {
-        MakeScrap(ch, obj);
+      if (damage_one_item(ch, dam_type, obj)) {
+        make_scrap(ch, obj);
       }
     }
     obj = next;
@@ -2919,8 +2919,8 @@ void DamageAllStuff(struct char_data *ch, int dam_type) {
     next = obj->next_content;
     if (obj->item_number >= 0) {
       if (number(0, 1)) {
-        if (DamageOneItem(ch, dam_type, obj)) {
-          MakeScrap(ch, obj);
+        if (damage_one_item(ch, dam_type, obj)) {
+          make_scrap(ch, obj);
         }
       }
     }
@@ -2928,7 +2928,7 @@ void DamageAllStuff(struct char_data *ch, int dam_type) {
   }
 }
 
-int DamageItem(struct obj_data *o, int num) {
+int damage_item(struct obj_data *o, int num) {
   /*  damage weaons or armor */
 
   if (ITEM_TYPE(o) == ITEM_ARMOR) {
@@ -2946,7 +2946,7 @@ int DamageItem(struct obj_data *o, int num) {
   return (FALSE);
 }
 
-int ItemSave(struct obj_data *i, int dam_type) {
+int item_save(struct obj_data *i, int dam_type) {
   int num, j;
 
   if (IS_OBJ_STAT(i, ITEM_BRITTLE)) {
@@ -2979,7 +2979,7 @@ int ItemSave(struct obj_data *i, int dam_type) {
   if (num >= 20)
     return (TRUE);
 
-  if (num >= ItemSaveThrows[(int)GET_ITEM_TYPE(i) - 1][dam_type - 1]) {
+  if (num >= item_saveThrows[(int)GET_ITEM_TYPE(i) - 1][dam_type - 1]) {
     return (TRUE);
   }
   else {
@@ -2989,11 +2989,11 @@ int ItemSave(struct obj_data *i, int dam_type) {
 
 
 
-int DamagedByAttack(struct obj_data *i, int dam_type) {
+int damaged_by_attack(struct obj_data *i, int dam_type) {
   int num = 0;
 
   if ((ITEM_TYPE(i) == ITEM_ARMOR) || (ITEM_TYPE(i) == ITEM_WEAPON)) {
-    while (!ItemSave(i, dam_type)) {
+    while (!item_save(i, dam_type)) {
       num += 1;
       if (num > 75)
         return (num);           /* so anything with over 75 ac points will not be
@@ -3002,7 +3002,7 @@ int DamagedByAttack(struct obj_data *i, int dam_type) {
     return (num);
   }
   else {
-    if (ItemSave(i, dam_type)) {
+    if (item_save(i, dam_type)) {
       return (0);
     }
     else {
@@ -3011,7 +3011,7 @@ int DamagedByAttack(struct obj_data *i, int dam_type) {
   }
 }
 
-int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam) {
+int weapon_check(struct char_data *ch, struct char_data *v, int type, int dam) {
   int Immunity, total, j;
 
   Immunity = -1;
@@ -3070,7 +3070,7 @@ int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam) {
 }
 
 
-void DamageStuff(struct char_data *v, int type, int dam) {
+void damage_stuff(struct char_data *v, int type, int dam) {
   int num, dam_type;
   struct obj_data *obj;
 
@@ -3084,29 +3084,29 @@ void DamageStuff(struct char_data *v, int type, int dam) {
           (type == TYPE_CLAW && dam > 20) ||
           (type == TYPE_SLASH && dam > 30) ||
           (type == TYPE_SMITE && dam > 10) || (type == TYPE_HIT && dam > 20)) {
-        if (DamageOneItem(v, BLOW_DAMAGE, v->equipment[num])) {
+        if (damage_one_item(v, BLOW_DAMAGE, v->equipment[num])) {
           if ((obj = unequip_char(v, num)) != NULL) {
-            MakeScrap(v, obj);
+            make_scrap(v, obj);
           }
         }
       }
     }
   }
   else {
-    dam_type = GetItemDamageType(type);
+    dam_type = get_item_damage_type(type);
     if (dam_type) {
       num = number(1, 50);      /* as this number increases or decreases
                                    the chance of item damage decreases
                                    or increases */
       if (dam >= num)
-        DamageAllStuff(v, dam_type);
+        damage_all_stuff(v, dam_type);
     }
   }
 
 }
 
 
-int GetItemDamageType(int type) {
+int get_item_damage_type(int type) {
 
   switch (type) {
   case SPELL_FIREBALL:
@@ -3143,7 +3143,7 @@ int GetItemDamageType(int type) {
 
 }
 
-int SkipImmortals(struct char_data *v, int amnt) {
+int skip_immortals(struct char_data *v, int amnt) {
   /* You can't damage an immortal! */
 
   if ((get_max_level(v) > MAX_MORT) && !IS_NPC(v))
@@ -3163,7 +3163,7 @@ int SkipImmortals(struct char_data *v, int amnt) {
 }
 
 
-void WeaponSpell(struct char_data *c, struct char_data *v, int type) {
+void weapon_spell(struct char_data *c, struct char_data *v, int type) {
   int j, num;
 
   if ((c->in_room == v->in_room) && (GET_POS(v) != POSITION_DEAD)) {
@@ -3180,7 +3180,7 @@ void WeaponSpell(struct char_data *c, struct char_data *v, int type) {
   }
 }
 
-struct char_data *FindAnAttacker(struct char_data *ch) {
+struct char_data *find_an_attacker(struct char_data *ch) {
   struct char_data *tmp_ch;
   unsigned char found = FALSE;
   unsigned short ftot = 0, ttot = 0, ctot = 0, ntot = 0, mtot = 0, ktot =
@@ -3198,17 +3198,17 @@ struct char_data *FindAnAttacker(struct char_data *ch) {
       if (tmp_ch->specials.fighting == ch) {
         found = TRUE;           /* a potential victim has been found */
         if (!IS_NPC(tmp_ch)) {
-          if (HasClass(tmp_ch, CLASS_WARRIOR))
+          if (has_class(tmp_ch, CLASS_WARRIOR))
             ftot++;
-          else if (HasClass(tmp_ch, CLASS_CLERIC))
+          else if (has_class(tmp_ch, CLASS_CLERIC))
             ctot++;
-          else if (HasClass(tmp_ch, CLASS_MAGIC_USER))
+          else if (has_class(tmp_ch, CLASS_MAGIC_USER))
             mtot++;
-          else if (HasClass(tmp_ch, CLASS_THIEF))
+          else if (has_class(tmp_ch, CLASS_THIEF))
             ttot++;
-          else if (HasClass(tmp_ch, CLASS_DRUID))
+          else if (has_class(tmp_ch, CLASS_DRUID))
             dtot++;
-          else if (HasClass(tmp_ch, CLASS_MONK))
+          else if (has_class(tmp_ch, CLASS_MONK))
             ktot++;
         }
         else {
@@ -3292,22 +3292,22 @@ struct char_data *FindAnAttacker(struct char_data *ch) {
       if (IS_NPC(tmp_ch)) {
         total -= njump;
       }
-      else if (HasClass(tmp_ch, CLASS_WARRIOR)) {
+      else if (has_class(tmp_ch, CLASS_WARRIOR)) {
         total -= fjump;
       }
-      else if (HasClass(tmp_ch, CLASS_CLERIC)) {
+      else if (has_class(tmp_ch, CLASS_CLERIC)) {
         total -= cjump;
       }
-      else if (HasClass(tmp_ch, CLASS_MAGIC_USER)) {
+      else if (has_class(tmp_ch, CLASS_MAGIC_USER)) {
         total -= mjump;
       }
-      else if (HasClass(tmp_ch, CLASS_THIEF)) {
+      else if (has_class(tmp_ch, CLASS_THIEF)) {
         total -= tjump;
       }
-      else if (HasClass(tmp_ch, CLASS_DRUID)) {
+      else if (has_class(tmp_ch, CLASS_DRUID)) {
         total -= djump;
       }
-      else if (HasClass(tmp_ch, CLASS_MONK)) {
+      else if (has_class(tmp_ch, CLASS_MONK)) {
         total -= kjump;
       }
       if (total <= 0)
@@ -3390,7 +3390,7 @@ void shoot(struct char_data *ch, struct char_data *victim) {
   }
 }
 
-struct char_data *FindMetaVictim(struct char_data *ch) {
+struct char_data *find_meta_victim(struct char_data *ch) {
   struct char_data *tmp_ch;
   unsigned char found = FALSE;
   unsigned short total = 0;
@@ -3403,7 +3403,7 @@ struct char_data *FindMetaVictim(struct char_data *ch) {
        tmp_ch = tmp_ch->next_in_room) {
     if ((CAN_SEE(ch, tmp_ch)) && (!IS_SET(tmp_ch->specials.act, PLR_NOHASSLE))) {
       if (!(IS_AFFECTED(ch, AFF_CHARM)) || (ch->master != tmp_ch)) {
-        if (!SameRace(ch, tmp_ch)) {
+        if (!same_race(ch, tmp_ch)) {
           found = TRUE;
           total++;
         }
@@ -3422,7 +3422,7 @@ struct char_data *FindMetaVictim(struct char_data *ch) {
   for (tmp_ch = (real_roomp(ch->in_room))->people; tmp_ch;
        tmp_ch = tmp_ch->next_in_room) {
     if ((CAN_SEE(ch, tmp_ch)) && (!IS_SET(tmp_ch->specials.act, PLR_NOHASSLE))) {
-      if (!SameRace(tmp_ch, ch)) {
+      if (!same_race(tmp_ch, ch)) {
         total--;
         if (total == 0)
           return (tmp_ch);
@@ -3441,7 +3441,7 @@ struct char_data *FindMetaVictim(struct char_data *ch) {
 /*
   returns, extracts, switches etc.. anyone.
 */
-void NailThisSucker(struct char_data *ch) {
+void nail_this_sucker(struct char_data *ch) {
 
   struct char_data *pers;
 
@@ -3454,7 +3454,7 @@ void NailThisSucker(struct char_data *ch) {
     pers = ch->desc->original;
     char_from_room(pers);
     char_to_room(pers, ch->in_room);
-    SwitchStuff(ch, pers);
+    switch_stuff(ch, pers);
     extract_char(ch);
     ch = pers;
   }
@@ -3463,7 +3463,7 @@ void NailThisSucker(struct char_data *ch) {
 }
 
 
-int GetFormType(struct char_data *ch) {
+int get_form_type(struct char_data *ch) {
   int num;
 
   num = number(1, 100);
@@ -3545,7 +3545,7 @@ int GetFormType(struct char_data *ch) {
   }
 }
 
-int MonkDodge(struct char_data *ch, struct char_data *v, int *dam) {
+int monk_dodge(struct char_data *ch, struct char_data *v, int *dam) {
 
   if (number(1, 20000) < v->skills[SKILL_DODGE].learned *
       GET_LEVEL(v, MONK_LEVEL_IND)) {

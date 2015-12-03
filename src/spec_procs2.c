@@ -96,7 +96,7 @@ int druid_protector(struct char_data *ch, int cmd, char *UNUSED(arg),
         stand_up(ch);
       }
       else {
-        FighterMove(ch);
+        fighter_move(ch);
       }
       return (FALSE);
     }
@@ -104,7 +104,7 @@ int druid_protector(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }                               /* end druid_protector */
 
-int Magic_Fountain(struct char_data *ch, int cmd, char *arg,
+int magic__fountain(struct char_data *ch, int cmd, char *arg,
                    struct room_data *UNUSED(rp), int UNUSED(type)) {
 
   char buf[MAX_INPUT_LENGTH];
@@ -237,7 +237,7 @@ int Magic_Fountain(struct char_data *ch, int cmd, char *arg,
 
 /* Bjs Shit End */
 
-int DruidAttackSpells(struct char_data *ch, struct char_data *vict, int level) {
+int druid_attack_spells(struct char_data *ch, struct char_data *vict, int level) {
   switch (level) {
   case 1:
   case 2:
@@ -388,7 +388,7 @@ int Summoner(struct char_data *ch, int cmd, char *UNUSED(arg),
         spell_astral_walk(get_max_level(ch), ch, targ, 0);
       }
       if (targ->in_room == ch->in_room) {
-        if (NumCharmedFollowersInRoom(ch) > 0) {
+        if (num_charmed_followers_in_room(ch) > 0) {
           SPRINTF(buf, "followers kill %s", GET_NAME(targ));
           do_order(ch, buf, 0);
         }
@@ -413,7 +413,7 @@ int monk(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 
   if (ch->specials.fighting) {
-    MonkMove(ch);
+    monk_move(ch);
   }
   return (FALSE);
 }
@@ -488,7 +488,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         if (Summoner(ch, cmd, arg, mob, type))
           return (TRUE);
         else {
-          if (NumCharmedFollowersInRoom(ch) < 5
+          if (num_charmed_followers_in_room(ch) < 5
               && IS_SET(ch->hatefield, HATE_CHAR)) {
             act("$n utters the words 'Here boy!'.", 1, ch, 0, 0, TO_ROOM);
             cast_mon_sum7(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, ch, 0);
@@ -526,7 +526,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
   /* Find a dude to to evil things upon ! */
 
-  vict = FindVictim(ch);
+  vict = find_victim(ch);
 
   if (!vict)
     vict = ch->specials.fighting;
@@ -583,7 +583,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       act("$n utters the words 'Oh my, would you just LOOK at the time!'",
           1, ch, 0, 0, TO_ROOM);
 
-      vict = FindMobDiffZoneSameRace(ch);
+      vict = find_mob_diff_zone_same_race(ch);
       if (vict) {
         spell_teleport_wo_error(get_max_level(ch), ch, vict, 0);
         return (TRUE);
@@ -900,8 +900,8 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   /* Find a dude to to evil things upon ! */
 
-  if ((vict = FindAHatee(ch)) == NULL)
-    vict = FindVictim(ch);
+  if ((vict = find_a_hatee(ch)) == NULL)
+    vict = find_victim(ch);
 
   if (!vict)
     vict = ch->specials.fighting;
@@ -924,7 +924,7 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
   if ((GET_HIT(ch) < (GET_MAX_HIT(ch) / 4)) && (lspell > 31) &&
       (!IS_SET(ch->specials.act, ACT_AGGRESSIVE))) {
     act("$n utters the words 'Woah! I'm outta here!'", 1, ch, 0, 0, TO_ROOM);
-    vict = FindMobDiffZoneSameRace(ch);
+    vict = find_mob_diff_zone_same_race(ch);
     if (vict) {
       cast_astral_walk(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (TRUE);
@@ -1512,10 +1512,10 @@ int repair_guy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   }
 }
 
-int Samah(struct char_data *ch, int cmd, char *arg,
+int samah(struct char_data *ch, int cmd, char *arg,
           struct char_data *UNUSED(mob), int UNUSED(type)) {
   char *p, buf[256];
-  struct char_data *Sammy;      /* Samah's own referent pointer */
+  struct char_data *Sammy;      /* samah's own referent pointer */
   struct char_data *t, *t2, *t3;
   int purge_nr;
   struct room_data *rp;
@@ -1530,7 +1530,7 @@ int Samah(struct char_data *ch, int cmd, char *arg,
         get_max_level(ch) == LOKI)
       return (FALSE);
 
-    Sammy = (struct char_data *)FindMobInRoomWithFunction(ch->in_room, Samah);
+    Sammy = (struct char_data *)find_mob_in_room_with_function(ch->in_room, samah);
 
     for (; *arg == ' '; arg++); /* skip whitespace */
     strcpy(buf, arg);
@@ -1684,7 +1684,7 @@ int Samah(struct char_data *ch, int cmd, char *arg,
 
 #if EGO
 
-int BitterBlade(struct char_data *ch, int cmd, char *arg,
+int bitter_blade(struct char_data *ch, int cmd, char *arg,
                 struct obj_data *UNUSED(tobj), int type) {
   extern struct str_app_type str_app[];
   struct obj_data *obj, *blade;
@@ -1701,7 +1701,7 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
     return (FALSE);
 
   for (obj = real_roomp(ch->in_room)->contents; obj; obj = obj->next_content) {
-    if (obj_index[obj->item_number].func == BitterBlade) {
+    if (obj_index[obj->item_number].func == bitter_blade) {
       /* I am on the floor */
       for (joe = real_roomp(ch->in_room)->people; joe; joe = joe->next_in_room) {
         if ((GET_ALIGNMENT(joe) <= -400) && (!IS_IMMORTAL(joe))) {
@@ -1721,7 +1721,7 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
           send_to_char("A Black Blade leaps in to your hands!\n\r", lowjoe);
           act("A black blade jumps from the floor and leaps in to $n's hands!",
               FALSE, lowjoe, 0, 0, TO_ROOM);
-          if (!EgoBladeSave(lowjoe)) {
+          if (!ego_blade_save(lowjoe)) {
             if (!lowjoe->equipment[WIELD]) {
               send_to_char("The blade forces you to wield it!\n\r", lowjoe);
               wear(lowjoe, obj, 12);
@@ -1745,7 +1745,7 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
           (obj_index[obj->item_number].func != board)) {
         /*held */
         if (holder->equipment[WIELD]) {
-          if ((!EgoBladeSave(holder)) && (!EgoBladeSave(holder))) {
+          if ((!ego_blade_save(holder)) && (!ego_blade_save(holder))) {
             send_to_char
               ("The black blade gets pissed off that you are wielding another weapon!!\n\r",
                holder);
@@ -1761,8 +1761,8 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
             }
           }
         }
-        if (!EgoBladeSave(holder)) {
-          if (!EgoBladeSave(holder)) {
+        if (!ego_blade_save(holder)) {
+          if (!ego_blade_save(holder)) {
             if (!holder->equipment[WIELD]) {
               send_to_char("The blade forces you to wield it!\n\r", holder);
               wear(holder, obj, 12);
@@ -1795,7 +1795,7 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
           act("You can hear $n's black blade almost sing with joy!", FALSE,
               holder, 0, 0, TO_ROOM);
           if ((holder == ch) && (cmd == 151)) {
-            if (EgoBladeSave(ch) && EgoBladeSave(ch)) {
+            if (ego_blade_save(ch) && ego_blade_save(ch)) {
               send_to_char
                 ("You can feel the black blade attempt to stay in the fight!\n\r",
                  ch);
@@ -1824,7 +1824,7 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
         if ((cmd == 66) && (holder == ch)) {
           one_argument(arg, arg1);
           if (strcmp(arg1, "all") == 0) {
-            if (!EgoBladeSave(ch)) {
+            if (!ego_blade_save(ch)) {
               send_to_char
                 ("The black blade laughs at your attempt to remove it!\n\r",
                  ch);
@@ -1851,7 +1851,7 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
           }
           else {
             if (isname(arg1, obj->name)) {
-              if (!EgoBladeSave(ch)) {
+              if (!ego_blade_save(ch)) {
                 send_to_char
                   ("The black blade laughs at your attempt to remove it!\n\r",
                    ch);
@@ -1893,7 +1893,7 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
           }
         }
         if (lowjoe) {
-          if (!EgoBladeSave(holder)) {
+          if (!ego_blade_save(holder)) {
             if (GET_POS(holder) != POSITION_STANDING) {
               send_to_char("The black blade yanks you to your feet!\n\r", ch);
               GET_POS(holder) = POSITION_STANDING;
@@ -1924,7 +1924,7 @@ int BitterBlade(struct char_data *ch, int cmd, char *arg,
 #define GIVE 72
 #define GAIN 243
 
-int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
+int make_quest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
               int cmd) {
   char obj_name[50], vict_name[50];
   struct char_data *vict;
@@ -1935,7 +1935,7 @@ int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
 #if EASY_LEVELS
   if (GET_LEVEL(ch, Class) > 0) {       /* for now.. so as not to give it away */
     if (cmd == GAIN) {
-      GainLevel(ch, Class);
+      gain_level(ch, Class);
       return (TRUE);
     }
     return (FALSE);
@@ -1960,7 +1960,7 @@ int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
             TO_VICT);
         obj_from_char(obj);
         extract_obj(obj);
-        GainLevel(ch, Class);
+        gain_level(ch, Class);
         return (TRUE);
       }
       else {
@@ -1983,7 +1983,7 @@ int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
     }
 
     if (GET_LEVEL(ch, Class) < 10) {
-      GainLevel(ch, Class);
+      gain_level(ch, Class);
       return (TRUE);
     }
     else if (GET_LEVEL(ch, Class) < 41) {
@@ -2019,7 +2019,7 @@ int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
       }
     }
     else {
-      GainLevel(ch, Class);
+      gain_level(ch, Class);
       return (TRUE);
     }
   }
@@ -2028,7 +2028,7 @@ int MakeQuest(struct char_data *ch, struct char_data *gm, int Class, char *arg,
 }
 
 
-int AbyssGateKeeper(struct char_data *ch, int cmd, char *arg,
+int abyss_gate_keeper(struct char_data *ch, int cmd, char *arg,
                     struct char_data *mob, int type) {
 
   if (cmd || !AWAKE(ch))
@@ -2107,7 +2107,7 @@ int creeping_death(struct char_data *ch, int cmd, char *UNUSED(arg),
   /* the generic is the direction of travel */
 
   if (number(0, 1) == 0) {      /* move */
-    if (!ValidMove(ch, ch->generic)) {
+    if (!valid_move(ch, ch->generic)) {
       act("$n dissapates, you breath a sigh of relief", FALSE, ch,
           0, 0, TO_ROOM);
       GET_HIT(ch) = 1;
@@ -2204,7 +2204,7 @@ void Submit(struct char_data *ch, struct char_data *t) {
   }
 }
 
-void SayHello(struct char_data *ch, struct char_data *t) {
+void say_hello(struct char_data *ch, struct char_data *t) {
   char buf[200];
 
   switch (number(1, 10)) {
@@ -2290,7 +2290,7 @@ void SayHello(struct char_data *ch, struct char_data *t) {
 }
 
 
-void GreetPeople(struct char_data *ch) {
+void greet_people(struct char_data *ch) {
   struct char_data *tch;
 
   if (!IS_SET(ch->specials.act, ACT_GREET)) {
@@ -2299,7 +2299,7 @@ void GreetPeople(struct char_data *ch) {
         if (tch) {
           if (get_max_level(tch) > get_max_level(ch)) {
             Submit(ch, tch);
-            SayHello(ch, tch);
+            say_hello(ch, tch);
             SET_BIT(ch->specials.act, ACT_GREET);
             if (IS_AFFECTED2(tch, AFF2_ONE_LIFER)) {
               do_say(ch, "What a stud!", 0);
@@ -2320,7 +2320,7 @@ void GreetPeople(struct char_data *ch) {
 }
 
 
-int GenericCityguardHateUndead(struct char_data *ch, int cmd, char *arg,
+int generic_cityguardHateUndead(struct char_data *ch, int cmd, char *arg,
                                struct char_data *mob, int type) {
   struct char_data *tch, *evil;
   int max_evil;
@@ -2342,7 +2342,7 @@ int GenericCityguardHateUndead(struct char_data *ch, int cmd, char *arg,
       }
 
       if (ch->specials.fighting)
-        CallForGuard(ch, ch->specials.fighting, 3, type);
+        call_for_guard(ch, ch->specials.fighting, 3, type);
 
       return (TRUE);
     }
@@ -2355,7 +2355,7 @@ int GenericCityguardHateUndead(struct char_data *ch, int cmd, char *arg,
     return FALSE;
 
   for (tch = real_roomp(ch->in_room)->people; tch; tch = tch->next_in_room) {
-    if ((IS_NPC(tch)) && (IsUndead(tch)) && CAN_SEE(ch, tch)) {
+    if ((IS_NPC(tch)) && (is_undead(tch)) && CAN_SEE(ch, tch)) {
       max_evil = -1000;
       evil = tch;
       if (!check_soundproof(ch))
@@ -2390,7 +2390,7 @@ int GenericCityguardHateUndead(struct char_data *ch, int cmd, char *arg,
             FALSE, ch, 0, 0, TO_ROOM);
 
       if (!ch->skills)
-        SpaceForSkills(ch);
+        space_for_skills(ch);
 
       if (!ch->skills[SKILL_RESCUE].learned)
         ch->skills[SKILL_RESCUE].learned = get_max_level(ch) * 3 + 30;
@@ -2398,14 +2398,14 @@ int GenericCityguardHateUndead(struct char_data *ch, int cmd, char *arg,
     }
   }
 
-  GreetPeople(ch);
+  greet_people(ch);
 
   return (FALSE);
 }
 
 
 
-int GenericCityguard(struct char_data *ch, int cmd, char *arg,
+int generic_cityguard(struct char_data *ch, int cmd, char *arg,
                      struct char_data *mob, int type) {
   struct char_data *tch, *evil;
   int max_evil;
@@ -2426,7 +2426,7 @@ int GenericCityguard(struct char_data *ch, int cmd, char *arg,
       }
 
       if (ch->specials.fighting)
-        CallForGuard(ch, ch->specials.fighting, 3, type);
+        call_for_guard(ch, ch->specials.fighting, 3, type);
 
       return (TRUE);
     }
@@ -2457,14 +2457,14 @@ int GenericCityguard(struct char_data *ch, int cmd, char *arg,
     return (TRUE);
   }
 
-  GreetPeople(ch);
+  greet_people(ch);
 
   return (FALSE);
 }
 
-int PrydainGuard(struct char_data *ch, int cmd, char *arg,
+int prydain_guard(struct char_data *ch, int cmd, char *arg,
                  struct char_data *mob, int UNUSED(type)) {
-  return (GenericCityguardHateUndead(ch, cmd, arg, mob, PRYDAIN));
+  return (generic_cityguardHateUndead(ch, cmd, arg, mob, PRYDAIN));
 }
 
 
@@ -2673,7 +2673,7 @@ int Demon(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 }
 
 
-void DruidHeal(struct char_data *ch, int level) {
+void druid_heal(struct char_data *ch, int level) {
   if (level > 13) {
     act("$n utters the words 'Woah! I feel GOOD! Heh.'.",
         1, ch, 0, 0, TO_ROOM);
@@ -2690,7 +2690,7 @@ void DruidHeal(struct char_data *ch, int level) {
   }
 }
 
-void DruidTree(struct char_data *ch) {
+void druid_tree(struct char_data *ch) {
 
   act("$n utters the words 'harumph!'", FALSE, ch, 0, 0, TO_ROOM);
   act("$n takes on the form and shape of a huge tree!", FALSE, ch, 0, 0,
@@ -2730,7 +2730,7 @@ void druid_mob(struct char_data *ch) {
 
 }
 
-int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
+int druid_challenger(struct char_data *ch, int cmd, char *UNUSED(arg),
                     struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct room_data *rp;
   int level;
@@ -2749,7 +2749,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
   if (check_soundproof(ch))
     return (FALSE);
 
-  GreetPeople(ch);
+  greet_people(ch);
 
   if (check_nomagic(ch, 0, 0))
     return (FALSE);
@@ -2765,7 +2765,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
   if (!ch->specials.fighting) {
     level = number(1, get_max_level(ch));
     if (GET_HIT(ch) < GET_MAX_HIT(ch)) {
-      DruidHeal(ch, level);
+      druid_heal(ch, level);
       return (TRUE);
     }
     if (!ch->equipment[WIELD]) {
@@ -2782,8 +2782,8 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
     }
 
     if (ch->in_room == 501) {
-      if ((vict = FindAHatee(ch)) == NULL) {
-        vict = FindVictim(ch);
+      if ((vict = find_a_hatee(ch)) == NULL) {
+        vict = find_victim(ch);
         if (vict)
           do_hit(ch, GET_NAME(vict), 0);
         return (FALSE);
@@ -2793,8 +2793,8 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
   }
   else {
 
-    if ((vict = FindAHatee(ch)) == NULL)
-      vict = FindVictim(ch);
+    if ((vict = find_a_hatee(ch)) == NULL)
+      vict = find_victim(ch);
 
     if (!vict)
       vict = ch->specials.fighting;
@@ -2805,7 +2805,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
     level = number(1, get_max_level(ch));
 
     if ((GET_HIT(ch) < GET_MAX_HIT(ch) / 2) && number(0, 1)) {
-      DruidHeal(ch, level);
+      druid_heal(ch, level);
       return (TRUE);
     }
 
@@ -2826,7 +2826,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
       }
     }
 
-    if (IsUndead(vict) && !number(0, 2)) {
+    if (is_undead(vict) && !number(0, 2)) {
       act("$n utters the words 'see the light!'", 1, ch, 0, 0, TO_ROOM);
       cast_sunray(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
       return (FALSE);
@@ -2851,7 +2851,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
 
     if (IS_SET(rp->room_flags, NO_SUM) || IS_SET(rp->room_flags, TUNNEL) ||
         IS_SET(rp->room_flags, PRIVATE)) {
-      DruidAttackSpells(ch, vict, level);
+      druid_attack_spells(ch, vict, level);
     }
     else {                      /*summon followers, call lightning */
       if (rp->sector_type == SECT_FOREST) {
@@ -2866,7 +2866,7 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
           return (FALSE);
         }
         if (level > 30 && ch->mult_att < 6 && !number(0, 8)) {
-          DruidTree(ch);
+          druid_tree(ch);
           return (FALSE);
         }
         if (ch->mult_att < 2 && level > 10 && !number(0, 8)) {
@@ -2919,13 +2919,13 @@ int DruidChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
           }
         }
       }
-      DruidAttackSpells(ch, vict, level);
+      druid_attack_spells(ch, vict, level);
     }
   }
   return (FALSE);
 }
 
-int MonkChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
+int monk_challenger(struct char_data *ch, int cmd, char *UNUSED(arg),
                    struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
 
@@ -2934,19 +2934,19 @@ int MonkChallenger(struct char_data *ch, int cmd, char *UNUSED(arg),
   if (!AWAKE(ch))
     return (FALSE);
 
-  GreetPeople(ch);
+  greet_people(ch);
 
   if (!ch->specials.fighting) {
     if (ch->in_room == 551) {
-      if ((vict = FindAHatee(ch)) == NULL) {
-        vict = FindVictim(ch);
+      if ((vict = find_a_hatee(ch)) == NULL) {
+        vict = find_victim(ch);
         if (vict)
           do_hit(ch, GET_NAME(vict), 0);
         return (FALSE);
       }
     }
   }
-  MonkMove(ch);
+  monk_move(ch);
   return (1);
 
 }
@@ -2976,7 +2976,7 @@ int druid_challenge_prep_room(struct char_data *ch, int cmd,
 
   if (cmd == NOD) {
 
-    if (!HasClass(ch, CLASS_DRUID)) {
+    if (!has_class(ch, CLASS_DRUID)) {
       send_to_char("You're no druid.\n\r", ch);
       return (FALSE);
     }
@@ -3097,7 +3097,7 @@ int druid_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
             GET_EXP(i) = MAX(titles[DRUID_LEVEL_IND]
                              [GET_LEVEL(i, DRUID_LEVEL_IND) + 1].exp + 1,
                              GET_EXP(i));
-            GainLevel(i, DRUID_LEVEL_IND);
+            gain_level(i, DRUID_LEVEL_IND);
             char_from_room(i);
             char_to_room(i, rm - 1);
             if (affected_by_spell(i, SPELL_POISON)) {
@@ -3194,11 +3194,11 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
             if (IS_IMMORTAL(i))
               return (FALSE);
 
-            if (HasClass(i, CLASS_MONK)) {
+            if (has_class(i, CLASS_MONK)) {
               GET_EXP(i) = MAX(titles[MONK_LEVEL_IND]
                                [GET_LEVEL(i, MONK_LEVEL_IND) + 1].exp + 1,
                                GET_EXP(i));
-              GainLevel(i, MONK_LEVEL_IND);
+              gain_level(i, MONK_LEVEL_IND);
             }
             char_from_room(i);
             char_to_room(i, rm - 1);
@@ -3241,7 +3241,7 @@ int monk_challenge_prep_room(struct char_data *ch, int cmd, char *UNUSED(arg),
 
   if (cmd == NOD) {
 
-    if (!HasClass(ch, CLASS_MONK)) {
+    if (!has_class(ch, CLASS_MONK)) {
       send_to_char("You're no monk.\n\r", ch);
       return (FALSE);
     }
@@ -3391,7 +3391,7 @@ int attack_rats(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
 
   if (type == EVENT_WINTER) {
     ch->generic = ATTACK_ROOM + number(0, 26);
-    AddHatred(ch, OP_RACE, RACE_HUMAN); /* so they'll attack beggars, etc */
+    add_hatred(ch, OP_RACE, RACE_HUMAN); /* so they'll attack beggars, etc */
   }
 
   if (type == EVENT_SPRING)
@@ -3414,7 +3414,7 @@ int attack_rats(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
 #define WHERE_TO_SIT 3007       /* tavern */
 #define WHO_TO_CALL  3063       /* mercenary */
 
-int DragonHunterLeader(struct char_data *ch, int UNUSED(cmd),
+int dragon_hunter_leader(struct char_data *ch, int UNUSED(cmd),
                        char *UNUSED(arg), struct char_data *UNUSED(mob),
                        int type) {
   register struct char_data *i, *j;
@@ -3572,7 +3572,7 @@ int DragonHunterLeader(struct char_data *ch, int UNUSED(cmd),
   return (FALSE);
 }
 
-int HuntingMercenary(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
+int hunting_mercenary(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
                      struct char_data *mob, int type) {
   int dir;
 
@@ -3625,7 +3625,7 @@ int HuntingMercenary(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
 
 long jackpot = 25;
 
-int SlotMachine(struct char_data *ch, int cmd, char *UNUSED(arg),
+int slot_machine(struct char_data *ch, int cmd, char *UNUSED(arg),
                 struct obj_data *UNUSED(obj), int UNUSED(type)) {
   int c, i[3], ind;
   char buf[255];
@@ -3862,7 +3862,7 @@ int astral_portal(struct char_data *ch, int cmd, char *arg,
 extern int gevent;
 extern float shop_multiplier;
 
-int DwarvenMiners(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
+int dwarven_miners(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
                   struct char_data *UNUSED(mob), int type) {
   void do_emote(struct char_data *ch, char *arg, int cmd);
   void do_stand(struct char_data *ch, char *arg, int cmd);
