@@ -43,7 +43,7 @@ void assign_mobiles() {
     {1, puff},
     {2, ringwraith},
     {3, tormentor},
-    {4, Inquisitor},
+    {4, inquisitor},
     {6, acid_blob},
     {25, magic_user},
 
@@ -86,8 +86,8 @@ void assign_mobiles() {
     {264, fighter},
     {265, magic_user},
     {266, magic_user},
-    {267, Devil},
-    {269, Demon},
+    {267, devil},
+    {269, demon},
     {271, regenerator},
     {248, snake},               /* snake       */
     {249, snake},               /* snake       */
@@ -287,7 +287,7 @@ void assign_mobiles() {
     {6637, magic_user},
     {6634, fighter},
     {6635, breath_weapon_mob},
-    {6625, Demon},
+    {6625, demon},
     {6638, stat_teller},
 
 /*
@@ -411,7 +411,7 @@ void assign_mobiles() {
     {21118, troguard},
     {21119, troguard},
 /*
-    { 21130, Valik},
+    { 21130, valik},
 */
     {21135, regenerator},
     {21138, ghostsoldier},
@@ -496,7 +496,7 @@ void assign_mobiles() {
 **  abyss
 */
     {25000, magic_user},        /* Demi-lich  */
-    {25001, Keftab},
+    {25001, keftab},
     {25009, breath_weapon_mob}, /* hydra */
     {25002, vampire},           /* Crimson */
     {25003, storm_giant},       /* MistDaemon */
@@ -662,7 +662,7 @@ void assign_mobiles() {
 /*
 **  Bay Isle
 */
-    {16610, Demon},
+    {16610, demon},
     {16620, breath_weapon_mob},
     {16640, cleric},
     {16650, cleric},
@@ -964,7 +964,7 @@ void assign_mobiles() {
     {27003, magic_user},
     {27004, magic_user},
     {27005, magic_user},
-    {27006, Tytan},
+    {27006, tytan},
     {27007, replicant},
     {27016, abbarach_dragon},
     {27014, magic_user},
@@ -1082,7 +1082,7 @@ void assign_objects() {
 void assign_rooms() {
   static struct special_proc_entry specials[] = {
 
-    {99, Donation},
+    {99, donation},
     {500, druid_challenge_prep_room},
     {501, druid_challenge_room},
     {550, monk_challenge_prep_room},
@@ -1094,15 +1094,15 @@ void assign_rooms() {
     {2188, magic__fountain},
     {2189, magic__fountain},
 
-    {13518, Fountain},
-    {11014, Fountain},
-    {5234, Fountain},
-    {3141, Fountain},
-    {13406, Fountain},
-    {22642, Fountain},
-    {22644, Fountain},
-    {22646, Fountain},
-    {22648, Fountain},
+    {13518, fountain},
+    {11014, fountain},
+    {5234, fountain},
+    {3141, fountain},
+    {13406, fountain},
+    {22642, fountain},
+    {22644, fountain},
+    {22646, fountain},
+    {22648, fountain},
     {13530, pet_shops},
 
     {2500, entering_turbo_lift},

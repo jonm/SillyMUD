@@ -136,7 +136,7 @@ void command_interpreter(struct char_data *ch, char *argument) {
 
   if (MOUNTED(ch)) {
     if (ch->in_room != MOUNTED(ch)->in_room)
-      Dismount(ch, MOUNTED(ch), POSITION_STANDING);
+      dismount(ch, MOUNTED(ch), POSITION_STANDING);
   }
 
   /*

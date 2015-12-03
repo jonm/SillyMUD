@@ -40,8 +40,8 @@ int rem_hated(struct char_data *ch, struct char_data *pud);
 int add_hated(struct char_data *ch, struct char_data *pud);
 int add_hatred(struct char_data *ch, int parm_type, int parm);
 void delete_hatreds(struct char_data *ch);
-int Hates(struct char_data *ch, struct char_data *v);
-int Fears(struct char_data *ch, struct char_data *v);
+int hates(struct char_data *ch, struct char_data *v);
+int fears(struct char_data *ch, struct char_data *v);
 int rem_feared(struct char_data *ch, struct char_data *pud);
 int add_feared(struct char_data *ch, struct char_data *pud);
 int add_fears(struct char_data *ch, int parm_type, int parm);
@@ -263,7 +263,7 @@ void do_recite(struct char_data *ch, char *argument, int cmd);
 void do_use(struct char_data *ch, char *argument, int cmd);
 void do_plr_noshout(struct char_data *ch, char *argument, int cmd);
 void do_alias(struct char_data *ch, char *arg, int cmd);
-void Dismount(struct char_data *ch, struct char_data *h, int pos);
+void dismount(struct char_data *ch, struct char_data *h, int pos);
 void do_mount(struct char_data *ch, char *arg, int cmd);
 void do_donate(struct char_data *ch, char *argument, int cmd);
 void do_auto(struct char_data *ch, char *argument, int cmd);
@@ -1200,7 +1200,7 @@ int thief_guild_master(struct char_data *ch, int cmd, char *arg,
                        struct char_data *mob, int type);
 int warrior_guild_master(struct char_data *ch, int cmd, char *arg,
                          struct char_data *mob, int type);
-int Guildmaster(struct char_data *ch, int cmd, char *arg,
+int guildmaster(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type, int class);
 int dump(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
          int type);
@@ -1246,13 +1246,13 @@ int geyser(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
            int type);
 int green_slime(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type);
-int Drow(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int drow(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
          int type);
 int thief(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 int guild_guard(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type);
-int Inquisitor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int inquisitor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
                int type);
 int puff(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
          int type);
@@ -1260,7 +1260,7 @@ int regenerator(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type);
 int replicant(struct char_data *ch, int cmd, char *arg, struct char_data *mob1,
               int type);
-int Tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 int abbarach_dragon(struct char_data *ch, int cmd, char *arg,
                     struct char_data *mob, int type);
@@ -1276,7 +1276,7 @@ int temple_labrynth_liar(struct char_data *ch, int cmd, char *arg,
                          struct char_data *mob, int type);
 int temple_labrynth_sentry(struct char_data *ch, int cmd, char *arg,
                            struct char_data *mob, int type);
-int Whirlwind(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int whirlwind(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
               int type);
 int nudge_nudge(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type);
@@ -1297,7 +1297,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg,
                   struct char_data *mob, int type);
 int pet_shops(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
               int type);
-int Fountain(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
+int fountain(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
              int type);
 int bank(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
          int type);
@@ -1305,9 +1305,9 @@ int pray_for_items(struct char_data *ch, int cmd, char *arg,
                    struct room_data *rp, int type);
 int chalice(struct char_data *ch, int cmd, char *arg);
 int kings_hall(struct char_data *ch, int cmd, char *arg);
-int Donation(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
+int donation(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
              int type);
-int House(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
+int house(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
           int type);
 int sisyphus(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
              int type);
@@ -1325,7 +1325,7 @@ int delivery_elf(struct char_data *ch, int cmd, char *arg,
                  struct char_data *mob, int type);
 int delivery_beast(struct char_data *ch, int cmd, char *arg,
                    struct char_data *mob, int type);
-int Keftab(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int keftab(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
            int type);
 int storm_giant(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type);
@@ -1374,7 +1374,7 @@ int troguard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
              int type);
 int ghostsoldier(struct char_data *ch, int cmd, char *arg,
                  struct char_data *mob, int type);
-int Valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 int guardian(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
              int type);
@@ -1392,7 +1392,7 @@ int magic__fountain(struct char_data *ch, int cmd, char *arg,
                     struct room_data *rp, int type);
 int druid_attack_spells(struct char_data *ch, struct char_data *vict,
                         int level);
-int Summoner(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int summoner(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
              int type);
 int monk(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
          int type);
@@ -1419,7 +1419,7 @@ int abyss_gate_keeper(struct char_data *ch, int cmd, char *arg,
                       struct char_data *mob, int type);
 int creeping_death(struct char_data *ch, int cmd, char *arg,
                    struct char_data *mob, int type);
-void Submit(struct char_data *ch, struct char_data *t);
+void submit(struct char_data *ch, struct char_data *t);
 void say_hello(struct char_data *ch, struct char_data *t);
 void greet_people(struct char_data *ch);
 int generic_cityguardHateUndead(struct char_data *ch, int cmd, char *arg,
@@ -1452,11 +1452,11 @@ int monk_master(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type);
 int druid_guild_master(struct char_data *ch, int cmd, char *arg,
                        struct char_data *mob, int type);
-int Teacher(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int teacher(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
             int type, int teacher, char *say_str);
-int Devil(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int devil(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
-int Demon(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int demon(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 void druid_heal(struct char_data *ch, int level);
 void druid_tree(struct char_data *ch);
@@ -1548,7 +1548,7 @@ bool imp_save_spell(struct char_data *ch, sh_int save_type, int mod);
 char *skip_spaces(char *string);
 void do_cast(struct char_data *ch, char *argument, int cmd);
 void assign_spell_pointers();
-void spell_wear_offSoon(int s, struct char_data *ch);
+void spell_wear_off_soon(int s, struct char_data *ch);
 void spell_wear_off(int s, struct char_data *ch);
 void check_decharm(struct char_data *ch);
 int check_falling(struct char_data *ch);

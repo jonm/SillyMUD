@@ -321,7 +321,7 @@ int druid_attack_spells(struct char_data *ch, struct char_data *vict,
   }
 }
 
-int Summoner(struct char_data *ch, int cmd, char *UNUSED(arg),
+int summoner(struct char_data *ch, int cmd, char *UNUSED(arg),
              struct char_data *UNUSED(mob), int UNUSED(type)) {
   extern struct descriptor_data *descriptor_list;
   struct descriptor_data *d;
@@ -486,7 +486,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       return FALSE;
     else {
       if (!ch->desc) {
-        if (Summoner(ch, cmd, arg, mob, type))
+        if (summoner(ch, cmd, arg, mob, type))
           return (TRUE);
         else {
           if (num_charmed_followers_in_room(ch) < 5
@@ -1103,32 +1103,32 @@ int cleric(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 int ninja_master(struct char_data *ch, int cmd, char *arg,
                  struct char_data *mob, int type) {
-  return (Teacher(ch, cmd, arg, mob, type, TAUGHT_BY_NINJA, "ninja master"));
+  return (teacher(ch, cmd, arg, mob, type, TAUGHT_BY_NINJA, "ninja master"));
 }
 
 int ettin(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type) {
-  return (Teacher(ch, cmd, arg, mob, type, TAUGHT_BY_ETTIN, "Jones"));
+  return (teacher(ch, cmd, arg, mob, type, TAUGHT_BY_ETTIN, "Jones"));
 }
 
 int sailor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
            int type) {
-  return (Teacher(ch, cmd, arg, mob, type, TAUGHT_BY_SAILOR, "sailor"));
+  return (teacher(ch, cmd, arg, mob, type, TAUGHT_BY_SAILOR, "sailor"));
 }
 
 int loremaster(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
                int type) {
-  return (Teacher(ch, cmd, arg, mob, type, TAUGHT_BY_LORE, "loremaster"));
+  return (teacher(ch, cmd, arg, mob, type, TAUGHT_BY_LORE, "loremaster"));
 }
 
 int hunter(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
            int type) {
-  return (Teacher(ch, cmd, arg, mob, type, TAUGHT_BY_HUNTER, "hunter"));
+  return (teacher(ch, cmd, arg, mob, type, TAUGHT_BY_HUNTER, "hunter"));
 }
 
                                  /*  */
        /* nifty new teacher proc compliments of Kiku, 9/26/93 */
-int Teacher(struct char_data *ch, int cmd, char *arg,
+int teacher(struct char_data *ch, int cmd, char *arg,
             struct char_data *UNUSED(mob), int UNUSED(type), int teacher,
             char *say_str) {
 
@@ -1163,7 +1163,7 @@ int Teacher(struct char_data *ch, int cmd, char *arg,
   case TAUGHT_BY_ETTIN:
     break;
   default:
-    SPRINTF(buf, "Teacher() attempted to be called with %d(mob#) as teacher.",
+    SPRINTF(buf, "teacher() attempted to be called with %d(mob#) as teacher.",
             teacher);
     log_msg(buf);
     return (FALSE);
@@ -2179,7 +2179,7 @@ int creeping_death(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-void Submit(struct char_data *ch, struct char_data *t) {
+void submit(struct char_data *ch, struct char_data *t) {
   char buf[200];
 
   switch (number(1, 5)) {
@@ -2300,7 +2300,7 @@ void greet_people(struct char_data *ch) {
       if (!IS_NPC(tch) && !number(0, 8)) {
         if (tch) {
           if (get_max_level(tch) > get_max_level(ch)) {
-            Submit(ch, tch);
+            submit(ch, tch);
             say_hello(ch, tch);
             SET_BIT(ch->specials.act, ACT_GREET);
             if (IS_AFFECTED2(tch, AFF2_ONE_LIFER)) {
@@ -2309,7 +2309,7 @@ void greet_people(struct char_data *ch) {
             break;
           }
           else if (IS_AFFECTED2(tch, AFF2_ONE_LIFER)) {
-            Submit(ch, tch);
+            submit(ch, tch);
             do_say(ch, "What a stud!", 0);
           }
         }
@@ -2663,12 +2663,12 @@ int breath_weapon_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int Devil(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int devil(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type) {
   return (magic_user(ch, cmd, arg, mob, type));
 }
 
-int Demon(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int demon(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type) {
   return (magic_user(ch, cmd, arg, mob, type));
 

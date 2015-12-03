@@ -912,7 +912,7 @@ int dam_details_ok(struct char_data *ch, struct char_data *v, int dam,
   if (MOUNTED(ch)) {
     if (MOUNTED(ch) == v) {
       fall_off_mount(ch, v);
-      Dismount(ch, MOUNTED(ch), POSITION_SITTING);
+      dismount(ch, MOUNTED(ch), POSITION_SITTING);
     }
   }
 
@@ -995,14 +995,14 @@ int damage_trivia(struct char_data *ch, struct char_data *v, int dam, int type) 
       if (!ride_check(v, -(dam / 2))) {
         fall_off_mount(v, MOUNTED(v));
         WAIT_STATE(v, PULSE_VIOLENCE * 2);
-        Dismount(v, MOUNTED(v), POSITION_SITTING);
+        dismount(v, MOUNTED(v), POSITION_SITTING);
       }
     }
     else if (RIDDEN(v)) {
       if (!ride_check(RIDDEN(v), -dam)) {
         fall_off_mount(RIDDEN(v), v);
         WAIT_STATE(RIDDEN(v), PULSE_VIOLENCE * 2);
-        Dismount(RIDDEN(v), v, POSITION_SITTING);
+        dismount(RIDDEN(v), v, POSITION_SITTING);
       }
     }
   }
@@ -1396,7 +1396,7 @@ int missile_damage(struct char_data *ch, struct char_data *victim,
   make the ch hate the loser who used a missile attack on them.
 */
   if (!IS_PC(victim)) {
-    if (!Hates(victim, ch)) {
+    if (!hates(victim, ch)) {
       add_hated(victim, ch);
     }
   }
@@ -1625,7 +1625,7 @@ int hit_check_deny(struct char_data *ch, struct char_data *victim) {
   }
 
   if (victim == ch) {
-    if (Hates(ch, victim)) {
+    if (hates(ch, victim)) {
       rem_hated(ch, victim);
     }
     return (TRUE);
@@ -1637,7 +1637,7 @@ int hit_check_deny(struct char_data *ch, struct char_data *victim) {
   if (MOUNTED(ch)) {
     if (!ride_check(ch, -5)) {
       fall_off_mount(ch, MOUNTED(ch));
-      Dismount(ch, MOUNTED(ch), POSITION_SITTING);
+      dismount(ch, MOUNTED(ch), POSITION_SITTING);
       return (TRUE);
     }
   }
@@ -1645,7 +1645,7 @@ int hit_check_deny(struct char_data *ch, struct char_data *victim) {
     if (RIDDEN(ch)) {
       if (!ride_check(RIDDEN(ch), -10)) {
         fall_off_mount(RIDDEN(ch), ch);
-        Dismount(RIDDEN(ch), ch, POSITION_SITTING);
+        dismount(RIDDEN(ch), ch, POSITION_SITTING);
         return (TRUE);
       }
     }

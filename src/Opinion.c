@@ -166,7 +166,7 @@ int add_hatred(struct char_data *ch, int parm_type, int parm) {
   return (0);
 }
 
-int Hates(struct char_data *ch, struct char_data *v) {
+int hates(struct char_data *ch, struct char_data *v) {
   struct char_list *i;
 
   if (IS_AFFECTED(ch, AFF_PARALYSIS))
@@ -224,7 +224,7 @@ int Hates(struct char_data *ch, struct char_data *v) {
   return (FALSE);
 }
 
-int Fears(struct char_data *ch, struct char_data *v) {
+int fears(struct char_data *ch, struct char_data *v) {
   struct char_list *i;
 
   if (IS_AFFECTED(ch, AFF_PARALYSIS))
@@ -422,7 +422,7 @@ struct char_data *find_a_hatee(struct char_data *ch) {
 
   for (tmp_ch = real_roomp(ch->in_room)->people; tmp_ch;
        tmp_ch = tmp_ch->next_in_room) {
-    if (Hates(ch, tmp_ch) && (CAN_SEE(ch, tmp_ch))) {
+    if (hates(ch, tmp_ch) && (CAN_SEE(ch, tmp_ch))) {
       if (ch->in_room == tmp_ch->in_room) {
         if (ch != tmp_ch) {
           return (tmp_ch);
@@ -445,7 +445,7 @@ struct char_data *find_a_fearee(struct char_data *ch) {
 
   for (tmp_ch = real_roomp(ch->in_room)->people; tmp_ch;
        tmp_ch = tmp_ch->next_in_room) {
-    if (Fears(ch, tmp_ch) && (CAN_SEE(ch, tmp_ch))) {
+    if (fears(ch, tmp_ch) && (CAN_SEE(ch, tmp_ch))) {
       if ((ch->in_room == tmp_ch->in_room) && (ch != tmp_ch)) {
         return (tmp_ch);
       }
@@ -503,7 +503,7 @@ void delete_hatreds(struct char_data *ch) {
   extern struct char_data *character_list;
 
   for (i = character_list; i; i = i->next) {
-    if (Hates(i, ch))
+    if (hates(i, ch))
       rem_hated(i, ch);
   }
 
@@ -516,7 +516,7 @@ void delete_fears(struct char_data *ch) {
 
 
   for (i = character_list; i; i = i->next) {
-    if (Fears(i, ch))
+    if (fears(i, ch))
       rem_feared(i, ch);
   }
 

@@ -59,13 +59,13 @@ int valid_move(struct char_data *ch, int cmd) {
       return (FALSE);
     }
     if (ch->in_room != MOUNTED(ch)->in_room) {
-      Dismount(ch, MOUNTED(ch), POSITION_STANDING);
+      dismount(ch, MOUNTED(ch), POSITION_STANDING);
     }
   }
 /*
   if (RIDDEN(ch)) {
     if (ch->in_room != RIDDEN(ch)->in_room) {
-      Dismount(RIDDEN(ch), ch, POSITION_STANDING);
+      dismount(RIDDEN(ch), ch, POSITION_STANDING);
     }
   }
 */
@@ -453,7 +453,7 @@ void do_move(struct char_data *ch, char *argument, int cmd) {
     }
     else {
       fall_off_mount(RIDDEN(ch), ch);
-      Dismount(RIDDEN(ch), ch, POSITION_SITTING);
+      dismount(RIDDEN(ch), ch, POSITION_SITTING);
     }
   }
 

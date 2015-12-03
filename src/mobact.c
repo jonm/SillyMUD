@@ -130,7 +130,7 @@ void mob_hunt(struct char_data *ch) {
     else {
       if (ch->specials.hunting) {
         if (ch->specials.hunting->in_room == ch->in_room) {
-          if (Hates(ch, ch->specials.hunting) &&
+          if (hates(ch, ch->specials.hunting) &&
               (!IS_AFFECTED(ch->specials.hunting, AFF_HIDE))) {
             if (check_peaceful
                 (ch,
@@ -342,7 +342,7 @@ void mobile_activity(struct char_data *ch) {
             }
             mob_hit(ch, tmp_ch, 0);
           }
-          if (Hates(ch, tmp_ch) && Fears(ch, tmp_ch)) {
+          if (hates(ch, tmp_ch) && fears(ch, tmp_ch)) {
             rem_hated(ch, tmp_ch);
             rem_feared(ch, tmp_ch);
           }
@@ -383,7 +383,7 @@ void mobile_activity(struct char_data *ch) {
                 }
                 hit(ch, tmp_ch, 0);
               }
-              if (Hates(ch, tmp_ch) && Fears(ch, tmp_ch)) {
+              if (hates(ch, tmp_ch) && fears(ch, tmp_ch)) {
                 rem_hated(ch, tmp_ch);
                 rem_feared(ch, tmp_ch);
               }

@@ -1500,11 +1500,11 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
   }
 
   if (MOUNTED(ch)) {
-    Dismount(ch, MOUNTED(ch), POSITION_STANDING);
+    dismount(ch, MOUNTED(ch), POSITION_STANDING);
   }
 
   if (RIDDEN(ch)) {
-    Dismount(RIDDEN(ch), ch, POSITION_STANDING);
+    dismount(RIDDEN(ch), ch, POSITION_STANDING);
   }
 
   /* Must remove from room before removing the equipment! */
@@ -1523,10 +1523,10 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
         if (k->specials.hunting == ch) {
           k->specials.hunting = 0;
         }
-      if (Hates(k, ch)) {
+      if (hates(k, ch)) {
         rem_hated(k, ch);
       }
-      if (Fears(k, ch)) {
+      if (fears(k, ch)) {
         rem_feared(k, ch);
       }
       if (k->orig == ch) {
@@ -1540,10 +1540,10 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
         if (k->specials.hunting == ch) {
           k->specials.hunting = 0;
         }
-      if (Hates(k, ch)) {
+      if (hates(k, ch)) {
         zero_hatred(k, ch);
       }
-      if (Fears(k, ch)) {
+      if (fears(k, ch)) {
         zero_feared(k, ch);
       }
       if (k->orig == ch) {

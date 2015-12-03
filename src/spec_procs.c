@@ -141,40 +141,40 @@ struct char_data *find_mob_in_room_with_function(int room, int (*func) ()) {
 
 int mage_guild_master(struct char_data *ch, int cmd, char *arg,
                       struct char_data *mob, int type) {
-  return (Guildmaster(ch, cmd, arg, mob, type, CLASS_MAGIC_USER));
+  return (guildmaster(ch, cmd, arg, mob, type, CLASS_MAGIC_USER));
 }
 
 int cleric_guild_master(struct char_data *ch, int cmd, char *arg,
                         struct char_data *mob, int type) {
-  return (Guildmaster(ch, cmd, arg, mob, type, CLASS_CLERIC));
+  return (guildmaster(ch, cmd, arg, mob, type, CLASS_CLERIC));
 }
 
 int thief_guild_master(struct char_data *ch, int cmd, char *arg,
                        struct char_data *mob, int type) {
-  return (Guildmaster(ch, cmd, arg, mob, type, CLASS_THIEF));
+  return (guildmaster(ch, cmd, arg, mob, type, CLASS_THIEF));
 }
 
 
 int warrior_guild_master(struct char_data *ch, int cmd, char *arg,
                          struct char_data *mob, int type) {
-  return (Guildmaster(ch, cmd, arg, mob, type, CLASS_WARRIOR));
+  return (guildmaster(ch, cmd, arg, mob, type, CLASS_WARRIOR));
 }
 
 int monk_master(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type) {
   if (!has_class(ch, CLASS_MONK))
-    return (Teacher(ch, cmd, arg, mob, type, TAUGHT_BY_MONK,
+    return (teacher(ch, cmd, arg, mob, type, TAUGHT_BY_MONK,
                     "monk guildmaster"));
   else
-    return (Guildmaster(ch, cmd, arg, mob, type, CLASS_MONK));
+    return (guildmaster(ch, cmd, arg, mob, type, CLASS_MONK));
 }
 
 int druid_guild_master(struct char_data *ch, int cmd, char *arg,
                        struct char_data *mob, int type) {
-  return (Guildmaster(ch, cmd, arg, mob, type, CLASS_DRUID));
+  return (guildmaster(ch, cmd, arg, mob, type, CLASS_DRUID));
 }
 
-int Guildmaster(struct char_data *ch, int cmd, char *arg,
+int guildmaster(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type, int class) {
   int number, i, percent, class_level_ind, level_num, teacher;
   char buf[MAX_INPUT_LENGTH];
@@ -387,7 +387,7 @@ int Guildmaster(struct char_data *ch, int cmd, char *arg,
   }
 
   send_to_char
-    ("The Guildmaster says 'Hey, I'm not your guildmaster.  Get lost!'\n\r",
+    ("The guildmaster says 'Hey, I'm not your guildmaster.  Get lost!'\n\r",
      ch);
   return (FALSE);
 }
@@ -1813,7 +1813,7 @@ int green_slime(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (TRUE);
 }
 
-int Drow(struct char_data *UNUSED(ch), int UNUSED(cmd), char *UNUSED(arg),
+int drow(struct char_data *UNUSED(ch), int UNUSED(cmd), char *UNUSED(arg),
          struct char_data *UNUSED(mob), int UNUSED(type)) {
   return (FALSE);
 }
@@ -1877,7 +1877,7 @@ int guild_guard(struct char_data *ch, int cmd, char *arg,
 
 
 
-int Inquisitor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int inquisitor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
                int type) {
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2167,7 +2167,7 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
   case 34:
     if (number(0, 50) == 0) {
       for (i = character_list; i; i = i->next) {
-        if (mob_index[i->nr].func == Inquisitor) {
+        if (mob_index[i->nr].func == inquisitor) {
           do_shout(ch, "I wasn't expecting the Spanish Inquisition!", 0);
           i->generic = INQ_SHOUT;
           return (TRUE);
@@ -2318,7 +2318,7 @@ int replicant(struct char_data *ch, int cmd, char *UNUSED(arg),
 #define TYT_TELL 3
 #define TYT_HIT  4
 
-int Tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type) {
   struct char_data *vict;
 
@@ -3243,7 +3243,7 @@ int pet_shops(struct char_data *ch, int cmd, char *arg,
   return (FALSE);
 }
 
-int Fountain(struct char_data *ch, int cmd, char *arg,
+int fountain(struct char_data *ch, int cmd, char *arg,
              struct room_data *UNUSED(rp), int UNUSED(type)) {
   int bits, water;
   char buf[MAX_INPUT_LENGTH];
@@ -3619,7 +3619,7 @@ int kings_hall(struct char_data *ch, int cmd, char *arg) {
 /*
 **  donation room
 */
-int Donation(struct char_data *ch, int cmd, char *arg,
+int donation(struct char_data *ch, int cmd, char *arg,
              struct room_data *UNUSED(rp), int UNUSED(type)) {
   char check[40];
 
@@ -4048,7 +4048,7 @@ int delivery_beast(struct char_data *ch, int cmd, char *UNUSED(arg),
   }
 }
 
-int Keftab(struct char_data *ch, int cmd, char *UNUSED(arg),
+int keftab(struct char_data *ch, int cmd, char *UNUSED(arg),
            struct char_data *UNUSED(mob), int UNUSED(type)) {
   int found, targ_item;
   struct char_data *i;
@@ -6018,7 +6018,7 @@ char *quest_intro[] = {
   "return to me the shield of Lorces.",
 };
 
-int Valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type) {
 
 #define Valik_Wandering   0
@@ -6038,7 +6038,7 @@ int Valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   int i;
   struct char_data *vict, *master;
   struct obj_data *obj;
-  int (*valik) ();
+  int (*valik_local) ();
   bool gave_this_click = FALSE;
   short quest_lines[4];
   short valik_dests[9];
@@ -6072,10 +6072,10 @@ int Valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       return (magic_user(ch, cmd, arg, mob, type));
     }
 
-  vict = find_mob_in_room_with_function(ch->in_room, Valik);
+  vict = find_mob_in_room_with_function(ch->in_room, valik);
   assert(vict != 0);
 
-  valik = Valik;
+  valik_local = valik;
 
   switch (vict->generic) {
   case Valik_Wandering:
@@ -6091,7 +6091,7 @@ int Valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       if ((!*vict_name) || (!(vict = get_char_room_vis(ch, vict_name))))
         return (FALSE);
       /* the target is valik */
-      if (mob_index[vict->nr].func == valik) {
+      if (mob_index[vict->nr].func == valik_local) {
         act("You give $p to $N.", TRUE, ch, obj, vict, TO_CHAR);
         act("$n gives $p to $N.", TRUE, ch, obj, vict, TO_ROOM);
       }
@@ -6103,7 +6103,7 @@ int Valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
       arg = one_argument(arg, vict_name);
       if ((!*vict_name) || (!(vict = get_char_room_vis(ch, vict_name))))
         return (FALSE);
-      if (!(mob_index[vict->nr].func == valik))
+      if (!(mob_index[vict->nr].func == valik_local))
         return (FALSE);
       else {
         if (!(strcmp(arg, " What is the quest of the Rhyodin?")))

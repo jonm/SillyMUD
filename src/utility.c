@@ -1587,7 +1587,7 @@ void set_hunting(struct char_data *ch, struct char_data *tch) {
 
   dist = GET_ALIGNMENT(tch) - GET_ALIGNMENT(ch);
   dist = (dist > 0) ? dist : -dist;
-  if (Hates(ch, tch))
+  if (hates(ch, tch))
     dist *= 2;
 
   SET_BIT(ch->specials.act, ACT_HUNTING);
@@ -1818,7 +1818,7 @@ void monk_move(struct char_data *ch) {
 void develop_hatred(struct char_data *ch, struct char_data *v) {
   int diff, patience, var;
 
-  if (Hates(ch, v))
+  if (hates(ch, v))
     return;
 
   if (ch == v)

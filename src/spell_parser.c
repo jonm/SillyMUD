@@ -55,7 +55,7 @@ extern struct weather_data weather_info;
 extern int sf_where[];
 
 /*  internal procedures */
-void spell_wear_offSoon(int s, struct char_data *ch);
+void spell_wear_off_soon(int s, struct char_data *ch);
 void check_drowning(struct char_data *ch);
 int check_falling(struct char_data *ch);
 int is_intrinsic(struct char_data *ch, int spl);
@@ -476,7 +476,7 @@ void affect_update(int pulse) {
         af->duration--;
 
         if (af->duration == 1 && af->location != APPLY_INTRINSIC) {
-          spell_wear_offSoon(af->type, i);
+          spell_wear_off_soon(af->type, i);
         }
 
       }
@@ -1912,7 +1912,7 @@ void assign_spell_pointers() {
 }
 
 
-void spell_wear_offSoon(int s, struct char_data *ch) {
+void spell_wear_off_soon(int s, struct char_data *ch) {
 
   if (s > MAX_SKILLS + 10)
     return;

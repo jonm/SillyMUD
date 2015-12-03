@@ -1113,10 +1113,10 @@ void do_disguise(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
         k->specials.hunting = 0;
       }
       if (number(1, 101) < ch->skills[SKILL_DISGUISE].learned) {
-        if (Hates(k, ch)) {
+        if (hates(k, ch)) {
           zero_hatred(k, ch);
         }
-        if (Fears(k, ch)) {
+        if (fears(k, ch)) {
           zero_feared(k, ch);
         }
       }

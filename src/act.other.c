@@ -966,7 +966,7 @@ void do_compact(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 }
 
-char *Condition(struct char_data *ch) {
+char *condition(struct char_data *ch) {
   float a, b, t;
   int c;
   static char buf[100];
@@ -984,7 +984,7 @@ char *Condition(struct char_data *ch) {
 
 }
 
-char *Tiredness(struct char_data *ch) {
+char *tiredness(struct char_data *ch) {
   float a, b, t;
   int c;
   static char buf[100];
@@ -1024,7 +1024,7 @@ void do_group(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
       if (IS_AFFECTED(k, AFF_GROUP)) {
         SPRINTF(buf, "     $N (Head of group) HP:%s MV:%s",
-                Condition(k), Tiredness(k));
+                condition(k), tiredness(k));
         act(buf, FALSE, ch, 0, k, TO_CHAR);
 
       }
@@ -1032,7 +1032,7 @@ void do_group(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       for (f = k->followers; f; f = f->next)
         if (IS_AFFECTED(f->follower, AFF_GROUP)) {
           SPRINTF(buf, "     $N  \tHP:%s MV:%s",
-                  Condition(f->follower), Tiredness(f->follower));
+                  condition(f->follower), tiredness(f->follower));
           act(buf, FALSE, ch, 0, f->follower, TO_CHAR);
         }
     }
@@ -1609,7 +1609,7 @@ void do_alias(struct char_data *ch, char *arg, int cmd) {
   }
 }
 
-void Dismount(struct char_data *ch, struct char_data *h, int pos) {
+void dismount(struct char_data *ch, struct char_data *h, int pos) {
 
   MOUNTED(ch) = 0;
   RIDDEN(h) = 0;
@@ -1705,7 +1705,7 @@ void do_mount(struct char_data *ch, char *arg, int cmd) {
     act("You dismount from $N", FALSE, ch, 0, horse, TO_CHAR);
     act("$n dismounts from $N", FALSE, ch, 0, horse, TO_NOTVICT);
     act("$n dismounts from you", FALSE, ch, 0, horse, TO_VICT);
-    Dismount(ch, MOUNTED(ch), POSITION_STANDING);
+    dismount(ch, MOUNTED(ch), POSITION_STANDING);
     return;
   }
 

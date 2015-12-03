@@ -338,7 +338,7 @@ void do_order(struct char_data *ch, char *argument, int UNUSED(cmd)) {
               act("$n has an indifferent look.", FALSE, victim, 0, 0, TO_ROOM);
             }
             else {
-              Dismount(ch, victim, POSITION_SITTING);
+              dismount(ch, victim, POSITION_SITTING);
               act("$n gets pissed and $N falls on $S butt!",
                   FALSE, victim, 0, ch, TO_NOTVICT);
               act("$n gets pissed you fall off!",
@@ -635,7 +635,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             else {
               percent = (int)100 *(float)GET_HIT(ch->specials.fighting) /
                 (float)GET_MAX_HIT(ch->specials.fighting);
-              if (Hates(ch->specials.fighting, ch)) {
+              if (hates(ch->specials.fighting, ch)) {
                 set_hunting(ch->specials.fighting, ch);
               }
               else if ((IS_GOOD(ch) && (IS_EVIL(ch->specials.fighting))) ||
@@ -857,7 +857,7 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           else {
             percent = (int)100 *(float)GET_HIT(ch->specials.fighting) /
               (float)GET_MAX_HIT(ch->specials.fighting);
-            if (Hates(ch->specials.fighting, ch)) {
+            if (hates(ch->specials.fighting, ch)) {
               set_hunting(ch->specials.fighting, ch);
             }
             else if ((IS_GOOD(ch) && (IS_EVIL(ch->specials.fighting))) ||
