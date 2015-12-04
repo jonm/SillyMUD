@@ -396,10 +396,12 @@ void board_load_board() {
       continue;
     }
 
-    fscanf(the_file, " %d ", &boards[bnum].number);
-    if (boards[bnum].number < 0 || boards[bnum].number > MAX_MSGS ||
+    if (EOF == fscanf(the_file, " %d ", &boards[bnum].number)) {
+      log_msg("Board-message file is emptyish.");
+    }
+    else if (boards[bnum].number < 0 || boards[bnum].number > MAX_MSGS ||
         feof(the_file)) {
-      log_msg("Board-message file corrupt, nonexistent, or empty.\n\r");
+      log_msg("Board-message file corrupt.");
       boards[bnum].number = -1;
       fclose(the_file);
       continue;
