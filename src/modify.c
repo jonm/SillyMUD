@@ -140,6 +140,38 @@ void string_add(struct descriptor_data *d, char *str) {
     strcat(*d->str, "\n\r");
 }
 
+void string_add_static(struct descriptor_data *d, char *str) {
+  char *scan;
+  int terminator = 0;
+
+  /* determine if this is the terminal string, and truncate if so */
+  for (scan = str; *scan; scan++)
+    if ((terminator = (*scan == '@'))) {
+      *scan = '\0';
+      break;
+    }
+
+  /* Leave room for trailing NULL and a \n\r that may be appended. */
+  size_t space_avail = d->max_str - strlen(d->static_str) - 3;
+  if (strlen(str) > space_avail) {
+    send_to_char("String too long - Truncated.\n\r", d->character);
+    terminator = 1;
+  }
+
+  strncat(d->static_str, str, space_avail);
+
+  if (terminator) {
+    d->static_str = NULL;
+    if (d->connected == CON_EXDSCR) {
+      SEND_TO_Q(MENU, d);
+      d->connected = CON_SLCT;
+    }
+  }
+  else {
+    strcat(d->static_str, "\n\r");
+  }
+}
+
 
 #undef MAX_STR
 

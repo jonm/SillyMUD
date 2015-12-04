@@ -1055,6 +1055,7 @@ void mob_hit(struct char_data *, struct char_data *, int);
 /* From modify.c */
 
 void string_add(struct descriptor_data *d, char *str);
+void string_add_static(struct descriptor_data *d, char *str);
 void quad_arg(char *arg, int *type, char *name, int *field, char *string);
 void do_string(struct char_data *ch, char *arg, int cmd);
 void bisect_arg(char *arg, int *field, char *string);

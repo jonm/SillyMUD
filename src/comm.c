@@ -425,6 +425,8 @@ void game_loop(int s) {
 
         if (point->str)
           string_add(point, comm);
+        else if (point->static_str)
+          string_add_static(point, comm);
         else if (!point->connected) {
           if (point->showstr_point)
             show_string(point, comm);

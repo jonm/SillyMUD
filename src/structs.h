@@ -1275,6 +1275,7 @@ struct descriptor_data {
   char *showstr_head;           /* for paging through texts   */
   char *showstr_point;          /*       -                    */
   char **str;                   /* for the modify-str system  */
+  char *static_str;             /* for the safer modify-str system */
   int max_str;                  /* -                          */
   int prompt_mode;              /* control of prompt-printing */
   char buf[MAX_STRING_LENGTH];  /* buffer for raw input       */
