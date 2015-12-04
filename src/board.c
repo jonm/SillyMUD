@@ -269,7 +269,6 @@ int board_remove_msg(struct char_data *ch, char *arg, int bnum) {
 
   ind = tmessage;
 
-  free(curr_board->msg[ind].text);
   free(curr_board->msg[ind].date);
   free(curr_board->msg[ind].author);
   free(curr_board->msg[ind].title);
@@ -409,7 +408,7 @@ void board_load_board() {
       curr_msg->title = (char *)fread_string(the_file);
       curr_msg->author = (char *)fread_string(the_file);
       curr_msg->date = (char *)fread_string(the_file);
-      /* curr_msg->text = (char *)fread_string(the_file); */
+      fread_string_na(curr_msg->text, sizeof(curr_msg->text), the_file);
     }
     fclose(the_file);
   }
