@@ -22,7 +22,7 @@ struct message {
   char *date;
   char *title;
   char *author;
-  char *text;
+  char text[2048];
 };
 
 struct board {
@@ -210,15 +210,12 @@ void board_write_msg(struct char_data *ch, char *arg, int bnum) {
 
   /* Take care of free-ing and zeroing if the message text is already
      allocated previously */
-
-  if (curr_msg->text)
-    free(curr_msg->text);
-  curr_msg->text = 0;
+  memset(curr_msg->text, 0, sizeof(curr_msg->text));
 
   /* Initiate the string_add procedures from comm.c */
 
-  ch->desc->str = &curr_msg->text;
-  ch->desc->max_str = MAX_MESSAGE_LENGTH;
+  ch->desc->static_str = curr_msg->text;
+  ch->desc->max_str = sizeof(curr_msg->text);
   (boards[bnum].number)++;
   if (boards[bnum].number < 0)
     boards[bnum].number = 0;
@@ -287,7 +284,7 @@ int board_remove_msg(struct char_data *ch, char *arg, int bnum) {
 /* Removed, it will destroy what it's pointing to. THIS is the board */
 /* Bug we've been looking for!        -=>White Gold<=-               */
 
-  curr_board->msg[curr_board->number].text = NULL;
+  /* curr_board->msg[curr_board->number].text = NULL; */
   curr_board->msg[curr_board->number].date = NULL;
   curr_board->msg[curr_board->number].author = NULL;
   curr_board->msg[curr_board->number].title = NULL;
@@ -412,7 +409,7 @@ void board_load_board() {
       curr_msg->title = (char *)fread_string(the_file);
       curr_msg->author = (char *)fread_string(the_file);
       curr_msg->date = (char *)fread_string(the_file);
-      curr_msg->text = (char *)fread_string(the_file);
+      /* curr_msg->text = (char *)fread_string(the_file); */
     }
     fclose(the_file);
   }
