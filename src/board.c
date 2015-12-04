@@ -16,13 +16,14 @@
 
 #define MAX_MSGS 99             /* Max number of messages.          */
 #define MAX_MESSAGE_LENGTH 2048 /* that should be enough            */
+#define MAX_META_LENGTH 128
 #define NUM_BOARDS 3
 
 struct message {
-  char *date;
-  char *title;
-  char *author;
-  char text[2048];
+  char date[MAX_META_LENGTH];
+  char title[MAX_META_LENGTH];
+  char author[MAX_META_LENGTH];
+  char text[MAX_MESSAGE_LENGTH];
 };
 
 struct board {
@@ -188,23 +189,15 @@ void board_write_msg(struct char_data *ch, char *arg, int bnum) {
   curr_msg = &curr_board->msg[++highmessage];
 
   if (!(strcmp("Topic", arg))) {
-    curr_msg = &curr_board->msg[0];
-    free(curr_msg->title);
-    free(curr_msg->text);
-    free(curr_msg->author);
-    free(curr_msg->date);
     (boards[bnum].number)--;
   }
-  curr_msg->title = (char *)malloc(strlen(arg) + 1);
-  strcpy(curr_msg->title, arg);
-  curr_msg->author = (char *)malloc(strlen(GET_NAME(ch)) + 1);
-  strcpy(curr_msg->author, GET_NAME(ch));
+  strncpy(curr_msg->title, arg, sizeof(curr_msg->title));
+  strncpy(curr_msg->author, GET_NAME(ch), sizeof(curr_msg->author));
   ct = time(0);
   tmstr = (char *)asctime(localtime(&ct));
   *(tmstr + strlen(tmstr) - 1) = '\0';
   SPRINTF(buf, "%.10s", tmstr);
-  curr_msg->date = (char *)malloc(strlen(buf) + 1);
-  strcpy(curr_msg->date, buf);
+  strncpy(curr_msg->date, buf, sizeof(curr_msg->date));
   send_to_char("Write your message. Terminate with a @.\n\r\n\r", ch);
   act("$n starts to write a message.", TRUE, ch, 0, 0, TO_ROOM);
 
@@ -269,24 +262,8 @@ int board_remove_msg(struct char_data *ch, char *arg, int bnum) {
 
   ind = tmessage;
 
-  free(curr_board->msg[ind].date);
-  free(curr_board->msg[ind].author);
-  free(curr_board->msg[ind].title);
-
   for (; ind < (curr_board->number); ind++)
     curr_board->msg[ind] = curr_board->msg[ind + 1];
-
-/* You MUST do this, or the next message written after a remove will */
-/* end up doing a free(curr_board->msg[ind].text) because it's not!! */
-/* Causing strange shit to happen, because now the message has a     */
-/* To a memory location that doesn't exist, and if THAT message gets */
-/* Removed, it will destroy what it's pointing to. THIS is the board */
-/* Bug we've been looking for!        -=>White Gold<=-               */
-
-  /* curr_board->msg[curr_board->number].text = NULL; */
-  curr_board->msg[curr_board->number].date = NULL;
-  curr_board->msg[curr_board->number].author = NULL;
-  curr_board->msg[curr_board->number].title = NULL;
 
   curr_board->number--;
 
@@ -405,9 +382,9 @@ void board_load_board() {
 
     for (ind = 0; ind <= curr_board->number; ind++) {
       curr_msg = &curr_board->msg[ind];
-      curr_msg->title = (char *)fread_string(the_file);
-      curr_msg->author = (char *)fread_string(the_file);
-      curr_msg->date = (char *)fread_string(the_file);
+      fread_string_na(curr_msg->title, sizeof(curr_msg->title), the_file);
+      fread_string_na(curr_msg->author, sizeof(curr_msg->author), the_file);
+      fread_string_na(curr_msg->date, sizeof(curr_msg->date), the_file);
       fread_string_na(curr_msg->text, sizeof(curr_msg->text), the_file);
     }
     fclose(the_file);
