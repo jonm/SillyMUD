@@ -458,7 +458,7 @@ void game_loop(int s) {
     /* give the people some prompts  */
     for (point = descriptor_list; point; point = point->next)
       if (point->prompt_mode) {
-        if (point->str)
+        if (point->str || point->static_str)
           write_to_descriptor(point->descriptor, "-> ");
         else if (!point->connected) {
           if (point->showstr_point) {
