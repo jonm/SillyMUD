@@ -44,9 +44,13 @@ can check this when you build via
 * open braces SHOULD be at the end of the prior line, not on a line by
 themselves
 
-Note that the existing code does not meet all of these standards yet
-(except for the no-compiler-warnings one), but please help move the
-codebase in the right direction for the code your PR affects.
+Existing code has been formatted with:
+
+`gindent -bap -bli0 -l79 -ncs -npcs -lc79 -br -brf -brs -nut -i2
+-nce -npsl`
+
+Consider using this to keep your additions stylistically aggreable.
+
 
 ## Pull Requests
 
