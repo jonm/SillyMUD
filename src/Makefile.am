@@ -17,7 +17,7 @@ sillymud_SOURCES = $(common_sources) main.c
 # unit tests
 check_PROGRAMS = tests
 tests_SOURCES = $(common_sources) test.act.wizard.c test.spell_parser.c \
-	test.handler.c
+	test.handler.c test.modify.c
 tests_LDADD = -lcriterion
 TESTS = tests
 
