@@ -5,9 +5,6 @@
 #include "db.h"
 
 
-extern char *fread_string(FILE *f1);
-int fread_string_na(char *dst, size_t max_len, FILE *f1);
-
 FILE *create_input(const char*data) {
   FILE *fp = tmpfile();
 

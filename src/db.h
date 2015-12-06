@@ -144,4 +144,7 @@ struct help_index_element {
 
 void ensure_file_exists(const char *path);
 
+char *fread_string(FILE *f1);
+int fread_string_na(char *dst, size_t max_len, FILE *f1);
+
 #endif

@@ -427,8 +427,6 @@ int create_entry(char *name);
 void save_char(struct char_data *ch, sh_int load_room);
 int compare(struct player_index_element *arg1, struct player_index_element
             *arg2);
-char *fread_string(FILE * fl);
-int fread_string_na(char *dst, size_t max_len, FILE *f1);
 void free_char(struct char_data *ch);
 void free_obj(struct obj_data *obj);
 int file_to_string(char *name, char *buf);
