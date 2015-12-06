@@ -49,7 +49,7 @@ Existing code has been formatted with:
 `gindent -bap -bli0 -l79 -ncs -npcs -lc79 -br -brf -brs -nut -i2
 -nce -npsl`
 
-Consider using this to keep your additions stylistically aggreable.
+Consider using this to keep your additions stylistically agreeable.
 
 
 ## Pull Requests
