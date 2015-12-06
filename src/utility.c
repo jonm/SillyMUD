@@ -13,6 +13,7 @@
 #include <time.h>
 
 #include "protos.h"
+#include "utility.h"
 
 void log_msg(char *s) {
   log_sev(s, 1);
