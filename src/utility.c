@@ -6,16 +6,27 @@
 #include "config.h"
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 
 #include "protos.h"
+#include "utility.h"
 
 void log_msg(char *s) {
   log_sev(s, 1);
 }                               /*thought this was a prototype - heheh */
+
+void log_msgf(const char *fmt, ...) {
+  char buf[256];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buf, sizeof(buf), fmt, args);
+  log_sev(buf, 1);
+  va_end(args);
+}
 
 extern char *article_list[];
 extern struct time_data time_info;
