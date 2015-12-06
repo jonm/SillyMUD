@@ -2523,6 +2523,49 @@ int compare(struct player_index_element *arg1, struct player_index_element
 ********************************************************************** */
 
 /* Original fread_string was a memory leaking piece of garbage... -DM */
+/* Newer fread_string was no bouquet of roses either */
+int fread_string_na(char *dst, size_t max_len, FILE * f1) {
+  if (!dst) {
+    perror("Fread_string");
+    assert(0);
+  }
+
+  size_t i = 0, tmp;
+
+  dst[0] = '\0';
+
+  while (i < max_len - 2) {
+    tmp = fgetc(f1);
+    if (!tmp) {
+      perror("Fread_string");
+      assert(0);
+    }
+
+    if (tmp == '~') {
+      break;
+    }
+
+    dst[i++] = (char)tmp;
+    if (dst[i - 1] == '\n')
+      dst[i++] = '\r';
+  }
+
+  if (i == MAX_STRING_LENGTH - 3) {     /* We filled the buffer */
+    dst[i] = '\0';
+    log_msg("File too long (fread_string).");
+    while ((tmp = fgetc(f1)) != 0)
+      if (tmp == '~')
+        break;
+  }
+
+  else
+    dst[i] = '\0';
+
+  fgetc(f1);
+
+  return 0;
+}
+
 char *fread_string(FILE * f1) {
   char buf[MAX_STRING_LENGTH];
   int i = 0, tmp;

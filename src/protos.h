@@ -428,6 +428,7 @@ void save_char(struct char_data *ch, sh_int load_room);
 int compare(struct player_index_element *arg1, struct player_index_element
             *arg2);
 char *fread_string(FILE * fl);
+int fread_string_na(char *dst, size_t max_len, FILE *f1);
 void free_char(struct char_data *ch);
 void free_obj(struct obj_data *obj);
 int file_to_string(char *name, char *buf);
@@ -1055,6 +1056,7 @@ void mob_hit(struct char_data *, struct char_data *, int);
 /* From modify.c */
 
 void string_add(struct descriptor_data *d, char *str);
+void string_add_static(struct descriptor_data *d, char *str);
 void quad_arg(char *arg, int *type, char *name, int *field, char *string);
 void do_string(struct char_data *ch, char *arg, int cmd);
 void bisect_arg(char *arg, int *field, char *string);
