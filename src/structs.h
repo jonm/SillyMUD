@@ -1289,10 +1289,11 @@ struct descriptor_data {
   struct descriptor_data *next; /* link to next descriptor    */
 };
 
+#define FIGHT_MAX_MSG_LEN 128
 struct msg_type {
-  char *attacker_msg;           /* message to attacker */
-  char *victim_msg;             /* message to victim   */
-  char *room_msg;               /* message to room     */
+  char attacker_msg[FIGHT_MAX_MSG_LEN]; /* message to attacker */
+  char victim_msg[FIGHT_MAX_MSG_LEN];   /* message to victim   */
+  char room_msg[FIGHT_MAX_MSG_LEN];     /* message to room     */
 };
 
 struct message_type {

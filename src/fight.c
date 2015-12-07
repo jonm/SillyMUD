@@ -169,18 +169,18 @@ void load_messages() {
     messages->next = fight_messages[i].msg;
     fight_messages[i].msg = messages;
 
-    messages->die_msg.attacker_msg = fread_string(f1);
-    messages->die_msg.victim_msg = fread_string(f1);
-    messages->die_msg.room_msg = fread_string(f1);
-    messages->miss_msg.attacker_msg = fread_string(f1);
-    messages->miss_msg.victim_msg = fread_string(f1);
-    messages->miss_msg.room_msg = fread_string(f1);
-    messages->hit_msg.attacker_msg = fread_string(f1);
-    messages->hit_msg.victim_msg = fread_string(f1);
-    messages->hit_msg.room_msg = fread_string(f1);
-    messages->god_msg.attacker_msg = fread_string(f1);
-    messages->god_msg.victim_msg = fread_string(f1);
-    messages->god_msg.room_msg = fread_string(f1);
+    FREAD_STRING_NA(messages->die_msg.attacker_msg, f1);
+    FREAD_STRING_NA(messages->die_msg.victim_msg, f1);
+    FREAD_STRING_NA(messages->die_msg.room_msg, f1);
+    FREAD_STRING_NA(messages->miss_msg.attacker_msg, f1);
+    FREAD_STRING_NA(messages->miss_msg.victim_msg, f1);
+    FREAD_STRING_NA(messages->miss_msg.room_msg, f1);
+    FREAD_STRING_NA(messages->hit_msg.attacker_msg, f1);
+    FREAD_STRING_NA(messages->hit_msg.victim_msg, f1);
+    FREAD_STRING_NA(messages->hit_msg.room_msg, f1);
+    FREAD_STRING_NA(messages->god_msg.attacker_msg, f1);
+    FREAD_STRING_NA(messages->god_msg.victim_msg, f1);
+    FREAD_STRING_NA(messages->god_msg.room_msg, f1);
     fscanf(f1, " %s \n", chk);
     i++;
   }
