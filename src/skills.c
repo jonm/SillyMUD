@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "skills.h"
 
 extern char *dirs[];
 extern struct char_data *character_list;
@@ -189,7 +190,11 @@ void do_inset(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 **  Disarm:
 */
 
-void do_disarm(struct char_data *ch, char *argument, int cmd) {
+void do_disarm(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+  disarm_action(ch, argument, 0);
+}
+
+void disarm_action(struct char_data *ch, char *argument, int npc_ok) {
   char name[30];
   int percent;
   struct char_data *victim;
@@ -201,7 +206,7 @@ void do_disarm(struct char_data *ch, char *argument, int cmd) {
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   /*

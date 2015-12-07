@@ -15,6 +15,7 @@
 #include "protos.h"
 #include "utility.h"
 #include "act.off.h"
+#include "skills.h"
 
 void log_msg(char *s) {
   log_sev(s, 1);
@@ -1708,7 +1709,7 @@ void make_nifty_attack(struct char_data *ch) {
     if (ch->equipment[WIELD]) {
       if (!ch->skills[SKILL_DISARM].learned)
         ch->skills[SKILL_DISARM].learned = 10 + get_max_level(ch) * 4;
-      do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
+      disarm_action(ch, GET_NAME(ch->specials.fighting), 1);
     }
     else {
       if (!ch->skills[SKILL_KICK].learned)
@@ -1817,7 +1818,7 @@ void monk_move(struct char_data *ch) {
       if (ch->specials.fighting->equipment[WIELD]) {
         if (!ch->skills[SKILL_DISARM].learned)
           ch->skills[SKILL_DISARM].learned = (get_max_level(ch) * 3) / 2 + 25;
-        do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
+        disarm_action(ch, GET_NAME(ch->specials.fighting), 1);
         return;
       }
       if (!ch->skills[SKILL_KICK].learned)
