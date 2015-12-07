@@ -11,6 +11,7 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "act.off.h"
 
 /*   external vars  */
 
@@ -2396,7 +2397,7 @@ int generic_cityguardHateUndead(struct char_data *ch, int cmd, char *arg,
 
       if (!ch->skills[SKILL_RESCUE].learned)
         ch->skills[SKILL_RESCUE].learned = get_max_level(ch) * 3 + 30;
-      do_rescue(ch, GET_NAME(evil->specials.fighting), 0);
+      rescue_action(ch, GET_NAME(evil->specials.fighting), 1);
     }
   }
 

@@ -1013,7 +1013,11 @@ void bash_action(struct char_data *ch, char *argument, int npc_ok) {
 
 
 
-void do_rescue(struct char_data *ch, char *argument, int cmd) {
+void do_rescue(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+  rescue_action(ch, argument, 0);
+}
+
+void rescue_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim, *tmp_ch;
   int percent;
   char victim_name[240];
@@ -1024,7 +1028,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd) {
     return;
   }
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   if (check_peaceful(ch, "No one should need rescuing here.\n\r"))

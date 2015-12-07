@@ -1744,7 +1744,7 @@ void fighter_move(struct char_data *ch) {
         if (GET_HIT(friend) < GET_HIT(ch)) {
           if (!ch->skills[SKILL_RESCUE].learned)
             ch->skills[SKILL_RESCUE].learned = get_max_level(ch) * 3 + 30;
-          do_rescue(ch, GET_NAME(friend), 0);
+          rescue_action(ch, GET_NAME(friend), 1);
         }
         else {
           make_nifty_attack(ch);
