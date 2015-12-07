@@ -2538,7 +2538,7 @@ int rust_monster(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 int temple_labrynth_liar(struct char_data *ch, int cmd, char *UNUSED(arg),
                          struct char_data *UNUSED(mob), int UNUSED(type)) {
-    if (cmd || !AWAKE(ch))
+  if (cmd || !AWAKE(ch))
     return (0);
 
   if (check_soundproof(ch))
