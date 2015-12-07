@@ -14,6 +14,7 @@
 
 #include "protos.h"
 #include "utility.h"
+#include "act.off.h"
 
 void log_msg(char *s) {
   log_sev(s, 1);
@@ -1701,7 +1702,7 @@ void make_nifty_attack(struct char_data *ch) {
   if (num <= 2) {
     if (!ch->skills[SKILL_BASH].learned)
       ch->skills[SKILL_BASH].learned = 10 + get_max_level(ch) * 4;
-    do_bash(ch, GET_NAME(ch->specials.fighting), 0);
+    bash_action(ch, GET_NAME(ch->specials.fighting), 1);
   }
   else if (num == 3) {
     if (ch->equipment[WIELD]) {

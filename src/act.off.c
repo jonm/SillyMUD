@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.off.h"
 
 /* extern variables */
 
@@ -903,7 +904,11 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_bash(struct char_data *ch, char *argument, int cmd) {
+void do_bash(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+  bash_action(ch, argument, 0);
+}
+
+void bash_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim;
   char name[256];
   byte percent;
@@ -912,7 +917,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd) {
   if (!ch->skills)
     return;
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
