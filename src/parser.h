@@ -32,4 +32,7 @@ struct radix_list {
   byte max_len;
 };
 
+void add_command(char *name, cmd_handler func, int number, int min_pos,
+                 int min_lev);
+
 #endif
