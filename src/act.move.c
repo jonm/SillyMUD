@@ -445,7 +445,7 @@ void display_group_move(struct char_data *ch, int dir, int was_in, int total) {
 }
 
 
-void do_move(struct char_data *ch, char *argument, int cmd) {
+void do_move(struct char_data *ch, char *UNUSED(argument), int cmd) {
   int dir;
   /* This hardcoded crap will go away soon. */
   switch (cmd) {
@@ -471,14 +471,14 @@ void do_move(struct char_data *ch, char *argument, int cmd) {
     dir = MOVE_DIR_INVALID;
     break;
   }
-  return move_dir(ch, argument, dir);
+  return move_dir(ch, dir);
 }
 
-void move_dir(struct char_data *ch, char *argument, int dir) {
+void move_dir(struct char_data *ch, int dir) {
 
   if (RIDDEN(ch)) {
     if (ride_check(RIDDEN(ch), 0)) {
-      move_dir(RIDDEN(ch), argument, dir);
+      move_dir(RIDDEN(ch), dir);
       return;
     }
     else {
@@ -1201,7 +1201,7 @@ void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     for (door = 0; door <= 5; door++)
       if (exit_ok(exitp = EXIT(ch, door), NULL) && exitp->keyword &&
           0 == str_cmp(exitp->keyword, buf)) {
-        move_dir(ch, "", door);
+        move_dir(ch, door);
         return;
       }
     SPRINTF(tmp, "There is no %s here.\n\r", buf);
@@ -1216,7 +1216,7 @@ void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       if (exit_ok(exitp = EXIT(ch, door), &rp) &&
           !IS_SET(exitp->exit_info, EX_CLOSED) &&
           IS_SET(rp->room_flags, INDOORS)) {
-        move_dir(ch, "", door);
+        move_dir(ch, door);
         return;
       }
     send_to_char("You can't seem to find anything to enter.\n\r", ch);
@@ -1235,7 +1235,7 @@ void do_leave(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
       if (exit_ok(exitp = EXIT(ch, door), &rp) &&
           !IS_SET(exitp->exit_info, EX_CLOSED) &&
           !IS_SET(rp->room_flags, INDOORS)) {
-        move_dir(ch, "", door);
+        move_dir(ch, door);
         return;
       }
     send_to_char("I see no obvious exits to the outside.\n\r", ch);

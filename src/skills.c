@@ -684,7 +684,7 @@ int go_direction(struct char_data *ch, int dir) {
     return 0;
 
   if (!IS_SET(EXIT(ch, dir)->exit_info, EX_CLOSED)) {
-    move_dir(ch, "", dir);
+    move_dir(ch, dir);
   }
   else if (is_humanoid(ch) && !IS_SET(EXIT(ch, dir)->exit_info, EX_LOCKED)) {
     open_door(ch, dir);

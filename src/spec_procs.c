@@ -499,7 +499,7 @@ int mayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   case '1':
   case '2':
   case '3':
-    move_dir(ch, "", path[index] - '0');
+    move_dir(ch, path[index] - '0');
     break;
 
   case 'W':
@@ -1266,7 +1266,7 @@ void exec_social(struct char_data *npc, char *cmd, int next_line,
     break;
 
   case 'm':
-    move_dir(npc, "", *(cmd + 1) - '0');
+    move_dir(npc, *(cmd + 1) - '0');
     break;
 
   case 'w':
