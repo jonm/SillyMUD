@@ -28,9 +28,6 @@
 extern struct str_app_type str_app[];
 extern struct chr_app_type chr_apply[];
 
-char *fread_string(FILE * fl);
-char getall(char *name, char *newname);
-int getabunch(char *name, char *newname);
 float shop_multiplier = 0;
 int gevent = 0;                 /* Global Event happening currently */
 
