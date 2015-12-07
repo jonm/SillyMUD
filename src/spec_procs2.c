@@ -2121,7 +2121,7 @@ int creeping_death(struct char_data *ch, int cmd, char *UNUSED(arg),
       return (FALSE);
     }
     else {
-      move_dir(ch, ch->generic);
+      move_to_dir(ch, ch->generic);
       return (FALSE);
     }
   }

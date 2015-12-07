@@ -927,7 +927,7 @@ void spell_creeping_death(byte UNUSED(level), struct char_data *ch,
 
   /* move the creeping death in the proper direction */
 
-  move_dir(cd, dir);
+  move_to_dir(cd, dir);
 
   GET_POS(ch) = POSITION_STUNNED;
 

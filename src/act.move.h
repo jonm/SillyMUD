@@ -13,6 +13,6 @@
 
 #define MOVE_DIR_INVALID -1
 
-void move_dir(struct char_data *ch, int dir);
+void move_to_dir(struct char_data *ch, int dir);
 
 #endif /* _ACT_MOVE_H */
