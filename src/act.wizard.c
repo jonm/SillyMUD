@@ -17,6 +17,7 @@
 
 
 #include "protos.h"
+#include "act.wizard.h"
 
 /*   external vars  */
 
@@ -2070,12 +2071,16 @@ void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
 }
 
 
-void do_force(struct char_data *ch, char *argument, int cmd) {
+void do_force(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+  force_action(ch, argument, 0);
+}
+
+void force_action(struct char_data *ch, char *argument, int npc_ok) {
   struct descriptor_data *i;
   struct char_data *vict;
   char name[100], to_force[100], buf[100];
 
-  if (IS_NPC(ch) && (cmd != 0))
+  if (IS_NPC(ch) && !npc_ok)
     return;
 
   half_chop(argument, name, to_force);

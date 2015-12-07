@@ -13,6 +13,7 @@
 
 #include "protos.h"
 #include "db.h"
+#include "act.wizard.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -2054,9 +2055,9 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
       if (!IS_NPC(i)) {
         if (number(0, 30) == 0) {
           SPRINTF(buf, "%s shout I love to MOSH!", GET_NAME(i));
-          do_force(ch, buf, 0);
+          force_action(ch, buf, 1);
           SPRINTF(buf, "%s mosh", GET_NAME(i));
-          do_force(ch, buf, 0);
+          force_action(ch, buf, 1);
           do_restore(ch, GET_NAME(i), 0);
           return (TRUE);
         }
@@ -2202,7 +2203,7 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
         if (number(0, 20) == 0) {
           if (i->in_room != NOWHERE) {
             SPRINTF(buf, "%s save", GET_NAME(i));
-            do_force(ch, buf, 0);
+            force_action(ch, buf, 1);
             return (TRUE);
           }
         }
