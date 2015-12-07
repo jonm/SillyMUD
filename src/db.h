@@ -147,4 +147,6 @@ void ensure_file_exists(const char *path);
 char *fread_string(FILE *f1);
 int fread_string_na(char *dst, size_t max_len, FILE *f1);
 
+#define FREAD_STRING_NA(dst, fp) fread_string_na(dst, sizeof(dst), fp)
+
 #endif

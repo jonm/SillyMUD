@@ -384,10 +384,10 @@ void board_load_board() {
 
     for (ind = 0; ind <= curr_board->number; ind++) {
       curr_msg = &curr_board->msg[ind];
-      fread_string_na(curr_msg->title, sizeof(curr_msg->title), the_file);
-      fread_string_na(curr_msg->author, sizeof(curr_msg->author), the_file);
-      fread_string_na(curr_msg->date, sizeof(curr_msg->date), the_file);
-      fread_string_na(curr_msg->text, sizeof(curr_msg->text), the_file);
+      FREAD_STRING_NA(curr_msg->title, the_file);
+      FREAD_STRING_NA(curr_msg->author, the_file);
+      FREAD_STRING_NA(curr_msg->date, the_file);
+      FREAD_STRING_NA(curr_msg->text, the_file);
     }
     fclose(the_file);
   }
