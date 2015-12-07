@@ -8,6 +8,9 @@
 #define MOVE_DIR_UP 4
 #define MOVE_DIR_DOWN 5
 
+#define MOVE_DIR_FIRST 0
+#define MOVE_DIR_LAST 5
+
 #define MOVE_DIR_INVALID -1
 
 void move_dir(struct char_data *ch, int dir);

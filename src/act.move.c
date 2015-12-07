@@ -1198,7 +1198,7 @@ void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   one_argument(argument, buf);
 
   if (*buf) {                   /* an argument was supplied, search for door keyword */
-    for (door = 0; door <= 5; door++)
+    for (door = MOVE_DIR_FIRST; door <= MOVE_DIR_LAST; door++)
       if (exit_ok(exitp = EXIT(ch, door), NULL) && exitp->keyword &&
           0 == str_cmp(exitp->keyword, buf)) {
         move_dir(ch, door);
@@ -1212,7 +1212,7 @@ void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
   else {
     /* try to locate an entrance */
-    for (door = 0; door <= 5; door++)
+    for (door = MOVE_DIR_FIRST; door <= MOVE_DIR_LAST; door++)
       if (exit_ok(exitp = EXIT(ch, door), &rp) &&
           !IS_SET(exitp->exit_info, EX_CLOSED) &&
           IS_SET(rp->room_flags, INDOORS)) {
@@ -1231,7 +1231,7 @@ void do_leave(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   if (!IS_SET(RM_FLAGS(ch->in_room), INDOORS))
     send_to_char("You are outside.. where do you want to go?\n\r", ch);
   else {
-    for (door = 0; door <= 5; door++)
+    for (door = MOVE_DIR_FIRST; door <= MOVE_DIR_LAST; door++)
       if (exit_ok(exitp = EXIT(ch, door), &rp) &&
           !IS_SET(exitp->exit_info, EX_CLOSED) &&
           !IS_SET(rp->room_flags, INDOORS)) {
