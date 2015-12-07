@@ -31,18 +31,20 @@ extern struct chr_app_type chr_apply[];
 float shop_multiplier = 0;
 int gevent = 0;                 /* Global Event happening currently */
 
+#define SHOP_MAX_MSG_SIZE 128
+
 struct shop_data {
   int producing[MAX_PROD];      /* Which item to produce (virtual)      */
   float profit_buy;             /* Factor to multiply cost with.        */
   float profit_sell;            /* Factor to multiply cost with.        */
   byte type[MAX_TRADE];         /* Which item to trade.                 */
-  char *no_such_item1;          /* Message if keeper hasn't got an item */
-  char *no_such_item2;          /* Message if player hasn't got an item */
-  char *missing_cash1;          /* Message if keeper hasn't got cash    */
-  char *missing_cash2;          /* Message if player hasn't got cash    */
-  char *do_not_buy;             /* If keeper dosn't buy such things.    */
-  char *message_buy;            /* Message when player buys item        */
-  char *message_sell;           /* Message when player sells item       */
+  char no_such_item1[SHOP_MAX_MSG_SIZE];  /* Message if keeper hasn't got an item */
+  char no_such_item2[SHOP_MAX_MSG_SIZE];  /* Message if player hasn't got an item */
+  char missing_cash1[SHOP_MAX_MSG_SIZE];  /* Message if keeper hasn't got cash    */
+  char missing_cash2[SHOP_MAX_MSG_SIZE];  /* Message if player hasn't got cash    */
+  char do_not_buy[SHOP_MAX_MSG_SIZE];  /* If keeper dosn't buy such things.    */
+  char message_buy[SHOP_MAX_MSG_SIZE];  /* Message when player buys item        */
+  char message_sell[SHOP_MAX_MSG_SIZE];  /* Message when player sells item       */
   int temper1;                  /* How does keeper react if no money    */
   int temper2;                  /* How does keeper react when attacked  */
   int keeper;                   /* The mobil who owns the shop (virtual) */
@@ -639,7 +641,6 @@ int shop_keeper(struct char_data *ch, const char *cmd, char *arg,
 }
 
 void boot_the_shops() {
-  char *buf;
   int temp;
   int count;
   FILE *shop_f;
@@ -653,7 +654,8 @@ void boot_the_shops() {
   number_of_shops = 0;
 
   for (;;) {
-    buf = fread_string(shop_f);
+    char buf[128];
+    FREAD_STRING_NA(buf, shop_f);
     if (*buf == '#') {          /* a new shop */
       if (!number_of_shops)     /* first shop */
         CREATE(shop_index, struct shop_data, 1);
@@ -678,13 +680,13 @@ void boot_the_shops() {
         fscanf(shop_f, "%d \n", &temp);
         shop_index[number_of_shops].type[count] = (byte) temp;
       }
-      shop_index[number_of_shops].no_such_item1 = fread_string(shop_f);
-      shop_index[number_of_shops].no_such_item2 = fread_string(shop_f);
-      shop_index[number_of_shops].do_not_buy = fread_string(shop_f);
-      shop_index[number_of_shops].missing_cash1 = fread_string(shop_f);
-      shop_index[number_of_shops].missing_cash2 = fread_string(shop_f);
-      shop_index[number_of_shops].message_buy = fread_string(shop_f);
-      shop_index[number_of_shops].message_sell = fread_string(shop_f);
+      FREAD_STRING_NA(shop_index[number_of_shops].no_such_item1, shop_f);
+      FREAD_STRING_NA(shop_index[number_of_shops].no_such_item2, shop_f);
+      FREAD_STRING_NA(shop_index[number_of_shops].do_not_buy, shop_f);
+      FREAD_STRING_NA(shop_index[number_of_shops].missing_cash1, shop_f);
+      FREAD_STRING_NA(shop_index[number_of_shops].missing_cash2, shop_f);
+      FREAD_STRING_NA(shop_index[number_of_shops].message_buy, shop_f);
+      FREAD_STRING_NA(shop_index[number_of_shops].message_sell, shop_f);
       fscanf(shop_f, "%d \n", &shop_index[number_of_shops].temper1);
       fscanf(shop_f, "%d \n", &shop_index[number_of_shops].temper2);
       fscanf(shop_f, "%d \n", &keeper);
