@@ -11,6 +11,7 @@
 
 #include "protos.h"
 #include "skills.h"
+#include "act.move.h"
 
 extern char *dirs[];
 extern struct char_data *character_list;
@@ -683,7 +684,7 @@ int go_direction(struct char_data *ch, int dir) {
     return 0;
 
   if (!IS_SET(EXIT(ch, dir)->exit_info, EX_CLOSED)) {
-    do_move(ch, "", dir + 1);
+    move_dir(ch, "", dir);
   }
   else if (is_humanoid(ch) && !IS_SET(EXIT(ch, dir)->exit_info, EX_LOCKED)) {
     open_door(ch, dir);

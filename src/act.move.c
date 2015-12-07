@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.move.h"
 
 /*   external vars  */
 #if HASH
@@ -445,10 +446,39 @@ void display_group_move(struct char_data *ch, int dir, int was_in, int total) {
 
 
 void do_move(struct char_data *ch, char *argument, int cmd) {
+  int dir;
+  /* This hardcoded crap will go away soon. */
+  switch (cmd) {
+  case 1:
+    dir = MOVE_DIR_NORTH;
+    break;
+  case 2:
+    dir = MOVE_DIR_EAST;
+    break;
+  case 3:
+    dir = MOVE_DIR_SOUTH;
+    break;
+  case 4:
+    dir = MOVE_DIR_WEST;
+    break;
+  case 5:
+    dir = MOVE_DIR_UP;
+    break;
+  case 6:
+    dir = MOVE_DIR_DOWN;
+    break;
+  default:
+    dir = MOVE_DIR_INVALID;
+    break;
+  }
+  return move_dir(ch, argument, dir);
+}
+
+void move_dir(struct char_data *ch, char *argument, int dir) {
 
   if (RIDDEN(ch)) {
     if (ride_check(RIDDEN(ch), 0)) {
-      do_move(RIDDEN(ch), argument, cmd);
+      move_dir(RIDDEN(ch), argument, dir);
       return;
     }
     else {
@@ -456,8 +486,6 @@ void do_move(struct char_data *ch, char *argument, int cmd) {
       dismount(RIDDEN(ch), ch, POSITION_SITTING);
     }
   }
-
-  cmd -= 1;
 
   /*
    ** the move is valid, check for follower/master conflicts.
@@ -477,14 +505,14 @@ void do_move(struct char_data *ch, char *argument, int cmd) {
 
 
   if (!ch->followers && !ch->master) {
-    move_one(ch, cmd);
+    move_one(ch, dir);
   }
   else {
     if (!ch->followers) {
-      move_one(ch, cmd);
+      move_one(ch, dir);
     }
     else {
-      move_group(ch, cmd);
+      move_group(ch, dir);
     }
   }
 }
@@ -1173,7 +1201,7 @@ void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     for (door = 0; door <= 5; door++)
       if (exit_ok(exitp = EXIT(ch, door), NULL) && exitp->keyword &&
           0 == str_cmp(exitp->keyword, buf)) {
-        do_move(ch, "", ++door);
+        move_dir(ch, "", door);
         return;
       }
     SPRINTF(tmp, "There is no %s here.\n\r", buf);
@@ -1188,7 +1216,7 @@ void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       if (exit_ok(exitp = EXIT(ch, door), &rp) &&
           !IS_SET(exitp->exit_info, EX_CLOSED) &&
           IS_SET(rp->room_flags, INDOORS)) {
-        do_move(ch, "", ++door);
+        move_dir(ch, "", door);
         return;
       }
     send_to_char("You can't seem to find anything to enter.\n\r", ch);
@@ -1207,7 +1235,7 @@ void do_leave(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
       if (exit_ok(exitp = EXIT(ch, door), &rp) &&
           !IS_SET(exitp->exit_info, EX_CLOSED) &&
           !IS_SET(rp->room_flags, INDOORS)) {
-        do_move(ch, "", ++door);
+        move_dir(ch, "", door);
         return;
       }
     send_to_char("I see no obvious exits to the outside.\n\r", ch);

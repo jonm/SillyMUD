@@ -12,6 +12,7 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "act.move.h"
 
 /* Extern structures */
 extern struct room_data *world;
@@ -926,7 +927,7 @@ void spell_creeping_death(byte UNUSED(level), struct char_data *ch,
 
   /* move the creeping death in the proper direction */
 
-  do_move(cd, "\0", dir);
+  move_dir(cd, "\0", dir);
 
   GET_POS(ch) = POSITION_STUNNED;
 

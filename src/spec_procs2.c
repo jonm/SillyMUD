@@ -13,6 +13,7 @@
 #include "protos.h"
 #include "act.off.h"
 #include "act.wizard.h"
+#include "act.move.h"
 
 /*   external vars  */
 
@@ -2120,7 +2121,7 @@ int creeping_death(struct char_data *ch, int cmd, char *UNUSED(arg),
       return (FALSE);
     }
     else {
-      do_move(ch, "\0", ch->generic);
+      move_dir(ch, "\0", ch->generic);
       return (FALSE);
     }
   }
