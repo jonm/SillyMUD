@@ -12,6 +12,7 @@
 
 #include "protos.h"
 #include "act.off.h"
+#include "act.wizard.h"
 
 /*   external vars  */
 
@@ -1673,7 +1674,7 @@ int samah(struct char_data *ch, int cmd, char *arg,
             act("$n traces a small rune in the air", FALSE, ch, 0, 0, TO_ROOM);
             act("$n has forced you to return to your original form!", FALSE,
                 ch, 0, t, TO_VICT);
-            do_return(t, "", 1);
+            return_action(t, 1);
             return (TRUE);
           }
         }
@@ -3071,7 +3072,7 @@ int druid_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
     send_to_char("You lose.\n\r", ch);
     if (IS_PC(ch)) {
       if (IS_NPC(ch)) {
-        do_return(ch, "", 0);
+        return_action(ch, 0);
       }
       GET_EXP(ch) = MIN(titles[DRUID_LEVEL_IND]
                         [(int)GET_LEVEL(ch, DRUID_LEVEL_IND)].exp,
@@ -3095,7 +3096,7 @@ int druid_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
         for (i = me->people; i; i = i->next_in_room)
           if (IS_PC(i)) {
             if (IS_NPC(i)) {
-              do_return(i, "", 0);
+              return_action(i, 0);
             }
             GET_EXP(i) = MAX(titles[DRUID_LEVEL_IND]
                              [GET_LEVEL(i, DRUID_LEVEL_IND) + 1].exp + 1,
@@ -3162,7 +3163,7 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
     send_to_char("You lose.\n\r", ch);
     if (IS_PC(ch)) {
       if (IS_NPC(ch)) {
-        do_return(ch, "", 0);
+        return_action(ch, 0);
       }
       GET_EXP(ch) = MIN(titles[MONK_LEVEL_IND]
                         [(int)GET_LEVEL(ch, MONK_LEVEL_IND)].exp, GET_EXP(ch));
@@ -3192,7 +3193,7 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
         for (i = me->people; i; i = i->next_in_room)
           if (IS_PC(i)) {
             if (IS_NPC(i)) {
-              do_return(i, "", 0);
+              return_action(i, 0);
             }
             if (IS_IMMORTAL(i))
               return (FALSE);

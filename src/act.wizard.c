@@ -2014,7 +2014,11 @@ void do_switch(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
+void do_return(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+  return_action(ch, 1);
+}
+
+void return_action(struct char_data *ch, int call_as_self) {
   struct char_data *mob, *per;
 
   void do_snoop(struct char_data *ch, char *argument, int cmd);
@@ -2043,7 +2047,7 @@ void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
                GET_NAME(ch->desc->snoop.snoop_by), 0);
     }
 
-    if (IS_SET(ch->specials.act, ACT_POLYSELF) && cmd) {
+    if (IS_SET(ch->specials.act, ACT_POLYSELF) && call_as_self) {
       mob = ch;
       per = ch->desc->original;
 
@@ -2063,7 +2067,7 @@ void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
     ch->desc = 0;
 
 
-    if (IS_SET(ch->specials.act, ACT_POLYSELF) && cmd) {
+    if (IS_SET(ch->specials.act, ACT_POLYSELF) && call_as_self) {
       extract_char(mob);
       WAIT_STATE(ch, PULSE_VIOLENCE);
     }
