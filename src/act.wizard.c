@@ -2868,15 +2868,12 @@ void do_reroll(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 }
 
 
-void do_restore(struct char_data *ch, char *argument, int cmd) {
+void do_restore(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   struct char_data *victim;
   char buf[100];
   int i;
 
   void update_pos(struct char_data *victim);
-
-  if (cmd == 0)
-    return;
 
   only_argument(argument, buf);
   if (!*buf)

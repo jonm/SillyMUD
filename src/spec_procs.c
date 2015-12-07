@@ -2058,7 +2058,6 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
           force_action(ch, buf, 1);
           SPRINTF(buf, "%s mosh", GET_NAME(i));
           force_action(ch, buf, 1);
-          do_restore(ch, GET_NAME(i), 0);
           return (TRUE);
         }
       }
