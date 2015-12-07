@@ -1157,7 +1157,11 @@ void do_assist(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_kick(struct char_data *ch, char *argument, int cmd) {
+void do_kick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+  kick_action(ch, argument, 0);
+}
+
+void kick_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim;
   char name[80];
   int dam;
@@ -1175,7 +1179,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd) {
   }
 
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   only_argument(argument, name);

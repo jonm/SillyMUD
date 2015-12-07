@@ -1714,13 +1714,13 @@ void make_nifty_attack(struct char_data *ch) {
     else {
       if (!ch->skills[SKILL_KICK].learned)
         ch->skills[SKILL_KICK].learned = 10 + get_max_level(ch) * 4;
-      do_kick(ch, GET_NAME(ch->specials.fighting), 0);
+      kick_action(ch, GET_NAME(ch->specials.fighting), 1);
     }
   }
   else {
     if (!ch->skills[SKILL_KICK].learned)
       ch->skills[SKILL_KICK].learned = 10 + get_max_level(ch) * 4;
-    do_kick(ch, GET_NAME(ch->specials.fighting), 0);
+    kick_action(ch, GET_NAME(ch->specials.fighting), 1);
   }
 }
 
@@ -1823,7 +1823,7 @@ void monk_move(struct char_data *ch) {
       }
       if (!ch->skills[SKILL_KICK].learned)
         ch->skills[SKILL_KICK].learned = (get_max_level(ch) * 3) / 2 + 25;
-      do_kick(ch, GET_NAME(ch->specials.fighting), 0);
+      kick_action(ch, GET_NAME(ch->specials.fighting), 1);
     }
   }
 }
