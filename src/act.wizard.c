@@ -922,8 +922,6 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   struct char_data *target_mob, *pers, *v;
   struct obj_data *target_obj;
 
-  void do_look(struct char_data *ch, char *argument, int cmd);
-
   if (IS_NPC(ch))
     return;
   if ((get_max_level(ch) > 0) && (get_max_level(ch) < LOW_IMMORTAL)) {
@@ -2016,8 +2014,6 @@ void do_switch(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
   struct char_data *mob, *per;
 
-  void do_snoop(struct char_data *ch, char *argument, int cmd);
-
   if (get_max_level(ch) < LOW_IMMORTAL)
     if (ch->specials.fighting) {
       send_to_char("You are far too busy fighting to return now!\n\r", ch);
@@ -2730,8 +2726,6 @@ void do_advance(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char name[100], level[100], class[100];
   int adv, newlevel, lin_class;
 
-  void gain_exp(struct char_data *ch, int gain);
-
   if (IS_NPC(ch))
     return;
 
@@ -2867,8 +2861,6 @@ void do_restore(struct char_data *ch, char *argument, int cmd) {
   struct char_data *victim;
   char buf[100];
   int i;
-
-  void update_pos(struct char_data *victim);
 
   if (cmd == 0)
     return;

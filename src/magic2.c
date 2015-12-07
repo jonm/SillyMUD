@@ -765,8 +765,6 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 
   char *buf;
 
-  void do_snoop(struct char_data *ch, char *argument, int cmd);
-
   /*
    *  Check to make sure that there is no snooping going on.
    */

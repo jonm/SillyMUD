@@ -188,8 +188,6 @@ void obj_store_to_char(struct char_data *ch, struct obj_file_u *st) {
   struct obj_data *obj;
   int i, j;
 
-  void obj_to_char(struct obj_data *object, struct char_data *ch);
-
   for (i = 0; i < st->number; i++) {
     if (st->objects[i].item_number > -1 &&
         real_object(st->objects[i].item_number) > -1) {

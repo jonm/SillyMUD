@@ -212,9 +212,6 @@ void run_the_game(int port) {
   int s;
   PROFILE(extern etext();)
 
-  void signal_setup(void);
-  int load(void);
-
   PROFILE(monstartup((int)2, etext);)
 
     descriptor_list = NULL;
@@ -1041,8 +1038,6 @@ void close_socket(struct descriptor_data *d) {
   struct descriptor_data *tmp;
   char buf[100];
   struct txt_block *txt, *txt2;
-
-  void do_save(struct char_data *ch, char *argument, int cmd);
 
   if (!d)
     return;

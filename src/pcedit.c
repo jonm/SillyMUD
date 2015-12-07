@@ -167,7 +167,6 @@ void menu2() {
 }
 
 void muck(int orig_ammt, char name[80]) {
-  void menu2();
   register i;
   int l, count, f;
   char temp[10];

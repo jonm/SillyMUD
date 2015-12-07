@@ -460,10 +460,6 @@ void affect_update(int pulse) {
   extern struct time_info_data time_info;
 
 
-  void update_char_objects(struct char_data *ch);       /* handler.c */
-  void do_save(struct char_data *ch, char *arg, int cmd);       /* act.other.c */
-
-
   for (i = character_list; i; i = next_char) {
     next_char = i->next;
     /*

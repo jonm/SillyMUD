@@ -1428,9 +1428,6 @@ void do_follow(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char name[160];
   struct char_data *leader;
 
-  void stop_follower(struct char_data *ch);
-  void add_follower(struct char_data *ch, struct char_data *leader);
-
   only_argument(argument, name);
 
   if (*name) {

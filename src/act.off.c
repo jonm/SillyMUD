@@ -396,8 +396,6 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   int i, attempt, loose =
     0, die, percent, charm, nmbr, f, panic, j, tries, badroom;
   bool found;
-  void gain_exp(struct char_data *ch, int gain);
-  int special(struct char_data *ch, int cmd, char *arg);
   char buf[255];
   char buf2[255];
 
