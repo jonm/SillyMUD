@@ -1167,8 +1167,6 @@ void coma(int s) {
   };
   int conn;
 
-  int workhours(void);
-  int load(void);
 #ifdef HAVE_SIGPROCMASK
   sigset_t sigmask;
 #endif

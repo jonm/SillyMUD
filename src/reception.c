@@ -494,8 +494,6 @@ void update_obj_file() {
   long days_passed, secs_lost;
   char buf[200];
 
-  int find_name(char *name);
-
   if (!(char_file = fopen(PLAYER_FILE, "r+"))) {
     perror("Opening player file for reading. (reception.c, update_obj_file)");
     assert(0);

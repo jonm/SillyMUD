@@ -137,8 +137,6 @@ int raw_move(struct char_data *ch, int dir) {
   bool has_boat;
   struct room_data *from_here, *to_here;
 
-  int special(struct char_data *ch, int dir, char *arg);
-
   if (special(ch, dir + 1, "")) /* Check for special routines(North is 1) */
     return (FALSE);
 

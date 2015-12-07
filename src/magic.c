@@ -2365,8 +2365,6 @@ void spell_acid_breath(byte level, struct char_data *ch,
   int dam;
   int hpch;
 
-  int apply_ac(struct char_data *ch, int eq_pos);
-
   assert(victim && ch);
   assert((level >= 1) && (level <= ABS_MAX_LVL));
 

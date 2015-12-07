@@ -1497,8 +1497,6 @@ void spell_dispel_magic(byte level, struct char_data *ch,
   int yes = 0;
   int i;
 
-  int check_falling(struct char_data *ch);
-
   assert(ch && (victim || obj));
 
   if (obj) {
