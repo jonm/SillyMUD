@@ -34,7 +34,7 @@ void add_command(char *name, cmd_handler func, int number, int min_pos,
 
   n = (NODE *) malloc(sizeof(NODE));
 
-  n->name = (char *)strdup(name);
+  strncpy(n->name, name, sizeof(n->name));
   n->func = func;
   n->number = number;
   n->min_pos = min_pos;

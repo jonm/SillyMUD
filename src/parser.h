@@ -16,7 +16,7 @@ typedef struct command_node NODE;
 typedef void (*cmd_handler) (struct char_data * ch, char *arg, int cmd);
 
 struct command_node {
-  char *name;
+  char name[64];
   cmd_handler func;
   int number;
   byte min_pos;
