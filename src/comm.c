@@ -1485,8 +1485,7 @@ void act(char *str, int hide_invisible, struct char_data *ch,
             i = "$";
             break;
           default:
-            log_msg("Illegal $-code to act():");
-            log_msg(str);
+            log_msgf("Illegal $-code to act(): %s", str);
             break;
           }
 

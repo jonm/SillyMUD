@@ -433,9 +433,9 @@ void affect_modify(struct char_data *ch, byte loc, long mod, long bitv,
     break;
 
   default:
-    log_msg("Unknown apply adjust attempt (handler.c, affect_modify).");
-    log_msg(ch->player.name);
-
+    log_msgf(
+      "Unknown apply adjust attempt (handler.c, affect_modify).: %s",
+      ch->player.name);
     break;
 
   }                             /* switch */
@@ -530,8 +530,8 @@ void affect_remove(struct char_data *ch, struct affected_type *af) {
   struct affected_type *hjp;
 
   if (!ch->affected) {
-    log_msg("affect removed from char without affect");
-    log_msg(GET_NAME(ch));
+    log_msgf("affect removed from char without affect: %s",
+             GET_NAME(ch));
     return;
   }
 
@@ -1320,9 +1320,9 @@ void extract_obj(struct obj_data *obj) {
 
     }
     else {
-      log_msg("Extract on equipped item in slot -1 on:");
-      log_msg(obj->equipped_by->player.name);
-      log_msg(obj->name);
+      log_msgf("Extract on equipped item in slot -1 on: %s %s",
+               obj->equipped_by->player.name,
+               obj->name);
       return;
     }
   }

@@ -272,8 +272,8 @@ void mobile_activity(struct char_data *ch) {
 #else
   if ((ch->in_room < 0) || !room_find(&room_db, ch->in_room)) {
 #endif
-    log_msg("Char not in correct room.  moving to 50 ");
-    log_msg(GET_NAME(ch));
+    log_msgf("Char not in correct room.  moving to 50: %s", 
+             GET_NAME(ch));
     assert(ch->in_room >= 0);   /* if they are in a - room, assume an error */
     char_from_room(ch);
     char_to_room(ch, 50);

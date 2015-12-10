@@ -86,16 +86,14 @@ void do_auth(struct char_data *ch, char *argument, int cmd) {
     one_argument(argument, word);
     if (str_cmp(word, "yes") == 0) {
       d->character->generic = NEWBIE_START;
-      SPRINTF(buf2, "%s has just accepted %s into the game.",
-              ch->player.name, name);
-      log_msg(buf2);
+      log_msgf("%s has just accepted %s into the game.",
+               ch->player.name, name);
       SEND_TO_Q("You have been accepted.  Press enter\n\r", d);
     }
     else if (str_cmp(word, "no") == 0) {
       SEND_TO_Q("You have been denied.  Press enter\n\r", d);
-      SPRINTF(buf2, "%s has just denied %s from the game.",
-              ch->player.name, name);
-      log_msg(buf2);
+      log_msgf("%s has just denied %s from the game.",
+               ch->player.name, name);
       d->character->generic = NEWBIE_AXE;
     }
     else {
