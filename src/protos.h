@@ -2102,8 +2102,6 @@ void add_node_tail(NODE * n, int length, int radix);
 NODE *search_for_node_by_name(NODE * head, char *name, int length);
 void init_radix();
 NODE *find_valid_command(char *name);
-void add_command(char *name, void (*func), int number, int min_pos,
-                 int min_lev);
 
 /* from intrinsics.c */
 void do_changeform(struct char_data *ch, char *argument, int cmd);

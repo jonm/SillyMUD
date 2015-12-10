@@ -12,6 +12,7 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "act.wizard.h"
 
 #if HASH
 extern struct hash_header room_db;
@@ -1420,7 +1421,7 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
   if (!IS_NPC(ch) && !ch->desc) {
     for (t_desc = descriptor_list; t_desc; t_desc = t_desc->next)
       if (t_desc->original == ch)
-        do_return(t_desc->character, "", 0);
+        return_action(t_desc->character, 0);
   }
 
   if (ch->in_room == NOWHERE) {
@@ -1569,7 +1570,7 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
 
   if (ch->desc) {
     if (ch->desc->original)
-      do_return(ch, "", 0);
+      return_action(ch, 0);
     if (!strcmp(GET_NAME(ch), "Odin's heroic minion")) {
       free(GET_NAME(ch));
       GET_NAME(ch) = strdup("111111");

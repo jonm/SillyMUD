@@ -13,6 +13,8 @@
 
 #include "protos.h"
 #include "db.h"
+#include "act.wizard.h"
+#include "act.move.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -490,7 +492,7 @@ int mayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   case '1':
   case '2':
   case '3':
-    do_move(ch, "", path[index] - '0' + 1);
+    move_to_dir(ch, path[index] - '0');
     break;
 
   case 'W':
@@ -1251,7 +1253,7 @@ void exec_social(struct char_data *npc, char *cmd, int next_line,
     break;
 
   case 'm':
-    do_move(npc, "", *(cmd + 1) - '0' + 1);
+    move_to_dir(npc, *(cmd + 1) - '0');
     break;
 
   case 'w':
@@ -2012,10 +2014,9 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
       if (!IS_NPC(i)) {
         if (number(0, 30) == 0) {
           SPRINTF(buf, "%s shout I love to MOSH!", GET_NAME(i));
-          do_force(ch, buf, 0);
+          force_action(ch, buf, 1);
           SPRINTF(buf, "%s mosh", GET_NAME(i));
-          do_force(ch, buf, 0);
-          do_restore(ch, GET_NAME(i), 0);
+          force_action(ch, buf, 1);
           return (TRUE);
         }
       }
@@ -2160,7 +2161,7 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
         if (number(0, 20) == 0) {
           if (i->in_room != NOWHERE) {
             SPRINTF(buf, "%s save", GET_NAME(i));
-            do_force(ch, buf, 0);
+            force_action(ch, buf, 1);
             return (TRUE);
           }
         }
