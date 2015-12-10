@@ -3188,7 +3188,6 @@ void cast_creeping_death(byte level, struct char_data *ch, char *arg,
     p = fname(arg);
     for (i = 0; i < 6; i++) {
       if (strncmp(p, dirs[i], strlen(p)) == 0) {
-        i++;
         break;
       }
       if (i == 6) {

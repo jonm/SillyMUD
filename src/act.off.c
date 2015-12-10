@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.off.h"
 
 /* extern variables */
 
@@ -903,7 +904,11 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_bash(struct char_data *ch, char *argument, int cmd) {
+void do_bash(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+  bash_action(ch, argument, 0);
+}
+
+void bash_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim;
   char name[256];
   byte percent;
@@ -912,7 +917,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd) {
   if (!ch->skills)
     return;
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
@@ -1008,7 +1013,11 @@ void do_bash(struct char_data *ch, char *argument, int cmd) {
 
 
 
-void do_rescue(struct char_data *ch, char *argument, int cmd) {
+void do_rescue(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+  rescue_action(ch, argument, 0);
+}
+
+void rescue_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim, *tmp_ch;
   int percent;
   char victim_name[240];
@@ -1019,7 +1028,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd) {
     return;
   }
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   if (check_peaceful(ch, "No one should need rescuing here.\n\r"))
@@ -1152,7 +1161,11 @@ void do_assist(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_kick(struct char_data *ch, char *argument, int cmd) {
+void do_kick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+  kick_action(ch, argument, 0);
+}
+
+void kick_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim;
   char name[80];
   int dam;
@@ -1170,7 +1183,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd) {
   }
 
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   only_argument(argument, name);
