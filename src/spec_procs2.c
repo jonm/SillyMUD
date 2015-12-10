@@ -14,6 +14,7 @@
 #include "act.off.h"
 #include "act.wizard.h"
 #include "act.move.h"
+#include "utility.h"
 
 /*   external vars  */
 
@@ -1166,9 +1167,8 @@ int teacher(struct char_data *ch, int cmd, char *arg,
   case TAUGHT_BY_ETTIN:
     break;
   default:
-    SPRINTF(buf, "teacher() attempted to be called with %d(mob#) as teacher.",
-            teacher);
-    log_msg(buf);
+    log_msgf("teacher() attempted to be called with %d(mob#) as teacher.",
+             teacher);
     return (FALSE);
     break;
   }
@@ -2631,7 +2631,6 @@ struct breather breath_monsters[] = {
 
 int breath_weapon_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
                       struct char_data *UNUSED(mob), int UNUSED(type)) {
-  char buf[MAX_STRING_LENGTH];
   struct breather *scan;
   int count;
 
@@ -2645,17 +2644,15 @@ int breath_weapon_mob(struct char_data *ch, int cmd, char *UNUSED(arg),
          scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].virtual; scan++);
 
     if (scan->vnum < 0) {
-      SPRINTF(buf, "monster %s tries to breath, but isn't listed.",
-              ch->player.short_descr);
-      log_msg(buf);
+      log_msgf("monster %s tries to breath, but isn't listed.",
+               ch->player.short_descr);
       return FALSE;
     }
 
     for (count = 0; scan->breaths[count]; count++);
 
     if (count < 1) {
-      SPRINTF(buf, "monster %s has no breath weapons", ch->player.short_descr);
-      log_msg(buf);
+      log_msgf("monster %s has no breath weapons", ch->player.short_descr);
       return FALSE;
     }
 

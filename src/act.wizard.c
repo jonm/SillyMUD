@@ -18,6 +18,7 @@
 
 #include "protos.h"
 #include "act.wizard.h"
+#include "utility.h"
 
 /*   external vars  */
 
@@ -516,7 +517,6 @@ void do_listhosts(struct char_data *UNUSED(ch), char *UNUSED(argument),
 }
 
 void do_silence(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
-  char buf[255];
   extern int Silence;
   if ((get_max_level(ch) < DEMIGOD) || (IS_NPC(ch))) {
     send_to_char("You cannot Silence.\n\r", ch);
@@ -526,16 +526,14 @@ void do_silence(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   if (Silence == 0) {
     Silence = 1;
     send_to_char("You have now silenced polyed mobles.\n\r", ch);
-    SPRINTF(buf, "%s has stopped Polymophed characters from shouting.",
-            ch->player.name);
-    log_msg(buf);
+    log_msgf("%s has stopped Polymophed characters from shouting.",
+             ch->player.name);
   }
   else {
     Silence = 0;
     send_to_char("You have now unsilenced mobles.\n\r", ch);
-    SPRINTF(buf, "%s has allowed Polymophed characters to shout.",
-            ch->player.name);
-    log_msg(buf);
+    log_msgf("%s has allowed Polymophed characters to shout.",
+             ch->player.name);
   }
 }
 
@@ -621,9 +619,8 @@ void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
       }
     }
     strcpy(hostlist[numberhosts], buf);
-    SPRINTF(buf, "%s has added host %s to the access denied list.",
-            GET_NAME(ch), hostlist[numberhosts]);
-    log_msg(buf);
+    log_msgf("%s has added host %s to the access denied list.",
+             GET_NAME(ch), hostlist[numberhosts]);
     numberhosts++;
     return;
 
@@ -659,9 +656,8 @@ void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
       if (strncmp(hostlist[a], buf, length) == 0) {
         for (b = a; b <= numberhosts; b++)
           strcpy(hostlist[b], hostlist[b + 1]);
-        SPRINTF(buf, "%s has removed host %s from the access denied list.",
-                GET_NAME(ch), hostlist[numberhosts]);
-        log_msg(buf);
+        log_msgf("%s has removed host %s from the access denied list.",
+                 GET_NAME(ch), hostlist[numberhosts]);
         numberhosts--;
         return;
       }
@@ -1848,17 +1844,15 @@ void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     if (PeacefulWorks) {
       PeacefulWorks = FALSE;
       EasySummon = FALSE;
-      SPRINTF(buf, "Peaceful rooms and Easy Summon disabled by %s",
-              GET_NAME(ch));
+      log_msgf("Peaceful rooms and Easy Summon disabled by %s",
+               GET_NAME(ch));
     }
     else {
       PeacefulWorks = TRUE;
       EasySummon = TRUE;
-      SPRINTF(buf, "Peaceful rooms and Easy Summon enabled by %s",
-              GET_NAME(ch));
+      log_msgf("Peaceful rooms and Easy Summon enabled by %s",
+               GET_NAME(ch));
     }
-    log_msg(buf);
-
   }
   else if (!strcmp(field, "mana")) {
     sscanf(parmstr, "%d", &parm);
@@ -1938,10 +1932,10 @@ void do_snoop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       if (ch->desc->snoop.snooping->desc)
         ch->desc->snoop.snooping->desc->snoop.snoop_by = 0;
       else {
-        char buf[MAX_STRING_LENGTH];
-        SPRINTF(buf, "caught %s snooping %s who didn't have a descriptor!",
-                ch->player.name, ch->desc->snoop.snooping->player.name);
-        log_msg(buf);
+        log_msgf(
+          "caught %s snooping %s who didn't have a descriptor!",
+          ch->player.name,
+          ch->desc->snoop.snooping->player.name);
 /*
 logically.. this person has returned from being a creature? 
 */

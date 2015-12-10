@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "utility.h"
 
 /* extern variables */
 
@@ -62,10 +63,8 @@ void get(struct char_data *ch, struct obj_data *obj_object,
     send_to_char(buffer, ch);
     GET_GOLD(ch) += obj_object->obj_flags.value[0];
     if (GET_GOLD(ch) > 100000 && obj_object->obj_flags.value[0] > 10000) {
-      char buf[MAX_INPUT_LENGTH];
-      SPRINTF(buf, "%s just got %d coins!",
-              GET_NAME(ch), obj_object->obj_flags.value[0]);
-      log_msg(buf);
+      log_msgf("%s just got %d coins!",
+               GET_NAME(ch), obj_object->obj_flags.value[0]);
     }
     extract_obj(obj_object);
   }
@@ -739,9 +738,8 @@ void do_give(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     GET_GOLD(vict) += amount;
     save_char(ch, AUTO_RENT);
     if ((GET_GOLD(vict) > 500000) && (amount > 100000)) {
-      SPRINTF(buf, "%s gave %d coins to %s", GET_NAME(ch), amount,
-              GET_NAME(vict));
-      log_msg(buf);
+      log_msgf("%s gave %d coins to %s", GET_NAME(ch), amount,
+               GET_NAME(vict));
     }
 
     return;

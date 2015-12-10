@@ -11,6 +11,7 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "utility.h"
 
 
 /* extern variables */
@@ -176,7 +177,6 @@ void do_title(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 void do_quit(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   void die(struct char_data *ch);
-  char buf[256];
 
   if (IS_NPC(ch) || !ch->desc || IS_AFFECTED(ch, AFF_CHARM))
     return;
@@ -188,8 +188,7 @@ void do_quit(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 
   if (GET_POS(ch) < POSITION_STUNNED) {
     send_to_char("You die before your time!\n\r", ch);
-    SPRINTF(buf, "%s dies via quit.", GET_NAME(ch));
-    log_msg(buf);
+    log_msgf("%s dies via quit.", GET_NAME(ch));
     die(ch);
     return;
   }
@@ -448,9 +447,8 @@ void do_steal(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   if (get_max_level(victim) > 50) {
     send_to_char("Steal from a God?!?  Oh the thought!\n\r", ch);
-    SPRINTF(buf, "BUG NOTE: %s tried to steal from GOD %s", GET_NAME(ch),
-            GET_NAME(victim));
-    log_msg(buf);
+    log_msgf("BUG NOTE: %s tried to steal from GOD %s", GET_NAME(ch),
+             GET_NAME(victim));
     return;
   }
 

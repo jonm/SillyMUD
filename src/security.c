@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "utility.h"
 
 void log_msg(char *);
 
@@ -18,8 +19,7 @@ int sec_check(char *arg, char *site) {
   SPRINTF(buf, "security/%s", arg);
 
   if (!(f1 = fopen(buf, "rt"))) {
-    SPRINTF(buf, "Unable to open security file for %s.", arg);
-    log_msg(buf);
+    log_msgf("Unable to open security file for %s.", arg);
     return (-1);
   }
 
@@ -27,8 +27,7 @@ int sec_check(char *arg, char *site) {
   fclose(f1);
 
   if (!*buf2) {
-    SPRINTF(buf, "Security file for %s empty.", arg);
-    log_msg(buf);
+    log_msgf("Security file for %s empty.", arg);
     return (-1);
   }
 
@@ -38,8 +37,8 @@ int sec_check(char *arg, char *site) {
   if (!(strncmp(site, buf2, strlen(buf2)))) {
     return (1);
   }
-  SPRINTF(buf, "Site %s and %s don't match for %s. Booting.", site, buf2, arg);
-  log_msg(buf);
+  log_msgf("Site %s and %s don't match for %s. Booting.",
+           site, buf2, arg);
 
   return (0);
 }

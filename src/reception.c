@@ -14,6 +14,7 @@
 
 #include "protos.h"
 #include "reception.h"
+#include "utility.h"
 
 #define OBJ_FILE_FREE "\0\0\0"
 
@@ -295,8 +296,7 @@ void load_char_objs(struct char_data *ch) {
     timegold = (int)((st.total_cost * ((float)time(0) - st.last_update)) /
                      (SECS_PER_REAL_DAY));
 #endif
-    SPRINTF(buf, "Char ran up charges of %g gold in rent", timegold);
-    log_msg(buf);
+    log_msgf("Char ran up charges of %g gold in rent", timegold);
     SPRINTF(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
     send_to_char(buf, ch);
     GET_GOLD(ch) -= timegold;
@@ -333,7 +333,6 @@ void load_char_objs(struct char_data *ch) {
 void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st) {
   int j;
   struct obj_file_elem *oe;
-  char buf[256];
 
   if (st->number >= MAX_OBJ_SAVE) {
     printf("holy shit, you want to rent more than %d items?!\n", st->number);
@@ -357,10 +356,8 @@ void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st) {
   if (obj->name)
     strcpy(oe->name, obj->name);
   else {
-    SPRINTF(buf, "object %d has no name!",
-            obj_index[obj->item_number].virtual);
-    log_msg(buf);
-
+    log_msgf("object %d has no name!",
+             obj_index[obj->item_number].virtual);
   }
 
   if (obj->short_description)
@@ -510,14 +507,12 @@ void update_obj_file() {
 
       if (read_objs(fl, &st)) {
         if (str_cmp(st.owner, player_table[i].name) != 0) {
-          SPRINTF(buf, "Ack!  Wrong person written into object file! (%s/%s)",
-                  st.owner, player_table[i].name);
-          log_msg(buf);
+          log_msgf("Ack!  Wrong person written into object file! (%s/%s)",
+                   st.owner, player_table[i].name);
           abort();
         }
         else {
-          SPRINTF(buf, "   Processing %s[%ld].", st.owner, i);
-          log_msg(buf);
+          log_msgf("   Processing %s[%ld].", st.owner, i);
           days_passed = ((time(0) - st.last_update) / SECS_PER_REAL_DAY);
           secs_lost = ((time(0) - st.last_update) % SECS_PER_REAL_DAY);
 
@@ -529,8 +524,7 @@ void update_obj_file() {
             ch_st.load_room = NOWHERE;
             st.last_update = time(0) + 3600;    /* one hour grace period */
 
-            SPRINTF(buf, "   Deautorenting %s", st.owner);
-            log_msg(buf);
+            log_msgf("   Deautorenting %s", st.owner);
 
 #if LIMITED_ITEMS
             fprintf(stderr, "Counting limited items\n");
@@ -548,8 +542,7 @@ void update_obj_file() {
 
               if ((st.total_cost * days_passed) > st.gold_left) {
 
-                SPRINTF(buf, "   Dumping %s from object file.", ch_st.name);
-                log_msg(buf);
+                log_msgf("   Dumping %s from object file.", ch_st.name);
 
                 ch_st.points.gold = 0;
                 ch_st.load_room = NOWHERE;
@@ -559,12 +552,9 @@ void update_obj_file() {
 
                 fclose(fl);
                 zero_rent_by_name(ch_st.name);
-
               }
               else {
-
-                SPRINTF(buf, "   Updating %s", st.owner);
-                log_msg(buf);
+                log_msgf("   Updating %s", st.owner);
                 st.gold_left -= (st.total_cost * days_passed);
                 st.last_update = time(0) - secs_lost;
                 fclose(fl);
@@ -579,8 +569,7 @@ void update_obj_file() {
 #if LIMITED_ITEMS
               count_limited_items(&st);
 #endif
-              SPRINTF(buf, "  same day update on %s", st.owner);
-              log_msg(buf);
+              log_msgf("  same day update on %s", st.owner);
               fclose(fl);
             }
           }

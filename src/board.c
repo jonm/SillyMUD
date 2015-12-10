@@ -350,7 +350,6 @@ void board_load_board() {
   FILE *the_file;
   int ind;
   int bnum;
-  char buf[256];
 
   memset(boards, 0, sizeof(boards));    /* Zero out the array, make sure no */
   /* Funky pointers are left in the   */
@@ -366,8 +365,7 @@ void board_load_board() {
     boards[bnum].number = -1;
     the_file = fopen(save_file[bnum], "r");
     if (!the_file) {
-      SPRINTF(buf, "Can't open message file for board %d.\n\r", bnum);
-      log_msg(buf);
+      log_msgf("Can't open message file for board %d.\n\r", bnum);
       continue;
     }
 

@@ -10,6 +10,7 @@
 
 #include "protos.h"
 #include "act.move.h"
+#include "utility.h"
 
 /*   external vars  */
 #if HASH
@@ -749,8 +750,7 @@ void open_door(struct char_data *ch, int dir)
 
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
-    SPRINTF(buf, "NULL rp in open_door() for %s.", PERS(ch, ch));
-    log_msg(buf);
+    log_msgf("NULL rp in open_door() for %s.", PERS(ch, ch));
   }
 
   exitp = rp->dir_option[dir];
@@ -795,8 +795,7 @@ void raw_open_door(struct char_data *ch, int dir)
 
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
-    SPRINTF(buf, "NULL rp in open_door() for %s.", PERS(ch, ch));
-    log_msg(buf);
+    log_msgf("NULL rp in open_door() for %s.", PERS(ch, ch));
   }
 
   exitp = rp->dir_option[dir];
@@ -947,7 +946,6 @@ void raw_unlock_door(struct char_data *ch,
                      struct room_direction_data *exitp, int door) {
   struct room_data *rp;
   struct room_direction_data *back;
-  char buf[128];
 
   REMOVE_BIT(exitp->exit_info, EX_LOCKED);
   /* now for unlocking the other side, too */
@@ -957,9 +955,8 @@ void raw_unlock_door(struct char_data *ch,
     REMOVE_BIT(back->exit_info, EX_LOCKED);
   }
   else {
-    SPRINTF(buf, "Inconsistent door locks in rooms %d->%d",
-            ch->in_room, exitp->to_room);
-    log_msg(buf);
+    log_msgf("Inconsistent door locks in rooms %d->%d",
+             ch->in_room, exitp->to_room);
   }
 }
 
@@ -967,7 +964,6 @@ void raw_lock_door(struct char_data *ch,
                    struct room_direction_data *exitp, int door) {
   struct room_data *rp;
   struct room_direction_data *back;
-  char buf[128];
 
   SET_BIT(exitp->exit_info, EX_LOCKED);
   /* now for locking the other side, too */
@@ -977,9 +973,8 @@ void raw_lock_door(struct char_data *ch,
     SET_BIT(back->exit_info, EX_LOCKED);
   }
   else {
-    SPRINTF(buf, "Inconsistent door locks in rooms %d->%d",
-            ch->in_room, exitp->to_room);
-    log_msg(buf);
+    log_msgf("Inconsistent door locks in rooms %d->%d",
+             ch->in_room, exitp->to_room);
   }
 }
 

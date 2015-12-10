@@ -24,6 +24,7 @@
 #include <unistd.h>
 
 #include "protos.h"
+#include "utility.h"
 
 #define DFLT_PORT 4000          /* default port */
 #define MAX_NAME_LENGTH 15
@@ -94,7 +95,7 @@ void close_socket_fd(int desc) {
 
 int real_main(int argc, char **argv) {
   int port, pos = 1;
-  char buf[512], *dir;
+  char *dir;
 
   extern int WizLock;
 #ifdef sun
@@ -141,8 +142,7 @@ int real_main(int argc, char **argv) {
       log_msg("Suppressing assignment of special routines.");
       break;
     default:
-      SPRINTF(buf, "Unknown option -% in argument string.", *(argv[pos] + 1));
-      log_msg(buf);
+      log_msgf("Unknown option -% in argument string.", *(argv[pos] + 1));
       break;
     }
     pos++;
@@ -164,16 +164,14 @@ int real_main(int argc, char **argv) {
 
   Uptime = time(0);
 
-  SPRINTF(buf, "Running game on port %d.", port);
-  log_msg(buf);
+  log_msgf("Running game on port %d.", port);
 
   if (chdir(dir) < 0) {
     perror("chdir");
     assert(0);
   }
 
-  SPRINTF(buf, "Using %s as data directory.", dir);
-  log_msg(buf);
+  log_msgf("Using %s as data directory.", dir);
 
   srandom(time(0));
   WizLock = FALSE;
@@ -1039,7 +1037,6 @@ void close_sockets(int s) {
 
 void close_socket(struct descriptor_data *d) {
   struct descriptor_data *tmp;
-  char buf[100];
   struct txt_block *txt, *txt2;
 
   void do_save(struct char_data *ch, char *argument, int cmd);
@@ -1065,8 +1062,7 @@ void close_socket(struct descriptor_data *d) {
     if (d->connected == CON_PLYNG) {
       do_save(d->character, "", 0);
       act("$n has lost $s link.", TRUE, d->character, 0, 0, TO_ROOM);
-      SPRINTF(buf, "Closing link to: %s.", GET_NAME(d->character));
-      log_msg(buf);
+      log_msgf("Closing link to: %s.", GET_NAME(d->character));
       if (IS_NPC(d->character)) {       /* poly, or switched god */
         if (d->character->desc)
           d->character->orig = d->character->desc->original;
@@ -1083,8 +1079,7 @@ void close_socket(struct descriptor_data *d) {
     }
     else {
       if (GET_NAME(d->character)) {
-        SPRINTF(buf, "Losing player: %s.", GET_NAME(d->character));
-        log_msg(buf);
+        log_msgf("Losing player: %s.", GET_NAME(d->character));
       }
       free_char(d->character);
     }

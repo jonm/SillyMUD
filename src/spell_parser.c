@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "utility.h"
 
 /* because I don't want to recompile */
 
@@ -1976,7 +1977,6 @@ void check_decharm(struct char_data *ch) {
 int check_falling(struct char_data *ch) {
   struct room_data *rp, *targ;
   int done, count, saved;
-  char buf[256];
 
   if (IS_AFFECTED(ch, AFF_FLYING))
     return (FALSE);
@@ -2029,8 +2029,7 @@ int check_falling(struct char_data *ch) {
 
         if (!IS_IMMORTAL(ch)) {
           GET_HIT(ch) = 0;
-          SPRINTF(buf, "%s has fallen to death", GET_NAME(ch));
-          log_msg(buf);
+          log_msgf("%s has fallen to death", GET_NAME(ch));
           if (!ch->desc)
             GET_GOLD(ch) = 0;
           die(ch);
@@ -2100,8 +2099,7 @@ int check_falling(struct char_data *ch) {
 
         if (!IS_IMMORTAL(ch)) {
           GET_HIT(ch) = 0;
-          SPRINTF(buf, "%s has fallen to death", GET_NAME(ch));
-          log_msg(buf);
+          log_msgf("%s has fallen to death", GET_NAME(ch));
           if (!ch->desc)
             GET_GOLD(ch) = 0;
           die(ch);
@@ -2144,7 +2142,6 @@ int check_falling(struct char_data *ch) {
 
 void check_drowning(struct char_data *ch) {
   struct room_data *rp;
-  char buf[256];
 
   if (IS_AFFECTED(ch, AFF_WATERBREATH))
     return;
@@ -2163,8 +2160,7 @@ void check_drowning(struct char_data *ch) {
     GET_MOVE(ch) -= number(10, 50);
     update_pos(ch);
     if (GET_HIT(ch) < -10) {
-      SPRINTF(buf, "%s killed by drowning", GET_NAME(ch));
-      log_msg(buf);
+      log_msgf("%s killed by drowning", GET_NAME(ch));
       if (!ch->desc)
         GET_GOLD(ch) = 0;
       die(ch);
