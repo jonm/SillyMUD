@@ -89,7 +89,6 @@ void do_ask(struct char_data *ch, char *argument, int cmd);
 void do_write(struct char_data *ch, char *argument, int cmd);
 char *random_word();
 void do_sign(struct char_data *ch, char *argument, int cmd);
-void do_move(struct char_data *ch, char *argument, int cmd);
 void do_enter(struct char_data *ch, char *argument, int cmd);
 void do_rest(struct char_data *ch, char *argument, int cmd);
 void do_stand(struct char_data *ch, char *argument, int cmd);

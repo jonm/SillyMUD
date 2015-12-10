@@ -24,6 +24,9 @@ extern int rev_dir[];
 extern char *dirs[];
 extern int movement_loss[];
 
+const char *move_dir_string[MOVE_DIR_LAST + 1] = {
+  "north", "east", "south", "west", "up", "down"
+};
 
 
 void not_legal_move(struct char_data *ch) {
@@ -445,32 +448,17 @@ void display_group_move(struct char_data *ch, int dir, int was_in, int total) {
 }
 
 
-void do_move(struct char_data *ch, char *UNUSED(argument), int cmd) {
-  int dir;
-  /* This hardcoded crap will go away soon. */
-  switch (cmd) {
-  case 1:
-    dir = MOVE_DIR_NORTH;
-    break;
-  case 2:
-    dir = MOVE_DIR_EAST;
-    break;
-  case 3:
-    dir = MOVE_DIR_SOUTH;
-    break;
-  case 4:
-    dir = MOVE_DIR_WEST;
-    break;
-  case 5:
-    dir = MOVE_DIR_UP;
-    break;
-  case 6:
-    dir = MOVE_DIR_DOWN;
-    break;
-  default:
-    dir = MOVE_DIR_INVALID;
-    break;
+void do_move(struct char_data *ch, char *UNUSED(argument), const char *cmd) {
+  int dir = MOVE_DIR_INVALID;
+
+  for (int i = MOVE_DIR_FIRST; i <= MOVE_DIR_LAST; i++) {
+    if (!strcmp (cmd, move_dir_string[i])) {
+      dir = i;
+      break;
+    }
   }
+
+  assert(dir != MOVE_DIR_INVALID);
   return move_to_dir(ch, dir);
 }
 

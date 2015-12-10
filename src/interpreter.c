@@ -17,6 +17,7 @@
 
 #include "protos.h"
 #include "parser.h"
+#include "act.move.h"
 
 #define NOT !
 #define AND &&
@@ -483,12 +484,12 @@ int special(struct char_data *ch, int cmd, char *arg) {
 
 void assign_command_pointers() {
   init_radix();
-  add_command_dep("north", do_move, 1, POSITION_STANDING, 0);
-  add_command_dep("east", do_move, 2, POSITION_STANDING, 0);
-  add_command_dep("south", do_move, 3, POSITION_STANDING, 0);
-  add_command_dep("west", do_move, 4, POSITION_STANDING, 0);
-  add_command_dep("up", do_move, 5, POSITION_STANDING, 0);
-  add_command_dep("down", do_move, 6, POSITION_STANDING, 0);
+  add_command("north", do_move, POSITION_STANDING, 0);
+  add_command("east", do_move, POSITION_STANDING, 0);
+  add_command("south", do_move, POSITION_STANDING, 0);
+  add_command("west", do_move, POSITION_STANDING, 0);
+  add_command("up", do_move, POSITION_STANDING, 0);
+  add_command("down", do_move, POSITION_STANDING, 0);
   add_command_dep("enter", do_enter, 7, POSITION_STANDING, 0);
   add_command_dep("exits", do_exits, 8, POSITION_RESTING, 0);
   add_command_dep("kiss", do_action, 9, POSITION_RESTING, 0);

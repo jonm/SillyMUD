@@ -13,6 +13,10 @@
 
 #define MOVE_DIR_INVALID -1
 
+extern const char *move_dir_string[];
+
 void move_to_dir(struct char_data *ch, int dir);
+
+void do_move(struct char_data *ch, char *argument, const char *cmd);
 
 #endif /* _ACT_MOVE_H */

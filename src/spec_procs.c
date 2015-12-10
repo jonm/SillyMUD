@@ -460,13 +460,6 @@ int mayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   static int index;
   static bool move = FALSE;
 
-  void do_move(struct char_data *ch, char *argument, int cmd);
-  void do_open(struct char_data *ch, char *argument, int cmd);
-  void do_lock(struct char_data *ch, char *argument, int cmd);
-  void do_unlock(struct char_data *ch, char *argument, int cmd);
-  void do_close(struct char_data *ch, char *argument, int cmd);
-
-
   if (type == EVENT_WINTER) {
     GET_POS(ch) = POSITION_STANDING;
     do_shout(ch, "Aieee!   The rats!  The rats are coming!  Aieeee!", 0);
@@ -1231,12 +1224,6 @@ command will be executed immediately.
 void exec_social(struct char_data *npc, char *cmd, int next_line,
                  int *cur_line, void **thing) {
   bool ok;
-
-  void do_move(struct char_data *ch, char *argument, int cmd);
-  void do_open(struct char_data *ch, char *argument, int cmd);
-  void do_lock(struct char_data *ch, char *argument, int cmd);
-  void do_unlock(struct char_data *ch, char *argument, int cmd);
-  void do_close(struct char_data *ch, char *argument, int cmd);
 
   if (GET_POS(npc) == POSITION_FIGHTING)
     return;
