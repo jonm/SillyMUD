@@ -343,6 +343,8 @@ void board_save_board(int bnum) {
   return;
 }
 
+#include "utility.h"
+
 void board_load_board() {
 
   FILE *the_file;
@@ -370,7 +372,7 @@ void board_load_board() {
     }
 
     if (EOF == fscanf(the_file, " %d ", &boards[bnum].number)) {
-      log_msg("Board-message file is emptyish.");
+      log_msgf("Board-message file %s is emptyish.", save_file[bnum]);
     }
     else if (boards[bnum].number < 0 || boards[bnum].number > MAX_MSGS ||
         feof(the_file)) {
