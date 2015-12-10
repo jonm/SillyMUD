@@ -22,6 +22,7 @@
 #include <signal.h>
 #include <sys/resource.h>
 #include <unistd.h>
+#include <stdarg.h>
 
 #include "structs.h"
 #include "protos.h"
@@ -1245,6 +1246,15 @@ void send_to_char(char *messg, struct char_data *ch) {
   if (ch)
     if (ch->desc && messg)
       write_to_q(messg, &ch->desc->output);
+}
+
+void send_to_charf(struct char_data *ch, const char *fmt, ...) {
+  char buf[1024];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buf, sizeof(buf), fmt, args);
+  send_to_char(buf, ch);
+  va_end(args);
 }
 
 
