@@ -11,6 +11,7 @@
 
 #include "protos.h"
 #include "act.obj1.h"
+#include "act.obj2.h"
 
 extern struct char_data *character_list;
 extern struct index_data *mob_index;
@@ -224,7 +225,7 @@ void mob_scavenge(struct char_data *ch) {
   if (!number(0, 3)) {
     if (is_humanoid(ch) && ch->carrying) {
       SPRINTF(buf, "all");
-      do_wear(ch, buf, 0);
+      do_wear(ch, buf, NULL);
     }
   }
 }
@@ -587,9 +588,9 @@ void find_a_better_weapon(struct char_data *mob) {
      */
     if (best->carried_by == mob) {
       if (mob->equipment[WIELD]) {
-        do_remove(mob, mob->equipment[WIELD]->name, 0);
+        do_remove(mob, mob->equipment[WIELD]->name, NULL);
       }
-      do_wield(mob, best->name, 0);
+      do_wield(mob, best->name, NULL);
     }
     else if (best->equipped_by == mob) {
       /* do nothing */

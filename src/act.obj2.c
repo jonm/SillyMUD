@@ -1029,7 +1029,8 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword) {
 }
 
 
-void do_wear(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_wear(struct char_data *ch, char *argument,
+             const char* UNUSED(cmd)) {
   char arg1[MAX_INPUT_LENGTH];
   char arg2[MAX_INPUT_LENGTH];
   char buf[256];
@@ -1155,7 +1156,8 @@ void do_wear(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_wield(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_wield(struct char_data *ch, char *argument,
+              const char *UNUSED(cmd)) {
   char arg1[MAX_INPUT_LENGTH];
   char arg2[MAX_INPUT_LENGTH];
   char buffer[MAX_INPUT_LENGTH];
@@ -1178,7 +1180,8 @@ void do_wield(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_grab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_grab(struct char_data *ch, char *argument,
+             const char *UNUSED(cmd)) {
   char arg1[128];
   char arg2[128];
   char buffer[256];
@@ -1204,7 +1207,8 @@ void do_grab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_remove(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_remove(struct char_data *ch, char *argument,
+               const char *UNUSED(cmd)) {
   char arg1[128], *T, *P;
   char buffer[256];
   int Rem_List[20], Num_Equip;

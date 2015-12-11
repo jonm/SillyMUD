@@ -500,8 +500,8 @@ void assign_command_pointers() {
   add_command("get", do_get, POSITION_RESTING, 1);
   add_command("drink", do_drink, POSITION_RESTING, 1);
   add_command("eat", do_eat, POSITION_RESTING, 1);
-  add_command_dep("wear", do_wear, 13, POSITION_RESTING, 0);
-  add_command_dep("wield", do_wield, 14, POSITION_RESTING, 1);
+  add_command("wear", do_wear, POSITION_RESTING, 0);
+  add_command("wield", do_wield, POSITION_RESTING, 1);
   add_command_dep("look", do_look, 15, POSITION_RESTING, 0);
   add_command_dep("score", do_score, 16, POSITION_DEAD, 0);
   add_command_dep("say", do_say, 17, POSITION_RESTING, 0);
@@ -552,8 +552,8 @@ void assign_command_pointers() {
   add_command_dep("weather", do_weather, 62, POSITION_RESTING, 0);
   add_command_dep("read", do_read, 63, POSITION_RESTING, 0);
   add_command_dep("pour", do_pour, 64, POSITION_STANDING, 0);
-  add_command_dep("grab", do_grab, 65, POSITION_RESTING, 0);
-  add_command_dep("remove", do_remove, 66, POSITION_RESTING, 0);
+  add_command("grab", do_grab, POSITION_RESTING, 0);
+  add_command("remove", do_remove, POSITION_RESTING, 0);
   add_command_dep("put", do_put, 67, POSITION_RESTING, 0);
   add_command_dep("shutdow", do_shutdow, 68, POSITION_DEAD, SILLYLORD);
   add_command_dep("save", do_save, 69, POSITION_SLEEPING, 0);
@@ -637,7 +637,7 @@ void assign_command_pointers() {
   add_command_dep("yawn", do_action, 147, POSITION_RESTING, 0);
   add_command_dep("snowball", do_action, 148, POSITION_STANDING, DEMIGOD);
   add_command_dep("write", do_write, 149, POSITION_STANDING, 1);
-  add_command_dep("hold", do_grab, 150, POSITION_RESTING, 1);
+  add_command("hold", do_grab, POSITION_RESTING, 1);
   add_command_dep("flee", do_flee, 151, POSITION_SITTING, 1);
   add_command_dep("sneak", do_sneak, 152, POSITION_STANDING, 1);
   add_command_dep("hide", do_hide, 153, POSITION_RESTING, 1);

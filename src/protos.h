@@ -206,11 +206,6 @@ void perform_wear(struct char_data *ch, struct obj_data *obj_object,
                   int keyword);
 int is_restricted(int Mask, int Class);
 void wear(struct char_data *ch, struct obj_data *obj_object, int keyword);
-void do_wear(struct char_data *ch, char *argument, int cmd);
-void do_wield(struct char_data *ch, char *argument, int cmd);
-void do_grab(struct char_data *ch, char *argument, int cmd);
-void do_remove(struct char_data *ch, char *argument, int cmd);
-
 
 /* From act.off.c */
 
