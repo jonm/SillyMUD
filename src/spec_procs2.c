@@ -3440,9 +3440,8 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
       ch->generic = 0;
       switch (number(1, 10)) {
       case 1:
-        do_emote(ch,
-                 "mumbles something about in his day the tavern being a popular hangout.",
-                 0);
+        emote(ch,
+              "mumbles something about in his day the tavern being a popular hangout.");
         break;
       case 2:
         do_say(ch,
@@ -3824,10 +3823,10 @@ int astral_portal(struct char_data *ch, const char *cmd, char *arg,
 
     if (ch->in_room < ASTRAL_START || ch->in_room > ASTRAL_END) {
       do_say(ch, "Woah!  How the fuck did I get here??", 0);
-      do_emote(ch, "vanishes in a puff of smoke.", 0);
+      emote(ch, "vanishes in a puff of smoke.");
       char_from_room(ch);
       char_to_room(ch, (ASTRAL_START + number(0, 124)));
-      do_emote(ch, "arrives with a Bamf!", 0);
+      emote(ch, "arrives with a Bamf!");
     }
 
     if (!number(0, 15)) {
@@ -3873,7 +3872,7 @@ int dwarven_miners(struct char_data *ch, const char * UNUSED(cmd), char *UNUSED(
 
   if (type == EVENT_END_STRIKE) {
     if (ch->specials.position == POSITION_SITTING) {
-      do_emote(ch, "is off strike.", 0);
+      emote(ch, "is off strike.");
       do_stand(ch, "", 0);
       ch->specials.default_pos = POSITION_STANDING;
       ch->player.long_descr = (char *)realloc(ch->player.long_descr,
@@ -3888,7 +3887,7 @@ int dwarven_miners(struct char_data *ch, const char * UNUSED(cmd), char *UNUSED(
 
   if (type == EVENT_DWARVES_STRIKE) {
     if (ch->specials.position == POSITION_STANDING) {
-      do_emote(ch, "is on strike.", 0);
+      emote(ch, "is on strike.");
       do_sit(ch, "", 0);
       ch->specials.default_pos = POSITION_SITTING;
       ch->player.long_descr = (char *)realloc(ch->player.long_descr,
@@ -3911,7 +3910,7 @@ int dwarven_miners(struct char_data *ch, const char * UNUSED(cmd), char *UNUSED(
     if (ch->generic == 30) {    /* strike over, back to work */
       pulse_mobiles(EVENT_END_STRIKE);
       if (ch->specials.position == POSITION_SITTING) {
-        do_emote(ch, "is off strike.", 0);
+        emote(ch, "is off strike.");
         do_stand(ch, "", 0);
         ch->specials.default_pos = POSITION_STANDING;
         ch->player.long_descr = (char *)realloc(ch->player.long_descr,
@@ -3932,7 +3931,7 @@ int dwarven_miners(struct char_data *ch, const char * UNUSED(cmd), char *UNUSED(
 
   if (type == EVENT_BIRTH) {
     if (ch->specials.position == POSITION_STANDING) {
-      do_emote(ch, "is on strike.", 0);
+      emote(ch, "is on strike.");
       do_sit(ch, "", 0);
       ch->specials.default_pos = POSITION_SITTING;
       ch->player.long_descr = (char *)realloc(ch->player.long_descr,
@@ -3987,13 +3986,13 @@ int real_rabbit(struct char_data *ch, const char *cmd, char *UNUSED(arg),
 
   for (i = real_roomp(ch->in_room)->people; i; i = i->next_in_room)
     if (IS_NPC(i) && (mob_index[i->nr].virtual == 6005) && !number(0, 3)) {
-      do_emote(ch, "sees the damn fox and runs like hell.", 0);
+      emote(ch, "sees the damn fox and runs like hell.");
       do_flee(ch, "\0", 0);
       return TRUE;
     }
 
   if (!number(0, 5)) {
-    do_emote(ch, "nibbles on some grass.", 0);
+    emote(ch, "nibbles on some grass.");
     return TRUE;
   }
   return FALSE;
@@ -4015,7 +4014,7 @@ int real_fox(struct char_data *ch, const char *cmd, char *UNUSED(arg),
   for (j = real_roomp(ch->in_room)->contents; j; j = j->next_content) {
     if (GET_ITEM_TYPE(j) == ITEM_CONTAINER &&
         j->obj_flags.value[3] && !strcmp(j->name, "corpse rabbit")) {
-      do_emote(ch, "gorges on the corpse of a rabbit.", 0);
+      emote(ch, "gorges on the corpse of a rabbit.");
       for (k = j->contains; k; k = next) {
         next = k->next_content;
         obj_from_obj(k);
@@ -4029,7 +4028,7 @@ int real_fox(struct char_data *ch, const char *cmd, char *UNUSED(arg),
 
   for (i = real_roomp(ch->in_room)->people; i; i = i->next_in_room)
     if (IS_NPC(i) && (mob_index[i->nr].virtual == 6001) && !number(0, 3)) {
-      do_emote(ch, "yips and starts to make dinner.", 0);
+      emote(ch, "yips and starts to make dinner.");
       hit(ch, i, TYPE_UNDEFINED);
       return TRUE;
     }

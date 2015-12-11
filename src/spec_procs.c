@@ -1964,12 +1964,11 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     do_shout(ch, "Can someone summon me, please!", 0);
     return (1);
   case 5:
-    do_emote(ch, "gropes you.", 0);
+    emote(ch, "gropes you.");
     return (1);
   case 6:
-    do_emote(ch,
-             "gives you a long and passionate kiss.  It seems to last forever.",
-             0);
+    emote(ch,
+          "gives you a long and passionate kiss.  It seems to last forever.");
     return (1);
   case 7:
     {
@@ -2065,10 +2064,10 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     do_say(ch, "Aren't wombat's so cute?", 0);
     return (1);
   case 16:
-    do_emote(ch, "fondly fondles you.", 0);
+    emote(ch, "fondly fondles you.");
     return (1);
   case 17:
-    do_emote(ch, "winks at you.", 0);
+    emote(ch, "winks at you.");
     return (1);
   case 18:
     do_say(ch, "This mud is too silly!", 0);
@@ -2251,7 +2250,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     do_say(ch, "I'm the real implementor, you know.", 0);
     return (TRUE);
   case 51:
-    do_emote(ch, "moshes into you almost causing you to fall.", 0);
+    emote(ch, "moshes into you almost causing you to fall.");
     return (TRUE);
   case 52:
     if (!number(0, 30))
@@ -2259,7 +2258,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     return (TRUE);
   case 53:
     do_say(ch, "You know I always liked you the best don't you?", 0);
-    do_emote(ch, "winks seductively at you.", 0);
+    emote(ch, "winks seductively at you.");
     return (TRUE);
   case 54:
     if (!number(0, 30))
@@ -3881,11 +3880,11 @@ int delivery_elf(struct char_data *ch, const char *cmd, char *UNUSED(arg),
         do_stand(ch, "", 0);
       }
       do_say(ch, "Woah! How did i get here!", 0);
-      do_emote(ch, "waves his arm, and vanishes!", 0);
+      emote(ch, "waves his arm, and vanishes!");
       char_from_room(ch);
       char_to_room(ch, Elf_Home);
-      do_emote(ch, "arrives with a Bamf!", 0);
-      do_emote(ch, "yawns", 0);
+      emote(ch, "arrives with a Bamf!");
+      emote(ch, "yawns");
       do_sleep(ch, "", 0);
       ch->generic = ELF_RESTING;
     }

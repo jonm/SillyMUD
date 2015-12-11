@@ -195,7 +195,7 @@ void shopping_buy(char *arg, struct char_data *ch,
       do_action(keeper, GET_NAME(ch), "puke");
       return;
     case 1:
-      do_emote(keeper, "grins happily", "sigh");
+      emote(keeper, "grins happily");
       return;
     default:
       return;

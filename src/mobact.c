@@ -844,10 +844,10 @@ void sgoto(char *arg, struct char_data *ch) {
     dir = choose_exit_global(ch->in_room, room, MAX_ROOMS);
     if (dir < 0) {
       do_say(ch, "Woah!  How'd i get here??", "say");
-      do_emote(ch, "vanishes in a puff of smoke", NULL);
+      emote(ch, "vanishes in a puff of smoke");
       char_from_room(ch);
       char_to_room(ch, room);
-      do_emote(ch, "arrives with a Bamf!", 0);
+      emote(ch, "arrives with a Bamf!");
       ch->commandp++;
       return;
     }

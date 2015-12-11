@@ -392,39 +392,39 @@ int chess_game(struct char_data *ch, const char *cmd, char *arg, struct char_dat
   }
 
   if (move_found && rp) {
-    do_emote(ch, "leaves the room.", NULL);
+    emote(ch, "leaves the room.");
     char_from_room(ch);
     char_to_room(ch, rp->number);
-    do_emote(ch, "has arrived.", NULL);
+    emote(ch, "has arrived.");
 
     if (ep) {
       if (side)
         switch (number(0, 3)) {
         case 0:
-          do_emote(ch, "grins evilly and says, 'ONLY EVIL shall rule!'", 0);
+          emote(ch, "grins evilly and says, 'ONLY EVIL shall rule!'");
           break;
         case 1:
-          do_emote(ch, "leers cruelly and says, 'You will die now!'", 0);
+          emote(ch, "leers cruelly and says, 'You will die now!'");
           break;
         case 2:
-          do_emote(ch, "issues a bloodcurdling scream.", 0);
+          emote(ch, "issues a bloodcurdling scream.");
           break;
         case 3:
-          do_emote(ch, "glares with black anger.", 0);
+          emote(ch, "glares with black anger.");
         }
       else
         switch (number(0, 3)) {
         case 0:
-          do_emote(ch, "glows an even brighter pristine white.", 0);
+          emote(ch, "glows an even brighter pristine white.");
           break;
         case 1:
-          do_emote(ch, "chants a prayer and begins battle.", 0);
+          emote(ch, "chants a prayer and begins battle.");
           break;
         case 2:
-          do_emote(ch, "says, 'Black shall lose!", 0);
+          emote(ch, "says, 'Black shall lose!");
           break;
         case 3:
-          do_emote(ch, "shouts, 'For the Flame! The Flame!'", 0);
+          emote(ch, "shouts, 'For the Flame! The Flame!'");
         }
       hit(ch, ep, TYPE_UNDEFINED);
     }

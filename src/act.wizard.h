@@ -50,4 +50,6 @@ void do_event(struct char_data *ch, char *arg, const char * cmd);
 void do_beep(struct char_data *ch, char *argument, const char * cmd);
 void do_cset(struct char_data *ch, char *arg, const char * cmd);
 
+#define emote(ch, emo) do_emote((ch), (emo), NULL)
+
 #endif /* _ACT_WIZARD_H */
