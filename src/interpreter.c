@@ -30,6 +30,7 @@
 #include "act.wizard.h"
 #include "modify.h"
 #include "create.h"
+#include "act.social.h"
 
 #define NOT !
 #define AND &&
@@ -526,7 +527,7 @@ void assign_command_pointers() {
   add_command_dep("puke", do_action, 30, POSITION_RESTING, 0);
   add_command_dep("growl", do_action, 31, POSITION_RESTING, 0);
   add_command_dep("scream", do_action, 32, POSITION_RESTING, 0);
-  add_command_dep("insult", do_insult, 33, POSITION_RESTING, 0);
+  add_command("insult", do_insult, POSITION_RESTING, 0);
   add_command_dep("comfort", do_action, 34, POSITION_RESTING, 0);
   add_command_dep("nod", do_action, 35, POSITION_RESTING, 0);
   add_command_dep("sigh", do_action, 36, POSITION_RESTING, 0);
@@ -701,7 +702,7 @@ void assign_command_pointers() {
   add_command("quaff", do_quaff, POSITION_RESTING, 0);
   add_command("recite", do_recite, POSITION_STANDING, 0);
   add_command("users", do_users, POSITION_DEAD, LOW_IMMORTAL);
-  add_command_dep("pose", do_pose, 209, POSITION_STANDING, 0);
+  add_command("pose", do_pose, POSITION_STANDING, 0);
   add_command("noshout", do_noshout, POSITION_SLEEPING, LOW_IMMORTAL);
   add_command("wizhelp", do_wizhelp, POSITION_SLEEPING, LOW_IMMORTAL);
   add_command("credits", do_credits, POSITION_DEAD, 0);

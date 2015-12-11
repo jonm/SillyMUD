@@ -165,9 +165,7 @@ char *fread_action(FILE * fl);
 void boot_social_messages();
 int find_action(int cmd);
 void do_action(struct char_data *ch, char *argument, int cmd);
-void do_insult(struct char_data *ch, char *argument, int cmd);
 void boot_pose_messages();
-void do_pose(struct char_data *ch, char *argument, int cmd);
 
 
 /* From act.wizard.c */
