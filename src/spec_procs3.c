@@ -11,6 +11,7 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "act.info.h"
 
 /*   external vars  */
 
@@ -850,7 +851,7 @@ int entering_turbo_lift(struct char_data *ch, int cmd, char *UNUSED(arg),
     rp = real_roomp(ch->in_room);
     send_to_char("The doors open as you approach.\n\r", ch);
     send_to_char("\n\rThey then close quietly behind you.\n\r", ch);
-    do_look(ch, "", 0);
+    do_look(ch, "", NULL);
     for (i = 0; i < 6; i++) {
       if (rp->dir_option[i]) {
         rp->dir_option[i] = 0;

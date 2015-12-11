@@ -11,6 +11,7 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "act.info.h"
 
 /* Extern structures */
 #if HASH
@@ -1686,8 +1687,6 @@ void spell_word_of_recall(byte UNUSED(level), struct char_data *UNUSED(ch),
   extern int top_of_world;
   int location;
 
-  void do_look(struct char_data *ch, char *argument, int cmd);
-
   assert(victim);
 
   if (IS_NPC(victim))
@@ -1720,7 +1719,7 @@ void spell_word_of_recall(byte UNUSED(level), struct char_data *UNUSED(ch),
   char_from_room(victim);
   char_to_room(victim, location);
   act("$n appears in the middle of the room.", TRUE, victim, 0, 0, TO_ROOM);
-  do_look(victim, "", 15);
+  do_look(victim, "", "look");
 
 }
 
@@ -1866,7 +1865,7 @@ void raw_summon(struct char_data *v, struct char_data *c) {
   SPRINTF(buf, "%s has summoned you!\n\r",
           (IS_NPC(c) ? c->player.short_descr : GET_NAME(c)));
   send_to_char(buf, v);
-  do_look(v, "", 15);
+  do_look(v, "", "look");
 
   for (tmp = real_roomp(v->in_room)->people; tmp; tmp = tmp->next_in_room) {
     if (IS_NPC(tmp) && !(IS_SET(tmp->specials.act, ACT_POLYSELF)) &&

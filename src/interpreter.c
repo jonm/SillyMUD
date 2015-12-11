@@ -22,6 +22,7 @@
 #include "act.obj1.h"
 #include "skills.h"
 #include "act.obj2.h"
+#include "act.info.h"
 
 #define NOT !
 #define AND &&
@@ -502,12 +503,12 @@ void assign_command_pointers() {
   add_command("eat", do_eat, POSITION_RESTING, 1);
   add_command("wear", do_wear, POSITION_RESTING, 0);
   add_command("wield", do_wield, POSITION_RESTING, 1);
-  add_command_dep("look", do_look, 15, POSITION_RESTING, 0);
-  add_command_dep("score", do_score, 16, POSITION_DEAD, 0);
+  add_command("look", do_look, POSITION_RESTING, 0);
+  add_command("score", do_score, POSITION_DEAD, 0);
   add_command_dep("say", do_say, 17, POSITION_RESTING, 0);
   add_command_dep("shout", do_shout, 18, POSITION_RESTING, 2);
   add_command_dep("tell", do_tell, 19, POSITION_RESTING, 0);
-  add_command_dep("inventory", do_inventory, 20, POSITION_DEAD, 0);
+  add_command("inventory", do_inventory, POSITION_DEAD, 0);
   add_command_dep("qui", do_qui, 21, POSITION_DEAD, 0);
   add_command_dep("bounce", do_action, 22, POSITION_STANDING, 0);
   add_command_dep("smile", do_action, 23, POSITION_RESTING, 0);
@@ -525,8 +526,8 @@ void assign_command_pointers() {
   add_command_dep("nod", do_action, 35, POSITION_RESTING, 0);
   add_command_dep("sigh", do_action, 36, POSITION_RESTING, 0);
   add_command_dep("sulk", do_action, 37, POSITION_RESTING, 0);
-  add_command_dep("help", do_help, 38, POSITION_DEAD, 0);
-  add_command_dep("who", do_who, 39, POSITION_DEAD, 0);
+  add_command("help", do_help, POSITION_DEAD, 0);
+  add_command("who", do_who, POSITION_DEAD, 0);
   add_command_dep("emote", do_emote, 40, POSITION_SLEEPING, 0);
   add_command_dep("echo", do_echo, 41, POSITION_SLEEPING, 1);
   add_command_dep("stand", do_stand, 42, POSITION_RESTING, 0);
@@ -541,16 +542,16 @@ void assign_command_pointers() {
   add_command_dep("cuddle", do_action, 51, POSITION_RESTING, 0);
   add_command_dep("nuzzle", do_action, 52, POSITION_RESTING, 0);
   add_command_dep("cry", do_action, 53, POSITION_RESTING, 0);
-  add_command_dep("news", do_news, 54, POSITION_SLEEPING, 0);
-  add_command_dep("equipment", do_equipment, 55, POSITION_SLEEPING, 0);
+  add_command("news", do_news, POSITION_SLEEPING, 0);
+  add_command("equipment", do_equipment, POSITION_SLEEPING, 0);
   add_command_dep("buy", do_not_here, 56, POSITION_STANDING, 0);
   add_command_dep("sell", do_not_here, 57, POSITION_STANDING, 0);
-  add_command_dep("value", do_value, 58, POSITION_RESTING, 0);
+  add_command("value", do_value, POSITION_RESTING, 0);
   add_command_dep("list", do_not_here, 59, POSITION_STANDING, 0);
   add_command_dep("drop", do_drop, 60, POSITION_RESTING, 1);
   add_command_dep("goto", do_goto, 61, POSITION_SLEEPING, 0);
-  add_command_dep("weather", do_weather, 62, POSITION_RESTING, 0);
-  add_command_dep("read", do_read, 63, POSITION_RESTING, 0);
+  add_command("weather", do_weather, POSITION_RESTING, 0);
+  add_command("read", do_read, POSITION_RESTING, 0);
   add_command_dep("pour", do_pour, 64, POSITION_STANDING, 0);
   add_command("grab", do_grab, POSITION_RESTING, 0);
   add_command("remove", do_remove, POSITION_RESTING, 0);
@@ -563,7 +564,7 @@ void assign_command_pointers() {
   add_command_dep("quit", do_quit, 73, POSITION_DEAD, 0);
   add_command_dep("stat", do_stat, 74, POSITION_DEAD, CREATOR);
   add_command_dep("guard", do_guard, 75, POSITION_STANDING, 1);
-  add_command_dep("time", do_time, 76, POSITION_DEAD, 0);
+  add_command("time", do_time, POSITION_DEAD, 0);
   add_command_dep("load", do_load, 77, POSITION_DEAD, SAINT);
   add_command_dep("purge", do_purge, 78, POSITION_DEAD, LOW_IMMORTAL);
   add_command_dep("shutdown", do_shutdown, 79, POSITION_DEAD, SILLYLORD);
@@ -653,15 +654,15 @@ void assign_command_pointers() {
   add_command_dep("tickle", do_action, 163, POSITION_RESTING, 0);
   add_command_dep("practice", do_practice, 164, POSITION_RESTING, 1);
   add_command_dep("pat", do_action, 165, POSITION_RESTING, 0);
-  add_command_dep("examine", do_examine, 166, POSITION_SITTING, 0);
+  add_command("examine", do_examine, POSITION_SITTING, 0);
   add_command("take", do_get, POSITION_RESTING, 1);
-  add_command_dep("info", do_info, 168, POSITION_SLEEPING, 0);
+  add_command("info", do_info, POSITION_SLEEPING, 0);
   add_command_dep("'", do_say, 169, POSITION_RESTING, 0);
   add_command_dep("practise", do_practice, 170, POSITION_RESTING, 1);
   add_command_dep("curse", do_action, 171, POSITION_RESTING, 0);
   add_command_dep("use", do_use, 172, POSITION_SITTING, 1);
-  add_command_dep("where", do_where, 173, POSITION_DEAD, 1);
-  add_command_dep("levels", do_levels, 174, POSITION_DEAD, 0);
+  add_command("where", do_where, POSITION_DEAD, 1);
+  add_command("levels", do_levels, POSITION_DEAD, 0);
   add_command_dep("reroll", do_reroll, 175, POSITION_DEAD, SILLYLORD);
   add_command_dep("pray", do_action, 176, POSITION_SITTING, 0);
   add_command_dep(",", do_emote, 177, POSITION_SLEEPING, 0);
@@ -687,19 +688,19 @@ void assign_command_pointers() {
   add_command_dep("worship", do_action, 197, POSITION_RESTING, 0);
   add_command_dep("yodel", do_action, 198, POSITION_RESTING, 0);
   add_command_dep("brief", do_brief, 199, POSITION_DEAD, 0);
-  add_command_dep("wizlist", do_wizlist, 200, POSITION_DEAD, 0);
-  add_command_dep("consider", do_consider, 201, POSITION_RESTING, 0);
+  add_command("wizlist", do_wizlist, POSITION_DEAD, 0);
+  add_command("consider", do_consider, POSITION_RESTING, 0);
   add_command_dep("group", do_group, 202, POSITION_RESTING, 1);
   add_command_dep("restore", do_restore, 203, POSITION_DEAD, DEMIGOD);
   add_command_dep("return", do_return, 204, POSITION_DEAD, 0);
   add_command_dep("switch", do_switch, 205, POSITION_DEAD, 52);
   add_command_dep("quaff", do_quaff, 206, POSITION_RESTING, 0);
   add_command_dep("recite", do_recite, 207, POSITION_STANDING, 0);
-  add_command_dep("users", do_users, 208, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("users", do_users, POSITION_DEAD, LOW_IMMORTAL);
   add_command_dep("pose", do_pose, 209, POSITION_STANDING, 0);
   add_command_dep("noshout", do_noshout, 210, POSITION_SLEEPING, LOW_IMMORTAL);
-  add_command_dep("wizhelp", do_wizhelp, 211, POSITION_SLEEPING, LOW_IMMORTAL);
-  add_command_dep("credits", do_credits, 212, POSITION_DEAD, 0);
+  add_command("wizhelp", do_wizhelp, POSITION_SLEEPING, LOW_IMMORTAL);
+  add_command("credits", do_credits, POSITION_DEAD, 0);
   add_command_dep("compact", do_compact, 213, POSITION_DEAD, 0);
   add_command_dep(":", do_emote, 214, POSITION_SLEEPING, 0);
   add_command_dep("deafen", do_plr_noshout, 215, POSITION_SLEEPING, 1);
@@ -725,11 +726,11 @@ void assign_command_pointers() {
   add_command_dep("wizlock", do_wizlock, 231, POSITION_DEAD, DEMIGOD);
   add_command_dep("highfive", do_highfive, 232, POSITION_DEAD, 0);
   add_command_dep("title", do_title, 233, POSITION_DEAD, 43);
-  add_command_dep("whozone", do_who, 234, POSITION_DEAD, 0);
+  add_command("whozone", do_who, POSITION_DEAD, 0);
   add_command_dep("assist", do_assist, 235, POSITION_FIGHTING, 1);
-  add_command_dep("attribute", do_attribute, 236, POSITION_DEAD, 5);
-  add_command_dep("world", do_world, 237, POSITION_DEAD, 0);
-  add_command_dep("allspells", do_spells, 238, POSITION_DEAD, 0);
+  add_command("attribute", do_attribute, POSITION_DEAD, 5);
+  add_command("world", do_world, POSITION_DEAD, 0);
+  add_command("allspells", do_spells, POSITION_DEAD, 0);
   add_command_dep("breath", do_breath, 239, POSITION_FIGHTING, 1);
   add_command_dep("show", do_show, 240, POSITION_DEAD, CREATOR);
   add_command_dep("debug", do_debug, 241, POSITION_DEAD, IMPLEMENTOR);
@@ -784,14 +785,14 @@ void assign_command_pointers() {
   add_command_dep("beep", do_beep, 288, POSITION_DEAD, 51);
   add_command_dep("bite", do_bite, 289, POSITION_RESTING, 1);
   add_command_dep("redit", do_redit, 290, POSITION_SLEEPING, CREATOR);
-  add_command_dep("display", do_display, 291, POSITION_SLEEPING, 1);
-  add_command_dep("resize", do_resize, 292, POSITION_SLEEPING, 1);
+  add_command("display", do_display, POSITION_SLEEPING, 1);
+  add_command("resize", do_resize, POSITION_SLEEPING, 1);
   add_command_dep("\"", do_commune, 293, POSITION_SLEEPING, LOW_IMMORTAL);
   add_command_dep("#", do_cset, 294, POSITION_DEAD, 59);
   add_command_dep("inset", do_inset, 295, POSITION_RESTING, 1);
   add_command_dep("showexits", do_show_exits, 296, POSITION_DEAD, 1);
   add_command_dep("split", do_split, 297, POSITION_RESTING, 1);
-  add_command_dep("report", do_report, 298, POSITION_RESTING, 1);
+  add_command("report", do_report, POSITION_RESTING, 1);
   add_command_dep("gname", do_gname, 299, POSITION_RESTING, 1);
 #if STUPID
   /* this command is a little flawed.  Heavy usage generates obscenely 
@@ -806,7 +807,7 @@ void assign_command_pointers() {
   add_command_dep("fly", do_fly, 302, POSITION_STANDING, 1);
   add_command_dep("berserk", do_berserk, 303, POSITION_FIGHTING, 1);
   add_command("palm", do_palm, POSITION_STANDING, 1);
-  add_command_dep("peek", do_peek, 305, POSITION_STANDING, 1);
+  add_command("peek", do_peek, POSITION_STANDING, 1);
   add_command_dep("prompt", do_prompt, 306, POSITION_RESTING, 1);
 #if PLAYER_AUTH
   add_command_dep("auth", do_auth, 399, POSITION_SLEEPING, LOW_IMMORTAL);
@@ -872,10 +873,6 @@ void nanny(struct descriptor_data *d, char *arg) {
   extern int plr_tick_count;
   extern int top_of_mobt;
   extern int RacialMax[][6];
-
-  void do_look(struct char_data *ch, char *argument, int cmd);
-  void load_char_objs(struct char_data *ch);
-  int load_char(char *name, struct char_file_u *char_element);
 
   write(d->descriptor, echo_on, 6);
 
@@ -1818,7 +1815,7 @@ void nanny(struct descriptor_data *d, char *arg) {
         STATE(d) = CON_PLYNG;
         if (!get_max_level(d->character))
           do_start(d->character);
-        do_look(d->character, "", 15);
+        do_look(d->character, "", "look");
         d->prompt_mode = 1;
 
         break;
@@ -1844,7 +1841,7 @@ void nanny(struct descriptor_data *d, char *arg) {
         STATE(d) = CON_PLYNG;
         if (!get_max_level(d->character))
           do_start(d->character);
-        do_look(d->character, "", 15);
+        do_look(d->character, "", "look");
         d->prompt_mode = 1;
 
         break;
@@ -1871,7 +1868,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           STATE(d) = CON_PLYNG;
           if (!get_max_level(d->character))
             do_start(d->character);
-          do_look(d->character, "", 15);
+          do_look(d->character, "", "look");
           d->prompt_mode = 1;
           break;
 
@@ -1904,7 +1901,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           STATE(d) = CON_PLYNG;
           if (!get_max_level(d->character))
             do_start(d->character);
-          do_look(d->character, "", 15);
+          do_look(d->character, "", "look");
           d->prompt_mode = 1;
           break;
 
@@ -1937,7 +1934,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           STATE(d) = CON_PLYNG;
           if (!get_max_level(d->character))
             do_start(d->character);
-          do_look(d->character, "", 15);
+          do_look(d->character, "", "look");
           d->prompt_mode = 1;
           break;
 
@@ -2028,7 +2025,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       STATE(d) = CON_PLYNG;
       if (!get_max_level(d->character))
         do_start(d->character);
-      do_look(d->character, "", 15);
+      do_look(d->character, "", "look");
       d->prompt_mode = 1;
       break;
 

@@ -13,6 +13,7 @@
 #include "skills.h"
 #include "act.move.h"
 #include "act.obj1.h"
+#include "act.info.h"
 
 extern char *dirs[];
 extern struct char_data *character_list;
@@ -790,7 +791,7 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
     was_in = ch->in_room;
     char_from_room(ch);
     char_to_room(ch, exitp->to_room);
-    do_look(ch, "", 0);
+    do_look(ch, "", NULL);
 
     display_move(ch, dir, was_in, 1);
     if (!check_falling(ch)) {
@@ -1448,7 +1449,7 @@ void do_palm(struct char_data *ch, char *arg, const char *cmd) {
 }
 
 
-void do_peek(struct char_data *ch, char *arg, int cmd) {
+void do_peek(struct char_data *ch, char *arg, const char *cmd) {
   char *argument;
   struct char_data *peeked;
   struct obj_data *dummy;

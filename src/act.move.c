@@ -10,6 +10,7 @@
 
 #include "protos.h"
 #include "act.move.h"
+#include "act.info.h"
 
 /*   external vars  */
 #if HASH
@@ -170,7 +171,7 @@ int raw_move(struct char_data *ch, int dir) {
     send_to_char
       ("Uh-oh.  The ground melts beneath you as you fall into the swirling chaos.\n\r",
        ch);
-    do_look(ch, "\0", 15);
+    do_look(ch, "\0", "look");
 
     return TRUE;
   }
@@ -179,7 +180,7 @@ int raw_move(struct char_data *ch, int dir) {
       (!MOUNTED(ch))) {
     char_from_room(ch);
     char_to_room(ch, new_r);
-    do_look(ch, "\0", 15);
+    do_look(ch, "\0", "look");
     return (TRUE);
   }
 
@@ -339,7 +340,7 @@ int raw_move(struct char_data *ch, int dir) {
     char_to_room(ch, new_r);
   }
 
-  do_look(ch, "\0", 15);
+  do_look(ch, "\0", "look");
 
   if (IS_SET(to_here->room_flags, DEATH) && !IS_IMMORTAL(ch)) {
 

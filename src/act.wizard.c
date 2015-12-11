@@ -18,6 +18,7 @@
 
 #include "protos.h"
 #include "act.wizard.h"
+#include "act.info.h"
 
 /*   external vars  */
 
@@ -838,7 +839,7 @@ void do_trans(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       act("Reality shifts, and $n appears.", FALSE, victim, 0, 0, TO_ROOM);
       act("Reality transforms itself as $n's hand grabs you.", FALSE, ch, 0,
           victim, TO_VICT);
-      do_look(victim, "", 15);
+      do_look(victim, "", "look");
       send_to_char("Ok.\n\r", ch);
     }
   }
@@ -853,7 +854,7 @@ void do_trans(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         char_to_room(victim, target);
         act("$n arrives from a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
         act("$n has transferred you!", FALSE, ch, 0, victim, TO_VICT);
-        do_look(victim, "", 15);
+        do_look(victim, "", "look");
       }
 
     send_to_char("Ok.\n\r", ch);
@@ -922,8 +923,6 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   int loc_nr, location, i;
   struct char_data *target_mob, *pers, *v;
   struct obj_data *target_obj;
-
-  void do_look(struct char_data *ch, char *argument, int cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1047,7 +1046,7 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     else
       command_interpreter(ch, (ch->specials.poofin + 1));
   }
-  do_look(ch, "", 15);
+  do_look(ch, "", "look");
 }
 
 void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
@@ -2272,7 +2271,7 @@ void purge_one_room(int rnum, struct room_data *rp, int *range) {
        ch);
     char_from_room(ch);
     char_to_room(ch, 0);        /* send character to the void */
-    do_look(ch, "", 15);
+    do_look(ch, "", "look");
     act("$n tumbles into the Void.", TRUE, ch, 0, 0, TO_ROOM);
   }
 

@@ -14,6 +14,7 @@
 
 #include "protos.h"
 #include "reception.h"
+#include "act.info.h"
 
 #define OBJ_FILE_FREE "\0\0\0"
 
@@ -700,7 +701,7 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
 
             char_from_room(temp_char);
             char_to_room(temp_char, going_to);
-            do_look(temp_char, "", 0);
+            do_look(temp_char, "", NULL);
           }
           else {                /* must be some other direction */
             int k;

@@ -14,6 +14,7 @@
 #include "act.off.h"
 #include "act.wizard.h"
 #include "act.move.h"
+#include "act.info.h"
 
 /*   external vars  */
 
@@ -3040,7 +3041,7 @@ int druid_challenge_prep_room(struct char_data *ch, int cmd,
     }
     char_to_room(mob, ch->in_room);
     chal->river_speed = 1;
-    do_look(ch, "", 0);
+    do_look(ch, "", NULL);
     REMOVE_BIT(ch->specials.act, PLR_WIMPY);
     return (TRUE);
   }

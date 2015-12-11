@@ -123,9 +123,7 @@ void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp,
 
 /* From act.info.c */
 
-void do_resize(struct char_data *ch, char *arg, int cmd);
 void screen_off(struct char_data *ch);
-void do_display(struct char_data *ch, char *arg, int cmd);
 int singular(struct obj_data *o);
 void argument_split_2(char *argument, char *first_arg, char *second_arg);
 struct obj_data *get_object_in_equip_vis(struct char_data *ch,
@@ -143,35 +141,12 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode);
 void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int m,
                             int n);
 void list_char_in_room(struct char_data *list, struct char_data *ch);
-void do_look(struct char_data *ch, char *argument, int cmd);
-void do_read(struct char_data *ch, char *argument, int cmd);
-void do_examine(struct char_data *ch, char *argument, int cmd);
-void do_score(struct char_data *ch, char *argument, int cmd);
-void do_time(struct char_data *ch, char *argument, int cmd);
-void do_weather(struct char_data *ch, char *argument, int cmd);
-void do_help(struct char_data *ch, char *argument, int cmd);
-void do_wizhelp(struct char_data *ch, char *argument, int cmd);
-void do_who(struct char_data *ch, char *argument, int cmd);
-void do_users(struct char_data *ch, char *argument, int cmd);
-void do_inventory(struct char_data *ch, char *argument, int cmd);
-void do_equipment(struct char_data *ch, char *argument, int cmd);
-void do_credits(struct char_data *ch, char *argument, int cmd);
-void do_news(struct char_data *ch, char *argument, int cmd);
-void do_info(struct char_data *ch, char *argument, int cmd);
-void do_wizlist(struct char_data *ch, char *argument, int cmd);
 int which_number_mobile(struct char_data *mob);
 char *numbered_person(struct char_data *ch, struct char_data *person);
 void do_where_person(struct char_data *ch, struct char_data *p,
                      struct string_block *sb);
 void do_where_object(struct char_data *ch, struct obj_data *obj,
                      int recurse, struct string_block *sb);
-void do_where(struct char_data *ch, char *argument, int cmd);
-void do_levels(struct char_data *ch, char *argument, int cmd);
-void do_consider(struct char_data *ch, char *argument, int cmd);
-void do_spells(struct char_data *ch, char *argument, int cmd);
-void do_world(struct char_data *ch, char *argument, int cmd);
-void do_attribute(struct char_data *ch, char *argument, int cmd);
-void do_value(struct char_data *ch, char *argument, int cmd);
 char *align_desc(int a);
 char *armor_desc(int a);
 char *hit_roll_desc(int a);
@@ -258,7 +233,6 @@ void do_auto(struct char_data *ch, char *argument, int cmd);
 void do_gname(struct char_data *ch, char *argument, int cmd);
 void do_show_exits(struct char_data *ch, char *arg, int cmd);
 void do_split(struct char_data *ch, char *arg, int cmd);
-void do_report(struct char_data *ch, char *arg, int cmd);
 void do_prompt(struct char_data *ch, char *argument, int cmd);
 
 
@@ -1163,7 +1137,6 @@ void slip_in_climb(struct char_data *ch, int dir, int room);
 void do_makepotion(struct char_data *ch, char *argument, int cmd);
 void add_skill(int nr, int taught_by, int class_use, int percent);
 void do_berserk(struct char_data *ch, char *arg, int cmd);
-void do_peek(struct char_data *ch, char *arg, int cmd);
 void assign_skills();
 
 /* From spec_assign.c */

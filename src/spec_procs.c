@@ -17,6 +17,7 @@
 #include "act.move.h"
 #include "act.obj1.h"
 #include "act.obj2.h"
+#include "act.info.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -3578,7 +3579,7 @@ int chalice(struct char_data *ch, int cmd, char *arg) {
     act("$n is torn out of existence!", TRUE, ch, 0, 0, TO_ROOM);
     char_from_room(ch);
     char_to_room(ch, 2500);     /* before the fiery gates */
-    do_look(ch, "", 15);
+    do_look(ch, "", "look");
     return (1);
     break;
   default:
@@ -3602,7 +3603,7 @@ int kings_hall(struct char_data *ch, int cmd, char *arg) {
       TRUE, ch, 0, 0, TO_ROOM);
   char_from_room(ch);
   char_to_room(ch, 1420);       /* behind the altar */
-  do_look(ch, "", 15);
+  do_look(ch, "", "look");
   return (1);
 }
 
@@ -4777,7 +4778,7 @@ void throw_char(struct char_data *ch, struct char_data *v, int dir) {
     or = v->in_room;
     char_from_room(v);
     char_to_room(v, (real_roomp(or))->dir_option[dir]->to_room);
-    do_look(v, "\0", 15);
+    do_look(v, "\0", "look");
 
     if (IS_SET(RM_FLAGS(v->in_room), DEATH) && get_max_level(v) < LOW_IMMORTAL) {
       nail_this_sucker(v);

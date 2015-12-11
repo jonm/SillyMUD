@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.info.h"
 
 /* because I don't want to recompile */
 
@@ -2061,7 +2062,7 @@ int check_falling(struct char_data *ch) {
     act("$n falls from the sky", FALSE, ch, 0, 0, TO_ROOM);
     count++;
 
-    do_look(ch, "", 0);
+    do_look(ch, "", NULL);
 
     if (IS_SET(targ->room_flags, DEATH) && !IS_IMMORTAL(ch)) {
       nail_this_sucker(ch);
