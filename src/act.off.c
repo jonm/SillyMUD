@@ -11,6 +11,7 @@
 
 #include "protos.h"
 #include "act.off.h"
+#include "act.other.h"
 
 /* extern variables */
 

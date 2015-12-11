@@ -17,6 +17,7 @@
 #include "act.off.h"
 #include "skills.h"
 #include "act.info.h"
+#include "act.other.h"
 
 void log_msg(char *s) {
   log_sev(s, 1);

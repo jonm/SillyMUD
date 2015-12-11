@@ -11,6 +11,7 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "act.other.h"
 
 #define DUAL_WIELD(ch) (ch->equipment[WIELD] && ch->equipment[HOLD]&&\
 			ITEM_TYPE(ch->equipment[WIELD])==ITEM_WEAPON && \

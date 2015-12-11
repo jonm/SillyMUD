@@ -15,6 +15,7 @@
 #include "protos.h"
 #include "reception.h"
 #include "act.info.h"
+#include "act.other.h"
 
 #define OBJ_FILE_FREE "\0\0\0"
 
@@ -942,7 +943,7 @@ void load_char_extra(struct char_data *ch) {
             n = atoi(p);
             if (n >= 0 && n <= 9) {     /* set up alias */
               SPRINTF(tmp, "%d %s", n, s + 1);
-              do_alias(ch, tmp, 260);
+              do_alias(ch, tmp, "alias");
             }
           }
         }
