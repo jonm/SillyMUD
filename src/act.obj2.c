@@ -87,7 +87,7 @@ void name_to_drinkcon(struct obj_data *obj, int type) {
   obj->name = new_name;
 }
 
-void do_drink(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_drink(struct char_data *ch, char *argument, const char *UNUSED(cmd)) {
   char buf[255];
   struct obj_data *temp;
   struct affected_type af;
@@ -195,7 +195,7 @@ void do_drink(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 }
 
-void do_eat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_eat(struct char_data *ch, char *argument, const char * UNUSED(cmd)) {
   char buf[100];
   int j, num;
   struct obj_data *temp;

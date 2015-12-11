@@ -21,6 +21,7 @@
 #include "act.info.h"
 #include "act.obj1.h"
 #include "skills.h"
+#include "act.obj2.h"
 
 #define NOT !
 #define AND &&
@@ -497,8 +498,8 @@ void assign_command_pointers() {
   add_command("exits", do_exits, POSITION_RESTING, 0);
   add_command_dep("kiss", do_action, 9, POSITION_RESTING, 0);
   add_command("get", do_get, POSITION_RESTING, 1);
-  add_command_dep("drink", do_drink, 11, POSITION_RESTING, 1);
-  add_command_dep("eat", do_eat, 12, POSITION_RESTING, 1);
+  add_command("drink", do_drink, POSITION_RESTING, 1);
+  add_command("eat", do_eat, POSITION_RESTING, 1);
   add_command_dep("wear", do_wear, 13, POSITION_RESTING, 0);
   add_command_dep("wield", do_wield, 14, POSITION_RESTING, 1);
   add_command_dep("look", do_look, 15, POSITION_RESTING, 0);

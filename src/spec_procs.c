@@ -16,6 +16,7 @@
 #include "act.wizard.h"
 #include "act.move.h"
 #include "act.obj1.h"
+#include "act.obj2.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -999,7 +1000,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
               state = E_SHORT_BEER_RUN;
             }
             else {
-              do_drink(eric, "beer", -1 /* irrelevant */ );
+              do_drink(eric, "beer", NULL);
               s = "$n licks his lips";
             }
             break;
