@@ -809,7 +809,8 @@ void raw_open_door(struct char_data *ch, int dir)
   }
 }
 
-void do_open(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_open(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int door;
   char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH];
   struct obj_data *obj;
@@ -856,7 +857,8 @@ void do_open(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_close(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_close(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   int door;
   char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
   struct room_direction_data *back, *exitp;
@@ -973,7 +975,8 @@ void raw_lock_door(struct char_data *ch,
   }
 }
 
-void do_lock(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_lock(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int door;
   char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH];
   struct room_direction_data *exitp;
@@ -1032,7 +1035,8 @@ void do_lock(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_unlock(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_unlock(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int door;
   char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH];
   struct room_direction_data *exitp;
@@ -1090,7 +1094,8 @@ void do_unlock(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_pick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_pick(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   byte percent;
   int door;
   char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH];
@@ -1213,7 +1218,8 @@ void do_enter(struct char_data *ch, char *argument, const char *UNUSED(cmd)) {
   }
 }
 
-void do_leave(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_leave(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
   int door;
   struct room_direction_data *exitp;
   struct room_data *rp;
@@ -1232,7 +1238,8 @@ void do_leave(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 }
 
-void do_stand(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_stand(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
   switch (GET_POS(ch)) {
   case POSITION_STANDING:{
       act("You are already standing.", FALSE, ch, 0, 0, TO_CHAR);
@@ -1274,7 +1281,8 @@ void do_stand(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 }
 
-void do_sit(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_sit(struct char_data *ch, char *UNUSED(argument),
+            const char * UNUSED(cmd)) {
   switch (GET_POS(ch)) {
   case POSITION_STANDING:{
       act("You sit down.", FALSE, ch, 0, 0, TO_CHAR);
@@ -1313,7 +1321,8 @@ void do_sit(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 }
 
-void do_rest(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_rest(struct char_data *ch, char *UNUSED(argument),
+             const char * UNUSED(cmd)) {
   switch (GET_POS(ch)) {
   case POSITION_STANDING:{
       act("You sit down and rest your tired bones.", FALSE, ch, 0, 0, TO_CHAR);
@@ -1353,7 +1362,8 @@ void do_rest(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 }
 
-void do_sleep(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_sleep(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
 
   switch (GET_POS(ch)) {
   case POSITION_STANDING:
@@ -1387,7 +1397,8 @@ void do_sleep(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 }
 
-void do_wake(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_wake(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   struct char_data *tmp_char;
   char arg[MAX_STRING_LENGTH];
 
@@ -1442,7 +1453,8 @@ void do_wake(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_follow(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_follow(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   char name[160];
   struct char_data *leader;
 
@@ -1492,7 +1504,8 @@ void do_follow(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_walk(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_walk(struct char_data *ch, char *UNUSED(argument),
+             const char * UNUSED(cmd)) {
   /* These yokos can walk/fly anytime they damn well please. */
   if (IS_INTRINSIC(ch, AFF_FLYING) || affected_by_spell(ch, SPELL_FLY)) {
     REMOVE_BIT(ch->specials.affected_by, AFF_FLYING);
@@ -1507,7 +1520,8 @@ void do_walk(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 }
 
-void do_fly(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_fly(struct char_data *ch, char *UNUSED(argument),
+            const char * UNUSED(cmd)) {
   if ((IS_INTRINSIC(ch, AFF_FLYING) || affected_by_spell(ch, SPELL_FLY)) &&
       !IS_AFFECTED(ch, AFF_FLYING)) {
     SET_BIT(ch->specials.affected_by, AFF_FLYING);

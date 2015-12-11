@@ -905,24 +905,24 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
     switch (state) {
     case E_HACKING:
       if (GET_POS(eric) == POSITION_SLEEPING) {
-        do_wake(eric, "", -1);
+        do_wake(eric, "", NULL);
         return TRUE;
       }
       break;
     case E_SLEEPING:
       if (GET_POS(eric) != POSITION_SLEEPING) {
         act("$n says 'Go away, I'm sleeping'", FALSE, eric, 0, 0, TO_ROOM);
-        do_sleep(eric, "", -1);
+        do_sleep(eric, "", NULL);
         return TRUE;
       }
       break;
     default:
       if (GET_POS(eric) == POSITION_SLEEPING) {
-        do_wake(eric, "", -1);
+        do_wake(eric, "", NULL);
         return TRUE;
       }
       else if (GET_POS(eric) != POSITION_STANDING) {
-        do_stand(eric, "", -1);
+        do_stand(eric, "", NULL);
         return TRUE;
       }
       break;
@@ -932,7 +932,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
       char *s;
     case E_SLEEPING:
       if (time_info.hours > 9 && time_info.hours < 12) {
-        do_wake(eric, "", -1);
+        do_wake(eric, "", NULL);
         act("$n says 'Ahh, that was a good night's sleep'", FALSE, eric,
             0, 0, TO_ROOM);
         state = E_HACKING;
@@ -972,11 +972,11 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
       else {
         if (time_info.hours > 22 || time_info.hours < 3) {
           state = E_SLEEPING;
-          do_sleep(eric, 0, -1);
+          do_sleep(eric, 0, NULL);
           return TRUE;
         }
 
-        do_sit(eric, "", -1);
+        do_sit(eric, "", NULL);
         if (3 == dice(1, 5)) {
           /* he's in his lair, do lair things */
           switch (dice(1, 5)) {
@@ -998,7 +998,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
                 temp1->obj_flags.type_flag != ITEM_DRINKCON ||
                 temp1->obj_flags.value[1] <= 0) {
               s = "$n says 'Damn, out of beer'";
-              do_stand(eric, "", -1);
+              do_stand(eric, "", NULL);
               state = E_SHORT_BEER_RUN;
             }
             else {
@@ -1037,7 +1037,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
         }
         else if (IS_SET(temp1->obj_flags.value[1], CONT_CLOSED)) {
           do_drop(eric, "bottle", -1 /* irrelevant */ );
-          do_open(eric, "fridge", -1 /* irrelevant */ );
+          do_open(eric, "fridge", NULL);
         }
         else if (NULL == (temp1 = get_obj_in_list_vis(eric, "sixpack",
                                                       eric->carrying))) {
@@ -1046,7 +1046,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
           if (NULL == get_obj_in_list_vis(eric, "sixpack", eric->carrying)) {
             act("$n says 'Aw, man.  Someone's been drinking all the beer.",
                 FALSE, eric, 0, 0, TO_ROOM);
-            do_close(eric, "fridge", -1 /* irrelevant */ );
+            do_close(eric, "fridge", NULL);
             state = E_LONG_BEER_RUN;
           }
         }
@@ -1063,7 +1063,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
         else {
           strcpy(buf, "put sixpack fridge");
           command_interpreter(eric, buf);
-          do_close(eric, "fridge", -1 /* irrelevant */ );
+          do_close(eric, "fridge", NULL);
           state = E_HACKING;
         }
       }
@@ -1167,7 +1167,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
               0, 0, TO_ROOM);
         }
         else if (IS_SET(temp1->obj_flags.value[1], CONT_CLOSED)) {
-          do_open(eric, "fridge", -1 /* irrelevant */ );
+          do_open(eric, "fridge", NULL);
         }
         else if (NULL == (temp1 = get_obj_in_list_vis(eric, "beer",
                                                       eric->carrying))) {
@@ -1184,7 +1184,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
         else {
           strcpy(buf, "put all.sixpack fridge");
           command_interpreter(eric, buf);
-          do_close(eric, "fridge", -1 /* irrelevant */ );
+          do_close(eric, "fridge", NULL);
           state = E_HACKING;
         }
       }
@@ -3023,7 +3023,7 @@ void zm_init_combat(struct char_data *zmaster, struct char_data *target) {
       }
       else if (GET_POS(fwr->follower) > POSITION_SLEEPING &&
                GET_POS(fwr->follower) < POSITION_FIGHTING) {
-        do_stand(fwr->follower, "", -1);
+        do_stand(fwr->follower, "", NULL);
       }
     }
   }
@@ -3082,26 +3082,26 @@ int zombie_master(struct char_data *ch, int cmd, char *UNUSED(arg),
   if (!check_peaceful(ch, "") &&
       (zm_kill_fidos(zmaster) || zm_kill_aggressor(zmaster))
     ) {
-    do_stand(zmaster, "", -1);
+    do_stand(zmaster, "", NULL);
     return TRUE;
   }
 
   switch (GET_POS(zmaster)) {
   case POSITION_RESTING:
     if (!zm_tired(zmaster))
-      do_stand(zmaster, "", -1);
+      do_stand(zmaster, "", NULL);
     break;
   case POSITION_SITTING:
     if (!zm_stunned_followers(zmaster)) {
       if (!check_soundproof(ch))
         act("$n says 'It took you long enough...'", FALSE,
             zmaster, 0, 0, TO_ROOM);
-      do_stand(zmaster, "", -1);
+      do_stand(zmaster, "", NULL);
     }
     break;
   case POSITION_STANDING:
     if (zm_tired(zmaster)) {
-      do_rest(zmaster, "", -1);
+      do_rest(zmaster, "", NULL);
       return TRUE;
     }
 
@@ -3134,7 +3134,7 @@ int zombie_master(struct char_data *ch, int cmd, char *UNUSED(arg),
       return TRUE;
     }
     else if (zm_stunned_followers(zmaster)) {
-      do_sit(zmaster, "", -1);
+      do_sit(zmaster, "", NULL);
       return TRUE;
     }
     else if (1 == dice(1, 20)) {
@@ -6099,7 +6099,7 @@ int valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
     break;
   case Valik_Meditating:
     if (time_info.hours < 22 && time_info.hours > 5) {
-      do_stand(ch, "", -1);
+      do_stand(ch, "", NULL);
       act("$n says 'Perhaps today will be different.'", FALSE, ch, 0, 0,
           TO_ROOM);
       act("$n slowly fades out of existence.", FALSE, ch, 0, 0, TO_ROOM);
@@ -6116,7 +6116,7 @@ int valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         if (!IS_NPC(vict) && (get_max_level(vict) < LOW_IMMORTAL)
             && (number(0, 3) == 0)) {
           act("$n snaps out of his meditation.", FALSE, ch, 0, 0, TO_ROOM);
-          do_stand(ch, "", -1);
+          do_stand(ch, "", NULL);
           hit(ch, vict, TYPE_UNDEFINED);
           return (FALSE);
         }
@@ -6163,7 +6163,7 @@ int valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         act("Reality warps and spins around you!", FALSE, ch, 0, 0, TO_ROOM);
         SPRINTF(buf, "close mahogany");
         command_interpreter(ch, buf);
-        do_rest(ch, "", -1);
+        do_rest(ch, "", NULL);
         ch->generic = Valik_Meditating;
         return (FALSE);
       }

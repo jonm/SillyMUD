@@ -3872,10 +3872,6 @@ extern float shop_multiplier;
 
 int dwarven_miners(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
                    struct char_data *UNUSED(mob), int type) {
-  void do_emote(struct char_data *ch, char *arg, int cmd);
-  void do_stand(struct char_data *ch, char *arg, int cmd);
-  void do_sit(struct char_data *ch, char *arg, int cmd);
-
   if (type == PULSE_COMMAND)
     return (FALSE);
 

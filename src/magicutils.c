@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "act.move.h"
 
 /* Extern structures */
 extern struct room_data *world;
@@ -104,7 +105,7 @@ void fail_charm(struct char_data *victim, struct char_data *ch) {
         set_fighting(victim, ch);
       }
       else {
-        do_wake(victim, "", 0);
+        do_wake(victim, "", NULL);
       }
     }
   }

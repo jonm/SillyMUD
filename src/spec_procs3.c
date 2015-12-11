@@ -14,6 +14,7 @@
 #include "act.info.h"
 #include "act.comm.h"
 #include "act.off.h"
+#include "act.move.h"
 
 /*   external vars  */
 

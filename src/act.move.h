@@ -18,6 +18,20 @@ extern const char *move_dir_string[];
 void move_to_dir(struct char_data *ch, int dir);
 
 void do_move(struct char_data *ch, char *argument, const char *cmd);
-void do_enter(struct char_data *ch, char *argument, const char *(cmd));
+void do_enter(struct char_data *ch, char *argument, const char *cmd);
+void do_open(struct char_data *ch, char *argument, const char * cmd);
+void do_close(struct char_data *ch, char *argument, const char * cmd);
+void do_lock(struct char_data *ch, char *argument, const char * cmd);
+void do_unlock(struct char_data *ch, char *argument, const char * cmd);
+void do_pick(struct char_data *ch, char *argument, const char * cmd);
+void do_leave(struct char_data *ch, char *argument, const char * cmd);
+void do_stand(struct char_data *ch, char *argument, const char * cmd);
+void do_sit(struct char_data *ch, char *argument, const char * cmd);
+void do_rest(struct char_data *ch, char *argument, const char * cmd);
+void do_sleep(struct char_data *ch, char *argument, const char * cmd);
+void do_wake(struct char_data *ch, char *argument, const char * cmd);
+void do_follow(struct char_data *ch, char *argument, const char * cmd);
+void do_walk(struct char_data *ch, char *argument, const char * cmd);
+void do_fly(struct char_data *ch, char *argument, const char * cmd);
 
 #endif /* _ACT_MOVE_H */
