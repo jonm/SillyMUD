@@ -28,6 +28,7 @@
 #include "act.off.h"
 #include "intrinsics.h"
 #include "act.wizard.h"
+#include "modify.h"
 
 #define NOT !
 #define AND &&
@@ -562,7 +563,7 @@ void assign_command_pointers() {
   add_command("shutdow", do_shutdow, POSITION_DEAD, SILLYLORD);
   add_command("save", do_save, POSITION_SLEEPING, 0);
   add_command("hit", do_hit, POSITION_FIGHTING, 1);
-  add_command_dep("string", do_string, 71, POSITION_SLEEPING, SAINT);
+  add_command("string", do_string, POSITION_SLEEPING, SAINT);
   add_command_dep("give", do_give, 72, POSITION_RESTING, 1);
   add_command("quit", do_quit, POSITION_DEAD, 0);
   add_command("stat", do_stat, POSITION_DEAD, CREATOR);
@@ -716,7 +717,7 @@ void assign_command_pointers() {
   add_command("system", do_system, POSITION_DEAD, SILLYLORD);
   add_command("pull", do_not_here, POSITION_STANDING, 1);
   add_command("stealth", do_stealth, POSITION_DEAD, LOW_IMMORTAL);
-  add_command_dep("edit", do_edit, 226, POSITION_DEAD, CREATOR);
+  add_command("edit", do_edit, POSITION_DEAD, CREATOR);
 #ifdef TEST_SERVER
   add_command_dep("@", do_set, 227, POSITION_DEAD, CREATOR);
 #else
