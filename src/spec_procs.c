@@ -18,6 +18,7 @@
 #include "act.obj1.h"
 #include "act.obj2.h"
 #include "act.info.h"
+#include "act.comm.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -337,7 +338,7 @@ int guildmaster(struct char_data *ch, int cmd, char *arg,
 
     if (!(skill_info[number].taught_by & teacher) &&
         !(skill_info[number].spell_pointer)) {
-      do_say(guildmaster, "I do not know of what thou art speaking.", 0);
+      do_say(guildmaster, "I do not know of what thou art speaking.", "say");
       return (TRUE);
     }
 
@@ -465,7 +466,7 @@ int mayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
 
   if (type == EVENT_WINTER) {
     GET_POS(ch) = POSITION_STANDING;
-    do_shout(ch, "Aieee!   The rats!  The rats are coming!  Aieeee!", 0);
+    do_shout(ch, "Aieee!   The rats!  The rats are coming!  Aieeee!", "shout");
     return (TRUE);
   }
 
@@ -1895,10 +1896,6 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
   struct char_data *i, *tmp_ch;
   char buf[80];
 
-  void do_say(struct char_data *ch, char *argument, int cmd);
-  void do_emote(struct char_data *ch, char *argument, int cmd);
-  void do_shout(struct char_data *ch, char *argument, int cmd);
-
   if (type == EVENT_DWARVES_STRIKE) {
     do_shout(ch,
              "Ack! Of all the stupid things! Those damned dwarves are on strike again!",
@@ -2571,8 +2568,6 @@ int rust_monster(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 int temple_labrynth_liar(struct char_data *ch, int cmd, char *UNUSED(arg),
                          struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void do_say(struct char_data *ch, char *argument, int cmd);
-
   if (cmd || !AWAKE(ch))
     return (0);
 
@@ -2620,10 +2615,6 @@ int temple_labrynth_sentry(struct char_data *ch, int cmd, char *UNUSED(arg),
                            struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tch;
   int counter;
-
-  void cast_fireball(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *victim, struct obj_data *tar_obj);
-  void do_say(struct char_data *ch, char *argument, int cmd);
 
   if (cmd || !AWAKE(ch))
     return FALSE;
@@ -6100,7 +6091,7 @@ int valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
         if (!(strcmp(arg, " What is the quest of the Rhyodin?")))
           for (i = 0; i < 9; ++i) {
             SPRINTF(buf, "%s %s", GET_NAME(ch), quest_intro[i]);
-            do_tell(vict, buf, 19);
+            do_tell(vict, buf, "tell");
           }
         return (TRUE);
       }

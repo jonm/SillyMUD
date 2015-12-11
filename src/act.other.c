@@ -11,6 +11,7 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "act.comm.h"
 
 
 /* extern variables */

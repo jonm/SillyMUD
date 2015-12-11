@@ -12,6 +12,7 @@
 #include "protos.h"
 #include "act.obj1.h"
 #include "act.obj2.h"
+#include "act.comm.h"
 
 extern struct char_data *character_list;
 extern struct index_data *mob_index;
@@ -840,7 +841,7 @@ void sgoto(char *arg, struct char_data *ch) {
   if (ch->in_room != room) {
     dir = choose_exit_global(ch->in_room, room, MAX_ROOMS);
     if (dir < 0) {
-      do_say(ch, "Woah!  How'd i get here??", 0);
+      do_say(ch, "Woah!  How'd i get here??", "say");
       do_emote(ch, "vanishes in a puff of smoke", 0);
       char_from_room(ch);
       char_to_room(ch, room);

@@ -80,15 +80,7 @@ void inform_mess(struct char_data *v);
 
 void update_screen(struct char_data *ch, int update);
 void init_screen(struct char_data *ch);
-void do_say(struct char_data *ch, char *argument, int cmd);
-void do_shout(struct char_data *ch, char *argument, int cmd);
-void do_commune(struct char_data *ch, char *argument, int cmd);
-void do_tell(struct char_data *ch, char *argument, int cmd);
-void do_whisper(struct char_data *ch, char *argument, int cmd);
-void do_ask(struct char_data *ch, char *argument, int cmd);
-void do_write(struct char_data *ch, char *argument, int cmd);
 char *random_word();
-void do_sign(struct char_data *ch, char *argument, int cmd);
 void do_rest(struct char_data *ch, char *argument, int cmd);
 void do_stand(struct char_data *ch, char *argument, int cmd);
 void do_sit(struct char_data *ch, char *argument, int cmd);

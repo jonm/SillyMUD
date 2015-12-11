@@ -12,6 +12,7 @@
 
 #include "protos.h"
 #include "act.info.h"
+#include "act.comm.h"
 
 /*   external vars  */
 
@@ -888,7 +889,7 @@ int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
   if (cmd != 169 && cmd != 17)
     return (FALSE);
 
-  do_say(ch, arg, cmd);
+  do_say(ch, arg, "say");
 
   for (i = dest = 0; TurboLiftList[i].trigger[0] != '\n'; i++)
     if (!str_cmp(arg, TurboLiftList[i].trigger)) {

@@ -15,6 +15,7 @@
 #include "act.wizard.h"
 #include "act.move.h"
 #include "act.info.h"
+#include "act.comm.h"
 
 /*   external vars  */
 
@@ -386,7 +387,7 @@ int summoner(struct char_data *ch, int cmd, char *UNUSED(arg),
       else {
         if (get_max_level(ch) < 32) {
           if (number(0, 10)) {
-            do_say(ch, "Curses!  Foiled again!\n\r", 0);
+            do_say(ch, "Curses!  Foiled again!\n\r", "say");
             return (0);
           }
         }
@@ -454,19 +455,19 @@ int jive_box(struct char_data *ch, int cmd, char *arg,
   case 17:
   case 169:
     invert(arg, buf);
-    do_say(ch, buf, cmd);
+    do_say(ch, buf, "say");
     return (TRUE);
     break;
   case 19:
     half_chop(arg, tmp, buf);
     invert(buf, buf2);
     SPRINTF(buf3, "%s %s", tmp, buf);
-    do_tell(ch, buf3, cmd);
+    do_tell(ch, buf3, "tell");
     return (TRUE);
     break;
   case 18:
     invert(arg, buf);
-    do_shout(ch, buf, cmd);
+    do_shout(ch, buf, "shout");
     return (TRUE);
     break;
   default:
