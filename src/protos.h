@@ -146,7 +146,6 @@ void list_char_in_room(struct char_data *list, struct char_data *ch);
 void do_look(struct char_data *ch, char *argument, int cmd);
 void do_read(struct char_data *ch, char *argument, int cmd);
 void do_examine(struct char_data *ch, char *argument, int cmd);
-void do_exits(struct char_data *ch, char *argument, int cmd);
 void do_score(struct char_data *ch, char *argument, int cmd);
 void do_time(struct char_data *ch, char *argument, int cmd);
 void do_weather(struct char_data *ch, char *argument, int cmd);

@@ -491,7 +491,7 @@ void assign_command_pointers() {
   add_command("up", do_move, POSITION_STANDING, 0);
   add_command("down", do_move, POSITION_STANDING, 0);
   add_command("enter", do_enter, POSITION_STANDING, 0);
-  add_command_dep("exits", do_exits, 8, POSITION_RESTING, 0);
+  add_command("exits", do_exits, POSITION_RESTING, 0);
   add_command_dep("kiss", do_action, 9, POSITION_RESTING, 0);
   add_command_dep("get", do_get, 10, POSITION_RESTING, 1);
   add_command_dep("drink", do_drink, 11, POSITION_RESTING, 1);

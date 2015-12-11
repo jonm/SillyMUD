@@ -1481,7 +1481,8 @@ void show_exits(struct char_data *ch) {
 
 /*  Gecko's spiffy enhancement to do_exits() from act.info.c */
 
-void do_exits(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_exits(struct char_data *ch, char *UNUSED(argument),
+              const char *UNUSED(cmd)) {
   /* NOTE: Input var 'cmd' is not used. */
   int door;
   char buf[1000];
