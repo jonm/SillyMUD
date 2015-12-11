@@ -148,9 +148,6 @@ int newstrlen(char *p);
 void weight_change_object(struct obj_data *obj, int weight);
 void name_from_drinkcon(struct obj_data *obj);
 void name_to_drinkcon(struct obj_data *obj, int type);
-void do_pour(struct char_data *ch, char *argument, int cmd);
-void do_sip(struct char_data *ch, char *argument, int cmd);
-void do_taste(struct char_data *ch, char *argument, int cmd);
 void perform_wear(struct char_data *ch, struct obj_data *obj_object,
                   int keyword);
 int is_restricted(int Mask, int Class);

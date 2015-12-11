@@ -558,7 +558,7 @@ void assign_command_pointers() {
   add_command("goto", do_goto, POSITION_SLEEPING, 0);
   add_command("weather", do_weather, POSITION_RESTING, 0);
   add_command("read", do_read, POSITION_RESTING, 0);
-  add_command_dep("pour", do_pour, 64, POSITION_STANDING, 0);
+  add_command("pour", do_pour, POSITION_STANDING, 0);
   add_command("grab", do_grab, POSITION_RESTING, 0);
   add_command("remove", do_remove, POSITION_RESTING, 0);
   add_command("put", do_put, POSITION_RESTING, 0);
@@ -582,8 +582,8 @@ void assign_command_pointers() {
   add_command("at", do_at, POSITION_DEAD, CREATOR);
   add_command("ask", do_ask, POSITION_RESTING, 0);
   add_command("order", do_order, POSITION_RESTING, 1);
-  add_command_dep("sip", do_sip, 88, POSITION_RESTING, 0);
-  add_command_dep("taste", do_taste, 89, POSITION_RESTING, 0);
+  add_command("sip", do_sip, POSITION_RESTING, 0);
+  add_command("taste", do_taste, POSITION_RESTING, 0);
   add_command("snoop", do_snoop, POSITION_DEAD, GOD);
   add_command("follow", do_follow, POSITION_RESTING, 0);
   add_command("rent", do_not_here, POSITION_STANDING, 1);
