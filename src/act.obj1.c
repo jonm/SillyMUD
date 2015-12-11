@@ -71,7 +71,8 @@ void get(struct char_data *ch, struct obj_data *obj_object,
   }
 }
 
-void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_get(struct char_data *ch, char *argument,
+            const char *UNUSED(cmd)) {
   char arg1[MAX_STRING_LENGTH];
   char arg2[MAX_STRING_LENGTH];
   char buffer[MAX_STRING_LENGTH];

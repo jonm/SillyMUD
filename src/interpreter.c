@@ -18,6 +18,9 @@
 #include "protos.h"
 #include "parser.h"
 #include "act.move.h"
+#include "act.info.h"
+#include "act.obj1.h"
+#include "skills.h"
 
 #define NOT !
 #define AND &&
@@ -493,7 +496,7 @@ void assign_command_pointers() {
   add_command("enter", do_enter, POSITION_STANDING, 0);
   add_command("exits", do_exits, POSITION_RESTING, 0);
   add_command_dep("kiss", do_action, 9, POSITION_RESTING, 0);
-  add_command_dep("get", do_get, 10, POSITION_RESTING, 1);
+  add_command("get", do_get, POSITION_RESTING, 1);
   add_command_dep("drink", do_drink, 11, POSITION_RESTING, 1);
   add_command_dep("eat", do_eat, 12, POSITION_RESTING, 1);
   add_command_dep("wear", do_wear, 13, POSITION_RESTING, 0);
@@ -650,7 +653,7 @@ void assign_command_pointers() {
   add_command_dep("practice", do_practice, 164, POSITION_RESTING, 1);
   add_command_dep("pat", do_action, 165, POSITION_RESTING, 0);
   add_command_dep("examine", do_examine, 166, POSITION_SITTING, 0);
-  add_command_dep("take", do_get, 167, POSITION_RESTING, 1);        /* TAKE */
+  add_command("take", do_get, POSITION_RESTING, 1);
   add_command_dep("info", do_info, 168, POSITION_SLEEPING, 0);
   add_command_dep("'", do_say, 169, POSITION_RESTING, 0);
   add_command_dep("practise", do_practice, 170, POSITION_RESTING, 1);
@@ -801,7 +804,7 @@ void assign_command_pointers() {
   add_command_dep("walk", do_walk, 301, POSITION_STANDING, 1);
   add_command_dep("fly", do_fly, 302, POSITION_STANDING, 1);
   add_command_dep("berserk", do_berserk, 303, POSITION_FIGHTING, 1);
-  add_command_dep("palm", do_palm, 304, POSITION_STANDING, 1);
+  add_command("palm", do_palm, POSITION_STANDING, 1);
   add_command_dep("peek", do_peek, 305, POSITION_STANDING, 1);
   add_command_dep("prompt", do_prompt, 306, POSITION_RESTING, 1);
 #if PLAYER_AUTH

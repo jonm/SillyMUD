@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.obj1.h"
 
 extern struct char_data *character_list;
 extern struct index_data *mob_index;
@@ -192,7 +193,7 @@ void mob_scavenge(struct char_data *ch) {
         if (obj->contains) {
           if (is_humanoid(ch) && !number(0, 4)) {
             SPRINTF(buf, " all %d.corpse", cc);
-            do_get(ch, buf, 0);
+            do_get(ch, buf, NULL);
             return;
           }
         }
@@ -259,9 +260,6 @@ void mobile_activity(struct char_data *ch) {
 
   int k;
   extern int no_specials;
-
-  void do_move(struct char_data *ch, char *argument, int cmd);
-  void do_get(struct char_data *ch, char *argument, int cmd);
 
   /* Examine call for special procedure */
 

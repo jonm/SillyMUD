@@ -188,7 +188,6 @@ void show_exits(struct char_data *ch);
 
 void get(struct char_data *ch, struct obj_data *obj_object,
          struct obj_data *sub_object);
-void do_get(struct char_data *ch, char *argument, int cmd);
 void do_drop(struct char_data *ch, char *argument, int cmd);
 void do_put(struct char_data *ch, char *argument, int cmd);
 int newstrlen(char *p);
@@ -1171,7 +1170,6 @@ void slip_in_climb(struct char_data *ch, int dir, int room);
 void do_makepotion(struct char_data *ch, char *argument, int cmd);
 void add_skill(int nr, int taught_by, int class_use, int percent);
 void do_berserk(struct char_data *ch, char *arg, int cmd);
-void do_palm(struct char_data *ch, char *arg, int cmd);
 void do_peek(struct char_data *ch, char *arg, int cmd);
 void assign_skills();
 

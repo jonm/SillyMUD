@@ -15,6 +15,7 @@
 #include "db.h"
 #include "act.wizard.h"
 #include "act.move.h"
+#include "act.obj1.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -3543,7 +3544,7 @@ int chalice(struct char_data *ch, int cmd, char *arg) {
         return (0);
 
     /* we found a chalice.. now try to get us */
-    do_get(ch, arg, cmd);
+    do_get(ch, arg, NULL);
     /* if got the altar one, switch her */
     if (chalice == get_obj_in_list_num(achl, ch->carrying)) {
       extract_obj(chalice);
@@ -5700,7 +5701,7 @@ int trogcook(struct char_data *ch, int cmd, char *UNUSED(arg),
   corpse =
     get_obj_in_list_vis(ch, "corpse", real_roomp(ch->in_room)->contents);
   if (corpse) {
-    do_get(ch, "corpse", -1);
+    do_get(ch, "corpse", NULL);
     act("$n cackles 'Into the soup with it!'", FALSE, ch, 0, 0, TO_ROOM);
     SPRINTF(buf, "put corpse pot");
     command_interpreter(ch, buf);

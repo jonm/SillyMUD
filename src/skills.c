@@ -12,6 +12,7 @@
 #include "protos.h"
 #include "skills.h"
 #include "act.move.h"
+#include "act.obj1.h"
 
 extern char *dirs[];
 extern struct char_data *character_list;
@@ -1275,7 +1276,7 @@ void slip_in_climb(struct char_data *ch, int dir, int room) {
     GET_HIT(ch) -= i;
 }
 
-void do_palm(struct char_data *ch, char *arg, int cmd) {
+void do_palm(struct char_data *ch, char *arg, const char *cmd) {
   char arg1[MAX_STRING_LENGTH], arg2[MAX_STRING_LENGTH],
     buffer[MAX_STRING_LENGTH];
   struct obj_data *sub_object;
