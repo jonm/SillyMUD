@@ -13,6 +13,7 @@
 #include "protos.h"
 #include "act.info.h"
 #include "act.comm.h"
+#include "act.off.h"
 
 /*   external vars  */
 

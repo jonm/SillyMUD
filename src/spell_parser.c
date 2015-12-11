@@ -12,6 +12,7 @@
 
 #include "protos.h"
 #include "act.info.h"
+#include "act.off.h"
 
 /* because I don't want to recompile */
 
@@ -1969,7 +1970,7 @@ void check_decharm(struct char_data *ch) {
   stop_follower(ch);            /* stop following the master */
   REMOVE_BIT(ch->specials.act, ACT_SENTINEL);
   add_feared(ch, m);
-  do_flee(ch, "", 0);
+  do_flee(ch, "", "flee");
 
 }
 

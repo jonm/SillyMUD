@@ -25,6 +25,7 @@
 #include "act.info.h"
 #include "act.comm.h"
 #include "act.other.h"
+#include "act.off.h"
 
 #define NOT !
 #define AND &&
@@ -515,7 +516,7 @@ void assign_command_pointers() {
   add_command_dep("bounce", do_action, 22, POSITION_STANDING, 0);
   add_command_dep("smile", do_action, 23, POSITION_RESTING, 0);
   add_command_dep("dance", do_action, 24, POSITION_STANDING, 0);
-  add_command_dep("kill", do_kill, 25, POSITION_FIGHTING, 1);
+  add_command("kill", do_kill, POSITION_FIGHTING, 1);
   add_command_dep("cackle", do_action, 26, POSITION_RESTING, 0);
   add_command_dep("laugh", do_action, 27, POSITION_RESTING, 0);
   add_command_dep("giggle", do_action, 28, POSITION_RESTING, 0);
@@ -560,7 +561,7 @@ void assign_command_pointers() {
   add_command_dep("put", do_put, 67, POSITION_RESTING, 0);
   add_command_dep("shutdow", do_shutdow, 68, POSITION_DEAD, SILLYLORD);
   add_command("save", do_save, POSITION_SLEEPING, 0);
-  add_command_dep("hit", do_hit, 70, POSITION_FIGHTING, 1);
+  add_command("hit", do_hit, POSITION_FIGHTING, 1);
   add_command_dep("string", do_string, 71, POSITION_SLEEPING, SAINT);
   add_command_dep("give", do_give, 72, POSITION_RESTING, 1);
   add_command("quit", do_quit, POSITION_DEAD, 0);
@@ -577,7 +578,7 @@ void assign_command_pointers() {
   add_command_dep("cast", do_cast, 84, POSITION_SITTING, 1);
   add_command_dep("at", do_at, 85, POSITION_DEAD, CREATOR);
   add_command("ask", do_ask, POSITION_RESTING, 0);
-  add_command_dep("order", do_order, 87, POSITION_RESTING, 1);
+  add_command("order", do_order, POSITION_RESTING, 1);
   add_command_dep("sip", do_sip, 88, POSITION_RESTING, 0);
   add_command_dep("taste", do_taste, 89, POSITION_RESTING, 0);
   add_command_dep("snoop", do_snoop, 90, POSITION_DEAD, GOD);
@@ -641,15 +642,15 @@ void assign_command_pointers() {
   add_command_dep("snowball", do_action, 148, POSITION_STANDING, DEMIGOD);
   add_command("write", do_write, POSITION_STANDING, 1);
   add_command("hold", do_grab, POSITION_RESTING, 1);
-  add_command_dep("flee", do_flee, 151, POSITION_SITTING, 1);
+  add_command("flee", do_flee, POSITION_SITTING, 1);
   add_command("sneak", do_sneak, POSITION_STANDING, 1);
   add_command("hide", do_hide, POSITION_RESTING, 1);
-  add_command_dep("backstab", do_backstab, 154, POSITION_STANDING, 1);
+  add_command("backstab", do_backstab, POSITION_STANDING, 1);
   add_command_dep("pick", do_pick, 155, POSITION_STANDING, 1);
   add_command("steal", do_steal, POSITION_STANDING, 1);
-  add_command_dep("bash", do_bash, 157, POSITION_FIGHTING, 1);
-  add_command_dep("rescue", do_rescue, 158, POSITION_FIGHTING, 1);
-  add_command_dep("kick", do_kick, 159, POSITION_FIGHTING, 1);
+  add_command("bash", do_bash, POSITION_FIGHTING, 1);
+  add_command("rescue", do_rescue, POSITION_FIGHTING, 1);
+  add_command("kick", do_kick, POSITION_FIGHTING, 1);
   add_command_dep("french", do_action, 160, POSITION_RESTING, 0);
   add_command_dep("comb", do_action, 161, POSITION_RESTING, 0);
   add_command_dep("massage", do_action, 162, POSITION_RESTING, 0);
@@ -705,8 +706,8 @@ void assign_command_pointers() {
   add_command("compact", do_compact, POSITION_DEAD, 0);
   add_command_dep(":", do_emote, 214, POSITION_SLEEPING, 0);
   add_command("deafen", do_plr_noshout, POSITION_SLEEPING, 1);
-  add_command_dep("slay", do_kill, 216, POSITION_STANDING, SILLYLORD);
-  add_command_dep("wimpy", do_wimp, 217, POSITION_DEAD, 0);
+  add_command("slay", do_kill, POSITION_STANDING, SILLYLORD);
+  add_command("wimpy", do_wimp, POSITION_DEAD, 0);
   add_command("junk", do_junk, POSITION_RESTING, 1);
   add_command("deposit", do_not_here, POSITION_RESTING, 1);
   add_command("withdraw", do_not_here, POSITION_RESTING, 1);
@@ -728,11 +729,11 @@ void assign_command_pointers() {
   add_command_dep("highfive", do_highfive, 232, POSITION_DEAD, 0);
   add_command("title", do_title, POSITION_DEAD, 43);
   add_command("whozone", do_who, POSITION_DEAD, 0);
-  add_command_dep("assist", do_assist, 235, POSITION_FIGHTING, 1);
+  add_command("assist", do_assist, POSITION_FIGHTING, 1);
   add_command("attribute", do_attribute, POSITION_DEAD, 5);
   add_command("world", do_world, POSITION_DEAD, 0);
   add_command("allspells", do_spells, POSITION_DEAD, 0);
-  add_command_dep("breath", do_breath, 239, POSITION_FIGHTING, 1);
+  add_command("breath", do_breath, POSITION_FIGHTING, 1);
   add_command_dep("show", do_show, 240, POSITION_DEAD, CREATOR);
   add_command_dep("debug", do_debug, 241, POSITION_DEAD, IMPLEMENTOR);
   add_command_dep("invisible", do_invis, 242, POSITION_DEAD, LOW_IMMORTAL);
@@ -743,7 +744,7 @@ void assign_command_pointers() {
   add_command_dep("chpwd", do_passwd, 247, POSITION_SITTING, IMPLEMENTOR);
   add_command("fill", do_not_here, POSITION_SITTING, 0);
   add_command_dep("imptest", do_doorbash, 249, POSITION_SITTING, IMPLEMENTOR);
-  add_command_dep("shoot", do_shoot, 250, POSITION_STANDING, 1);
+  add_command("shoot", do_shoot, POSITION_STANDING, 1);
   add_command_dep("silence", do_silence, 251, POSITION_STANDING, DEMIGOD);
   add_command("teams", do_not_here, POSITION_STANDING, LOKI);
   add_command("player", do_not_here, POSITION_STANDING, LOKI);
@@ -768,8 +769,8 @@ void assign_command_pointers() {
   add_command("0", do_alias, POSITION_DEAD, 1);
   add_command_dep("swim", do_swim, 271, POSITION_STANDING, 1);
   add_command_dep("spy", do_spy, 272, POSITION_STANDING, 1);
-  add_command_dep("springleap", do_springleap, 273, POSITION_RESTING, 1);
-  add_command_dep("quivering palm", do_quivering_palm, 274, POSITION_FIGHTING, 30);
+  add_command("springleap", do_springleap, POSITION_RESTING, 1);
+  add_command("quivering palm", do_quivering_palm, POSITION_FIGHTING, 30);
   add_command_dep("feign death", do_feign_death, 275, POSITION_FIGHTING, 1);
   add_command("mount", do_mount, POSITION_STANDING, 1);
   add_command("dismount", do_mount, POSITION_MOUNTED, 1);

@@ -12,6 +12,7 @@
 
 #include "protos.h"
 #include "act.other.h"
+#include "act.off.h"
 
 #define DUAL_WIELD(ch) (ch->equipment[WIELD] && ch->equipment[HOLD]&&\
 			ITEM_TYPE(ch->equipment[WIELD])==ITEM_WEAPON && \
@@ -1188,7 +1189,7 @@ int damage_epilog(struct char_data *ch, struct char_data *victim) {
   gotsome = FALSE;
 
   if (IS_PC(victim) && !(victim->desc)) {
-    do_flee(victim, "", 0);
+    do_flee(victim, "", "flee");
     if (GET_POS(victim) != POSITION_DEAD)
       return (FALSE);
   }

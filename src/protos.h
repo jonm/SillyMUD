@@ -174,24 +174,6 @@ void perform_wear(struct char_data *ch, struct obj_data *obj_object,
 int is_restricted(int Mask, int Class);
 void wear(struct char_data *ch, struct obj_data *obj_object, int keyword);
 
-/* From act.off.c */
-
-void do_hit(struct char_data *ch, char *argument, int cmd);
-void do_kill(struct char_data *ch, char *argument, int cmd);
-void do_backstab(struct char_data *ch, char *argument, int cmd);
-void do_order(struct char_data *ch, char *argument, int cmd);
-void do_flee(struct char_data *ch, char *argument, int cmd);
-void do_bash(struct char_data *ch, char *argument, int cmd);
-void do_rescue(struct char_data *ch, char *argument, int cmd);
-void do_assist(struct char_data *ch, char *argument, int cmd);
-void do_kick(struct char_data *ch, char *argument, int cmd);
-void do_wimp(struct char_data *ch, char *argument, int cmd);
-void do_breath(struct char_data *ch, char *argument, int cmd);
-void do_shoot(struct char_data *ch, char *argument, int cmd);
-void do_springleap(struct char_data *ch, char *argument, int cmd);
-void do_quivering_palm(struct char_data *ch, char *arg, int cmd);
-void kick_messages(struct char_data *ch, struct char_data *victim, int damage);
-
 /* From act.social.c */
 
 char *fread_action(FILE * fl);

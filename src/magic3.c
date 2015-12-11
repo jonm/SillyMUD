@@ -14,6 +14,7 @@
 #include "protos.h"
 #include "act.move.h"
 #include "act.info.h"
+#include "act.off.h"
 
 /* Extern structures */
 extern struct room_data *world;
@@ -241,7 +242,7 @@ void spell_chain_lightn(byte level, struct char_data *ch,
 void spell_scare(byte UNUSED(level), struct char_data *UNUSED(ch),
                  struct char_data *victim, struct obj_data *UNUSED(obj)) {
   if (get_max_level(victim) <= 5)
-    do_flee(victim, "\0", 0);
+    do_flee(victim, "\0", "flee");
 }
 
 void spell_haste(byte level, struct char_data *ch,

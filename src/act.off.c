@@ -27,7 +27,8 @@ extern char *att_kick_kill_room[];
 extern char *att_kick_kill_victim[];
 extern char *att_kick_kill_ch[];
 
-void do_hit(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_hit(struct char_data *ch, char *argument,
+            const char * UNUSED(cmd)) {
   char arg[80];
   struct char_data *victim;
 
@@ -96,7 +97,8 @@ void do_hit(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_kill(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_kill(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   static char arg[MAX_INPUT_LENGTH];
   struct char_data *victim;
 
@@ -125,7 +127,8 @@ void do_kill(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_backstab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_backstab(struct char_data *ch, char *argument,
+                 const char * UNUSED(cmd)) {
   struct char_data *victim;
   char name[256];
   byte percent, base = 0;
@@ -294,7 +297,8 @@ void do_backstab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 }
 
-void do_order(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_order(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char name[100], message[256];
   char buf[256];
   bool found = FALSE;
@@ -394,7 +398,8 @@ void do_order(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_flee(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int i, attempt, loose =
     0, die, percent, charm, nmbr, f, panic, j, tries, badroom;
   bool found;
@@ -903,7 +908,8 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_bash(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_bash(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   bash_action(ch, argument, 0);
 }
 
@@ -1012,7 +1018,8 @@ void bash_action(struct char_data *ch, char *argument, int npc_ok) {
 
 
 
-void do_rescue(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_rescue(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   rescue_action(ch, argument, 0);
 }
 
@@ -1109,7 +1116,8 @@ void rescue_action(struct char_data *ch, char *argument, int npc_ok) {
 
 }
 
-void do_assist(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_assist(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   struct char_data *victim, *tmp_ch;
   char victim_name[240];
 
@@ -1160,7 +1168,8 @@ void do_assist(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_kick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_kick(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   kick_action(ch, argument, 0);
 }
 
@@ -1264,7 +1273,8 @@ void kick_action(struct char_data *ch, char *argument, int npc_ok) {
   WAIT_STATE(ch, PULSE_VIOLENCE * 3);
 }
 
-void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_wimp(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   char buf[255];
   char buf2[255];
   int pct;
@@ -1354,7 +1364,8 @@ void (*bweapons[]) (byte, struct char_data *, char *, int, struct char_data *,
 cast_geyser, cast_fire_breath, cast_gas_breath, cast_frost_breath,
     cast_acid_breath, cast_lightning_breath};
 
-void do_breath(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_breath(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   struct char_data *victim;
   char buf[MAX_STRING_LENGTH], name[MAX_STRING_LENGTH];
   int count, manacost;
@@ -1416,7 +1427,8 @@ void do_breath(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 }
 
-void do_shoot(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_shoot(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char arg[80];
   struct char_data *victim;
 
@@ -1455,7 +1467,8 @@ void do_shoot(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_springleap(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_springleap(struct char_data *ch, char *argument,
+                   const char * UNUSED(cmd)) {
   struct char_data *victim;
   char name[256];
   byte percent;
@@ -1541,7 +1554,8 @@ void do_springleap(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 }
 
-void do_quivering_palm(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_quivering_palm(struct char_data *ch, char *arg,
+                       const char * UNUSED(cmd)) {
   struct char_data *victim;
   struct affected_type af;
   byte percent;

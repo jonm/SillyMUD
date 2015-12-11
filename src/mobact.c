@@ -13,6 +13,7 @@
 #include "act.obj1.h"
 #include "act.obj2.h"
 #include "act.comm.h"
+#include "act.off.h"
 
 extern struct char_data *character_list;
 extern struct index_data *mob_index;
@@ -351,7 +352,7 @@ void mobile_activity(struct char_data *ch) {
       if (!ch->specials.fighting) {
         if (IS_SET(ch->specials.act, ACT_AFRAID)) {
           if ((tmp_ch = find_a_fearee(ch)) != NULL) {
-            do_flee(ch, "", 0);
+            do_flee(ch, "", "flee");
           }
         }
       }
