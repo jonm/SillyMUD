@@ -13,6 +13,7 @@
 #include "db.h"
 #include "act.comm.h"
 #include "act.wizard.h"
+#include "act.social.h"
 
 #define SHOP_FILE "tinyworld.shp"
 #define MAX_TRADE 5
@@ -191,7 +192,7 @@ void shopping_buy(char *arg, struct char_data *ch,
 
     switch (shop_index[shop_nr].temper1) {
     case 0:
-      do_action(keeper, GET_NAME(ch), 30);
+      do_action(keeper, GET_NAME(ch), "puke");
       return;
     case 1:
       do_emote(keeper, "grins happily", "sigh");

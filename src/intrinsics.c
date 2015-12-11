@@ -10,6 +10,7 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "act.social.h"
 
 extern struct time_info_data time_info; /* In db.c */
 extern unsigned char moontype;
@@ -190,7 +191,7 @@ void do_changeform(struct char_data *ch, char *argument, const char * UNUSED(cmd
   }
 }
 
-void do_bite(struct char_data *ch, char *argument, int cmd) {
+void do_bite(struct char_data *ch, char *argument, const char *cmd) {
   char arg[80];
   struct char_data *victim;
 

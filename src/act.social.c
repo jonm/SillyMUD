@@ -8,8 +8,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #include "protos.h"
+#include "utility.h"
 
 /* extern variables */
 
@@ -18,7 +20,7 @@ extern struct descriptor_data *descriptor_list;
 
 
 struct social_messg {
-  int act_nr;
+  char action[128];
   int hide;
   int min_victim_position;      /* Position of victim */
 
@@ -79,7 +81,9 @@ char *fread_action(FILE * fl) {
 
 void boot_social_messages() {
   FILE *fl;
-  int tmp, hide, min_pos;
+  int hide, min_pos;
+  char action[128];
+  char buf[128];
 
   if (!(fl = fopen(SOCMESS_FILE, "r"))) {
     perror("boot_social_messages");
@@ -87,11 +91,17 @@ void boot_social_messages() {
   }
 
   for (;;) {
-    fscanf(fl, " %d ", &tmp);
-    if (tmp < 0)
+    if (!fgets(buf, sizeof(buf), fl)) {
+      if (!feof(fl)) {
+        log_msgf("ERROR: reading '%s': %s (%d)",
+                 SOCMESS_FILE, strerror(errno), errno);
+      }
       break;
-    fscanf(fl, " %d ", &hide);
-    fscanf(fl, " %d \n", &min_pos);
+    }
+
+    if (3 != sscanf(buf, "%s %d %d", action, &hide, &min_pos)) {
+      continue;
+    }
 
     /* alloc a new cell */
     if (!soc_mess_list) {
@@ -106,7 +116,8 @@ void boot_social_messages() {
     }
 
     /* read the stuff */
-    soc_mess_list[list_top].act_nr = tmp;
+    strncpy(soc_mess_list[list_top].action, action,
+            sizeof(soc_mess_list[list_top].action));
     soc_mess_list[list_top].hide = hide;
     soc_mess_list[list_top].min_victim_position = min_pos;
 
@@ -132,48 +143,27 @@ void boot_social_messages() {
 }
 
 
-
-
-int find_action(int cmd) {
-  int bot, top, mid;
-
-  bot = 0;
-  top = list_top;
-
-  if (top < 0)
-    return (-1);
-
-  for (;;) {
-    mid = (bot + top) / 2;
-
-    if (soc_mess_list[mid].act_nr == cmd)
-      return (mid);
-    if (bot >= top)
-      return (-1);
-
-    if (soc_mess_list[mid].act_nr > cmd)
-      top = --mid;
-    else
-      bot = ++mid;
+struct social_messg *find_action(const char* cmd) {
+  for (int i = 0; i <= list_top; i++) {
+    if (STREQ(soc_mess_list[i].action, cmd))
+      return &soc_mess_list[i];
   }
+  return NULL;
 }
 
 
-
-
-
-void do_action(struct char_data *ch, char *argument, int cmd) {
-  int act_nr;
+void do_action(struct char_data *ch, char *argument,
+               const char *cmd) {
   char buf[MAX_INPUT_LENGTH];
   struct social_messg *action;
   struct char_data *vict;
 
-  if ((act_nr = find_action(cmd)) < 0) {
+  action = find_action(cmd);
+  
+  if (!action) {
     send_to_char("That action is not supported.\n\r", ch);
     return;
   }
-
-  action = &soc_mess_list[act_nr];
 
   if (action->char_found)
     only_argument(argument, buf);

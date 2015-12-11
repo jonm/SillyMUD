@@ -19,6 +19,7 @@
 #include "act.obj2.h"
 #include "act.info.h"
 #include "act.comm.h"
+#include "act.social.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -675,7 +676,7 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg,
       GET_POS(ch) = POSITION_SLEEPING;
     }
     else {
-      do_action(andy, ch->player.name, 130 /* slap */ );
+      do_action(andy, ch->player.name, "slap");
       act("$n says 'Hey guys, I run a quiet pub.  Take it outside.'",
           FALSE, andy, 0, 0, TO_ROOM);
     }
@@ -685,10 +686,10 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg,
   case 156:                    /* steal */
     if (andy == ch)
       return TRUE;
-    do_action(andy, ch->player.name, 130 /* slap */ );
+    do_action(andy, ch->player.name, "slap");
     act("$n tells you 'Who the hell do you think you are?'",
         FALSE, andy, 0, ch, TO_VICT);
-    do_action(andy, ch->player.name, 116 /* glare */ );
+    do_action(andy, ch->player.name, "glare");
     return TRUE;
     break;
 
@@ -697,7 +698,7 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg,
   case 172:                    /* cast, recite, use */
     if (andy == ch)
       return TRUE;
-    do_action(andy, ch->player.name, 94 /* poke */ );
+    do_action(andy, ch->player.name, "poke");
     act("$n tells you 'Hey, no funny stuff.'.", FALSE, andy, 0, ch, TO_VICT);
     return TRUE;
     break;
@@ -3564,7 +3565,7 @@ int chalice(struct char_data *ch, int cmd, char *arg) {
                                         real_roomp(ch->in_room)->contents)))
       return (0);
 
-    do_action(ch, arg, cmd);    /* pray */
+    do_action(ch, arg, "pray");    /* pray */
     send_to_char(CHAL_ACT, ch);
     extract_obj(chalice);
     act("$n is torn out of existence!", TRUE, ch, 0, 0, TO_ROOM);
@@ -3586,7 +3587,7 @@ int kings_hall(struct char_data *ch, int cmd, char *arg) {
   if (cmd != 176)
     return (0);
 
-  do_action(ch, arg, 176);
+  do_action(ch, arg, "pray");
 
   send_to_char("You feel as if some mighty force has been offended.\n\r", ch);
   send_to_char(CHAL_ACT, ch);

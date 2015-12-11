@@ -157,8 +157,6 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword);
 
 char *fread_action(FILE * fl);
 void boot_social_messages();
-int find_action(int cmd);
-void do_action(struct char_data *ch, char *argument, int cmd);
 void boot_pose_messages();
 
 
@@ -1916,7 +1914,6 @@ NODE *find_valid_command(char *name);
 
 /* from intrinsics.c */
 void mindflayer_attack(struct char_data *ch, struct char_data *v);
-void do_bite(struct char_data *ch, char *argument, int cmd);
 void vampire_bite(struct char_data *ch, struct char_data *v);
 int veggie_gain_mods(struct char_data *ch, int gain, bool msgs);
 int vamp_gain_mods(struct char_data *ch, int gain, bool msgs);

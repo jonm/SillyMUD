@@ -17,6 +17,8 @@
 #include "act.info.h"
 #include "act.other.h"
 #include "act.wizard.h"
+#include "act.social.h"
+#include "utility.h"
 
 #define OBJ_FILE_FREE "\0\0\0"
 
@@ -649,22 +651,19 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
   struct char_data *recep = 0;
   struct char_data *temp_char;
   sh_int save_room;
-  sh_int action_tabel[9];
-
+  char * action_table[] = {
+    "smile",
+    "dance",
+    "sigh",
+    "blush",
+    "burp",
+    "cough",
+    "fart",
+    "twiddle",
+    "yawn"};
 
   if (!ch->desc)
     return (FALSE);             /* You've forgot FALSE - NPC couldn't leave */
-
-  action_tabel[0] = 23;
-  action_tabel[1] = 24;
-  action_tabel[2] = 36;
-  action_tabel[3] = 105;
-  action_tabel[4] = 106;
-  action_tabel[5] = 109;
-  action_tabel[6] = 111;
-  action_tabel[7] = 142;
-  action_tabel[8] = 147;
-
 
   for (temp_char = real_roomp(ch->in_room)->people; (temp_char) && (!recep);
        temp_char = temp_char->next_in_room)
@@ -741,10 +740,10 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
       }
     }
 
-
-
-    if (!number(0, 30))
-      do_action(recep, "", action_tabel[number(0, 8)]);
+    if (!number(0, 30)) {
+      int act_num = number(0, sizeof(action_table)/sizeof(char*) - 1);
+      do_action(recep, "", action_table[act_num]);
+    }
     return (FALSE);
   }
 
