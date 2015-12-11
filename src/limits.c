@@ -701,9 +701,8 @@ void gain_exp(struct char_data *ch, int gain) {
               /* do nothing..this is cool */
             }
             else if (GET_EXP(ch) + gain >= titles[i][GET_LEVEL(ch, i) + 1].exp) {
-              SPRINTF(buf, "You have gained enough to be a(n) %s\n\r",
-                      GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i) + 1));
-              send_to_char(buf, ch);
+              send_to_charf(ch, "You have gained enough to be a(n) %s\n\r",
+                            GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i) + 1));
               send_to_char("You must return to a guild to earn the level\n\r",
                            ch);
               if (GET_EXP(ch) + gain >= titles[i][GET_LEVEL(ch, i) + 2].exp) {
