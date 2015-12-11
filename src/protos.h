@@ -273,7 +273,6 @@ int str_len(char *buf);
 int load();
 void gr();
 int workhours();
-void reboot_text(struct char_data *ch, char *arg, int cmd);
 void init_scripts();
 void reload_rooms();
 void free_zone(int zone_nr);

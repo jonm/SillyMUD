@@ -784,7 +784,7 @@ void assign_command_pointers() {
   add_command("first aid", do_first_aid, POSITION_RESTING, 1);
   add_command("log", do_set_log, POSITION_DEAD, 58);
   add_command("recall", do_cast, POSITION_DEAD, LOKI);
-  add_command_dep("reload", reboot_text, 284, POSITION_DEAD, 57);
+  add_command("reload", reboot_text, POSITION_DEAD, 57);
   add_command("event", do_event, POSITION_DEAD, 59);
   add_command("disguise", do_disguise, POSITION_STANDING, 1);
   add_command("climb", do_climb, POSITION_STANDING, 1);
