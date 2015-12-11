@@ -1975,7 +1975,6 @@ void init_radix();
 NODE *find_valid_command(char *name);
 
 /* from intrinsics.c */
-void do_changeform(struct char_data *ch, char *argument, int cmd);
 void mindflayer_attack(struct char_data *ch, struct char_data *v);
 void do_bite(struct char_data *ch, char *argument, int cmd);
 void vampire_bite(struct char_data *ch, struct char_data *v);

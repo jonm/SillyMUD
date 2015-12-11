@@ -26,6 +26,7 @@
 #include "act.comm.h"
 #include "act.other.h"
 #include "act.off.h"
+#include "intrinsics.h"
 
 #define NOT !
 #define AND &&
@@ -804,7 +805,7 @@ void assign_command_pointers() {
 #endif
   add_command("auto", do_auto, POSITION_RESTING, 1);
   add_command("brew", do_makepotion, POSITION_RESTING, 1);
-  add_command_dep("changeform", do_changeform, 303, POSITION_STANDING, 1);
+  add_command("changeform", do_changeform, POSITION_STANDING, 1);
   add_command("walk", do_walk, POSITION_STANDING, 1);
   add_command("fly", do_fly, POSITION_STANDING, 1);
   add_command("berserk", do_berserk, POSITION_FIGHTING, 1);

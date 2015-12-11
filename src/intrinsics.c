@@ -40,7 +40,7 @@ struct PolyType DruidList[17] = {
 
 #define VAMPIRE_BAT 3066
 
-void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_changeform(struct char_data *ch, char *argument, const char * UNUSED(cmd)) {
   char buf[80];
   int mobn, X = LAST_DRUID_MOB, found = FALSE, level;
   struct char_data *mob;
