@@ -448,16 +448,18 @@ void display_group_move(struct char_data *ch, int dir, int was_in, int total) {
 }
 
 
-void do_move(struct char_data *ch, char *UNUSED(argument), const char *cmd) {
-  int dir = MOVE_DIR_INVALID;
-
+int move_string_to_dir(const char *str) {
   for (int i = MOVE_DIR_FIRST; i <= MOVE_DIR_LAST; i++) {
-    if (!strcmp (cmd, move_dir_string[i])) {
-      dir = i;
+    if (!strcmp (str, move_dir_string[i])) {
+      return i;
       break;
     }
   }
+  return MOVE_DIR_INVALID;
+}
 
+void do_move(struct char_data *ch, char *UNUSED(argument), const char *cmd) {
+  int dir = move_string_to_dir(cmd);
   assert(dir != MOVE_DIR_INVALID);
   return move_to_dir(ch, dir);
 }

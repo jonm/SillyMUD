@@ -16,6 +16,7 @@
 extern const char *move_dir_string[];
 
 void move_to_dir(struct char_data *ch, int dir);
+int move_string_to_dir(const char *str);
 
 void do_move(struct char_data *ch, char *argument, const char *cmd);
 void do_enter(struct char_data *ch, char *argument, const char *cmd);
