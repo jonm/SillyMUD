@@ -400,15 +400,13 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   void gain_exp(struct char_data *ch, int gain);
   int special(struct char_data *ch, int cmd, char *arg);
   char buf[255];
-  char buf2[255];
 
   argument = one_argument(argument, buf);
 
   if (IS_PC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)) {
     if ((ch->desc->wait) > 1) { /* Someone is in a wait state */
       send_to_char("Your head is still spinning too much to flee!\n\r", ch);
-      SPRINTF(buf, "You must wait %d pulses\n\r", ch->desc->wait);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You must wait %d pulses\n\r", ch->desc->wait);
       return;
     }
 
@@ -425,13 +423,11 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         send_to_char("Please choose a flee setting of 1 to 5 rooms.\n\r", ch);
         return;
       }
-      SPRINTF(buf2, "You used to flee %d rooms when you ran away.\n\r",
-              ch->specials.flee);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "You used to flee %d rooms when you ran away.\n\r",
+                    ch->specials.flee);
       ch->specials.flee = nmbr;
-      SPRINTF(buf2, "You will NOW flee %d rooms when you run away.\n\r",
-              ch->specials.flee);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "You will NOW flee %d rooms when you run away.\n\r",
+                    ch->specials.flee);
       return;
     }
   }
@@ -1267,7 +1263,6 @@ void kick_action(struct char_data *ch, char *argument, int npc_ok) {
 
 void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char buf[255];
-  char buf2[255];
   int pct;
 
   if (GET_RACE(ch) == RACE_OGRE) {
@@ -1298,10 +1293,8 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         REMOVE_BIT(ch->specials.act, PLR_WIMPY);
       send_to_char("Ok, you are no longer a wimp...\n\r", ch);
       ch->specials.pct = pct;
-      SPRINTF(buf2,
-              "And you will now get your BLEEDING message at %d%% of max hitpoints.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "And you will now get your BLEEDING message at %d%% of max hitpoints.\n\r",
+                    ch->specials.pct);
     }
     else {
       if (IS_NPC(ch))
@@ -1309,10 +1302,9 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       else
         REMOVE_BIT(ch->specials.act, PLR_WIMPY);
       send_to_char("Ok, you are no longer a wimp...\n\r", ch);
-      SPRINTF(buf2,
-              "However, you will still get your BLEEDING message at %d%% of max hitpoints.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch,
+                    "However, you will still get your BLEEDING message at %d%% of max hitpoints.\n\r",
+                    ch->specials.pct);
     }
   }
   else {
@@ -1326,17 +1318,14 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         send_to_char("Please choose a value between 1 and 50.\n\r", ch);
         return;
       }
-      SPRINTF(buf2, "Your wimpy percentage WAS %d%%.\n\r", ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage WAS %d%%.\n\r", ch->specials.pct);
       ch->specials.pct = pct;
-      SPRINTF(buf2, "Your wimpy percentage has now been set to %d%%.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage has now been set to %d%%.\n\r",
+                    ch->specials.pct);
     }
     else {
-      SPRINTF(buf2, "Your wimpy percentage remains at %d%%.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage remains at %d%%.\n\r",
+                    ch->specials.pct);
     }
     if (IS_NPC(ch))
       SET_BIT(ch->specials.act, ACT_WIMPY);

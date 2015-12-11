@@ -27,7 +27,6 @@ int getabunch(char *name, char *newname);
 /* procedures related to get */
 void get(struct char_data *ch, struct obj_data *obj_object,
          struct obj_data *sub_object) {
-  char buffer[256];
 
   if (sub_object) {
     if (!IS_SET(sub_object->obj_flags.value[1], CONT_CLOSED)) {
@@ -56,10 +55,9 @@ void get(struct char_data *ch, struct obj_data *obj_object,
     if (obj_object->obj_flags.value[0] < 1)
       obj_object->obj_flags.value[0] = 1;
     obj_from_char(obj_object);
-    SPRINTF(buffer, "There %s %d coins.\n\r",
-            obj_object->obj_flags.value[0] > 1 ? "were" : "was",
-            obj_object->obj_flags.value[0]);
-    send_to_char(buffer, ch);
+    send_to_charf(ch, "There %s %d coins.\n\r",
+                  obj_object->obj_flags.value[0] > 1 ? "were" : "was",
+                  obj_object->obj_flags.value[0]);
     GET_GOLD(ch) += obj_object->obj_flags.value[0];
     if (GET_GOLD(ch) > 100000 && obj_object->obj_flags.value[0] > 10000) {
       char buf[MAX_INPUT_LENGTH];
@@ -74,7 +72,6 @@ void get(struct char_data *ch, struct obj_data *obj_object,
 void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char arg1[MAX_STRING_LENGTH];
   char arg2[MAX_STRING_LENGTH];
-  char buffer[MAX_STRING_LENGTH];
   struct obj_data *sub_object;
   struct obj_data *obj_object;
   struct obj_data *next_obj;
@@ -152,16 +149,14 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
               }
             }
             else {
-              SPRINTF(buffer, "%s : You can't carry that much weight.\n\r",
-                      obj_object->short_description);
-              send_to_char(buffer, ch);
+              send_to_charf(ch, "%s : You can't carry that much weight.\n\r",
+                            obj_object->short_description);
               fail = TRUE;
             }
           }
           else {
-            SPRINTF(buffer, "%s : You can't carry that many items.\n\r",
-                    obj_object->short_description);
-            send_to_char(buffer, ch);
+            send_to_charf(ch, "%s : You can't carry that many items.\n\r",
+                          obj_object->short_description);
             fail = TRUE;
           }
         }
@@ -210,25 +205,22 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
               }
             }
             else {
-              SPRINTF(buffer, "%s : You can't carry that much weight.\n\r",
-                      obj_object->short_description);
-              send_to_char(buffer, ch);
+              send_to_charf(ch, "%s : You can't carry that much weight.\n\r",
+                            obj_object->short_description);
               fail = TRUE;
               num = 0;
             }
           }
           else {
-            SPRINTF(buffer, "%s : You can't carry that many items.\n\r",
-                    obj_object->short_description);
-            send_to_char(buffer, ch);
+            send_to_charf(ch, "%s : You can't carry that many items.\n\r",
+                          obj_object->short_description);
             fail = TRUE;
             num = 0;
           }
         }
         else {
           if (num > 0) {
-            SPRINTF(buffer, "You do not see a %s here.\n\r", arg1);
-            send_to_char(buffer, ch);
+            send_to_charf(ch, "You do not see a %s here.\n\r", arg1);
           }
           num = 0;
           fail = TRUE;
@@ -275,37 +267,32 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
                   }
                 }
                 else {
-                  SPRINTF(buffer, "%s : You can't carry that much weight.\n\r",
-                          obj_object->short_description);
-                  send_to_char(buffer, ch);
+                  send_to_charf(ch, "%s : You can't carry that much weight.\n\r",
+                                obj_object->short_description);
                   fail = TRUE;
                 }
               }
               else {
-                SPRINTF(buffer, "%s : You can't carry that many items.\n\r",
-                        obj_object->short_description);
-                send_to_char(buffer, ch);
+                send_to_charf(ch, "%s : You can't carry that many items.\n\r",
+                              obj_object->short_description);
                 fail = TRUE;
               }
             }
           }
           if (!found && !fail) {
-            SPRINTF(buffer, "You do not see anything in %s.\n\r",
-                    sub_object->short_description);
-            send_to_char(buffer, ch);
+            send_to_charf(ch, "You do not see anything in %s.\n\r",
+                          sub_object->short_description);
             fail = TRUE;
           }
         }
         else {
-          SPRINTF(buffer, "%s is not a container.\n\r",
-                  sub_object->short_description);
-          send_to_char(buffer, ch);
+          send_to_charf(ch, "%s is not a container.\n\r",
+                        sub_object->short_description);
           fail = TRUE;
         }
       }
       else {
-        SPRINTF(buffer, "You do not see or have the %s.\n\r", arg2);
-        send_to_char(buffer, ch);
+        send_to_charf(ch, "You do not see or have the %s.\n\r", arg2);
         fail = TRUE;
       }
     }
@@ -363,26 +350,23 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
                   }
                 }
                 else {
-                  SPRINTF(buffer, "%s : You can't carry that much weight.\n\r",
-                          obj_object->short_description);
-                  send_to_char(buffer, ch);
+                  send_to_charf(ch, "%s : You can't carry that much weight.\n\r",
+                                obj_object->short_description);
                   fail = TRUE;
                   num = 0;
                 }
               }
               else {
-                SPRINTF(buffer, "%s : You can't carry that many items.\n\r",
-                        obj_object->short_description);
-                send_to_char(buffer, ch);
+                send_to_charf(ch, "%s : You can't carry that many items.\n\r",
+                              obj_object->short_description);
                 fail = TRUE;
                 num = 0;
               }
             }
             else {
               if (num > 0) {
-                SPRINTF(buffer, "%s does not contain the %s.\n\r",
-                        sub_object->short_description, arg1);
-                send_to_char(buffer, ch);
+                send_to_charf(ch, "%s does not contain the %s.\n\r",
+                              sub_object->short_description, arg1);
               }
               num = 0;
               fail = TRUE;
@@ -394,15 +378,13 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           }
         }
         else {
-          SPRINTF(buffer, "%s is not a container.\n\r",
-                  sub_object->short_description);
-          send_to_char(buffer, ch);
+          send_to_charf(ch, "%s is not a container.\n\r",
+                        sub_object->short_description);
           fail = TRUE;
         }
       }
       else {
-        SPRINTF(buffer, "You do not see or have the %s.\n\r", arg2);
-        send_to_char(buffer, ch);
+        send_to_charf(ch, "You do not see or have the %s.\n\r", arg2);
         fail = TRUE;
       }
     }
@@ -413,7 +395,6 @@ void do_get(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 void do_drop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char arg[MAX_INPUT_LENGTH];
   int amount;
-  char buffer[MAX_STRING_LENGTH];
   struct obj_data *tmp_object;
   struct obj_data *next_obj;
   bool test = FALSE;
@@ -466,12 +447,11 @@ void do_drop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         else {
           if (CAN_SEE_OBJ(ch, tmp_object)) {
             if (singular(tmp_object))
-              SPRINTF(buffer, "You can't drop %s, it must be CURSED!\n\r",
-                      tmp_object->short_description);
+              send_to_charf(ch, "You can't drop %s, it must be CURSED!\n\r",
+                            tmp_object->short_description);
             else
-              SPRINTF(buffer, "You can't drop %s, they must be CURSED!\n\r",
-                      tmp_object->short_description);
-            send_to_char(buffer, ch);
+              send_to_charf(ch, "You can't drop %s, they must be CURSED!\n\r",
+                            tmp_object->short_description);
             test = TRUE;
           }
         }
@@ -505,8 +485,7 @@ void do_drop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         tmp_object = get_obj_in_list_vis(ch, arg, ch->carrying);
         if (tmp_object) {
           if (!IS_SET(tmp_object->obj_flags.extra_flags, ITEM_NODROP)) {
-            SPRINTF(buffer, "You drop %s.\n\r", tmp_object->short_description);
-            send_to_char(buffer, ch);
+            send_to_charf(ch, "You drop %s.\n\r", tmp_object->short_description);
             act("$n drops $p.", 1, ch, tmp_object, 0, TO_ROOM);
             obj_from_char(tmp_object);
             obj_to_room(tmp_object, ch->in_room);
@@ -544,7 +523,6 @@ void do_drop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 void do_put(struct char_data *ch, char *argument, int UNUSED(cmd)) {
-  char buffer[256];
   char arg1[128];
   char arg2[128];
   struct obj_data *obj_object;
@@ -648,22 +626,19 @@ void do_put(struct char_data *ch, char *argument, int UNUSED(cmd)) {
                 }
               }
               else {
-                SPRINTF(buffer, "%s is not a container.\n\r",
-                        sub_object->short_description);
-                send_to_char(buffer, ch);
+                send_to_charf(ch, "%s is not a container.\n\r",
+                              sub_object->short_description);
                 num = 0;
               }
             }
             else {
-              SPRINTF(buffer, "You don't have the %s.\n\r", arg2);
-              send_to_char(buffer, ch);
+              send_to_charf(ch, "You don't have the %s.\n\r", arg2);
               num = 0;
             }
           }
           else {
             if ((num > 0) || (num == -1)) {
-              SPRINTF(buffer, "You don't have the %s.\n\r", arg1);
-              send_to_char(buffer, ch);
+              send_to_charf(ch, "You don't have the %s.\n\r", arg1);
             }
             num = 0;
           }
@@ -674,8 +649,7 @@ void do_put(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       }
     }
     else {
-      SPRINTF(buffer, "Put %s in what?\n\r", arg1);
-      send_to_char(buffer, ch);
+      send_to_charf(ch, "Put %s in what?\n\r", arg1);
     }
   }
   else {
@@ -731,8 +705,7 @@ void do_give(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
 
     send_to_char("Ok.\n\r", ch);
-    SPRINTF(buf, "%s gives you %d gold coins.\n\r", PERS(ch, vict), amount);
-    send_to_char(buf, vict);
+    send_to_charf(vict, "%s gives you %d gold coins.\n\r", PERS(ch, vict), amount);
     act("$n gives some gold to $N.", 1, ch, 0, vict, TO_NOTVICT);
     if (IS_NPC(ch) || (get_max_level(ch) < DEMIGOD))
       GET_GOLD(ch) -= amount;

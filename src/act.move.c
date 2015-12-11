@@ -684,7 +684,6 @@ int add_to_char_heap(struct char_data *heap[50], int *top, int total[50],
 
 
 int find_door(struct char_data *ch, char *type, char *dir) {
-  char buf[MAX_STRING_LENGTH];
   int door;
   extern char *dirs[];
   struct room_direction_data *exitp;
@@ -706,8 +705,7 @@ int find_door(struct char_data *ch, char *type, char *dir) {
           send_to_char("Thats a direction, not a portal.\n\r", ch);
           return (-1);
         }
-        SPRINTF(buf, "I see no %s there.\n\r", type);
-        send_to_char(buf, ch);
+        send_to_charf(ch, "I see no %s there.\n\r", type);
         return (-1);
       }
     }
@@ -716,8 +714,7 @@ int find_door(struct char_data *ch, char *type, char *dir) {
         send_to_char("Thats a direction, not a portal.\n\r", ch);
         return (-1);
       }
-      SPRINTF(buf, "I see no %s there.\n\r", type);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "I see no %s there.\n\r", type);
       return (-1);
     }
   }
@@ -733,8 +730,7 @@ int find_door(struct char_data *ch, char *type, char *dir) {
         return (-1);
       }
     }
-    SPRINTF(buf, "I see no %s here.\n\r", type);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "I see no %s here.\n\r", type);
     return (-1);
   }
 }
@@ -1191,7 +1187,7 @@ void do_pick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   int door;
-  char buf[MAX_INPUT_LENGTH], tmp[MAX_STRING_LENGTH];
+  char buf[MAX_INPUT_LENGTH];
   struct room_direction_data *exitp;
   struct room_data *rp;
 
@@ -1204,8 +1200,7 @@ void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         move_to_dir(ch, door);
         return;
       }
-    SPRINTF(tmp, "There is no %s here.\n\r", buf);
-    send_to_char(tmp, ch);
+    send_to_charf(ch, "There is no %s here.\n\r", buf);
   }
   else if (IS_SET(real_roomp(ch->in_room)->room_flags, INDOORS)) {
     send_to_char("You are already indoors.\n\r", ch);

@@ -212,7 +212,6 @@ void do_action(struct char_data *ch, char *argument, int cmd) {
 }
 
 void do_insult(struct char_data *ch, char *argument, int UNUSED(cmd)) {
-  static char buf[100];
   static char arg[MAX_STRING_LENGTH];
   struct char_data *victim;
 
@@ -224,8 +223,7 @@ void do_insult(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
     else {
       if (victim != ch) {
-        SPRINTF(buf, "You insult %s.\n\r", GET_NAME(victim));
-        send_to_char(buf, ch);
+        send_to_charf(ch, "You insult %s.\n\r", GET_NAME(victim));
 
         switch (random() % 3) {
         case 0:{
