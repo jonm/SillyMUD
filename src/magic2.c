@@ -1460,7 +1460,7 @@ void spell_know_alignment(byte UNUSED(level), struct char_data *ch,
                           struct char_data *victim,
                           struct obj_data *UNUSED(obj)) {
   int ap;
-  char buf[200], name[100];
+  char name[100];
 
   assert(victim && ch);
 
@@ -1472,26 +1472,23 @@ void spell_know_alignment(byte UNUSED(level), struct char_data *ch,
   ap = GET_ALIGNMENT(victim);
 
   if (ap > 700)
-    SPRINTF(buf, "%s has an aura as white as the driven snow.\n\r", name);
+    send_to_charf(ch, "%s has an aura as white as the driven snow.\n\r", name);
   else if (ap > 350)
-    SPRINTF(buf, "%s is of excellent moral character.\n\r", name);
+    send_to_charf(ch, "%s is of excellent moral character.\n\r", name);
   else if (ap > 100)
-    SPRINTF(buf, "%s is often kind and thoughtful.\n\r", name);
+    send_to_charf(ch, "%s is often kind and thoughtful.\n\r", name);
   else if (ap > 25)
-    SPRINTF(buf, "%s isn't a bad sort...\n\r", name);
+    send_to_charf(ch, "%s isn't a bad sort...\n\r", name);
   else if (ap > -25)
-    SPRINTF(buf, "%s doesn't seem to have a firm moral commitment\n\r", name);
+    send_to_charf(ch, "%s doesn't seem to have a firm moral commitment\n\r", name);
   else if (ap > -100)
-    SPRINTF(buf, "%s isn't the worst you've come across\n\r", name);
+    send_to_charf(ch, "%s isn't the worst you've come across\n\r", name);
   else if (ap > -350)
-    SPRINTF(buf, "%s could be a little nicer, but who couldn't?\n\r", name);
+    send_to_charf(ch, "%s could be a little nicer, but who couldn't?\n\r", name);
   else if (ap > -700)
-    SPRINTF(buf, "%s probably just had a bad childhood\n\r", name);
+    send_to_charf(ch, "%s probably just had a bad childhood\n\r", name);
   else
-    SPRINTF(buf, "I'd rather just not say anything at all about %s\n\r", name);
-
-  send_to_char(buf, ch);
-
+    send_to_charf(ch, "I'd rather just not say anything at all about %s\n\r", name);
 }
 
 void spell_dispel_magic(byte level, struct char_data *ch,

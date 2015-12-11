@@ -1527,12 +1527,10 @@ void act(char *str, int hide_invisible, struct char_data *ch,
 
 void raw_force_all(char *to_force) {
   struct descriptor_data *i;
-  char buf[400];
 
   for (i = descriptor_list; i; i = i->next)
     if (!i->connected) {
-      SPRINTF(buf, "The game has forced you to '%s'.\n\r", to_force);
-      send_to_char(buf, i->character);
+      send_to_charf(i->character, "The game has forced you to '%s'.\n\r", to_force);
       command_interpreter(i->character, to_force);
     }
 }
@@ -1622,39 +1620,24 @@ void update_screen(struct char_data *ch, int update) {
 
 
 void init_screen(struct char_data *ch) {
-  char buf[255];
   int size;
 
   size = ch->size;
-  SPRINTF(buf, VT_HOMECLR);
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_MARGSET, 0, size - 5);
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 4, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf,
-          "-===========================================================================-");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Hit Points: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 40);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Movement Points: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Mana: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 40);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Gold: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 1, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Experience Points: ");
-  send_to_char(buf, ch);
+  send_to_charf(ch, VT_HOMECLR);
+  send_to_charf(ch, VT_MARGSET, 0, size - 5);
+  send_to_charf(ch, VT_CURSPOS, size - 4, 1);
+  send_to_charf(ch,
+                "-===========================================================================-");
+  send_to_charf(ch, VT_CURSPOS, size - 3, 1);
+  send_to_charf(ch, "Hit Points: ");
+  send_to_charf(ch, VT_CURSPOS, size - 3, 40);
+  send_to_charf(ch, "Movement Points: ");
+  send_to_charf(ch, VT_CURSPOS, size - 2, 1);
+  send_to_charf(ch, "Mana: ");
+  send_to_charf(ch, VT_CURSPOS, size - 2, 40);
+  send_to_charf(ch, "Gold: ");
+  send_to_charf(ch, VT_CURSPOS, size - 1, 1);
+  send_to_charf(ch, "Experience Points: ");
 
   ch->last.mana = GET_MANA(ch);
   ch->last.mmana = GET_MAX_MANA(ch);
@@ -1666,28 +1649,16 @@ void init_screen(struct char_data *ch) {
   ch->last.gold = GET_GOLD(ch);
 
   /* Update all of the info parts */
-  SPRINTF(buf, VT_CURSPOS, size - 3, 13);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 58);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 7);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 47);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d", GET_GOLD(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 1, 20);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d", GET_EXP(ch));
-  send_to_char(buf, ch);
+  send_to_charf(ch, VT_CURSPOS, size - 3, 13);
+  send_to_charf(ch, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 3, 58);
+  send_to_charf(ch, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 2, 7);
+  send_to_charf(ch, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 2, 47);
+  send_to_charf(ch, "%d", GET_GOLD(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 1, 20);
+  send_to_charf(ch, "%d", GET_EXP(ch));
 
-  SPRINTF(buf, VT_CURSPOS, 0, 0);
-  send_to_char(buf, ch);
-
+  send_to_charf(ch, VT_CURSPOS, 0, 0);
 }
