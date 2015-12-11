@@ -15,6 +15,7 @@
 #include "act.comm.h"
 #include "act.off.h"
 #include "act.move.h"
+#include "act.wizard.h"
 
 /*   external vars  */
 
@@ -388,10 +389,10 @@ int chess_game(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   }
 
   if (move_found && rp) {
-    do_emote(ch, "leaves the room.", 0);
+    do_emote(ch, "leaves the room.", NULL);
     char_from_room(ch);
     char_to_room(ch, rp->number);
-    do_emote(ch, "has arrived.", 0);
+    do_emote(ch, "has arrived.", NULL);
 
     if (ep) {
       if (side)

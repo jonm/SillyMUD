@@ -114,7 +114,8 @@ void do_auth(struct char_data *ch, char *argument, int cmd) {
 }
 #endif
 
-void do_imptest(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_imptest(struct char_data *ch, char *arg,
+                const char * UNUSED(cmd)) {
   struct char_data *i;
   struct StrHeap *H = 0;
   int x = 0;
@@ -136,7 +137,8 @@ void do_imptest(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
 }
 
-void do_passwd(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
+void do_passwd(struct char_data *ch, char *argument,
+               const char * UNUSED(cmdnum)) {
   int player_i, pos;
   char name[30], npasswd[20], pass[20];
   struct char_file_u tmp_store;
@@ -201,7 +203,8 @@ void do_passwd(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
   }
 }
 
-void do_setsev(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_setsev(struct char_data *ch, char *arg,
+               const char * UNUSED(cmd)) {
   char buf[255];
   char buf2[255];
   int sev;
@@ -256,7 +259,8 @@ void dsearch(char *string, char *tmp) {
   strcpy(string, tmp);
 }
 
-void do_bamfin(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_bamfin(struct char_data *ch, char *arg,
+               const char * UNUSED(cmd)) {
   char buf[255];
   size_t len;
 
@@ -308,7 +312,8 @@ void do_bamfin(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   return;
 }
 
-void do_bamfout(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_bamfout(struct char_data *ch, char *arg,
+                const char * UNUSED(cmd)) {
   char buf[255];
   size_t len;
 
@@ -362,7 +367,8 @@ void do_bamfout(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   return;
 }
 
-void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
+void do_instazone(struct char_data *ch, char *argument,
+                  const char * UNUSED(cmdnum)) {
   char cmd, c, buf[80];
   int i, start_room, end_room, j, arg1, arg2, arg3;
   struct char_data *p;
@@ -476,7 +482,7 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
 
 }
 
-void do_highfive(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_highfive(struct char_data *ch, char *argument, const char * UNUSED(cmd)) {
   char buf[80];
   char mess[120];
   struct char_data *tch;
@@ -505,18 +511,19 @@ void do_highfive(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 void do_addhost(struct char_data *UNUSED(ch), char *UNUSED(argument),
-                int UNUSED(command)) {
+                const char * UNUSED(command)) {
 }
 
 void do_removehost(struct char_data *UNUSED(ch), char *UNUSED(argument),
-                   int UNUSED(command)) {
+                   const char * UNUSED(command)) {
 }
 
 void do_listhosts(struct char_data *UNUSED(ch), char *UNUSED(argument),
-                  int UNUSED(command)) {
+                  const char * UNUSED(command)) {
 }
 
-void do_silence(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_silence(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   char buf[255];
   extern int Silence;
   if ((get_max_level(ch) < DEMIGOD) || (IS_NPC(ch))) {
@@ -540,7 +547,8 @@ void do_silence(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   }
 }
 
-void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_wizlock(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
 #if SITELOCK
   char *test;
   int a, length, b;
@@ -706,7 +714,8 @@ void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 
 }
 
-void do_rload(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_rload(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
 
   char i;
   int start = -1, end = -2;
@@ -728,7 +737,8 @@ void do_rload(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_rsave(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_rsave(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char i, buf[256];
   int start = -1, end = -2;
 
@@ -751,7 +761,8 @@ void do_rsave(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_emote(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_emote(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   int i;
   char buf[MAX_INPUT_LENGTH];
 
@@ -771,7 +782,8 @@ void do_emote(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_echo(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_echo(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int i;
   char buf[MAX_INPUT_LENGTH];
 
@@ -799,7 +811,8 @@ void do_echo(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_system(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_system(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int i;
   char buf[256];
 
@@ -816,7 +829,8 @@ void do_system(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_trans(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_trans(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   struct descriptor_data *i;
   struct char_data *victim;
   char buf[100];
@@ -861,7 +875,8 @@ void do_trans(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_at(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_at(struct char_data *ch, char *argument,
+           const char * UNUSED(cmd)) {
   char command[MAX_INPUT_LENGTH], loc_str[MAX_INPUT_LENGTH];
   int loc_nr, location, original_loc;
   struct char_data *target_mob;
@@ -918,7 +933,8 @@ void do_at(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
 }
 
-void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_goto(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   char buf[MAX_INPUT_LENGTH];
   int loc_nr, location, i;
   struct char_data *target_mob, *pers, *v;
@@ -1049,7 +1065,8 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   do_look(ch, "", "look");
 }
 
-void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_stat(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   extern char *spells[];
   struct affected_type *aff;
   char arg1[MAX_STRING_LENGTH];
@@ -1623,7 +1640,8 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_set(struct char_data *ch, char *argument,
+            const char * UNUSED(cmd)) {
   char field[20], name[20], parmstr[50];
   struct char_data *mob;
   int parm, parm2;
@@ -1876,11 +1894,13 @@ void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_shutdow(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_shutdow(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   send_to_char("If you want to shut something down - say so!\n\r", ch);
 }
 
-void do_shutdown(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_shutdown(struct char_data *ch, char *argument,
+                 const char * UNUSED(cmd)) {
   extern int mudshutdown, should_reboot;
   char buf[100], arg[MAX_INPUT_LENGTH];
 
@@ -1905,7 +1925,8 @@ void do_shutdown(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Go shut down someone your own size.\n\r", ch);
 }
 
-void do_snoop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_snoop(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   static char arg[MAX_STRING_LENGTH];
   struct char_data *victim;
 
@@ -1971,7 +1992,8 @@ logically.. this person has returned from being a creature?
   return;
 }
 
-void do_switch(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_switch(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   static char arg[80];
   struct char_data *victim;
 
@@ -2013,14 +2035,13 @@ void do_switch(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_return(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_return(struct char_data *ch, char *UNUSED(argument),
+               const char * UNUSED(cmd)) {
   return_action(ch, 1);
 }
 
 void return_action(struct char_data *ch, int call_as_self) {
   struct char_data *mob, *per;
-
-  void do_snoop(struct char_data *ch, char *argument, int cmd);
 
   if (get_max_level(ch) < LOW_IMMORTAL)
     if (ch->specials.fighting) {
@@ -2074,7 +2095,8 @@ void return_action(struct char_data *ch, int call_as_self) {
 }
 
 
-void do_force(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_force(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   force_action(ch, argument, 0);
 }
 
@@ -2120,7 +2142,8 @@ void force_action(struct char_data *ch, char *argument, int npc_ok) {
   }
 }
 
-void do_load(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_load(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   struct char_data *mob;
   struct obj_data *obj;
   char type[100], num[100];
@@ -2293,7 +2316,8 @@ void purge_one_room(int rnum, struct room_data *rp, int *range) {
 
 
 /* clean a room of all mobiles and objects */
-void do_purge(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_purge(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   struct char_data *vict, *next_v;
   struct obj_data *obj, *next_o;
 
@@ -2733,7 +2757,8 @@ void do_start(struct char_data *ch) {
 
 }
 
-void do_advance(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_advance(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *victim;
   char name[100], level[100], class[100];
   int adv, newlevel, lin_class;
@@ -2866,12 +2891,14 @@ void do_advance(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_reroll(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_reroll(struct char_data *ch, char *UNUSED(argument),
+               const char * UNUSED(cmd)) {
   send_to_char("Use @set str..charisma..\n\r", ch);
 }
 
 
-void do_restore(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_restore(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *victim;
   char buf[100];
   int i;
@@ -2925,7 +2952,8 @@ void do_restore(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_noshout(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_noshout(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *vict;
   struct obj_data *dummy;
   char buf[MAX_INPUT_LENGTH];
@@ -2966,7 +2994,8 @@ void do_noshout(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_nohassle(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_nohassle(struct char_data *ch, char *argument,
+                 const char * UNUSED(cmd)) {
   struct char_data *vict;
   struct obj_data *dummy;
   char buf[MAX_INPUT_LENGTH];
@@ -2997,7 +3026,8 @@ void do_nohassle(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 }
 
-void do_stealth(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_stealth(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *vict;
   struct obj_data *dummy;
   char buf[MAX_INPUT_LENGTH];
@@ -3105,7 +3135,8 @@ void show_room_zone(int rnum, struct room_data *rp,
   print_room(rnum, rp, srzs->sb);
 }
 
-void do_show(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_show(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int zone;
   char buf[MAX_STRING_LENGTH], zonenum[MAX_INPUT_LENGTH];
   struct index_data *which_i;
@@ -3301,7 +3332,8 @@ void do_show(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   destroy_string_block(&sb);
 }
 
-void do_debug(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_debug(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char arg[MAX_INPUT_LENGTH];
   int i;
 
@@ -3323,14 +3355,15 @@ void do_debug(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_invis(struct char_data *ch, char *argument, int cmd) {
+void do_invis(struct char_data *ch, char *argument,
+              const char * cmd) {
   char buf[MAX_INPUT_LENGTH];
   int level;
 
-  if (cmd == 242 && !IS_IMMORTAL(ch))
+  if (STREQ(cmd, "invisible") && !IS_IMMORTAL(ch))
     return;
 
-  if (cmd != 242) {
+  if (!STREQ(cmd, "invisible")) {
     if (affected_by_spell(ch, SPELL_INVISIBLE)) {
       affect_from_char(ch, SPELL_INVISIBLE);
     }
@@ -3360,7 +3393,8 @@ void do_invis(struct char_data *ch, char *argument, int cmd) {
   }
 }
 
-void do_create(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_create(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int i, count, start, end;
 
   if (!IS_IMMORTAL(ch) || IS_NPC(ch)) {
@@ -3415,7 +3449,8 @@ void create_one_room(int loc_nr) {
   rp->description = (char *)strdup("Empty\n");
 }
 
-void do_set_log(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_set_log(struct char_data *ch, char *arg,
+                const char * UNUSED(cmd)) {
   char name[255];
   struct char_data *victim;
   struct obj_data *dummy;
@@ -3454,7 +3489,8 @@ void do_set_log(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
 void pulse_mobiles(int cmd);
 
-void do_event(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_event(struct char_data *ch, char *arg,
+              const char * UNUSED(cmd)) {
   int i;
   char buf[255];
 
@@ -3467,7 +3503,8 @@ void do_event(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   pulse_mobiles(i);
 }
 
-void do_beep(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_beep(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   char buf[255], name[255];
   struct char_data *victim;
   struct obj_data *dummy;
@@ -3513,7 +3550,8 @@ void do_beep(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_cset(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_cset(struct char_data *ch, char *arg,
+             const char * UNUSED(cmd)) {
   char buf[1000], buf1[255], buf2[255], buf3[255], buf4[255];
   int i, radix;
   NODE *n;

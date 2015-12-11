@@ -81,7 +81,6 @@ void inform_mess(struct char_data *v);
 void update_screen(struct char_data *ch, int update);
 void init_screen(struct char_data *ch);
 char *random_word();
-void do_trans(struct char_data *ch, char *argument, int cmd);
 void bird_garble(char *buf, char *buf2, struct char_data *ch);
 void rat_garble(char *buf, char *buf2, struct char_data *ch);
 void half_orc_garble(char *buf, char *buf2, struct char_data *ch);
@@ -173,59 +172,13 @@ void do_pose(struct char_data *ch, char *argument, int cmd);
 
 /* From act.wizard.c */
 
-void do_auth(struct char_data *ch, char *argument, int cmd);
-void do_imptest(struct char_data *ch, char *arg, int cmd);
-void do_passwd(struct char_data *ch, char *argument, int cmdnum);
-void do_setsev(struct char_data *ch, char *arg, int cmd);
 void dsearch(char *string, char *tmp);
-void do_bamfin(struct char_data *ch, char *arg, int cmd);
-void do_bamfout(struct char_data *ch, char *arg, int cmd);
-void do_instazone(struct char_data *ch, char *argument, int cmdnum);
-void do_highfive(struct char_data *ch, char *argument, int cmd);
-void do_addhost(struct char_data *ch, char *argument, int command);
-void do_removehost(struct char_data *ch, char *argument, int command);
-void do_listhosts(struct char_data *ch, char *argument, int command);
-void do_silence(struct char_data *ch, char *argument, int cmd);
-void do_wizlock(struct char_data *ch, char *argument, int cmd);
-void do_rload(struct char_data *ch, char *argument, int cmd);
-void do_rsave(struct char_data *ch, char *argument, int cmd);
-void do_emote(struct char_data *ch, char *argument, int cmd);
-void do_echo(struct char_data *ch, char *argument, int cmd);
-void do_system(struct char_data *ch, char *argument, int cmd);
-void do_trans(struct char_data *ch, char *argument, int cmd);
-void do_at(struct char_data *ch, char *argument, int cmd);
-void do_goto(struct char_data *ch, char *argument, int cmd);
-void do_stat(struct char_data *ch, char *argument, int cmd);
-void do_set(struct char_data *ch, char *argument, int cmd);
-void do_shutdow(struct char_data *ch, char *argument, int cmd);
-void do_shutdown(struct char_data *ch, char *argument, int cmd);
-void do_snoop(struct char_data *ch, char *argument, int cmd);
-void do_switch(struct char_data *ch, char *argument, int cmd);
-void do_return(struct char_data *ch, char *argument, int cmd);
-void do_force(struct char_data *ch, char *argument, int cmd);
-void do_load(struct char_data *ch, char *argument, int cmd);
 void purge_one_room(int rnum, struct room_data *rp, int *range);
-void do_purge(struct char_data *ch, char *argument, int cmd);
 void roll_abilities(struct char_data *ch);
-void do_start(struct char_data *ch);
-void do_advance(struct char_data *ch, char *argument, int cmd);
-void do_reroll(struct char_data *ch, char *argument, int cmd);
-void do_restore(struct char_data *ch, char *argument, int cmd);
-void do_noshout(struct char_data *ch, char *argument, int cmd);
-void do_nohassle(struct char_data *ch, char *argument, int cmd);
-void do_stealth(struct char_data *ch, char *argument, int cmd);
 void print_room(int rnum, struct room_data *rp, struct string_block *sb);
 void print_death_room(int rnum, struct room_data *rp, struct string_block *sb);
 void print_private_room(int r, struct room_data *rp, struct string_block *sb);
-void do_show(struct char_data *ch, char *argument, int cmd);
-void do_debug(struct char_data *ch, char *argument, int cmd);
-void do_invis(struct char_data *ch, char *argument, int cmd);
-void do_create(struct char_data *ch, char *argument, int cmd);
 void create_one_room(int loc_nr);
-void do_set_log(struct char_data *ch, char *arg, int cmd);
-void do_event(struct char_data *ch, char *arg, int cmd);
-void do_beep(struct char_data *ch, char *argument, int cmd);
-
 
 /* From board.c */
 

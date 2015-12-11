@@ -16,6 +16,7 @@
 #include "reception.h"
 #include "act.info.h"
 #include "act.other.h"
+#include "act.wizard.h"
 
 #define OBJ_FILE_FREE "\0\0\0"
 
@@ -914,10 +915,10 @@ void load_char_extra(struct char_data *ch) {
       s = (char *)strtok(0, "\0");
       if (p) {
         if (!strcmp(p, "out")) {        /*setup bamfout */
-          do_bamfout(ch, s, 0);
+          do_bamfout(ch, s, NULL);
         }
         else if (!strcmp(p, "in")) {    /* setup bamfin */
-          do_bamfin(ch, s, 0);
+          do_bamfin(ch, s, NULL);
         }
         else if (!strcmp(p, "zone")) {  /* set zone permisions */
           GET_ZONE(ch) = atoi(s);

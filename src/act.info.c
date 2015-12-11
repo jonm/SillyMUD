@@ -15,6 +15,7 @@
 #include "protos.h"
 #include "utils.h"
 #include "act.comm.h"
+#include "act.wizard.h"
 
 /* extern variables */
 #if HASH

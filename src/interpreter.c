@@ -27,6 +27,7 @@
 #include "act.other.h"
 #include "act.off.h"
 #include "intrinsics.h"
+#include "act.wizard.h"
 
 #define NOT !
 #define AND &&
@@ -58,8 +59,6 @@ unsigned char echo_off[] = { IAC, WILL, TELOPT_ECHO, '\0' };
 int WizLock;
 int Silence = 0;
 int plr_tick_count = 0;
-
-void do_cset(struct char_data *ch, char *arg, int cmd);
 
 #if PLAYER_AUTH
 void do_auth(struct char_data *ch, char *arg, int cmd); /* jdb 3-1 */
@@ -532,15 +531,15 @@ void assign_command_pointers() {
   add_command_dep("sulk", do_action, 37, POSITION_RESTING, 0);
   add_command("help", do_help, POSITION_DEAD, 0);
   add_command("who", do_who, POSITION_DEAD, 0);
-  add_command_dep("emote", do_emote, 40, POSITION_SLEEPING, 0);
-  add_command_dep("echo", do_echo, 41, POSITION_SLEEPING, 1);
+  add_command("emote", do_emote, POSITION_SLEEPING, 0);
+  add_command("echo", do_echo, POSITION_SLEEPING, 1);
   add_command("stand", do_stand, POSITION_RESTING, 0);
   add_command("sit", do_sit, POSITION_RESTING, 0);
   add_command("rest", do_rest, POSITION_RESTING, 0);
   add_command("sleep", do_sleep, POSITION_SLEEPING, 0);
   add_command("wake", do_wake, POSITION_SLEEPING, 0);
-  add_command_dep("force", do_force, 47, POSITION_SLEEPING, LESSER_GOD);
-  add_command_dep("transfer", do_trans, 48, POSITION_SLEEPING, DEMIGOD);
+  add_command("force", do_force, POSITION_SLEEPING, LESSER_GOD);
+  add_command("transfer", do_trans, POSITION_SLEEPING, DEMIGOD);
   add_command_dep("hug", do_action, 49, POSITION_RESTING, 0);
   add_command_dep("snuggle", do_action, 50, POSITION_RESTING, 0);
   add_command_dep("cuddle", do_action, 51, POSITION_RESTING, 0);
@@ -553,41 +552,41 @@ void assign_command_pointers() {
   add_command("value", do_value, POSITION_RESTING, 0);
   add_command("list", do_not_here, POSITION_STANDING, 0);
   add_command_dep("drop", do_drop, 60, POSITION_RESTING, 1);
-  add_command_dep("goto", do_goto, 61, POSITION_SLEEPING, 0);
+  add_command("goto", do_goto, POSITION_SLEEPING, 0);
   add_command("weather", do_weather, POSITION_RESTING, 0);
   add_command("read", do_read, POSITION_RESTING, 0);
   add_command_dep("pour", do_pour, 64, POSITION_STANDING, 0);
   add_command("grab", do_grab, POSITION_RESTING, 0);
   add_command("remove", do_remove, POSITION_RESTING, 0);
   add_command_dep("put", do_put, 67, POSITION_RESTING, 0);
-  add_command_dep("shutdow", do_shutdow, 68, POSITION_DEAD, SILLYLORD);
+  add_command("shutdow", do_shutdow, POSITION_DEAD, SILLYLORD);
   add_command("save", do_save, POSITION_SLEEPING, 0);
   add_command("hit", do_hit, POSITION_FIGHTING, 1);
   add_command_dep("string", do_string, 71, POSITION_SLEEPING, SAINT);
   add_command_dep("give", do_give, 72, POSITION_RESTING, 1);
   add_command("quit", do_quit, POSITION_DEAD, 0);
-  add_command_dep("stat", do_stat, 74, POSITION_DEAD, CREATOR);
+  add_command("stat", do_stat, POSITION_DEAD, CREATOR);
   add_command("guard", do_guard, POSITION_STANDING, 1);
   add_command("time", do_time, POSITION_DEAD, 0);
-  add_command_dep("load", do_load, 77, POSITION_DEAD, SAINT);
-  add_command_dep("purge", do_purge, 78, POSITION_DEAD, LOW_IMMORTAL);
-  add_command_dep("shutdown", do_shutdown, 79, POSITION_DEAD, SILLYLORD);
+  add_command("load", do_load, POSITION_DEAD, SAINT);
+  add_command("purge", do_purge, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("shutdown", do_shutdown, POSITION_DEAD, SILLYLORD);
   add_command("idea", do_idea, POSITION_DEAD, 0);
   add_command("typo", do_typo, POSITION_DEAD, 0);
   add_command("bug", do_bug, POSITION_DEAD, 0);
   add_command("whisper", do_whisper, POSITION_RESTING, 0);
   add_command_dep("cast", do_cast, 84, POSITION_SITTING, 1);
-  add_command_dep("at", do_at, 85, POSITION_DEAD, CREATOR);
+  add_command("at", do_at, POSITION_DEAD, CREATOR);
   add_command("ask", do_ask, POSITION_RESTING, 0);
   add_command("order", do_order, POSITION_RESTING, 1);
   add_command_dep("sip", do_sip, 88, POSITION_RESTING, 0);
   add_command_dep("taste", do_taste, 89, POSITION_RESTING, 0);
-  add_command_dep("snoop", do_snoop, 90, POSITION_DEAD, GOD);
+  add_command("snoop", do_snoop, POSITION_DEAD, GOD);
   add_command("follow", do_follow, POSITION_RESTING, 0);
   add_command("rent", do_not_here, POSITION_STANDING, 1);
   add_command("offer", do_not_here, POSITION_STANDING, 1);
   add_command_dep("poke", do_action, 94, POSITION_RESTING, 0);
-  add_command_dep("advance", do_advance, 95, POSITION_DEAD, IMPLEMENTOR);
+  add_command("advance", do_advance, POSITION_DEAD, IMPLEMENTOR);
   add_command_dep("accuse", do_action, 96, POSITION_SITTING, 0);
   add_command_dep("grin", do_action, 97, POSITION_RESTING, 0);
   add_command_dep("bow", do_action, 98, POSITION_STANDING, 0);
@@ -666,9 +665,9 @@ void assign_command_pointers() {
   add_command("use", do_use, POSITION_SITTING, 1);
   add_command("where", do_where, POSITION_DEAD, 1);
   add_command("levels", do_levels, POSITION_DEAD, 0);
-  add_command_dep("reroll", do_reroll, 175, POSITION_DEAD, SILLYLORD);
+  add_command("reroll", do_reroll, POSITION_DEAD, SILLYLORD);
   add_command_dep("pray", do_action, 176, POSITION_SITTING, 0);
-  add_command_dep(",", do_emote, 177, POSITION_SLEEPING, 0);
+  add_command(",", do_emote, POSITION_SLEEPING, 0);
   add_command_dep("beg", do_action, 178, POSITION_RESTING, 0);
   add_command("bleed", do_not_here, POSITION_RESTING, 0);
   add_command_dep("cringe", do_action, 180, POSITION_RESTING, 0);
@@ -694,18 +693,18 @@ void assign_command_pointers() {
   add_command("wizlist", do_wizlist, POSITION_DEAD, 0);
   add_command("consider", do_consider, POSITION_RESTING, 0);
   add_command("group", do_group, POSITION_RESTING, 1);
-  add_command_dep("restore", do_restore, 203, POSITION_DEAD, DEMIGOD);
-  add_command_dep("return", do_return, 204, POSITION_DEAD, 0);
-  add_command_dep("switch", do_switch, 205, POSITION_DEAD, 52);
+  add_command("restore", do_restore, POSITION_DEAD, DEMIGOD);
+  add_command("return", do_return, POSITION_DEAD, 0);
+  add_command("switch", do_switch, POSITION_DEAD, 52);
   add_command("quaff", do_quaff, POSITION_RESTING, 0);
   add_command("recite", do_recite, POSITION_STANDING, 0);
   add_command("users", do_users, POSITION_DEAD, LOW_IMMORTAL);
   add_command_dep("pose", do_pose, 209, POSITION_STANDING, 0);
-  add_command_dep("noshout", do_noshout, 210, POSITION_SLEEPING, LOW_IMMORTAL);
+  add_command("noshout", do_noshout, POSITION_SLEEPING, LOW_IMMORTAL);
   add_command("wizhelp", do_wizhelp, POSITION_SLEEPING, LOW_IMMORTAL);
   add_command("credits", do_credits, POSITION_DEAD, 0);
   add_command("compact", do_compact, POSITION_DEAD, 0);
-  add_command_dep(":", do_emote, 214, POSITION_SLEEPING, 0);
+  add_command(":", do_emote, POSITION_SLEEPING, 0);
   add_command("deafen", do_plr_noshout, POSITION_SLEEPING, 1);
   add_command("slay", do_kill, POSITION_STANDING, SILLYLORD);
   add_command("wimpy", do_wimp, POSITION_DEAD, 0);
@@ -713,21 +712,21 @@ void assign_command_pointers() {
   add_command("deposit", do_not_here, POSITION_RESTING, 1);
   add_command("withdraw", do_not_here, POSITION_RESTING, 1);
   add_command("balance", do_not_here, POSITION_RESTING, 1);
-  add_command_dep("nohassle", do_nohassle, 222, POSITION_DEAD, LOW_IMMORTAL);
-  add_command_dep("system", do_system, 223, POSITION_DEAD, SILLYLORD);
+  add_command("nohassle", do_nohassle, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("system", do_system, POSITION_DEAD, SILLYLORD);
   add_command("pull", do_not_here, POSITION_STANDING, 1);
-  add_command_dep("stealth", do_stealth, 225, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("stealth", do_stealth, POSITION_DEAD, LOW_IMMORTAL);
   add_command_dep("edit", do_edit, 226, POSITION_DEAD, CREATOR);
 #ifdef TEST_SERVER
   add_command_dep("@", do_set, 227, POSITION_DEAD, CREATOR);
 #else
-  add_command_dep("@", do_set, 227, POSITION_DEAD, SILLYLORD);
+  add_command("@", do_set, POSITION_DEAD, SILLYLORD);
 #endif
-  add_command_dep("rsave", do_rsave, 228, POSITION_DEAD, CREATOR);
-  add_command_dep("rload", do_rload, 229, POSITION_DEAD, CREATOR);
+  add_command("rsave", do_rsave, POSITION_DEAD, CREATOR);
+  add_command("rload", do_rload, POSITION_DEAD, CREATOR);
   add_command("track", do_track, POSITION_DEAD, 1);
-  add_command_dep("wizlock", do_wizlock, 231, POSITION_DEAD, DEMIGOD);
-  add_command_dep("highfive", do_highfive, 232, POSITION_DEAD, 0);
+  add_command("wizlock", do_wizlock, POSITION_DEAD, DEMIGOD);
+  add_command("highfive", do_highfive, POSITION_DEAD, 0);
   add_command("title", do_title, POSITION_DEAD, 43);
   add_command("whozone", do_who, POSITION_DEAD, 0);
   add_command("assist", do_assist, POSITION_FIGHTING, 1);
@@ -735,24 +734,24 @@ void assign_command_pointers() {
   add_command("world", do_world, POSITION_DEAD, 0);
   add_command("allspells", do_spells, POSITION_DEAD, 0);
   add_command("breath", do_breath, POSITION_FIGHTING, 1);
-  add_command_dep("show", do_show, 240, POSITION_DEAD, CREATOR);
-  add_command_dep("debug", do_debug, 241, POSITION_DEAD, IMPLEMENTOR);
-  add_command_dep("invisible", do_invis, 242, POSITION_DEAD, LOW_IMMORTAL);
+  add_command("show", do_show, POSITION_DEAD, CREATOR);
+  add_command("debug", do_debug, POSITION_DEAD, IMPLEMENTOR);
+  add_command("invisible", do_invis, POSITION_DEAD, LOW_IMMORTAL);
   add_command("gain", do_gain, POSITION_DEAD, 1);
-  add_command_dep("instazone", do_instazone, 244, POSITION_DEAD, CREATOR);
+  add_command("instazone", do_instazone, POSITION_DEAD, CREATOR);
   add_command("disarm", do_disarm, POSITION_FIGHTING, 1);
   add_command_dep("bonk", do_action, 246, POSITION_SITTING, 1);
-  add_command_dep("chpwd", do_passwd, 247, POSITION_SITTING, IMPLEMENTOR);
+  add_command("chpwd", do_passwd, POSITION_SITTING, IMPLEMENTOR);
   add_command("fill", do_not_here, POSITION_SITTING, 0);
   add_command("imptest", do_doorbash, POSITION_SITTING, IMPLEMENTOR);
   add_command("shoot", do_shoot, POSITION_STANDING, 1);
-  add_command_dep("silence", do_silence, 251, POSITION_STANDING, DEMIGOD);
+  add_command("silence", do_silence, POSITION_STANDING, DEMIGOD);
   add_command("teams", do_not_here, POSITION_STANDING, LOKI);
   add_command("player", do_not_here, POSITION_STANDING, LOKI);
-  add_command_dep("create", do_create, 254, POSITION_STANDING, GOD);
-  add_command_dep("bamfin", do_bamfin, 255, POSITION_STANDING, LOW_IMMORTAL);
-  add_command_dep("bamfout", do_bamfout, 256, POSITION_STANDING, LOW_IMMORTAL);
-  add_command_dep("vis", do_invis, 257, POSITION_STANDING, 0);
+  add_command("create", do_create, POSITION_STANDING, GOD);
+  add_command("bamfin", do_bamfin, POSITION_STANDING, LOW_IMMORTAL);
+  add_command("bamfout", do_bamfout, POSITION_STANDING, LOW_IMMORTAL);
+  add_command("vis", do_invis, POSITION_STANDING, 0);
   add_command("doorbash", do_doorbash, POSITION_STANDING, 1);
   add_command_dep("mosh", do_action, 259, POSITION_FIGHTING, 1);
 
@@ -777,21 +776,21 @@ void assign_command_pointers() {
   add_command("dismount", do_mount, POSITION_MOUNTED, 1);
   add_command("ride", do_mount, POSITION_STANDING, 1);
   add_command("sign", do_sign, POSITION_RESTING, 1);
-  add_command_dep("setsev", do_setsev, 280, POSITION_DEAD, IMMORTAL);
+  add_command("setsev", do_setsev, POSITION_DEAD, IMMORTAL);
   add_command("first aid", do_first_aid, POSITION_RESTING, 1);
-  add_command_dep("log", do_set_log, 282, POSITION_DEAD, 58);
+  add_command("log", do_set_log, POSITION_DEAD, 58);
   add_command_dep("recall", do_cast, 283, POSITION_DEAD, LOKI);
   add_command_dep("reload", reboot_text, 284, POSITION_DEAD, 57);
-  add_command_dep("event", do_event, 285, POSITION_DEAD, 59);
+  add_command("event", do_event, POSITION_DEAD, 59);
   add_command("disguise", do_disguise, POSITION_STANDING, 1);
   add_command("climb", do_climb, POSITION_STANDING, 1);
-  add_command_dep("beep", do_beep, 288, POSITION_DEAD, 51);
+  add_command("beep", do_beep, POSITION_DEAD, 51);
   add_command_dep("bite", do_bite, 289, POSITION_RESTING, 1);
   add_command_dep("redit", do_redit, 290, POSITION_SLEEPING, CREATOR);
   add_command("display", do_display, POSITION_SLEEPING, 1);
   add_command("resize", do_resize, POSITION_SLEEPING, 1);
   add_command("\"", do_commune, POSITION_SLEEPING, LOW_IMMORTAL);
-  add_command_dep("#", do_cset, 294, POSITION_DEAD, 59);
+  add_command("#", do_cset, POSITION_DEAD, 59);
   add_command("inset", do_inset, POSITION_RESTING, 1);
   add_command("showexits", do_show_exits, POSITION_DEAD, 1);
   add_command("split", do_split, POSITION_RESTING, 1);
