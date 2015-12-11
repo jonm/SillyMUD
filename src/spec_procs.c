@@ -420,7 +420,7 @@ int dump(struct char_data *ch, int cmd, char *arg,
   if (cmd != 60)
     return (FALSE);
 
-  do_drop(ch, arg, cmd);
+  do_drop(ch, arg, NULL);
 
   value = 0;
 
@@ -1036,7 +1036,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
               0, 0, TO_ROOM);
         }
         else if (IS_SET(temp1->obj_flags.value[1], CONT_CLOSED)) {
-          do_drop(eric, "bottle", -1 /* irrelevant */ );
+          do_drop(eric, "bottle", NULL);
           do_open(eric, "fridge", NULL);
         }
         else if (NULL == (temp1 = get_obj_in_list_vis(eric, "sixpack",
@@ -1057,7 +1057,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
           if (NULL == get_obj_in_list_vis(eric, "beer", eric->carrying)) {
             act("$n says 'Well, that one's finished...'", FALSE, eric,
                 0, 0, TO_ROOM);
-            do_drop(eric, "sixpack", -1 /* irrelevant */ );
+            do_drop(eric, "sixpack", NULL);
           }
         }
         else {
@@ -1176,7 +1176,7 @@ int eric_johnson(struct char_data *ch, int cmd, char *UNUSED(arg),
           if (NULL == get_obj_in_list_vis(eric, "beer", eric->carrying)) {
             act("$n says 'What the hell, I just bought this?!'", FALSE, eric,
                 0, 0, TO_ROOM);
-            do_drop(eric, "sixpack", -1 /* irrelevant */ );
+            do_drop(eric, "sixpack", NULL);
             if (NULL == get_obj_in_list_vis(eric, "sixpack", eric->carrying))
               state = E_HACKING;
           }

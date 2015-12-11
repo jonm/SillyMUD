@@ -140,10 +140,7 @@ void show_exits(struct char_data *ch);
 
 void get(struct char_data *ch, struct obj_data *obj_object,
          struct obj_data *sub_object);
-void do_drop(struct char_data *ch, char *argument, int cmd);
-void do_put(struct char_data *ch, char *argument, int cmd);
 int newstrlen(char *p);
-void do_give(struct char_data *ch, char *argument, int cmd);
 
 
 /* From act.obj2.c */
