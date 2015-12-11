@@ -3602,11 +3602,11 @@ int kings_hall(struct char_data *ch, int cmd, char *arg) {
 /*
 **  donation room
 */
-int donation(struct char_data *ch, int cmd, char *arg,
+int donation(struct char_data *ch, const char *cmd, char *arg,
              struct room_data *UNUSED(rp), int UNUSED(type)) {
   char check[40];
 
-  if ((cmd != 10) && (cmd != 167)) {
+  if (!STREQ(cmd, "get") && !STREQ(cmd, "take")) {
     return (FALSE);
   }
 

@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "board.h"
 
 #if HASH
 extern struct hash_header room_db;
