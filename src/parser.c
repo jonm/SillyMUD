@@ -36,30 +36,6 @@ void add_command(char *name, cmd_handler func, int min_pos,
 
   strncpy(n->name, name, sizeof(n->name));
   n->func = func;
-  n->func_dep = NULL;
-  n->min_pos = min_pos;
-  n->min_level = min_lev;
-  n->next = NULL;
-  n->previous = NULL;
-  n->log = 0;
-
-  radix = HashTable[(int)*name];
-  len = strlen(name);
-
-  add_node_tail(n, len, radix);
-}
-
-void add_command_dep(char *name, cmd_handler_dep func, int number,
-                     int min_pos, int min_lev) {
-  NODE *n;
-  int len, radix;
-
-  n = (NODE *) malloc(sizeof(NODE));
-
-  strncpy(n->name, name, sizeof(n->name));
-  n->func = NULL;
-  n->func_dep = func;
-  n->number = number;
   n->min_pos = min_pos;
   n->min_level = min_lev;
   n->next = NULL;

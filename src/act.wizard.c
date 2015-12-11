@@ -3581,8 +3581,8 @@ void do_cset(struct char_data *ch, char *arg,
       return;
     }
     SPRINTF(buf,
-            "Name: %s\n\rMinimum Position: %d\n\rMinimum Level: %d\n\rNumber: %d\n\rLog Bit: %s\n\r",
-            n->name, n->min_pos, n->min_level, n->number,
+            "Name: %s\n\rMinimum Position: %d\n\rMinimum Level: %d\n\rLog Bit: %s\n\r",
+            n->name, n->min_pos, n->min_level,
             (n->log ? "On" : "Off"));
     send_to_char(buf, ch);
     return;

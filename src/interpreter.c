@@ -219,7 +219,7 @@ void command_interpreter(struct char_data *ch, char *argument) {
     return;
   }
 
-  if ((n->func != 0) || (n->func_dep)) {
+  if (n->func) {
     if ((!IS_AFFECTED(ch, AFF_PARALYSIS)) || (n->min_pos <= POSITION_STUNNED)) {
       if (GET_POS(ch) < n->min_pos) {
         switch (GET_POS(ch)) {
@@ -255,7 +255,7 @@ void command_interpreter(struct char_data *ch, char *argument) {
       }
       else {
 
-        if (!no_specials && special(ch, n->number, buf2))
+        if (!no_specials && special(ch, n->name, buf2))
           return;
 
         if (n->log) {
@@ -275,12 +275,7 @@ void command_interpreter(struct char_data *ch, char *argument) {
           slog(buf);
         }
 
-        if (n->func)
-          ((*n->func)
-           (ch, buf2, n->name));
-        else
-          ((*n->func_dep)
-           (ch, buf2, n->number));
+        ((*n->func) (ch, buf2, n->name));
       }
       return;
     }
@@ -289,7 +284,7 @@ void command_interpreter(struct char_data *ch, char *argument) {
       return;
     }
   }
-  if (n && !n->func && !n->func_dep)
+  if (n && !n->func)
     send_to_char("Sorry, but that command has yet to be implemented...\n\r",
                  ch);
   else
@@ -444,7 +439,7 @@ void half_chop(char *string, char *arg1, char *arg2) {
 
 
 
-int special(struct char_data *ch, int cmd, char *arg) {
+int special(struct char_data *ch, const char *cmd, char *arg) {
   register struct obj_data *i;
   register struct char_data *k;
   int j;
