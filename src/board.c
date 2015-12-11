@@ -496,7 +496,6 @@ int fwrite_string(char *buf, FILE * fl) {
 
 int board_check_locks(int bnum, struct char_data *ch) {
 
-  char buf[MAX_INPUT_LENGTH];
   struct char_data *tmp_char;
   bool found = FALSE;
   if (!board_lock[bnum].lock)
@@ -519,17 +518,15 @@ int board_check_locks(int bnum, struct char_data *ch) {
   /* Check for link-death of lock holder */
 
   if (!board_lock[bnum].locked_for->desc) {
-    SPRINTF(buf, "You push %s aside and approach the board.\n\r",
-            board_lock[bnum].locked_for->player.name);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You push %s aside and approach the board.\n\r",
+                  board_lock[bnum].locked_for->player.name);
   }
 
   /* Else see if lock holder is still in write-string mode */
 
   else if (board_lock[bnum].locked_for->desc->str) {    /* Lock still holding */
-    SPRINTF(buf, "You try to approach the board but %s blocks your way.\n\r",
-            board_lock[bnum].locked_for->player.name);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You try to approach the board but %s blocks your way.\n\r",
+                  board_lock[bnum].locked_for->player.name);
     return (1);
   }
 
