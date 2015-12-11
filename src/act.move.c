@@ -39,7 +39,6 @@ void not_legal_move(struct char_data *ch) {
 
 
 int valid_move(struct char_data *ch, int cmd) {
-  char tmp[256];
   struct room_direction_data *exitp;
 
   exitp = EXIT(ch, cmd);
@@ -86,8 +85,7 @@ int valid_move(struct char_data *ch, int cmd) {
     if (exitp->keyword) {
       if (!IS_SET(exitp->exit_info, EX_SECRET) &&
           (strcmp(fname(exitp->keyword), "secret"))) {
-        SPRINTF(tmp, "The %s seems to be closed.\n\r", fname(exitp->keyword));
-        send_to_char(tmp, ch);
+        send_to_charf(ch, "The %s seems to be closed.\n\r", fname(exitp->keyword));
         return (FALSE);
       }
       else {
@@ -553,15 +551,17 @@ void display_move(struct char_data *ch, int dir, int was_in, int total) {
             }
             else {
               if (MOUNTED(ch)) {
-                SPRINTF(tmp, "%s leaves %s, riding on %s\n\r", GET_NAME(ch),
-                        dirs[dir], MOUNTED(ch)->player.short_descr);
+                send_to_charf(tmp_ch, "%s leaves %s, riding on %s\n\r",
+                              GET_NAME(ch),
+                              dirs[dir],
+                              MOUNTED(ch)->player.short_descr);
               }
               else {
-                SPRINTF(tmp, "%s %s %s.\n\r", GET_NAME(ch), how, dirs[dir]);
+                send_to_charf(tmp_ch, "%s %s %s.\n\r", GET_NAME(ch),
+                              how, dirs[dir]);
               }
             }
           }
-          send_to_char(tmp, tmp_ch);
         }
       }
     }
