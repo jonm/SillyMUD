@@ -11,6 +11,9 @@
 
 #include "protos.h"
 #include "board.h"
+#include "spec_procs.h"
+#include "spec_procs2.h"
+#include "spec_procs3.h"
 
 #if HASH
 extern struct hash_header room_db;

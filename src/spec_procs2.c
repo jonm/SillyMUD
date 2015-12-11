@@ -111,7 +111,7 @@ int druid_protector(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }                               /* end druid_protector */
 
-int magic__fountain(struct char_data *ch, int cmd, char *arg,
+int magic__fountain(struct char_data *ch, const char *cmd, char *arg,
                     struct room_data *UNUSED(rp), int UNUSED(type)) {
 
   char buf[MAX_INPUT_LENGTH];
@@ -119,7 +119,7 @@ int magic__fountain(struct char_data *ch, int cmd, char *arg,
   void name_to_drinkcon(struct obj_data *obj, int type);
   void name_from_drinkcon(struct obj_data *obj);
 
-  if (cmd == 11) {              /* drink */
+  if (STREQ(cmd, "drink")) {
 
     only_argument(arg, buf);
 
@@ -2960,12 +2960,10 @@ int monk_challenger(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 }
 
-#define NOD  35
 #define DRUID_MOB 600
 #define MONK_MOB  650
-#define FLEE 151
 
-int druid_challenge_prep_room(struct char_data *ch, int cmd,
+int druid_challenge_prep_room(struct char_data *ch, const char *cmd,
                               char *UNUSED(arg),
                               struct room_data *UNUSED(rp), int UNUSED(type)) {
   struct room_data *me, *chal;
@@ -2983,7 +2981,7 @@ int druid_challenge_prep_room(struct char_data *ch, int cmd,
     return (TRUE);
   }
 
-  if (cmd == NOD) {
+  if (STREQ(cmd, "nod")) {
 
     if (!has_class(ch, CLASS_DRUID)) {
       send_to_char("You're no druid.\n\r", ch);
@@ -3053,7 +3051,7 @@ int druid_challenge_prep_room(struct char_data *ch, int cmd,
 
 }
 
-int druid_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
+int druid_challenge_room(struct char_data *ch, const char * cmd, char *UNUSED(arg),
                          struct room_data *UNUSED(rp), int UNUSED(type)) {
   struct char_data *i;
   struct room_data *me;
@@ -3072,7 +3070,7 @@ int druid_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
     REMOVE_BIT(ch->specials.act, PLR_WIMPY);
   }
 
-  if (cmd == FLEE) {
+  if (STREQ(cmd, "flee")) {
     /* this person just lost */
     send_to_char("You lose.\n\r", ch);
     if (IS_PC(ch)) {
@@ -3137,7 +3135,8 @@ int druid_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 }
 
-int monk_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
+int monk_challenge_room(struct char_data *ch, const char * cmd,
+                        char *UNUSED(arg),
                         struct room_data *UNUSED(rp), int UNUSED(type)) {
   struct char_data *i;
   struct room_data *me;
@@ -3155,7 +3154,7 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
   if (IS_PC(ch)) {
     REMOVE_BIT(ch->specials.act, PLR_WIMPY);
   }
-  if (cmd == FLEE) {
+  if (STREQ(cmd, "flee")) {
     if (ch->specials.fighting) {
       if (get_max_level(ch->specials.fighting) > get_max_level(ch)) {
         char_from_room(ch);
@@ -3231,7 +3230,8 @@ int monk_challenge_room(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int monk_challenge_prep_room(struct char_data *ch, int cmd, char *UNUSED(arg),
+int monk_challenge_prep_room(struct char_data *ch, const char * cmd,
+                             char *UNUSED(arg),
                              struct room_data *UNUSED(rp), int UNUSED(type)) {
   struct room_data *me, *chal;
   int i, newr;
@@ -3248,7 +3248,7 @@ int monk_challenge_prep_room(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (TRUE);
   }
 
-  if (cmd == NOD) {
+  if (STREQ(cmd, "nod")) {
 
     if (!has_class(ch, CLASS_MONK)) {
       send_to_char("You're no monk.\n\r", ch);

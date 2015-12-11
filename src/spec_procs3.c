@@ -841,14 +841,18 @@ const struct turbolift_keywords TurboLiftList[5] = {
 
 #define TURBO_LIFT 2639
 
-int entering_turbo_lift(struct char_data *ch, int cmd, char *UNUSED(arg),
+int entering_turbo_lift(struct char_data *ch, const char *cmd, char *UNUSED(arg),
                         struct room_data *rp, int UNUSED(type)) {
   int i;
 
-  if (cmd != 1 && cmd != 2 && cmd != 3 && cmd != 4 && cmd != 5 && cmd != 6)
+  int dir = move_string_to_dir(cmd);
+
+  if (dir == MOVE_DIR_INVALID) {
     return (FALSE);
-  if (rp->dir_option[cmd - 1]
-      && rp->dir_option[cmd - 1]->to_room == TURBO_LIFT) {
+  }
+  
+  if (rp->dir_option[dir]
+      && rp->dir_option[dir]->to_room == TURBO_LIFT) {
     char_from_room(ch);
     char_to_room(ch, TURBO_LIFT);
 
@@ -868,15 +872,16 @@ int entering_turbo_lift(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 }
 
-int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
+int turbo_lift(struct char_data *ch, const char *cmd, char *arg, struct room_data *rp,
                int UNUSED(type)) {
   int i, dest;
   char buf[80];
 
-  if (cmd > 0 && cmd < 7) {     /* movement */
-    if (rp->dir_option[cmd - 1]) {
+  int dir = move_string_to_dir(cmd);
+  if (dir != MOVE_DIR_INVALID) {
+    if (rp->dir_option[dir]) {
       char_from_room(ch);
-      char_to_room(ch, rp->dir_option[cmd - 1]->to_room);
+      char_to_room(ch, rp->dir_option[dir]->to_room);
       act("$n has entered the room.", TRUE, ch, 0, 0, TO_ROOM);
       do_look(ch, "", 0);
       send_to_char("\n\rThe doors close quietly behind you.\n\r", ch);
@@ -888,8 +893,7 @@ int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
     return (TRUE);
   }
 
-
-  if (cmd != 169 && cmd != 17)
+  if (!STREQ(cmd, "'") && !STREQ(cmd, "say"))
     return (FALSE);
 
   do_say(ch, arg, "say");

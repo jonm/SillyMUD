@@ -399,7 +399,7 @@ int guildmaster(struct char_data *ch, int cmd, char *arg,
   return (FALSE);
 }
 
-int dump(struct char_data *ch, int cmd, char *arg,
+int dump(struct char_data *ch, const char *cmd, char *arg,
          struct room_data *UNUSED(rp), int UNUSED(type)) {
   struct obj_data *k;
   char buf[100];
@@ -418,7 +418,7 @@ int dump(struct char_data *ch, int cmd, char *arg,
     extract_obj(k);
   }
 
-  if (cmd != 60)
+  if (!STREQ(cmd, "drop"))
     return (FALSE);
 
   do_drop(ch, arg, NULL);
@@ -3160,7 +3160,7 @@ int zombie_master(struct char_data *ch, int cmd, char *UNUSED(arg),
   return FALSE;
 }
 
-int pet_shops(struct char_data *ch, int cmd, char *arg,
+int pet_shops(struct char_data *ch, const char *cmd, char *arg,
               struct room_data *UNUSED(rp), int UNUSED(type)) {
   char buf[MAX_STRING_LENGTH], pet_name[256];
   int pet_room;
@@ -3168,7 +3168,7 @@ int pet_shops(struct char_data *ch, int cmd, char *arg,
 
   pet_room = ch->in_room + 1;
 
-  if (cmd == 59) {              /* List */
+  if (STREQ(cmd, "list")) {
     send_to_char("Available pets are:\n\r", ch);
     for (pet = real_roomp(pet_room)->people; pet; pet = pet->next_in_room) {
       SPRINTF(buf, "%8d - %s\n\r", 24 * GET_EXP(pet), pet->player.short_descr);
@@ -3176,7 +3176,7 @@ int pet_shops(struct char_data *ch, int cmd, char *arg,
     }
     return (TRUE);
   }
-  else if (cmd == 56) {         /* Buy */
+  else if (STREQ(cmd, "buy")) {
 
     arg = one_argument(arg, buf);
     only_argument(arg, pet_name);
@@ -3226,7 +3226,7 @@ int pet_shops(struct char_data *ch, int cmd, char *arg,
   return (FALSE);
 }
 
-int fountain(struct char_data *ch, int cmd, char *arg,
+int fountain(struct char_data *ch, const char *cmd, char *arg,
              struct room_data *UNUSED(rp), int UNUSED(type)) {
   int bits, water;
   char buf[MAX_INPUT_LENGTH];
@@ -3238,7 +3238,7 @@ int fountain(struct char_data *ch, int cmd, char *arg,
   void name_from_drinkcon(struct obj_data *obj);
 
 
-  if (cmd == 248) {             /* fill */
+  if (STREQ(cmd, "fill")) {
 
     arg = one_argument(arg, buf);       /* buf = object */
     bits = generic_find(buf, FIND_OBJ_INV | FIND_OBJ_ROOM |
@@ -3275,8 +3275,8 @@ int fountain(struct char_data *ch, int cmd, char *arg,
     return (TRUE);
 
   }
-  else if (cmd == 11) {         /* drink */
-
+  else if (STREQ(cmd, "drink")) {
+      
     switch (ch->in_room) {
     case 13518:
     case 11014:
@@ -3321,7 +3321,7 @@ int fountain(struct char_data *ch, int cmd, char *arg,
   return (FALSE);
 }
 
-int bank(struct char_data *ch, int cmd, char *arg,
+int bank(struct char_data *ch, const char *cmd, char *arg,
          struct room_data *UNUSED(rp), int UNUSED(type)) {
 
   static char buf[256];
@@ -3344,7 +3344,7 @@ int bank(struct char_data *ch, int cmd, char *arg,
 
 
   /*deposit */
-  if (cmd == 219) {
+  if (STREQ(cmd, "deposit")) {
     if (has_class(ch, CLASS_MONK) && (get_max_level(ch) < 40)) {
       send_to_char("Your vows forbid you to retain personal wealth\n\r", ch);
       return (TRUE);
@@ -3376,7 +3376,7 @@ int bank(struct char_data *ch, int cmd, char *arg,
     }
     /*withdraw */
   }
-  else if (cmd == 220) {
+  else if (STREQ(cmd, "withdraw")) {
 
     if (has_class(ch, CLASS_MONK) && (get_max_level(ch) < 40)) {
       send_to_char("Your vows forbid you to retain personal wealth\n\r", ch);
@@ -3401,7 +3401,7 @@ int bank(struct char_data *ch, int cmd, char *arg,
       return (TRUE);
     }
   }
-  else if (cmd == 221) {
+  else if (STREQ(cmd, "balance")) {
     SPRINTF(buf, "Your balance is %d.\n\r", GET_BANK(ch));
     send_to_char(buf, ch);
     return (TRUE);
@@ -3419,7 +3419,7 @@ int bank(struct char_data *ch, int cmd, char *arg,
 /* The (keys) must all be stored in a room which is (virtually)  */
 /* adjacent to the room of the lock smith.                       */
 
-int pray_for_items(struct char_data *ch, int cmd, char *arg,
+int pray_for_items(struct char_data *ch, const char *cmd, char *arg,
                    struct room_data *UNUSED(rp), int UNUSED(type)) {
   char buf[256];
   int key_room, gold;
@@ -3427,7 +3427,7 @@ int pray_for_items(struct char_data *ch, int cmd, char *arg,
   struct obj_data *tmp_obj, *obj;
   struct extra_descr_data *ext;
 
-  if (cmd != 176)               /* You must pray to get the stuff */
+  if (!STREQ(cmd, "pray"))
     return FALSE;
 
   key_room = 1 + ch->in_room;

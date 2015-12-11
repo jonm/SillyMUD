@@ -1009,8 +1009,6 @@ int warrior_guild_master(struct char_data *ch, int cmd, char *arg,
                          struct char_data *mob, int type);
 int guildmaster(struct char_data *ch, int cmd, char *arg,
                 struct char_data *mob, int type, int class);
-int dump(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-         int type);
 int mayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 int andy_wilcox(struct char_data *ch, int cmd, char *arg,
@@ -1102,18 +1100,8 @@ int zm_kill_fidos(struct char_data *zmaster);
 int zm_kill_aggressor(struct char_data *zmaster);
 int zombie_master(struct char_data *ch, int cmd, char *arg,
                   struct char_data *mob, int type);
-int pet_shops(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-              int type);
-int fountain(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-             int type);
-int bank(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-         int type);
-int pray_for_items(struct char_data *ch, int cmd, char *arg,
-                   struct room_data *rp, int type);
 int chalice(struct char_data *ch, int cmd, char *arg);
 int kings_hall(struct char_data *ch, int cmd, char *arg);
-int donation(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-             int type);
 int house(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
           int type);
 int sisyphus(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
@@ -1195,8 +1183,6 @@ int ghost(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
           int type);
 int druid_protector(struct char_data *ch, int cmd, char *arg,
                     struct char_data *mob, int type);
-int magic__fountain(struct char_data *ch, int cmd, char *arg,
-                    struct room_data *rp, int type);
 int druid_attack_spells(struct char_data *ch, struct char_data *vict,
                         int level);
 int summoner(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
@@ -1272,14 +1258,6 @@ int druid_challenger(struct char_data *ch, int cmd, char *arg,
                      struct char_data *mob, int type);
 int monk_challenger(struct char_data *ch, int cmd, char *arg,
                     struct char_data *mob, int type);
-int druid_challenge_prep_room(struct char_data *ch, int cmd, char *arg,
-                              struct room_data *rp, int type);
-int druid_challenge_room(struct char_data *ch, int cmd, char *arg,
-                         struct room_data *rp, int type);
-int monk_challenge_room(struct char_data *ch, int cmd, char *arg,
-                        struct room_data *rp, int type);
-int monk_challenge_prep_room(struct char_data *ch, int cmd, char *arg,
-                             struct room_data *rp, int type);
 int portal(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
            int type);
 int scraps(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
@@ -1332,10 +1310,6 @@ int youth_potion(struct char_data *ch, int cmd, char *arg,
                  struct char_data *mob, int type);
 int warpstone(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
               int type);
-int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-               int type);
-int entering_turbo_lift(struct char_data *ch, int cmd, char *arg,
-                        struct room_data *rp, int type);
 int old_hag(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
             int type);
 /* From spell_parser.c */
