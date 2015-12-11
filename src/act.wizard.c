@@ -853,7 +853,7 @@ void do_trans(struct char_data *ch, char *argument,
       act("Reality shifts, and $n appears.", FALSE, victim, 0, 0, TO_ROOM);
       act("Reality transforms itself as $n's hand grabs you.", FALSE, ch, 0,
           victim, TO_VICT);
-      do_look(victim, "", "look");
+      look_room(victim);
       send_to_char("Ok.\n\r", ch);
     }
   }
@@ -868,7 +868,7 @@ void do_trans(struct char_data *ch, char *argument,
         char_to_room(victim, target);
         act("$n arrives from a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
         act("$n has transferred you!", FALSE, ch, 0, victim, TO_VICT);
-        do_look(victim, "", "look");
+        look_room(victim);
       }
 
     send_to_char("Ok.\n\r", ch);
@@ -1062,7 +1062,7 @@ void do_goto(struct char_data *ch, char *argument,
     else
       command_interpreter(ch, (ch->specials.poofin + 1));
   }
-  do_look(ch, "", "look");
+  look_room(ch);
 }
 
 void do_stat(struct char_data *ch, char *argument,
@@ -2294,7 +2294,7 @@ void purge_one_room(int rnum, struct room_data *rp, int *range) {
        ch);
     char_from_room(ch);
     char_to_room(ch, 0);        /* send character to the void */
-    do_look(ch, "", "look");
+    look_room(ch);
     act("$n tumbles into the Void.", TRUE, ch, 0, 0, TO_ROOM);
   }
 

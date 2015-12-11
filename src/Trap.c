@@ -242,7 +242,7 @@ void trap_teleport(struct char_data *v) {
   char_to_room(v, to_room);
   act("$n slowly fade in to existence.", FALSE, v, 0, 0, TO_ROOM);
 
-  do_look(v, "", NULL);
+  look_room(v);
 
   if (IS_SET(real_roomp(to_room)->room_flags, DEATH) &&
       get_max_level(v) < LOW_IMMORTAL) {

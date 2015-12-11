@@ -494,7 +494,7 @@ void spell_astral_walk(byte UNUSED(level), struct char_data *ch,
       char_from_room(tmp);
       char_to_room(tmp, entrance);
       act("$n appears from a rift in reality.", FALSE, tmp, 0, 0, TO_ROOM);
-      do_look(tmp, "\0", 0);
+      look_room(tmp);
     }
   }
 }
@@ -556,7 +556,7 @@ void spell_teleport(byte UNUSED(level), struct char_data *ch,
   char_to_room(ch, to_room);
   act("$n slowly fade in to existence.", FALSE, ch, 0, 0, TO_ROOM);
 
-  do_look(ch, "", 0);
+  look_room(ch);
 
   if (IS_SET(real_roomp(to_room)->room_flags, DEATH) &&
       get_max_level(ch) < LOW_IMMORTAL) {
@@ -1719,7 +1719,7 @@ void spell_word_of_recall(byte UNUSED(level), struct char_data *UNUSED(ch),
   char_from_room(victim);
   char_to_room(victim, location);
   act("$n appears in the middle of the room.", TRUE, victim, 0, 0, TO_ROOM);
-  do_look(victim, "", "look");
+  look_room(victim);
 
 }
 
@@ -1865,7 +1865,7 @@ void raw_summon(struct char_data *v, struct char_data *c) {
   SPRINTF(buf, "%s has summoned you!\n\r",
           (IS_NPC(c) ? c->player.short_descr : GET_NAME(c)));
   send_to_char(buf, v);
-  do_look(v, "", "look");
+  look_room(v);
 
   for (tmp = real_roomp(v->in_room)->people; tmp; tmp = tmp->next_in_room) {
     if (IS_NPC(tmp) && !(IS_SET(tmp->specials.act, ACT_POLYSELF)) &&

@@ -3039,7 +3039,7 @@ int druid_challenge_prep_room(struct char_data *ch, const char *cmd,
     }
     char_to_room(mob, ch->in_room);
     chal->river_speed = 1;
-    do_look(ch, "", NULL);
+    look_room(ch);
     REMOVE_BIT(ch->specials.act, PLR_WIMPY);
     return (TRUE);
   }
@@ -3304,7 +3304,7 @@ int monk_challenge_prep_room(struct char_data *ch, const char * cmd,
     }
     char_to_room(mob, ch->in_room);
     chal->river_speed = 1;
-    do_look(ch, "", 0);
+    look_room(ch);
     REMOVE_BIT(ch->specials.act, PLR_WIMPY);
     return (TRUE);
   }
@@ -3343,7 +3343,7 @@ int portal(struct char_data *ch, const char *cmd, char *arg, struct obj_data *ob
         TO_CHAR);
     char_from_room(ch);
     char_to_room(ch, port->obj_flags.value[1]);
-    do_look(ch, "", 0);
+    look_room(ch);
     act("$n appears from thin air!", FALSE, ch, 0, 0, TO_ROOM);
   }
   else {
@@ -3809,7 +3809,7 @@ int astral_portal(struct char_data *ch, const char *cmd, char *arg,
 
             char_from_room(ch);
             char_to_room(ch, j);
-            do_look(ch, "", 0);
+            look_room(ch);
           }
         }
       }

@@ -795,7 +795,7 @@ void do_doorbash(struct char_data *ch, char *arg,
     was_in = ch->in_room;
     char_from_room(ch);
     char_to_room(ch, exitp->to_room);
-    do_look(ch, "", NULL);
+    look_room(ch);
 
     display_move(ch, dir, was_in, 1);
     if (!check_falling(ch)) {
@@ -857,7 +857,7 @@ void do_doorbash(struct char_data *ch, char *arg,
 
           char_from_room(ch);
           char_to_room(ch, exitp->to_room);
-          do_look(ch, "", 0);
+          look_room(ch);
           display_move(ch, dir, was_in, 1);
           if (!check_falling(ch)) {
             if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -1233,7 +1233,7 @@ void do_climb(struct char_data *ch, char *arg,
 
         char_from_room(ch);
         char_to_room(ch, exitp->to_room);
-        do_look(ch, "", 0);
+        look_room(ch);
         display_move(ch, dir, was_in, 1);
         if (!check_falling(ch)) {
           if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -1277,7 +1277,7 @@ void slip_in_climb(struct char_data *ch, int dir, int room) {
     i += number(1, 6);
     char_from_room(ch);
     char_to_room(ch, room);
-    do_look(ch, "", 0);
+    look_room(ch);
   }
 
   GET_POS(ch) = POSITION_SITTING;

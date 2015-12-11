@@ -92,7 +92,7 @@ void spell_transport_via_plant(byte UNUSED(level), struct char_data *ch,
   act("$p rustles slightly, and $n magically steps from within!", FALSE, ch,
       obj, 0, TO_ROOM);
   act("You are instantly transported to $p!", FALSE, ch, obj, 0, TO_CHAR);
-  do_look(ch, "\0", NULL);
+  look_room(ch);
 
 }
 
@@ -2215,7 +2215,7 @@ void spell_teleport_wo_error(byte level, struct char_data *ch,
     char_to_room(ch, location);
     act("You are blinded for a moment as $n appears in a flash of light!",
         FALSE, ch, 0, 0, TO_ROOM);
-    do_look(ch, "", "look");
+    look_room(ch);
     check_falling(ch);
 
     if (IS_SET(real_roomp(ch->in_room)->room_flags, DEATH) &&

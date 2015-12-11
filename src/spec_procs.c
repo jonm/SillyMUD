@@ -3576,7 +3576,7 @@ int chalice(struct char_data *ch, const char *cmd, char *arg) {
     act("$n is torn out of existence!", TRUE, ch, 0, 0, TO_ROOM);
     char_from_room(ch);
     char_to_room(ch, 2500);     /* before the fiery gates */
-    do_look(ch, "", "look");
+    look_room(ch);
     return (1);
   }
   else {
@@ -3599,7 +3599,7 @@ int kings_hall(struct char_data *ch, const char *cmd, char *arg) {
       TRUE, ch, 0, 0, TO_ROOM);
   char_from_room(ch);
   char_to_room(ch, 1420);       /* behind the altar */
-  do_look(ch, "", "look");
+  look_room(ch);
   return (1);
 }
 
@@ -3652,7 +3652,7 @@ int sisyphus(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     if ((dir != MOVE_DIR_INVALID) && IS_PC(ch)) {
       if (b) {
         b = 0;
-        do_look(mob, GET_NAME(ch), 0);
+        look_at(mob, GET_NAME(ch));
       }
       else {
         b = 1;
@@ -4790,7 +4790,7 @@ void throw_char(struct char_data *ch, struct char_data *v, int dir) {
     or = v->in_room;
     char_from_room(v);
     char_to_room(v, (real_roomp(or))->dir_option[dir]->to_room);
-    do_look(v, "\0", "look");
+    look_room(v);
 
     if (IS_SET(RM_FLAGS(v->in_room), DEATH) && get_max_level(v) < LOW_IMMORTAL) {
       nail_this_sucker(v);
@@ -6419,7 +6419,7 @@ int guardian(struct char_data *ch, const char *cmd, char *arg,
 
         char_from_room(ch);
         char_to_room(ch, rp->dir_option[2]->to_room);
-        do_look(ch, "\0", 0);
+        look_room(ch);
 
         /* First level followers can tag along */
         if (ch->followers) {
@@ -6433,7 +6433,7 @@ int guardian(struct char_data *ch, const char *cmd, char *arg,
                 (GET_POS(fol->follower) >= POSITION_STANDING)) {
               char_from_room(fol->follower);
               char_to_room(fol->follower, rp->dir_option[2]->to_room);
-              do_look(fol->follower, "\0", 0);
+              look_room(fol->follower);
             }
           }
         }
@@ -6463,7 +6463,7 @@ int guardian(struct char_data *ch, const char *cmd, char *arg,
           rp = real_roomp(ch->in_room);
           char_from_room(ch);
           char_to_room(ch, rp->dir_option[2]->to_room);
-          do_look(ch, "\0", 0);
+          look_room(ch);
           /* Follower stuff again */
           if (ch->followers) {
             act("$N says 'If they're with you, they can enter as well.'",
@@ -6476,7 +6476,7 @@ int guardian(struct char_data *ch, const char *cmd, char *arg,
                   (GET_POS(fol->follower) >= POSITION_STANDING)) {
                 char_from_room(fol->follower);
                 char_to_room(fol->follower, rp->dir_option[2]->to_room);
-                do_look(fol->follower, "\0", 0);
+                look_room(fol->follower);
               }
             }
           }

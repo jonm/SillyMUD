@@ -1816,7 +1816,7 @@ void nanny(struct descriptor_data *d, char *arg) {
         STATE(d) = CON_PLYNG;
         if (!get_max_level(d->character))
           do_start(d->character);
-        do_look(d->character, "", "look");
+        look_room(d->character);
         d->prompt_mode = 1;
 
         break;
@@ -1842,7 +1842,7 @@ void nanny(struct descriptor_data *d, char *arg) {
         STATE(d) = CON_PLYNG;
         if (!get_max_level(d->character))
           do_start(d->character);
-        do_look(d->character, "", "look");
+        look_room(d->character);
         d->prompt_mode = 1;
 
         break;
@@ -1869,7 +1869,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           STATE(d) = CON_PLYNG;
           if (!get_max_level(d->character))
             do_start(d->character);
-          do_look(d->character, "", "look");
+          look_room(d->character);
           d->prompt_mode = 1;
           break;
 
@@ -1902,7 +1902,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           STATE(d) = CON_PLYNG;
           if (!get_max_level(d->character))
             do_start(d->character);
-          do_look(d->character, "", "look");
+          look_room(d->character);
           d->prompt_mode = 1;
           break;
 
@@ -1935,7 +1935,7 @@ void nanny(struct descriptor_data *d, char *arg) {
           STATE(d) = CON_PLYNG;
           if (!get_max_level(d->character))
             do_start(d->character);
-          do_look(d->character, "", "look");
+          look_room(d->character);
           d->prompt_mode = 1;
           break;
 
@@ -2026,7 +2026,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       STATE(d) = CON_PLYNG;
       if (!get_max_level(d->character))
         do_start(d->character);
-      do_look(d->character, "", "look");
+      look_room(d->character);
       d->prompt_mode = 1;
       break;
 

@@ -2063,7 +2063,7 @@ int check_falling(struct char_data *ch) {
     act("$n falls from the sky", FALSE, ch, 0, 0, TO_ROOM);
     count++;
 
-    do_look(ch, "", NULL);
+    look_room(ch);
 
     if (IS_SET(targ->room_flags, DEATH) && !IS_IMMORTAL(ch)) {
       nail_this_sucker(ch);
@@ -2138,7 +2138,7 @@ int check_falling(struct char_data *ch) {
     log_msg("Someone fucked up an air room.");
     char_from_room(ch);
     char_to_room(ch, 2);
-    do_look(ch, "", 0);
+    look_room(ch);
     return (FALSE);
   }
   return (FALSE);

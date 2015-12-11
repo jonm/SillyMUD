@@ -29,4 +29,8 @@ void do_resize(struct char_data *ch, char *arg, const char * cmd);
 void do_report(struct char_data *ch, char *argument, const char * cmd);
 void do_credits(struct char_data *ch, char *argument, const char * cmd);
 
+
+#define look_room(ch) do_look((ch), "", "look")
+#define look_at(ch, at) do_look((ch), (at), "look")
+
 #endif /* ifdef _ACT_LOOK_H */

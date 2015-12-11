@@ -862,7 +862,7 @@ int entering_turbo_lift(struct char_data *ch, const char *cmd, char *UNUSED(arg)
     rp = real_roomp(ch->in_room);
     send_to_char("The doors open as you approach.\n\r", ch);
     send_to_char("\n\rThey then close quietly behind you.\n\r", ch);
-    do_look(ch, "", NULL);
+    look_room(ch);
     for (i = 0; i < 6; i++) {
       if (rp->dir_option[i]) {
         rp->dir_option[i] = 0;
@@ -886,7 +886,7 @@ int turbo_lift(struct char_data *ch, const char *cmd, char *arg, struct room_dat
       char_from_room(ch);
       char_to_room(ch, rp->dir_option[dir]->to_room);
       act("$n has entered the room.", TRUE, ch, 0, 0, TO_ROOM);
-      do_look(ch, "", 0);
+      look_room(ch);
       send_to_char("\n\rThe doors close quietly behind you.\n\r", ch);
     }
     else {

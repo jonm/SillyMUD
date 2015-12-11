@@ -1025,9 +1025,9 @@ void down_river(int pulse) {
                       char_to_room(ch,
                                    (real_roomp(or))->dir_option[rd]->to_room);
 
-                      do_look(ch, "\0", "look");
+                      look_room(ch);
                       if (RIDDEN(ch)) {
-                        do_look(RIDDEN(ch), "\0", "look");
+                        look_room(RIDDEN(ch));
                       }
                     }
                     if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -2050,7 +2050,7 @@ void teleport_pulse_stuff(int pulse) {
           char_to_room(tmp, rp->tele_targ);
 
           if (IS_SET(TELE_LOOK, rp->tele_mask) && IS_PC(tmp)) {
-            do_look(tmp, "\0", "look");
+            look_room(tmp);
           }
 
           if (IS_SET(dest->room_flags, DEATH) && (!IS_IMMORTAL(tmp))) {
@@ -2154,9 +2154,9 @@ void river_pulse_stuff(int pulse) {
                           char_to_room(ch,
                                        (real_roomp(or))->
                                        dir_option[rd]->to_room);
-                          do_look(ch, "\0", "look");
+                          look_room(ch);
                           if (RIDDEN(ch)) {
-                            do_look(RIDDEN(ch), "\0", "look");
+                            look_room(RIDDEN(ch));
                           }
 
 

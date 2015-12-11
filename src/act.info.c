@@ -18,6 +18,7 @@
 #include "act.wizard.h"
 #include "spec_procs.h"
 #include "spec_procs2.h"
+#include "act.info.h"
 
 /* extern variables */
 #if HASH
@@ -1426,7 +1427,7 @@ void do_read(struct char_data *ch, char *argument,
 
   /* This is just for now - To be changed later.! */
   SPRINTF(buf, "at %s", argument);
-  do_look(ch, buf, "look");
+  look_at(ch, buf);
 }
 
 void do_examine(struct char_data *ch, char *argument,
@@ -1436,7 +1437,7 @@ void do_examine(struct char_data *ch, char *argument,
   struct obj_data *tmp_object;
 
   SPRINTF(buf, "at %s", argument);
-  do_look(ch, buf, "look");
+  look_at(ch, buf);
 
   one_argument(argument, name);
 
@@ -1453,7 +1454,7 @@ void do_examine(struct char_data *ch, char *argument,
         (GET_ITEM_TYPE(tmp_object) == ITEM_CONTAINER)) {
       send_to_char("When you look inside, you see:\n\r", ch);
       SPRINTF(buf, "in %s", argument);
-      do_look(ch, buf, "look");
+      look_at(ch, buf);
     }
   }
 }
