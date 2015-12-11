@@ -1898,7 +1898,6 @@ void change_room_flags(struct room_data *rp, struct char_data *ch, char *arg,
 void change_room_desc(struct room_data *rp, struct char_data *ch, char *arg,
                       int type);
 void update_room_menu(struct char_data *ch);
-void do_redit(struct char_data *ch, char *arg, int cmd);
 void room_edit(struct char_data *ch, char *arg);
 void change_room_name(struct room_data *rp, struct char_data *ch, char *arg,
                       int type);

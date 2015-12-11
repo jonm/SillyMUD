@@ -102,7 +102,8 @@ void change_room_flags(struct room_data *rp, struct char_data *ch, char *arg,
     ("Select the number to toggle, <C/R> to return to main menu.\n\r--> ", ch);
 }
 
-void do_redit(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_redit(struct char_data *ch, char *UNUSED(arg),
+              const char * UNUSED(cmd)) {
 #ifndef TEST_SERVER
   struct room_data *rp;
 

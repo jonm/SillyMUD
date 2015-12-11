@@ -29,6 +29,7 @@
 #include "intrinsics.h"
 #include "act.wizard.h"
 #include "modify.h"
+#include "create.h"
 
 #define NOT !
 #define AND &&
@@ -787,7 +788,7 @@ void assign_command_pointers() {
   add_command("climb", do_climb, POSITION_STANDING, 1);
   add_command("beep", do_beep, POSITION_DEAD, 51);
   add_command_dep("bite", do_bite, 289, POSITION_RESTING, 1);
-  add_command_dep("redit", do_redit, 290, POSITION_SLEEPING, CREATOR);
+  add_command("redit", do_redit, POSITION_SLEEPING, CREATOR);
   add_command("display", do_display, POSITION_SLEEPING, 1);
   add_command("resize", do_resize, POSITION_SLEEPING, 1);
   add_command("\"", do_commune, POSITION_SLEEPING, LOW_IMMORTAL);
@@ -801,7 +802,7 @@ void assign_command_pointers() {
   /* this command is a little flawed.  Heavy usage generates obscenely 
      long linked lists in the "donation room" which cause the mud to 
      lag a horrible death. */
-  add_command_dep("donate", do_donate, 300, POSITION_STANDING, 1);
+  add_command("donate", do_donate, POSITION_STANDING, 1);
 #endif
   add_command("auto", do_auto, POSITION_RESTING, 1);
   add_command("brew", do_makepotion, POSITION_RESTING, 1);
