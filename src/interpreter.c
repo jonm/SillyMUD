@@ -816,7 +816,7 @@ void assign_command_pointers() {
   add_command("peek", do_peek, POSITION_STANDING, 1);
   add_command("prompt", do_prompt, POSITION_RESTING, 1);
 #if PLAYER_AUTH
-  add_command_dep("auth", do_auth, 399, POSITION_SLEEPING, LOW_IMMORTAL);
+  add_command("auth", do_auth, POSITION_SLEEPING, LOW_IMMORTAL);
 #endif
 }
 
