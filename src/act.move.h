@@ -35,4 +35,6 @@ void do_follow(struct char_data *ch, char *argument, const char * cmd);
 void do_walk(struct char_data *ch, char *argument, const char * cmd);
 void do_fly(struct char_data *ch, char *argument, const char * cmd);
 
+#define stand(ch) do_stand((ch), "", "stand")
+
 #endif /* _ACT_MOVE_H */

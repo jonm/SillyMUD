@@ -3569,7 +3569,7 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
       }
 
     do_shout(ch, "All who want to hunt a dragon, come to me!", 0);
-    do_stand(ch, "", 0);
+    stand(ch);
   }
 
   return (FALSE);
@@ -3873,7 +3873,7 @@ int dwarven_miners(struct char_data *ch, const char * UNUSED(cmd), char *UNUSED(
   if (type == EVENT_END_STRIKE) {
     if (ch->specials.position == POSITION_SITTING) {
       emote(ch, "is off strike.");
-      do_stand(ch, "", 0);
+      stand(ch);
       ch->specials.default_pos = POSITION_STANDING;
       ch->player.long_descr = (char *)realloc(ch->player.long_descr,
                                               sizeof(char) * 50);
@@ -3911,7 +3911,7 @@ int dwarven_miners(struct char_data *ch, const char * UNUSED(cmd), char *UNUSED(
       pulse_mobiles(EVENT_END_STRIKE);
       if (ch->specials.position == POSITION_SITTING) {
         emote(ch, "is off strike.");
-        do_stand(ch, "", 0);
+        stand(ch);
         ch->specials.default_pos = POSITION_STANDING;
         ch->player.long_descr = (char *)realloc(ch->player.long_descr,
                                                 sizeof(char) * 65);

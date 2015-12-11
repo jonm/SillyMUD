@@ -925,7 +925,7 @@ int eric_johnson(struct char_data *ch, const char *cmd, char *UNUSED(arg),
         return TRUE;
       }
       else if (GET_POS(eric) != POSITION_STANDING) {
-        do_stand(eric, "", NULL);
+        stand(eric);
         return TRUE;
       }
       break;
@@ -1001,7 +1001,7 @@ int eric_johnson(struct char_data *ch, const char *cmd, char *UNUSED(arg),
                 temp1->obj_flags.type_flag != ITEM_DRINKCON ||
                 temp1->obj_flags.value[1] <= 0) {
               s = "$n says 'Damn, out of beer'";
-              do_stand(eric, "", NULL);
+              stand(eric);
               state = E_SHORT_BEER_RUN;
             }
             else {
@@ -3029,7 +3029,7 @@ void zm_init_combat(struct char_data *zmaster, struct char_data *target) {
       }
       else if (GET_POS(fwr->follower) > POSITION_SLEEPING &&
                GET_POS(fwr->follower) < POSITION_FIGHTING) {
-        do_stand(fwr->follower, "", NULL);
+        stand(fwr->follower);
       }
     }
   }
@@ -3088,21 +3088,21 @@ int zombie_master(struct char_data *ch, const char *cmd, char *UNUSED(arg),
   if (!check_peaceful(ch, "") &&
       (zm_kill_fidos(zmaster) || zm_kill_aggressor(zmaster))
     ) {
-    do_stand(zmaster, "", NULL);
+    stand(zmaster);
     return TRUE;
   }
 
   switch (GET_POS(zmaster)) {
   case POSITION_RESTING:
     if (!zm_tired(zmaster))
-      do_stand(zmaster, "", NULL);
+      stand(zmaster);
     break;
   case POSITION_SITTING:
     if (!zm_stunned_followers(zmaster)) {
       if (!check_soundproof(ch))
         act("$n says 'It took you long enough...'", FALSE,
             zmaster, 0, 0, TO_ROOM);
-      do_stand(zmaster, "", NULL);
+      stand(zmaster);
     }
     break;
   case POSITION_STANDING:
@@ -3877,7 +3877,7 @@ int delivery_elf(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     else if (ch->in_room != Elf_Home) {
       if (GET_POS(ch) == POSITION_SLEEPING) {
         do_wake(ch, "", 0);
-        do_stand(ch, "", 0);
+        stand(ch);
       }
       say(ch, "Woah! How did i get here!");
       emote(ch, "waves his arm, and vanishes!");
@@ -3897,7 +3897,7 @@ int delivery_elf(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     {
       if ((time_info.hours > 6) && (time_info.hours < 9)) {
         do_wake(ch, "", 0);
-        do_stand(ch, "", 0);
+        stand(ch);
         ch->generic = ELF_GETTING;
       }
       return (FALSE);
@@ -6114,7 +6114,7 @@ int valik(struct char_data *ch, const char *cmd, char *arg, struct char_data *mo
     break;
   case Valik_Meditating:
     if (time_info.hours < 22 && time_info.hours > 5) {
-      do_stand(ch, "", NULL);
+      stand(ch);
       act("$n says 'Perhaps today will be different.'", FALSE, ch, 0, 0,
           TO_ROOM);
       act("$n slowly fades out of existence.", FALSE, ch, 0, 0, TO_ROOM);
@@ -6131,7 +6131,7 @@ int valik(struct char_data *ch, const char *cmd, char *arg, struct char_data *mo
         if (!IS_NPC(vict) && (get_max_level(vict) < LOW_IMMORTAL)
             && (number(0, 3) == 0)) {
           act("$n snaps out of his meditation.", FALSE, ch, 0, 0, TO_ROOM);
-          do_stand(ch, "", NULL);
+          stand(ch);
           hit(ch, vict, TYPE_UNDEFINED);
           return (FALSE);
         }
