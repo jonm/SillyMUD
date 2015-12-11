@@ -12,6 +12,7 @@
 #include "act.move.h"
 #include "act.info.h"
 #include "act.other.h"
+#include "spec_procs3.h"
 
 /*   external vars  */
 #if HASH

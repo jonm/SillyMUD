@@ -286,5 +286,5 @@
 #define SAPPENDF(str, ...)                                          \
   snprintf(str+strlen(str), sizeof(str)-strlen(str) - 1, __VA_ARGS__)
 
-#define STREQ(a, b) (!strcmp(a, b))
+#define STREQ(a, b) (a && b && !strcmp(a, b))
 

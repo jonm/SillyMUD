@@ -19,6 +19,7 @@
 #include "act.wizard.h"
 #include "act.social.h"
 #include "utility.h"
+#include "spec_procs.h"
 
 #define OBJ_FILE_FREE "\0\0\0"
 
@@ -645,8 +646,8 @@ void print_limited_items() {
 ************************************************************************* */
 #define DONATION_ROOM 99
 
-int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
-                 struct char_data *mob, int type) {
+int receptionist(struct char_data *ch, const char *cmd,
+                 char *UNUSED(arg), struct char_data *mob, int type) {
   struct obj_cost cost;
   struct char_data *recep = 0;
   struct char_data *temp_char;
@@ -720,7 +721,7 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
           return (FALSE);
         }
 
-  if ((cmd != 92) && (cmd != 93)) {
+  if (!STREQ(cmd,"rent") && !STREQ(cmd, "offer")) {
     if (!cmd) {
       if (recep->specials.fighting) {
         return (citizen(recep, 0, "", mob, type));
@@ -759,7 +760,7 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (TRUE);
   }
 
-  if (cmd == 92) {              /* Rent  */
+  if (STREQ(cmd, "rent")) {
     if (recep_offer(ch, recep, &cost)) {
 
       act("$n stores your stuff in the safe, and helps you into your chamber.",

@@ -18,6 +18,7 @@
 #include "skills.h"
 #include "act.info.h"
 #include "act.other.h"
+#include "act.move.h"
 
 void log_msg(char *s) {
   log_sev(s, 1);
@@ -1952,11 +1953,11 @@ void rem_all_affects(struct char_data *ch) {
 
 }
 
-int check_for_blocked_move(struct char_data *ch, int cmd, char *UNUSED(arg),
+int check_for_blocked_move(struct char_data *ch, int cmd_dir, char *UNUSED(arg),
                            int room, int dir, int class) {
   char buf[256], buf2[256];
 
-  if (cmd > 6 || cmd < 1)
+  if (cmd_dir == MOVE_DIR_INVALID)
     return (FALSE);
 
   strcpy(buf, "The guard humiliates you, and block your way.\n\r");
@@ -1967,7 +1968,7 @@ int check_for_blocked_move(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 
 
-  if ((ch->in_room == room) && (cmd == dir + 1)) {
+  if ((ch->in_room == room) && (cmd_dir == dir)) {
     if (!has_class(ch, class)) {
       act(buf2, FALSE, ch, 0, 0, TO_ROOM);
       send_to_char(buf, ch);

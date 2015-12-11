@@ -14,6 +14,7 @@
 #include "spec_procs.h"
 #include "spec_procs2.h"
 #include "spec_procs3.h"
+#include "reception.h"
 
 #if HASH
 extern struct hash_header room_db;
@@ -25,19 +26,17 @@ extern struct index_data *obj_index;
 void boot_the_shops();
 void assign_the_shopkeepers();
 
+typedef int (*sproc) (struct char_data *, const char *, char *,
+                      struct char_data *, int);
+
 struct special_proc_entry {
   int vnum;
-  int (*proc) ();
+  sproc proc;
 };
 
 /* ********************************************************************
 *  Assignments                                                        *
 ******************************************************************** */
-
-/* put here so we don't have to recompile EVERYTHING */
-int death_knight(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-
 
 /* assign special procedures to mobiles */
 void assign_mobiles() {
@@ -1033,9 +1032,13 @@ void assign_mobiles() {
   assign_the_shopkeepers();
 }
 
+typedef int (*oproc) (struct char_data *, const char *, char *,
+                      struct obj_data *, int);
+
+
 struct object_proc {
   int virtual_obj_num;
-  int (*func) ();
+  oproc func;
 };
 static struct object_proc obj_procs[] = {
   {15, slot_machine},
@@ -1077,10 +1080,17 @@ void assign_objects() {
   }
 }
 
+typedef int (*rproc) (struct char_data *, const char *, char *,
+                      struct room_data *, int);
+
+struct room_proc_entry {
+  int vnum;
+  rproc proc;
+};
 
 /* assign special procedures to rooms */
 void assign_rooms() {
-  static struct special_proc_entry specials[] = {
+  static struct room_proc_entry specials[] = {
 
     {99, donation},
     {500, druid_challenge_prep_room},

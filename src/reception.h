@@ -6,5 +6,7 @@
 #define RENT_DIRECTORY DEFAULT_LIBDIR "/rent"
 
 void ensure_rent_directory();
+int receptionist(struct char_data *ch, const char *cmd, char *arg,
+                 struct char_data *mob, int type);
 
 #endif

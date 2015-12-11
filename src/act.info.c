@@ -16,6 +16,8 @@
 #include "utils.h"
 #include "act.comm.h"
 #include "act.wizard.h"
+#include "spec_procs.h"
+#include "spec_procs2.h"
 
 /* extern variables */
 #if HASH

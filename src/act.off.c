@@ -12,6 +12,7 @@
 #include "protos.h"
 #include "act.off.h"
 #include "act.other.h"
+#include "spec_procs2.h"
 
 /* extern variables */
 
