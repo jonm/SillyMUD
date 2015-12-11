@@ -719,7 +719,7 @@ void assign_command_pointers() {
   add_command("stealth", do_stealth, POSITION_DEAD, LOW_IMMORTAL);
   add_command("edit", do_edit, POSITION_DEAD, CREATOR);
 #ifdef TEST_SERVER
-  add_command_dep("@", do_set, 227, POSITION_DEAD, CREATOR);
+  add_command("@", do_set, POSITION_DEAD, CREATOR);
 #else
   add_command("@", do_set, POSITION_DEAD, SILLYLORD);
 #endif
