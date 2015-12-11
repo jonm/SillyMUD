@@ -724,7 +724,7 @@ void assign_command_pointers() {
 #endif
   add_command_dep("rsave", do_rsave, 228, POSITION_DEAD, CREATOR);
   add_command_dep("rload", do_rload, 229, POSITION_DEAD, CREATOR);
-  add_command_dep("track", do_track, 230, POSITION_DEAD, 1);
+  add_command("track", do_track, POSITION_DEAD, 1);
   add_command_dep("wizlock", do_wizlock, 231, POSITION_DEAD, DEMIGOD);
   add_command_dep("highfive", do_highfive, 232, POSITION_DEAD, 0);
   add_command("title", do_title, POSITION_DEAD, 43);
@@ -739,11 +739,11 @@ void assign_command_pointers() {
   add_command_dep("invisible", do_invis, 242, POSITION_DEAD, LOW_IMMORTAL);
   add_command("gain", do_gain, POSITION_DEAD, 1);
   add_command_dep("instazone", do_instazone, 244, POSITION_DEAD, CREATOR);
-  add_command_dep("disarm", do_disarm, 245, POSITION_FIGHTING, 1);
+  add_command("disarm", do_disarm, POSITION_FIGHTING, 1);
   add_command_dep("bonk", do_action, 246, POSITION_SITTING, 1);
   add_command_dep("chpwd", do_passwd, 247, POSITION_SITTING, IMPLEMENTOR);
   add_command("fill", do_not_here, POSITION_SITTING, 0);
-  add_command_dep("imptest", do_doorbash, 249, POSITION_SITTING, IMPLEMENTOR);
+  add_command("imptest", do_doorbash, POSITION_SITTING, IMPLEMENTOR);
   add_command("shoot", do_shoot, POSITION_STANDING, 1);
   add_command_dep("silence", do_silence, 251, POSITION_STANDING, DEMIGOD);
   add_command("teams", do_not_here, POSITION_STANDING, LOKI);
@@ -752,7 +752,7 @@ void assign_command_pointers() {
   add_command_dep("bamfin", do_bamfin, 255, POSITION_STANDING, LOW_IMMORTAL);
   add_command_dep("bamfout", do_bamfout, 256, POSITION_STANDING, LOW_IMMORTAL);
   add_command_dep("vis", do_invis, 257, POSITION_STANDING, 0);
-  add_command_dep("doorbash", do_doorbash, 258, POSITION_STANDING, 1);
+  add_command("doorbash", do_doorbash, POSITION_STANDING, 1);
   add_command_dep("mosh", do_action, 259, POSITION_FIGHTING, 1);
 
 /* alias commands */
@@ -767,23 +767,23 @@ void assign_command_pointers() {
   add_command("8", do_alias, POSITION_DEAD, 1);
   add_command("9", do_alias, POSITION_DEAD, 1);
   add_command("0", do_alias, POSITION_DEAD, 1);
-  add_command_dep("swim", do_swim, 271, POSITION_STANDING, 1);
-  add_command_dep("spy", do_spy, 272, POSITION_STANDING, 1);
+  add_command("swim", do_swim, POSITION_STANDING, 1);
+  add_command("spy", do_spy, POSITION_STANDING, 1);
   add_command("springleap", do_springleap, POSITION_RESTING, 1);
   add_command("quivering palm", do_quivering_palm, POSITION_FIGHTING, 30);
-  add_command_dep("feign death", do_feign_death, 275, POSITION_FIGHTING, 1);
+  add_command("feign death", do_feign_death, POSITION_FIGHTING, 1);
   add_command("mount", do_mount, POSITION_STANDING, 1);
   add_command("dismount", do_mount, POSITION_MOUNTED, 1);
   add_command("ride", do_mount, POSITION_STANDING, 1);
   add_command("sign", do_sign, POSITION_RESTING, 1);
   add_command_dep("setsev", do_setsev, 280, POSITION_DEAD, IMMORTAL);
-  add_command_dep("first aid", do_first_aid, 281, POSITION_RESTING, 1);
+  add_command("first aid", do_first_aid, POSITION_RESTING, 1);
   add_command_dep("log", do_set_log, 282, POSITION_DEAD, 58);
   add_command_dep("recall", do_cast, 283, POSITION_DEAD, LOKI);
   add_command_dep("reload", reboot_text, 284, POSITION_DEAD, 57);
   add_command_dep("event", do_event, 285, POSITION_DEAD, 59);
-  add_command_dep("disguise", do_disguise, 286, POSITION_STANDING, 1);
-  add_command_dep("climb", do_climb, 287, POSITION_STANDING, 1);
+  add_command("disguise", do_disguise, POSITION_STANDING, 1);
+  add_command("climb", do_climb, POSITION_STANDING, 1);
   add_command_dep("beep", do_beep, 288, POSITION_DEAD, 51);
   add_command_dep("bite", do_bite, 289, POSITION_RESTING, 1);
   add_command_dep("redit", do_redit, 290, POSITION_SLEEPING, CREATOR);
@@ -791,7 +791,7 @@ void assign_command_pointers() {
   add_command("resize", do_resize, POSITION_SLEEPING, 1);
   add_command("\"", do_commune, POSITION_SLEEPING, LOW_IMMORTAL);
   add_command_dep("#", do_cset, 294, POSITION_DEAD, 59);
-  add_command_dep("inset", do_inset, 295, POSITION_RESTING, 1);
+  add_command("inset", do_inset, POSITION_RESTING, 1);
   add_command("showexits", do_show_exits, POSITION_DEAD, 1);
   add_command("split", do_split, POSITION_RESTING, 1);
   add_command("report", do_report, POSITION_RESTING, 1);
@@ -803,11 +803,11 @@ void assign_command_pointers() {
   add_command_dep("donate", do_donate, 300, POSITION_STANDING, 1);
 #endif
   add_command("auto", do_auto, POSITION_RESTING, 1);
-  add_command_dep("brew", do_makepotion, 302, POSITION_RESTING, 1);
+  add_command("brew", do_makepotion, POSITION_RESTING, 1);
   add_command_dep("changeform", do_changeform, 303, POSITION_STANDING, 1);
   add_command("walk", do_walk, POSITION_STANDING, 1);
   add_command("fly", do_fly, POSITION_STANDING, 1);
-  add_command_dep("berserk", do_berserk, 303, POSITION_FIGHTING, 1);
+  add_command("berserk", do_berserk, POSITION_FIGHTING, 1);
   add_command("palm", do_palm, POSITION_STANDING, 1);
   add_command("peek", do_peek, POSITION_STANDING, 1);
   add_command("prompt", do_prompt, POSITION_RESTING, 1);

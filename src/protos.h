@@ -1035,10 +1035,6 @@ void signal_setup();
 
 /* From skills.c */
 
-void do_inset(struct char_data *ch, char *argument, int cmd);
-void do_train(struct char_data *ch, char *argument, int cmd);
-void do_disarm(struct char_data *ch, char *argument, int cmd);
-void do_track(struct char_data *ch, char *argument, int cmd);
 int track(struct char_data *ch, struct char_data *vict);
 int dir_track(struct char_data *ch, struct char_data *vict);
 void donothing();
@@ -1048,19 +1044,10 @@ int choose_exit_global(int in_room, int tgt_room, int depth);
 int choose_exit_in_zone(int in_room, int tgt_room, int depth);
 int go_direction(struct char_data *ch, int dir);
 void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp);
-void do_doorbash(struct char_data *ch, char *arg, int cmd);
-void do_swim(struct char_data *ch, char *arg, int cmd);
 int spy_check(struct char_data *ch);
-void do_spy(struct char_data *ch, char *arg, int cmd);
 int remove_trap(struct char_data *ch, struct obj_data *trap);
-void do_feign_death(struct char_data *ch, char *arg, int cmd);
-void do_first_aid(struct char_data *ch, char *arg, int cmd);
-void do_disguise(struct char_data *ch, char *argument, int cmd);
-void do_climb(struct char_data *ch, char *arg, int cmd);
 void slip_in_climb(struct char_data *ch, int dir, int room);
-void do_makepotion(struct char_data *ch, char *argument, int cmd);
 void add_skill(int nr, int taught_by, int class_use, int percent);
-void do_berserk(struct char_data *ch, char *arg, int cmd);
 void assign_skills();
 
 /* From spec_assign.c */
