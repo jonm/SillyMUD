@@ -1177,7 +1177,7 @@ void do_pick(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_enter(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_enter(struct char_data *ch, char *argument, const char *UNUSED(cmd)) {
   int door;
   char buf[MAX_INPUT_LENGTH], tmp[MAX_STRING_LENGTH];
   struct room_direction_data *exitp;
