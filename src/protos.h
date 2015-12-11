@@ -1359,7 +1359,6 @@ void say_spell(struct char_data *ch, int si);
 bool saves_spell(struct char_data *ch, sh_int save_type);
 bool imp_save_spell(struct char_data *ch, sh_int save_type, int mod);
 char *skip_spaces(char *string);
-void do_cast(struct char_data *ch, char *argument, int cmd);
 void assign_spell_pointers();
 void spell_wear_off_soon(int s, struct char_data *ch);
 void spell_wear_off(int s, struct char_data *ch);

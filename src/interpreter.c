@@ -31,6 +31,7 @@
 #include "modify.h"
 #include "create.h"
 #include "act.social.h"
+#include "spell_parser.h"
 
 #define NOT !
 #define AND &&
@@ -578,7 +579,7 @@ void assign_command_pointers() {
   add_command("typo", do_typo, POSITION_DEAD, 0);
   add_command("bug", do_bug, POSITION_DEAD, 0);
   add_command("whisper", do_whisper, POSITION_RESTING, 0);
-  add_command_dep("cast", do_cast, 84, POSITION_SITTING, 1);
+  add_command("cast", do_cast, POSITION_SITTING, 1);
   add_command("at", do_at, POSITION_DEAD, CREATOR);
   add_command("ask", do_ask, POSITION_RESTING, 0);
   add_command("order", do_order, POSITION_RESTING, 1);
@@ -782,7 +783,7 @@ void assign_command_pointers() {
   add_command("setsev", do_setsev, POSITION_DEAD, IMMORTAL);
   add_command("first aid", do_first_aid, POSITION_RESTING, 1);
   add_command("log", do_set_log, POSITION_DEAD, 58);
-  add_command_dep("recall", do_cast, 283, POSITION_DEAD, LOKI);
+  add_command("recall", do_cast, POSITION_DEAD, LOKI);
   add_command_dep("reload", reboot_text, 284, POSITION_DEAD, 57);
   add_command("event", do_event, POSITION_DEAD, 59);
   add_command("disguise", do_disguise, POSITION_STANDING, 1);

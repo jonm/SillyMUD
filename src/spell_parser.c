@@ -942,7 +942,7 @@ char *skip_spaces(char *string) {
 
 /* Assumes that *argument does start with first letter of chopped string */
 
-void do_cast(struct char_data *ch, char *argument, int cmd) {
+void do_cast(struct char_data *ch, char *argument, const char *cmd) {
   struct obj_data *tar_obj;
   struct char_data *tar_char;
   char name[MAX_INPUT_LENGTH];
@@ -1229,7 +1229,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
       }
 
 
-      if (cmd == 283) {         /* recall */
+      if (STREQ(cmd, "recall")) { 
         if (!MEMORIZED(ch, spl)) {
           send_to_char("You don't have that spell memorized!\n\r", ch);
           return;
@@ -1358,7 +1358,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
                                          ch, argument, SPELL_TYPE_SPELL,
                                          tar_char, tar_obj));
       cost = (int)USE_MANA(ch, (int)spl);
-      if (cmd == 283) {         /* recall */
+      if (STREQ(cmd, "recall")) { 
         forget(ch, spl);
       }
       else if (!intrinsic) {
