@@ -17,6 +17,7 @@
 #include "act.info.h"
 #include "act.comm.h"
 #include "act.other.h"
+#include "board.h"
 
 /*   external vars  */
 

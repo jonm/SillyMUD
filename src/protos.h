@@ -179,8 +179,6 @@ void board_save_board();
 void board_load_board();
 int board_show_board(struct char_data *ch, char *arg, int bnum);
 int fwrite_string(char *buf, FILE * fl);
-int board(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
-          int type);
 char *fix_returns(char *text_string);
 int board_check_locks(int bnum, struct char_data *ch);
 

@@ -88,8 +88,8 @@ c   Added a board and message structure
 
 */
 
-int board(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
-          int type) {
+int board(struct char_data *ch, const char * cmd, char *arg,
+          struct obj_data *obj, int type) {
   static int has_loaded = 0;
   int bnum = -1;
   int obj_num;
@@ -118,17 +118,20 @@ int board(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
   else if (obj_num == (real_object(3097)))
     bnum = 2;
 
-  switch (cmd) {
-  case 15:                     /* look */
+  if (STREQ(cmd, "look")) {
     return (board_show_board(ch, arg, bnum));
-  case 149:                    /* write */
+  }
+  else if (STREQ(cmd, "write")) {
     board_write_msg(ch, arg, bnum);
     return 1;
-  case 63:                     /* read */
+  }
+  else if (STREQ(cmd, "read")) {
     return (board_display_msg(ch, arg, bnum));
-  case 66:                     /* remove */
+  }
+  else if (STREQ(cmd, "remove")) {
     return (board_remove_msg(ch, arg, bnum));
-  default:
+  }
+  else {
     return 0;
   }
 }
