@@ -282,9 +282,8 @@ int guildmaster(struct char_data *ch, int cmd, char *arg,
       }
     }
     if (!*arg) {
-      SPRINTF(buf, "You have got %d practice sessions left.\n\r",
-              ch->specials.spells_to_learn);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You have got %d practice sessions left.\n\r",
+                    ch->specials.spells_to_learn);
       switch (class) {
       case CLASS_MAGIC_USER:
       case CLASS_CLERIC:
@@ -297,10 +296,9 @@ int guildmaster(struct char_data *ch, int cmd, char *arg,
               (skill_info[i + 1].min_level[level_num] <=
                get_max_level(guildmaster) - 10)) {
 
-            SPRINTF(buf, "[%-2d] %-30s %s \n\r",
-                    skill_info[i + 1].min_level[level_num],
-                    spells[i], how_good(ch->skills[i + 1].learned));
-            send_to_char(buf, ch);
+            send_to_charf(ch, "[%-2d] %-30s %s \n\r",
+                          skill_info[i + 1].min_level[level_num],
+                          spells[i], how_good(ch->skills[i + 1].learned));
           }
         }
 
@@ -311,9 +309,8 @@ int guildmaster(struct char_data *ch, int cmd, char *arg,
         send_to_char("You can practice any of the following skills:\n\r", ch);
         for (i = 0; *spells[i] != '\n'; i++) {
           if (skill_info[i + 1].taught_by & teacher) {
-            SPRINTF(buf, "%-30s %s\n\r", spells[i],
-                    how_good(ch->skills[i + 1].learned));
-            send_to_char(buf, ch);
+            send_to_charf(ch, "%-30s %s\n\r", spells[i],
+                          how_good(ch->skills[i + 1].learned));
           }
         }
         return (TRUE);
@@ -608,7 +605,7 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg,
    */
 #define THE_PUB	3940
   static int open = 1;          /* 0 closed;  1 open;  2 last call */
-  char argm[100], newarg[100], buf[MAX_STRING_LENGTH];
+  char argm[100], newarg[100];
   struct obj_data *temp1, *temp2;
   struct char_data *temp_char;
   struct char_data *andy;
@@ -806,9 +803,8 @@ int andy_wilcox(struct char_data *ch, int cmd, char *arg,
       cost *= 9;
       cost /= 10;
       cost++;
-      SPRINTF(buf, "%s for %d gold coins.\n\r", temp1->short_description,
-              cost);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "%s for %d gold coins.\n\r", temp1->short_description,
+                    cost);
       extract_obj(temp1);
       if (temp2)
         extract_obj(temp2);
@@ -3189,8 +3185,7 @@ int pet_shops(struct char_data *ch, int cmd, char *arg,
   if (cmd == 59) {              /* List */
     send_to_char("Available pets are:\n\r", ch);
     for (pet = real_roomp(pet_room)->people; pet; pet = pet->next_in_room) {
-      SPRINTF(buf, "%8d - %s\n\r", 24 * GET_EXP(pet), pet->player.short_descr);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "%8d - %s\n\r", 24 * GET_EXP(pet), pet->player.short_descr);
     }
     return (TRUE);
   }
@@ -3320,8 +3315,7 @@ int fountain(struct char_data *ch, int cmd, char *arg,
       return (FALSE);
     }
 
-    SPRINTF(buf, "You drink from the %s.\n\r", container);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You drink from the %s.\n\r", container);
 
     SPRINTF(buf, "$n drinks from the %s.", container);
     act(buf, FALSE, ch, 0, 0, TO_ROOM);
@@ -3342,7 +3336,6 @@ int fountain(struct char_data *ch, int cmd, char *arg,
 int bank(struct char_data *ch, int cmd, char *arg,
          struct room_data *UNUSED(rp), int UNUSED(type)) {
 
-  static char buf[256];
   int money;
 
   money = atoi(arg);
@@ -3388,8 +3381,7 @@ int bank(struct char_data *ch, int cmd, char *arg,
       send_to_char("Thank you.\n\r", ch);
       GET_GOLD(ch) = GET_GOLD(ch) - money;
       GET_BANK(ch) = GET_BANK(ch) + money;
-      SPRINTF(buf, "Your balance is %d.\n\r", GET_BANK(ch));
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Your balance is %d.\n\r", GET_BANK(ch));
       return (TRUE);
     }
     /*withdraw */
@@ -3414,14 +3406,12 @@ int bank(struct char_data *ch, int cmd, char *arg,
       send_to_char("Thank you.\n\r", ch);
       GET_GOLD(ch) = GET_GOLD(ch) + money;
       GET_BANK(ch) = GET_BANK(ch) - money;
-      SPRINTF(buf, "Your balance is %d.\n\r", GET_BANK(ch));
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Your balance is %d.\n\r", GET_BANK(ch));
       return (TRUE);
     }
   }
   else if (cmd == 221) {
-    SPRINTF(buf, "Your balance is %d.\n\r", GET_BANK(ch));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "Your balance is %d.\n\r", GET_BANK(ch));
     return (TRUE);
   }
   return (FALSE);
@@ -4698,7 +4688,6 @@ int caravan_guild_guard(struct char_data *ch, int cmd, char *arg,
 int stat_teller(struct char_data *ch, int cmd, char *UNUSED(arg),
                 struct char_data *UNUSED(mob), int UNUSED(type)) {
   int choice;
-  char buf[200];
 
   if (cmd) {
     if (cmd == 56) {            /* buy */
@@ -4718,27 +4707,23 @@ int stat_teller(struct char_data *ch, int cmd, char *UNUSED(arg),
       switch (choice) {
       case 0:
         if (has_class(ch, CLASS_WARRIOR) && GET_STR(ch) == 18)
-          SPRINTF(buf, "STR: %d/%d, WIS: %d, DEX: %d\n\r", GET_STR(ch),
-                  GET_ADD(ch), GET_WIS(ch), GET_DEX(ch));
+          send_to_charf(ch, "STR: %d/%d, WIS: %d, DEX: %d\n\r", GET_STR(ch),
+                        GET_ADD(ch), GET_WIS(ch), GET_DEX(ch));
         else
-          SPRINTF(buf, "STR: %d, WIS: %d, DEX: %d\n\r", GET_STR(ch),
-                  GET_WIS(ch), GET_DEX(ch));
-        send_to_char(buf, ch);
+          send_to_charf(ch, "STR: %d, WIS: %d, DEX: %d\n\r", GET_STR(ch),
+                        GET_WIS(ch), GET_DEX(ch));
         break;
       case 1:
-        SPRINTF(buf, "INT: %d, DEX:  %d, CON: %d \n\r", GET_INT(ch),
-                GET_DEX(ch), GET_CON(ch));
-        send_to_char(buf, ch);
+        send_to_charf(ch, "INT: %d, DEX:  %d, CON: %d \n\r", GET_INT(ch),
+                      GET_DEX(ch), GET_CON(ch));
         break;
       case 2:
-        SPRINTF(buf, "CON: %d, INT: %d , WIS: %d \n\r", GET_CON(ch),
-                GET_INT(ch), GET_WIS(ch));
-        send_to_char(buf, ch);
+        send_to_charf(ch, "CON: %d, INT: %d , WIS: %d \n\r", GET_CON(ch),
+                      GET_INT(ch), GET_WIS(ch));
         break;
       case 3:
-        SPRINTF(buf, "DEX: %d, INT: %d, CHR: %d \n\r", GET_DEX(ch),
-                GET_INT(ch), GET_CHR(ch));
-        send_to_char(buf, ch);
+        send_to_charf(ch, "DEX: %d, INT: %d, CHR: %d \n\r", GET_DEX(ch),
+                      GET_INT(ch), GET_CHR(ch));
         break;
       default:
         send_to_char("We are experiencing Technical difficulties\n\r", ch);
@@ -4774,7 +4759,6 @@ int stat_teller(struct char_data *ch, int cmd, char *UNUSED(arg),
 void throw_char(struct char_data *ch, struct char_data *v, int dir) {
   struct room_data *rp;
   int or;
-  char buf[200];
 
   rp = real_roomp(v->in_room);
   if (rp && rp->dir_option[dir] &&
@@ -4782,9 +4766,8 @@ void throw_char(struct char_data *ch, struct char_data *v, int dir) {
     if (v->specials.fighting) {
       stop_fighting(v);
     }
-    SPRINTF(buf, "%s picks you up and throws you %s\n\r",
-            ch->player.short_descr, dirs[dir]);
-    send_to_char(buf, v);
+    send_to_charf(v, "%s picks you up and throws you %s\n\r",
+                  ch->player.short_descr, dirs[dir]);
     or = v->in_room;
     char_from_room(v);
     char_to_room(v, (real_roomp(or))->dir_option[dir]->to_room);
