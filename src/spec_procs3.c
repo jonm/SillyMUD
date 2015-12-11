@@ -899,7 +899,7 @@ int turbo_lift(struct char_data *ch, const char *cmd, char *arg, struct room_dat
   if (!STREQ(cmd, "'") && !STREQ(cmd, "say"))
     return (FALSE);
 
-  do_say(ch, arg, "say");
+  say(ch, arg);
 
   for (i = dest = 0; TurboLiftList[i].trigger[0] != '\n'; i++)
     if (!str_cmp(arg, TurboLiftList[i].trigger)) {

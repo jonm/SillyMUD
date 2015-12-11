@@ -391,7 +391,7 @@ int summoner(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       else {
         if (get_max_level(ch) < 32) {
           if (number(0, 10)) {
-            do_say(ch, "Curses!  Foiled again!\n\r", "say");
+            say(ch, "Curses!  Foiled again!\n\r");
             return (0);
           }
         }
@@ -458,7 +458,7 @@ int jive_box(struct char_data *ch, const char *cmd, char *arg,
   if (STREQ(cmd, "say") ||
       STREQ(cmd, "'")) {
     invert(arg, buf);
-    do_say(ch, buf, "say");
+    say(ch, buf);
     return (TRUE);
   }
   else if (STREQ(cmd, "tell")) {
@@ -2215,38 +2215,38 @@ void say_hello(struct char_data *ch, struct char_data *t) {
 
   switch (number(1, 10)) {
   case 1:
-    do_say(ch, "Greetings, adventurer", 0);
+    say(ch, "Greetings, adventurer");
     break;
   case 2:
     if (t->player.sex == SEX_FEMALE)
-      do_say(ch, "Good day, milady", 0);
+      say(ch, "Good day, milady");
     else
-      do_say(ch, "Good day, lord", 0);
+      say(ch, "Good day, lord");
     break;
   case 3:
     if (t->player.sex == SEX_FEMALE)
-      do_say(ch, "Pleasant Journey, Mistress", 0);
+      say(ch, "Pleasant Journey, Mistress");
     else
-      do_say(ch, "Pleasant Journey, Master", 0);
+      say(ch, "Pleasant Journey, Master");
     break;
   case 4:
     if (t->player.sex == SEX_FEMALE)
       SPRINTF(buf, "Make way!  Make way for the lady %s!", GET_NAME(t));
     else
       SPRINTF(buf, "Make way!  Make way for the lord %s!", GET_NAME(t));
-    do_say(ch, buf, 0);
+    say(ch, buf);
     break;
   case 5:
-    do_say(ch, "May the prophet smile upon you", 0);
+    say(ch, "May the prophet smile upon you");
     break;
   case 6:
-    do_say(ch, "It is a pleasure to see you again.", 0);
+    say(ch, "It is a pleasure to see you again.");
     break;
   case 7:
-    do_say(ch, "You are always welcome here, great one", 0);
+    say(ch, "You are always welcome here, great one");
     break;
   case 8:
-    do_say(ch, "My lord bids you greetings", 0);
+    say(ch, "My lord bids you greetings");
     break;
   case 9:
     if (time_info.hours > 6 && time_info.hours < 12)
@@ -2257,7 +2257,7 @@ void say_hello(struct char_data *ch, struct char_data *t) {
       SPRINTF(buf, "Good evening, %s", GET_NAME(t));
     else
       SPRINTF(buf, "Up for a midnight stroll, %s?\n", GET_NAME(t));
-    do_say(ch, buf, 0);
+    say(ch, buf);
     break;
   case 10:{
       char buf2[80];
@@ -2289,7 +2289,7 @@ void say_hello(struct char_data *ch, struct char_data *t) {
         SPRINTF(buf, "Such a pleasant %s, don't you think?", buf2);
         break;
       }
-      do_say(ch, buf, 0);
+      say(ch, buf);
     }
     break;
   }
@@ -2308,13 +2308,13 @@ void greet_people(struct char_data *ch) {
             say_hello(ch, tch);
             SET_BIT(ch->specials.act, ACT_GREET);
             if (IS_AFFECTED2(tch, AFF2_ONE_LIFER)) {
-              do_say(ch, "What a stud!", 0);
+              say(ch, "What a stud!");
             }
             break;
           }
           else if (IS_AFFECTED2(tch, AFF2_ONE_LIFER)) {
             submit(ch, tch);
-            do_say(ch, "What a stud!", 0);
+            say(ch, "What a stud!");
           }
         }
       }
@@ -3447,7 +3447,7 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
         do_say(ch,
                "I really miss the good old days of fighting dragons all day.",
                0);
-        do_say(ch, "I really should do it more often to keep in shape.", 0);
+        say(ch, "I really should do it more often to keep in shape.");
         break;
       default:
         break;
@@ -3469,10 +3469,10 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
           }
         if (!found) {
           ch->generic = 25;
-          do_say(ch, "Ack! The dragon is dead! I'm going back to the bar!", 0);
+          say(ch, "Ack! The dragon is dead! I'm going back to the bar!");
         }
         else {
-          do_say(ch, "Ok, Follow me and let's go kill ourselves a dragon!", 0);
+          say(ch, "Ok, Follow me and let's go kill ourselves a dragon!");
           ch->generic = 23;
           count = 1;
           for (i = real_roomp(ch->in_room)->people; i; i = i->next_in_room) {
@@ -3506,7 +3506,7 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
           }
         if (!found) {
           ch->generic = 25;
-          do_say(ch, "Ack! The dragon is dead! I'm going back to the bar!", 0);
+          say(ch, "Ack! The dragon is dead! I'm going back to the bar!");
         }
 
         else {
@@ -3530,7 +3530,7 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
       }
 
       else if (ch->generic == 24) {
-        do_say(ch, "Guess it's back to the bar for me! I need a drink!", 0);
+        say(ch, "Guess it's back to the bar for me! I need a drink!");
         ch->generic = 25;
       }
       else if (ch->generic == 25) {
@@ -3539,12 +3539,12 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
           return (FALSE);
         go_direction(ch, dir);
         if (ch->in_room == WHERE_TO_SIT) {
-          do_say(ch, "Ahhh, time for a drink!", 0);
+          say(ch, "Ahhh, time for a drink!");
           for (i = real_roomp(ch->in_room)->people; i; i = i->next_in_room)
             if (IS_MOB(i) && (mob_index[i->nr].virtual == WHO_TO_CALL))
               (*mob_index[i->nr].func) (i, 0, "", i, EVENT_FOLLOW);
           do_sit(ch, "", 0);
-          do_say(ch, "Bartender, how about a drink?", 0);
+          say(ch, "Bartender, how about a drink?");
           ch->generic = 0;
         }
       }
@@ -3822,7 +3822,7 @@ int astral_portal(struct char_data *ch, const char *cmd, char *arg,
       return (FALSE);
 
     if (ch->in_room < ASTRAL_START || ch->in_room > ASTRAL_END) {
-      do_say(ch, "Woah!  How the fuck did I get here??", 0);
+      say(ch, "Woah!  How the fuck did I get here??");
       emote(ch, "vanishes in a puff of smoke.");
       char_from_room(ch);
       char_to_room(ch, (ASTRAL_START + number(0, 124)));

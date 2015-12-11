@@ -19,6 +19,7 @@
 #include "spec_procs.h"
 #include "spec_procs2.h"
 #include "act.info.h"
+#include "act.comm.h"
 
 /* extern variables */
 #if HASH
@@ -3490,7 +3491,7 @@ void do_report(struct char_data *ch, char *UNUSED(argument),
           GET_HIT(ch), GET_MAX_HIT(ch), GET_MANA(ch),
           GET_MAX_MANA(ch), GET_MOVE(ch), GET_MAX_MOVE(ch), GET_EXP(ch));
 
-  do_say(ch, buf, 0);
+  say(ch, buf);
 
 }
 

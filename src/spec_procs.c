@@ -345,7 +345,7 @@ guildmaster(struct char_data *ch, const char *cmd, char *arg,
 
     if (!(skill_info[number].taught_by & teacher) &&
         !(skill_info[number].spell_pointer)) {
-      do_say(guildmaster, "I do not know of what thou art speaking.", "say");
+      say(guildmaster, "I do not know of what thou art speaking.");
       return (TRUE);
     }
 
@@ -358,7 +358,7 @@ guildmaster(struct char_data *ch, const char *cmd, char *arg,
       }
       if (get_max_level(guildmaster) - 10 <
           skill_info[number].min_level[level_num]) {
-        do_say(guildmaster, "I don't know of this spell.", 0);
+        say(guildmaster, "I don't know of this spell.");
         return (TRUE);
       }
     }
@@ -1949,16 +1949,16 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
   switch (number(0, 250)) {
   case 0:
     SPRINTF(buf, "Pass the bong, dude\n");
-    do_say(ch, buf, 0);
+    say(ch, buf);
     return (1);
   case 1:
-    do_say(ch, "How'd all those fish get up here?", 0);
+    say(ch, "How'd all those fish get up here?");
     return (1);
   case 2:
-    do_say(ch, "I'm a very female dragon.", 0);
+    say(ch, "I'm a very female dragon.");
     return (1);
   case 3:
-    do_say(ch, "Haven't I seen you on Temple?", 0);
+    say(ch, "Haven't I seen you on Temple?");
     return (1);
   case 4:
     do_shout(ch, "Can someone summon me, please!", 0);
@@ -2006,12 +2006,12 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
             }
             else if (GET_SEX(i) == SEX_MALE) {
               SPRINTF(buf, "Hey, %s, how about some MUDSex?", GET_NAME(i));
-              do_say(ch, buf, 0);
+              say(ch, buf);
             }
             else {
               SPRINTF(buf, "I'm much prettier than %s, don't you think?",
                       GET_NAME(i));
-              do_say(ch, buf, 0);
+              say(ch, buf);
             }
           }
         }
@@ -2020,17 +2020,17 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     }
     return (1);
   case 8:
-    do_say(ch, "Loki is my hero!", 0);
+    say(ch, "Loki is my hero!");
     return (1);
   case 9:
-    do_say(ch, "So, wanna neck?", 0);
+    say(ch, "So, wanna neck?");
     return (1);
   case 10:
     {
       tmp_ch = (struct char_data *)find_any_victim(ch);
       if (!IS_NPC(ch)) {
         SPRINTF(buf, "Party on, %s", GET_NAME(tmp_ch));
-        do_say(ch, buf, 0);
+        say(ch, buf);
         return (1);
       }
       else {
@@ -2042,7 +2042,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
       do_shout(ch, "NOT!!!", 0);
     return (1);
   case 12:
-    do_say(ch, "Bad news.  Termites.", 0);
+    say(ch, "Bad news.  Termites.");
     return (1);
   case 13:
     for (i = character_list; i; i = i->next) {
@@ -2058,10 +2058,10 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     }
     return (1);
   case 14:
-    do_say(ch, "I'll be back.", 0);
+    say(ch, "I'll be back.");
     return (1);
   case 15:
-    do_say(ch, "Aren't wombat's so cute?", 0);
+    say(ch, "Aren't wombat's so cute?");
     return (1);
   case 16:
     emote(ch, "fondly fondles you.");
@@ -2070,11 +2070,11 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     emote(ch, "winks at you.");
     return (1);
   case 18:
-    do_say(ch, "This mud is too silly!", 0);
+    say(ch, "This mud is too silly!");
     return (1);
   case 19:
-    do_say(ch, "If the Mayor is in a room alone, ", 0);
-    do_say(ch, "Does he say 'Good morning citizens.'?", 0);
+    say(ch, "If the Mayor is in a room alone, ");
+    say(ch, "Does he say 'Good morning citizens.'?");
     return (0);
   case 20:
     for (i = character_list; i; i = i->next) {
@@ -2094,7 +2094,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
           SPRINTF(buf,
                   "Pardon me, %s, but are those bugle boy jeans you are wearing?",
                   GET_NAME(i));
-          do_say(ch, buf, 0);
+          say(ch, buf);
           return (TRUE);
         }
       }
@@ -2106,7 +2106,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
         if (number(0, 3) == 0) {
           SPRINTF(buf, "Pardon me, %s, but do you have any Grey Poupon?",
                   GET_NAME(i));
-          do_say(ch, buf, 0);
+          say(ch, buf);
           return (TRUE);
         }
       }
@@ -2119,11 +2119,11 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     }
     break;
   case 24:
-    do_say(ch, "MTV... get off the air!", 0);
+    say(ch, "MTV... get off the air!");
     return (TRUE);
     break;
   case 25:
-    do_say(ch, "Time for a RatFest Quest!", 0);
+    say(ch, "Time for a RatFest Quest!");
     return (TRUE);
     break;
   case 26:
@@ -2131,20 +2131,20 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
       do_shout(ch, "What is the greatest joy?", 0);
     break;
   case 27:
-    do_say(ch, "RESOLVED:  The future's so bright, I gotta wear shades!", 0);
+    say(ch, "RESOLVED:  The future's so bright, I gotta wear shades!");
     return (TRUE);
   case 28:
     if (number(0, 50))
       do_shout(ch, "SAVE!  I'm running out of cute things to say!", 0);
     return (TRUE);
   case 29:
-    do_say(ch, "If you can hear this, thank a tree", 0);
+    say(ch, "If you can hear this, thank a tree");
     return (TRUE);
   case 30:
-    do_say(ch, "Now this really pisses me off to no end.", 0);
+    say(ch, "Now this really pisses me off to no end.");
     return (TRUE);
   case 31:
-    do_say(ch, "Rule the universe from beyond the grave.", 0);
+    say(ch, "Rule the universe from beyond the grave.");
     return (TRUE);
   case 32:
     if (number(0, 100) == 0) {
@@ -2171,24 +2171,24 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     }
     break;
   case 35:
-    do_say(ch, "Are you crazy, is that your problem?", 0);
+    say(ch, "Are you crazy, is that your problem?");
     return (TRUE);
   case 36:
     for (i = real_roomp(ch->in_room)->people; i; i = i->next_in_room) {
       if (!IS_NPC(i)) {
         if (number(0, 3) == 0) {
           SPRINTF(buf, "%s, do you think I'm going bald?", GET_NAME(i));
-          do_say(ch, buf, 0);
+          say(ch, buf);
           return (TRUE);
         }
       }
     }
     break;
   case 37:
-    do_say(ch, "This is your brain.", 0);
-    do_say(ch, "This is MUD.", 0);
-    do_say(ch, "This is your brain on MUD.", 0);
-    do_say(ch, "Any questions?", 0);
+    say(ch, "This is your brain.");
+    say(ch, "This is MUD.");
+    say(ch, "This is your brain on MUD.");
+    say(ch, "Any questions?");
     return (TRUE);
   case 38:
     for (i = character_list; i; i = i->next) {
@@ -2204,11 +2204,11 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     }
     return (TRUE);
   case 39:
-    do_say(ch, "I'm Puff the Magic Dragon, who the hell are you?", 0);
+    say(ch, "I'm Puff the Magic Dragon, who the hell are you?");
     return (TRUE);
   case 40:
-    do_say(ch, "Attention all planets of the Solar Federation!", 0);
-    do_say(ch, "We have assumed control.", 0);
+    say(ch, "Attention all planets of the Solar Federation!");
+    say(ch, "We have assumed control.");
     return (TRUE);
   case 41:
     if (number(0, 50) == 0) {
@@ -2223,16 +2223,16 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     }
     break;
   case 43:
-    do_say(ch, "Pardon me boys, is this the road to Great Cthulhu?", 0);
+    say(ch, "Pardon me boys, is this the road to Great Cthulhu?");
     return (TRUE);
   case 44:
-    do_say(ch, "May the Force be with you... Always.", 0);
+    say(ch, "May the Force be with you... Always.");
     return (TRUE);
   case 45:
-    do_say(ch, "Eddies in the space time continuum.", 0);
+    say(ch, "Eddies in the space time continuum.");
     return (TRUE);
   case 46:
-    do_say(ch, "Quick!  Reverse the polarity of the neutron flow!", 0);
+    say(ch, "Quick!  Reverse the polarity of the neutron flow!");
     return (TRUE);
   case 47:
     if (number(0, 50) == 0) {
@@ -2241,13 +2241,13 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     }
     break;
   case 48:
-    do_say(ch, "Shh...  I'm beta testing.  I need complete silence!", 0);
+    say(ch, "Shh...  I'm beta testing.  I need complete silence!");
     return (TRUE);
   case 49:
-    do_say(ch, "Do you have any more of that Plutonium Nyborg!", 0);
+    say(ch, "Do you have any more of that Plutonium Nyborg!");
     return (TRUE);
   case 50:
-    do_say(ch, "I'm the real implementor, you know.", 0);
+    say(ch, "I'm the real implementor, you know.");
     return (TRUE);
   case 51:
     emote(ch, "moshes into you almost causing you to fall.");
@@ -2257,7 +2257,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
       do_shout(ch, "Everybody mosh!", 0);
     return (TRUE);
   case 53:
-    do_say(ch, "You know I always liked you the best don't you?", 0);
+    say(ch, "You know I always liked you the best don't you?");
     emote(ch, "winks seductively at you.");
     return (TRUE);
   case 54:
@@ -2582,22 +2582,22 @@ int temple_labrynth_liar(struct char_data *ch, const char *cmd, char *UNUSED(arg
 
   switch (number(0, 15)) {
   case 0:
-    do_say(ch, "I'd go west if I were you.", 0);
+    say(ch, "I'd go west if I were you.");
     return (1);
   case 1:
-    do_say(ch, "I heard that Vile is a cute babe.", 0);
+    say(ch, "I heard that Vile is a cute babe.");
     return (1);
   case 2:
-    do_say(ch, "Going east will avoid the beast!", 0);
+    say(ch, "Going east will avoid the beast!");
     return (1);
   case 4:
-    do_say(ch, "North is the way to go.", 0);
+    say(ch, "North is the way to go.");
     return (1);
   case 6:
-    do_say(ch, "Dont dilly dally go south.", 0);
+    say(ch, "Dont dilly dally go south.");
     return (1);
   case 8:
-    do_say(ch, "Great treasure lies ahead", 0);
+    say(ch, "Great treasure lies ahead");
     return (1);
   case 10:
     do_say(ch,
@@ -2605,14 +2605,14 @@ int temple_labrynth_liar(struct char_data *ch, const char *cmd, char *UNUSED(arg
            0);
     return (1);
   case 12:
-    do_say(ch, "I am a very clever liar.", 0);
+    say(ch, "I am a very clever liar.");
     return (1);
   case 14:
-    do_say(ch, "Loki is a really great guy!", 0);
-    do_say(ch, "Well.... maybe not...", 0);
+    say(ch, "Loki is a really great guy!");
+    say(ch, "Well.... maybe not...");
     return (1);
   default:
-    do_say(ch, "Then again I could be wrong!", 0);
+    say(ch, "Then again I could be wrong!");
     return (1);
   }
 }
@@ -2639,7 +2639,7 @@ int temple_labrynth_sentry(struct char_data *ch, const char *cmd, char *UNUSED(a
   for (tch = real_roomp(ch->in_room)->people; tch; tch = tch->next_in_room) {
     if (get_max_level(tch) > 10 && CAN_SEE(ch, tch)) {
       act("The sentry snaps out of his trance and ...", 1, ch, 0, 0, TO_ROOM);
-      do_say(ch, "You will die for your insolence, pig-dog!", 0);
+      say(ch, "You will die for your insolence, pig-dog!");
       for (counter = 0; counter < 4; counter++)
         if (check_nomagic(ch, 0, 0))
           return (FALSE);
@@ -2652,7 +2652,7 @@ int temple_labrynth_sentry(struct char_data *ch, const char *cmd, char *UNUSED(a
     else {
       act("The sentry looks concerned and continues to push you away",
           1, ch, 0, 0, TO_ROOM);
-      do_say(ch, "Leave me alone. My vows do not permit me to kill you!", 0);
+      say(ch, "Leave me alone. My vows do not permit me to kill you!");
     }
   }
   return TRUE;
@@ -2692,7 +2692,7 @@ int nudge_nudge(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     add_follower(ch, vict);
     ch->generic = NN_FOLLOW;
     if (!check_soundproof(ch))
-      do_say(ch, "Good Evenin' Squire!", 0);
+      say(ch, "Good Evenin' Squire!");
     act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
     act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
     break;
@@ -2700,7 +2700,7 @@ int nudge_nudge(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     switch (number(0, 20)) {
     case 0:
       if (!check_soundproof(ch))
-        do_say(ch, "Is your wife a goer?  Know what I mean, eh?", 0);
+        say(ch, "Is your wife a goer?  Know what I mean, eh?");
       act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
       act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
       break;
@@ -2714,12 +2714,12 @@ int nudge_nudge(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
       act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
       if (!check_soundproof(ch))
-        do_say(ch, "Say no more!  Say no MORE!", 0);
+        say(ch, "Say no more!  Say no MORE!");
       break;
     case 2:
       if (!check_soundproof(ch)) {
-        do_say(ch, "You been around, eh?", 0);
-        do_say(ch, "...I mean you've ..... done it, eh?", 0);
+        say(ch, "You been around, eh?");
+        say(ch, "...I mean you've ..... done it, eh?");
       }
       act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
       act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
@@ -2728,7 +2728,7 @@ int nudge_nudge(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       break;
     case 3:
       if (!check_soundproof(ch))
-        do_say(ch, "A nod's as good as a wink to a blind bat, eh?", 0);
+        say(ch, "A nod's as good as a wink to a blind bat, eh?");
       act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
       act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
       act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
@@ -2736,7 +2736,7 @@ int nudge_nudge(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       break;
     case 4:
       if (!check_soundproof(ch))
-        do_say(ch, "You're WICKED, eh!  WICKED!", 0);
+        say(ch, "You're WICKED, eh!  WICKED!");
       act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
       act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
       act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
@@ -2744,11 +2744,11 @@ int nudge_nudge(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       break;
     case 5:
       if (!check_soundproof(ch))
-        do_say(ch, "Wink. Wink.", 0);
+        say(ch, "Wink. Wink.");
       break;
     case 6:
       if (!check_soundproof(ch))
-        do_say(ch, "Nudge. Nudge.", 0);
+        say(ch, "Nudge. Nudge.");
       break;
     case 7:
     case 8:
@@ -2763,7 +2763,7 @@ int nudge_nudge(struct char_data *ch, const char *cmd, char *UNUSED(arg),
      **  Stop following
      */
     if (!check_soundproof(ch))
-      do_say(ch, "Evening, Squire", 0);
+      say(ch, "Evening, Squire");
     stop_follower(ch);
     ch->generic = NN_LOOSE;
     break;
@@ -3680,11 +3680,11 @@ int sisyphus(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       else {
         switch (number(1, 10)) {
         case 1:
-          do_say(ch, "heal", 0);
+          say(ch, "heal");
           break;
 
         case 2:
-          do_say(ch, "pzar", 0);
+          say(ch, "pzar");
           break;
         default:
           fighter_move(ch);
@@ -3879,7 +3879,7 @@ int delivery_elf(struct char_data *ch, const char *cmd, char *UNUSED(arg),
         do_wake(ch, "", 0);
         do_stand(ch, "", 0);
       }
-      do_say(ch, "Woah! How did i get here!", 0);
+      say(ch, "Woah! How did i get here!");
       emote(ch, "waves his arm, and vanishes!");
       char_from_room(ch);
       char_to_room(ch, Elf_Home);
@@ -3928,7 +3928,7 @@ int delivery_elf(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       else {
         do_give(ch, "6*biscuit baker", 0);
         do_give(ch, "6*loaf baker", 0);
-        do_say(ch, "That'll be 33 coins, please.", 0);
+        say(ch, "That'll be 33 coins, please.");
         ch->generic = ELF_DUMP;
       }
       return (FALSE);
@@ -3988,12 +3988,12 @@ int delivery_elf(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     }
     else {
       if (time_info.hours > 21) {
-        do_say(ch, "Done at last!", 0);
+        say(ch, "Done at last!");
         do_sleep(ch, "", 0);
         ch->generic = ELF_RESTING;
       }
       else {
-        do_say(ch, "An elf's work is never done.", 0);
+        say(ch, "An elf's work is never done.");
         ch->generic = ELF_GETTING;
       }
     }
@@ -4406,7 +4406,7 @@ int new_thalos_mayor(struct char_data *ch, const char *cmd, char *UNUSED(arg),
         /*
          * move to correct spot (office)
          */
-        do_say(ch, "Woah! How did i get here!", 0);
+        say(ch, "Woah! How did i get here!");
         char_from_room(ch);
         char_to_room(ch, NTMOFFICE);
         ch->generic = NTMWMORN;
@@ -6262,17 +6262,17 @@ int valik(struct char_data *ch, const char *cmd, char *arg, struct char_data *mo
   switch (vict->generic) {
   case Valik_Qone:
     for (i = 0; i < quest_lines[vict->generic - 2]; ++i)
-      do_say(vict, quest_one[i], 0);
+      say(vict, quest_one[i]);
     return (TRUE);
     break;
   case Valik_Qtwo:
     for (i = 0; i < quest_lines[vict->generic - 2]; ++i)
-      do_say(vict, quest_two[i], 0);
+      say(vict, quest_two[i]);
     return (TRUE);
     break;
   case Valik_Qthree:
     for (i = 0; i < quest_lines[vict->generic - 2]; ++i)
-      do_say(vict, quest_three[i], 0);
+      say(vict, quest_three[i]);
     return (TRUE);
     break;
   case Valik_Qfour:
@@ -6280,7 +6280,7 @@ int valik(struct char_data *ch, const char *cmd, char *arg, struct char_data *mo
         && obj_index[vict->equipment[WEAR_NECK_1]->item_number].virtual ==
         Necklace) {
       for (i = 0; i < quest_lines[vict->generic - 2]; ++i)
-        do_say(vict, necklace[i], 0);
+        say(vict, necklace[i]);
       act("$N takes the Necklace of Wisdom and hands it to you.",
           FALSE, ch, 0, vict, TO_CHAR);
       act("$N takes the Necklace of Wisdom and hands it to $n.",
@@ -6289,7 +6289,7 @@ int valik(struct char_data *ch, const char *cmd, char *arg, struct char_data *mo
     }
     else {
       for (i = 0; i < quest_lines[vict->generic - 2]; ++i)
-        do_say(vict, nonecklace[i], 0);
+        say(vict, nonecklace[i]);
     }
     vict->generic = Valik_Wandering;
     return (TRUE);

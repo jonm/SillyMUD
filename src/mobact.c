@@ -843,7 +843,7 @@ void sgoto(char *arg, struct char_data *ch) {
   if (ch->in_room != room) {
     dir = choose_exit_global(ch->in_room, room, MAX_ROOMS);
     if (dir < 0) {
-      do_say(ch, "Woah!  How'd i get here??", "say");
+      say(ch, "Woah!  How'd i get here??");
       emote(ch, "vanishes in a puff of smoke");
       char_from_room(ch);
       char_to_room(ch, room);

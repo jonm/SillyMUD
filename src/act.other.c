@@ -603,7 +603,7 @@ void do_steal(struct char_data *ch, char *argument,
     if (IS_SET(victim->specials.act, ACT_NICE_THIEF)) {
       SPRINTF(buf, "%s is a bloody thief.", GET_NAME(ch));
       do_shout(victim, buf, 0);
-      do_say(victim, "Don't you ever do that again!", 0);
+      say(victim, "Don't you ever do that again!");
     }
     else {
       if (CAN_SEE(victim, ch)) {

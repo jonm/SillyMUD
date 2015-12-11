@@ -14,6 +14,7 @@
 #include "act.comm.h"
 #include "act.wizard.h"
 #include "act.social.h"
+#include "act.comm.h"
 
 #define SHOP_FILE "tinyworld.shp"
 #define MAX_TRADE 5
@@ -63,22 +64,22 @@ int number_of_shops;
 
 int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr) {
   if (shop_index[shop_nr].open1 > time_info.hours) {
-    do_say(keeper, "Come back later!", "say");
+    say(keeper, "Come back later!");
     return (FALSE);
   }
   else if (shop_index[shop_nr].close1 < time_info.hours) {
     if (shop_index[shop_nr].open2 > time_info.hours) {
-      do_say(keeper, "Sorry, we have closed, but come back later.", "say");
+      say(keeper, "Sorry, we have closed, but come back later.");
       return (FALSE);
     }
     else if (shop_index[shop_nr].close2 < time_info.hours) {
-      do_say(keeper, "Sorry, come back tomorrow.", "say");
+      say(keeper, "Sorry, come back tomorrow.");
       return (FALSE);
     };
   }
 
   if (!(CAN_SEE(keeper, ch))) {
-    do_say(keeper, "I don't trade with someone I can't see!", "say");
+    say(keeper, "I don't trade with someone I can't see!");
     return (FALSE);
   };
 
