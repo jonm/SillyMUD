@@ -205,16 +205,14 @@ void shopping_buy(char *arg, struct char_data *ch,
   }
 
   if ((IS_CARRYING_N(ch) + num) > (CAN_CARRY_N(ch))) {
-    SPRINTF(buf, "%s : You can't carry that many items.\n\r",
-            fname(temp1->name));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s : You can't carry that many items.\n\r",
+                  fname(temp1->name));
     return;
   }
 
   if ((IS_CARRYING_W(ch) + (num * temp1->obj_flags.weight)) > CAN_CARRY_W(ch)) {
-    SPRINTF(buf, "%s : You can't carry that much weight.\n\r",
-            fname(temp1->name));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s : You can't carry that much weight.\n\r",
+                  fname(temp1->name));
     return;
   }
 
@@ -225,9 +223,8 @@ void shopping_buy(char *arg, struct char_data *ch,
 
   do_tell(keeper, buf, "tell");
 
-  SPRINTF(buf, "You now have %s (*%d).\n\r", temp1->short_description, num);
+  send_to_charf(ch, "You now have %s (*%d).\n\r", temp1->short_description, num);
 
-  send_to_char(buf, ch);
 
   if (cost < 1)
     cost = 1;
@@ -358,8 +355,7 @@ void shopping_sell(char *arg, struct char_data *ch,
 
   do_tell(keeper, buf, "tell");
 
-  SPRINTF(buf, "The shopkeeper now has %s.\n\r", temp1->short_description);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "The shopkeeper now has %s.\n\r", temp1->short_description);
 
   if (GET_GOLD(keeper) < temp_cost) {
     /* (int) (temp1->obj_flags.cost*

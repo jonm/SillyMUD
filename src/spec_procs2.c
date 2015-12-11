@@ -359,8 +359,7 @@ int summoner(struct char_data *ch, const char *cmd, char *UNUSED(arg),
           if (i->op_ch) {       /* if there is a char_ptr */
             targ = i->op_ch;
             if (IS_PC(targ)) {
-              SPRINTF(buf, "You hate %s\n\r", targ->player.name);
-              send_to_char(buf, ch);
+              send_to_charf(ch, "You hate %s\n\r", targ->player.name);
               break;
             }
           }
@@ -1177,17 +1176,15 @@ int teacher(struct char_data *ch, const char *cmd, char *arg,
       send_to_char("You can practice any of these skills:\n\r", ch);
       for (i = 0; *spells[i] != '\n'; i++) {
         if (skill_info[i + 1].taught_by & teacher) {
-          SPRINTF(buf, "%-30s %s\n\r", spells[i],
-                  how_good(ch->skills[i + 1].learned));
-          send_to_char(buf, ch);
+          send_to_charf(ch, "%-30s %s\n\r", spells[i],
+                        how_good(ch->skills[i + 1].learned));
         }
       }
       return (TRUE);
     }
     else {
       number = old_search_block(arg, 0, strlen(arg), spells, FALSE);
-      SPRINTF(buf, "The %s says ", say_str);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "The %s says ", say_str);
       if (number == -1) {
         send_to_char("'I do not know of this skill.'\n\r", ch);
         return (TRUE);
@@ -1258,9 +1255,8 @@ int teacher(struct char_data *ch, const char *cmd, char *arg,
       return (TRUE);
     }
 
-    SPRINTF(buf, "\'That will be %d coins.'\n\rThe %s says ", charge, say_str);
+    send_to_charf(ch, "\'That will be %d coins.'\n\rThe %s says ", charge, say_str);
 
-    send_to_char(buf, ch);
     GET_GOLD(ch) -= charge;
     send_to_char("'We will now begin practicing.'\n\r", ch);
     ch->specials.spells_to_learn--;
@@ -3620,8 +3616,6 @@ long jackpot = 25;
 int slot_machine(struct char_data *ch, const char *cmd, char *UNUSED(arg),
                  struct obj_data *UNUSED(obj), int UNUSED(type)) {
   int c, i[3], ind;
-  char buf[255];
-
 
   if (!STREQ(cmd, "pull"))
     return (FALSE);
@@ -3648,8 +3642,7 @@ int slot_machine(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     case 6:
     case 7:
       i[c] = 0;
-      SPRINTF(buf, "Slot %d: Lemon\n\r", c);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Slot %d: Lemon\n\r", c);
       break;
     case 8:
     case 9:
@@ -3659,8 +3652,7 @@ int slot_machine(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     case 13:
     case 14:
       i[c] = 1;
-      SPRINTF(buf, "Slot %d: Orange\n\r", c);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Slot %d: Orange\n\r", c);
       break;
     case 15:
     case 16:
@@ -3669,8 +3661,7 @@ int slot_machine(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     case 19:
     case 20:
       i[c] = 2;
-      SPRINTF(buf, "Slot %d: Banana\n\r", c);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Slot %d: Banana\n\r", c);
       break;
     case 21:
     case 22:
@@ -3678,19 +3669,16 @@ int slot_machine(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     case 24:
     case 25:
       i[c] = 3;
-      SPRINTF(buf, "Slot %d: Peach\n\r", c);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Slot %d: Peach\n\r", c);
       break;
     case 26:
     case 27:
       i[c] = 4;
-      SPRINTF(buf, "Slot %d: Bar\n\r", c);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Slot %d: Bar\n\r", c);
       break;
     case 28:
       i[c] = 5;
-      SPRINTF(buf, "Slot %d: Gold\n\r", c);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Slot %d: Gold\n\r", c);
       break;
     }
 
@@ -3725,8 +3713,7 @@ int slot_machine(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     if (ind > jackpot)
       ind = jackpot;            /* Can only win as much as there is */
 
-    SPRINTF(buf, "You have won %d coins!\n\r", ind);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You have won %d coins!\n\r", ind);
 
     GET_GOLD(ch) += ind;
     jackpot -= ind;

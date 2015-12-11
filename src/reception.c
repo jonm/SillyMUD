@@ -300,8 +300,7 @@ void load_char_objs(struct char_data *ch) {
                      (SECS_PER_REAL_DAY));
 #endif
     log_msgf("Char ran up charges of %g gold in rent", timegold);
-    SPRINTF(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You ran up charges of %g gold in rent.\n\r", timegold);
     GET_GOLD(ch) -= timegold;
     found = TRUE;
     if (GET_GOLD(ch) < 0) {
@@ -402,10 +401,9 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
   if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER)) {
 #if NODUPLICATES
 #else
-    SPRINTF(buf,
-            "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
-            obj->short_description);
-    send_to_char(buf, ch);
+    send_to_charf(ch,
+                  "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+                  obj->short_description);
 #endif
   }
   else if (obj->obj_flags.cost_per_day < 0) {
@@ -413,10 +411,9 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
 #if NODUPLICATES
 #else
     if (ch != NULL) {
-      SPRINTF(buf,
-              "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
-              obj->short_description);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+                    obj->short_description);
     }
 #endif
 
