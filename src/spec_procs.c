@@ -473,7 +473,7 @@ int mayor(struct char_data *ch, const char *cmd, char *arg, struct char_data *mo
 
   if (type == EVENT_WINTER) {
     GET_POS(ch) = POSITION_STANDING;
-    do_shout(ch, "Aieee!   The rats!  The rats are coming!  Aieeee!", "shout");
+    shout(ch, "Aieee!   The rats!  The rats are coming!  Aieeee!");
     return (TRUE);
   }
 
@@ -1603,7 +1603,7 @@ int midgaard_citizen(struct char_data *ch, const char *cmd, char *arg,
       return (FALSE);
 
     if (number(0, 18) == 0) {
-      do_shout(ch, "Guards! Help me! Please!", 0);
+      shout(ch, "Guards! Help me! Please!");
     }
     else {
       act("$n shouts 'Guards!  Help me! Please!'", TRUE, ch, 0, 0, TO_ROOM);
@@ -1889,7 +1889,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
   switch (ch->generic) {
   case INQ_SHOUT:
     if (!check_soundproof(ch))
-      do_shout(ch, "NOONE expects the Spanish Inquisition!", 0);
+      shout(ch, "NOONE expects the Spanish Inquisition!");
     ch->generic = 0;
     break;
   default:
@@ -1904,41 +1904,39 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
   char buf[80];
 
   if (type == EVENT_DWARVES_STRIKE) {
-    do_shout(ch,
-             "Ack! Of all the stupid things! Those damned dwarves are on strike again!",
-             0);
+    shout(ch,
+          "Ack! Of all the stupid things! Those damned dwarves are on strike again!");
     return (TRUE);
   }
 
   if (type == EVENT_END_STRIKE) {
-    do_shout(ch, "Gee, about time those dwarves stopped striking!", 0);
+    shout(ch, "Gee, about time those dwarves stopped striking!");
     return (TRUE);
   }
 
   if (type == EVENT_DEATH) {
-    do_shout(ch, "Ack! I've been killed! Have some God Load me again!!!", 0);
+    shout(ch, "Ack! I've been killed! Have some God Load me again!!!");
     return (TRUE);
   }
 
   if (type == EVENT_SPRING) {
-    do_shout(ch, "Ahhh, spring is in the air, everyone MOSH!", 0);
+    shout(ch, "Ahhh, spring is in the air, everyone MOSH!");
     return (TRUE);
   }
 
   if (type == EVENT_DEATHROOM) {
     if (number(0, 1))
-      do_shout(ch,
-               "Oh boy, cosmic forces reveal a spontaneous influx of items!",
-               0);
+      shout(ch,
+            "Oh boy, cosmic forces reveal a spontaneous influx of items!");
     else
-      do_shout(ch, "Wake up, now's the time for treasure hunting!", 0);
+      shout(ch, "Wake up, now's the time for treasure hunting!");
     return (TRUE);
   }
   if (cmd)
     return (0);
 
   if (ch->generic == 1) {
-    do_shout(ch, "When will we get there?", 0);
+    shout(ch, "When will we get there?");
     ch->generic = 0;
   }
 
@@ -1961,7 +1959,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     say(ch, "Haven't I seen you on Temple?");
     return (1);
   case 4:
-    do_shout(ch, "Can someone summon me, please!", 0);
+    shout(ch, "Can someone summon me, please!");
     return (1);
   case 5:
     emote(ch, "gropes you.");
@@ -1976,33 +1974,31 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
         if (!IS_NPC(i)) {
           if (number(0, 5) == 0) {
             if (!strcmp(GET_NAME(i), "DrBones")) {
-              do_shout(ch, "DrBones, come ravish me now!", 0);
+              shout(ch, "DrBones, come ravish me now!");
             }
             else if (!strcmp(GET_NAME(i), "DM")) {
-              do_shout(ch, "Hey DM! Force anyone to MOSH lately?", 0);
+              shout(ch, "Hey DM! Force anyone to MOSH lately?");
             }
             else if (!strcmp(GET_NAME(i), "Fiona")) {
-              do_shout(ch, "I'm Puff the PMS dragon!", 0);
+              shout(ch, "I'm Puff the PMS dragon!");
             }
             else if (!strcmp(GET_NAME(i), "Loki")) {
-              do_shout(ch, "Loki!  I have some files for you to copy!", 0);
+              shout(ch, "Loki!  I have some files for you to copy!");
             }
             else if (!strcmp(GET_NAME(i), "Stranger")) {
-              do_shout(ch, "People are strange, when they're with Stranger!",
-                       0);
+              shout(ch,
+                    "People are strange, when they're with Stranger!");
             }
             else if (!strcmp(GET_NAME(i), "Conner")) {
-              do_shout(ch,
-                       "Hey, Conner!  Slayed anyone lately?  How about me next?",
-                       0);
+              shout(ch,
+                    "Hey, Conner!  Slayed anyone lately?  How about me next?");
             }
             else if (!strcmp(GET_NAME(i), "Shark")) {
-              do_shout(ch, "Shark, please bring God back!", 0);
+              shout(ch, "Shark, please bring God back!");
             }
             else if (!strcmp(GET_NAME(i), "God")) {
-              do_shout(ch,
-                       "God!  Theres only room for one smartass robot on this mud!",
-                       0);
+              shout(ch,
+                    "God!  Theres only room for one smartass robot on this mud!");
             }
             else if (GET_SEX(i) == SEX_MALE) {
               SPRINTF(buf, "Hey, %s, how about some MUDSex?", GET_NAME(i));
@@ -2039,7 +2035,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     }
   case 11:
     if (!number(0, 30))
-      do_shout(ch, "NOT!!!", 0);
+      shout(ch, "NOT!!!");
     return (1);
   case 12:
     say(ch, "Bad news.  Termites.");
@@ -2081,7 +2077,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
       if (!IS_NPC(i)) {
         if (number(0, 30) == 0) {
           SPRINTF(buf, "Top of the morning to you %s!", GET_NAME(i));
-          do_shout(ch, buf, 0);
+          shout(ch, buf);
           return (TRUE);
         }
       }
@@ -2114,7 +2110,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     break;
   case 23:
     if (number(0, 80) == 0) {
-      do_shout(ch, "Where are we going?", 0);
+      shout(ch, "Where are we going?");
       ch->generic = 1;
     }
     break;
@@ -2128,14 +2124,14 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     break;
   case 26:
     if (number(0, 100) == 0)
-      do_shout(ch, "What is the greatest joy?", 0);
+      shout(ch, "What is the greatest joy?");
     break;
   case 27:
     say(ch, "RESOLVED:  The future's so bright, I gotta wear shades!");
     return (TRUE);
   case 28:
     if (number(0, 50))
-      do_shout(ch, "SAVE!  I'm running out of cute things to say!", 0);
+      shout(ch, "SAVE!  I'm running out of cute things to say!");
     return (TRUE);
   case 29:
     say(ch, "If you can hear this, thank a tree");
@@ -2148,13 +2144,13 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     return (TRUE);
   case 32:
     if (number(0, 100) == 0) {
-      do_shout(ch, "Bite me, eat me, make me scream!", 0);
+      shout(ch, "Bite me, eat me, make me scream!");
       return (TRUE);
     }
     break;
   case 33:
     if (number(0, 100) == 0) {
-      do_shout(ch, "Anyone want a Black Onyx ring??", 0);
+      shout(ch, "Anyone want a Black Onyx ring??");
       return (TRUE);
     }
     break;
@@ -2162,7 +2158,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     if (number(0, 50) == 0) {
       for (i = character_list; i; i = i->next) {
         if (mob_index[i->nr].func == inquisitor) {
-          do_shout(ch, "I wasn't expecting the Spanish Inquisition!", 0);
+          shout(ch, "I wasn't expecting the Spanish Inquisition!");
           i->generic = INQ_SHOUT;
           return (TRUE);
         }
@@ -2212,13 +2208,13 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     return (TRUE);
   case 41:
     if (number(0, 50) == 0) {
-      do_shout(ch, "VMS sucks!!!!!", 0);
+      shout(ch, "VMS sucks!!!!!");
       return (TRUE);
     }
     break;
   case 42:
     if (number(0, 50) == 0) {
-      do_shout(ch, "SPOON!", 0);
+      shout(ch, "SPOON!");
       return (TRUE);
     }
     break;
@@ -2236,7 +2232,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     return (TRUE);
   case 47:
     if (number(0, 50) == 0) {
-      do_shout(ch, "Will you shut up and sit down!", 0);
+      shout(ch, "Will you shut up and sit down!");
       return (TRUE);
     }
     break;
@@ -2254,7 +2250,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     return (TRUE);
   case 52:
     if (!number(0, 30))
-      do_shout(ch, "Everybody mosh!", 0);
+      shout(ch, "Everybody mosh!");
     return (TRUE);
   case 53:
     say(ch, "You know I always liked you the best don't you?");
@@ -2262,7 +2258,7 @@ int inquisitor(struct char_data *ch, const char *cmd, char *arg,
     return (TRUE);
   case 54:
     if (!number(0, 30))
-      do_shout(ch, "Ack! Someone purge me quick!", 0);
+      shout(ch, "Ack! Someone purge me quick!");
     return (TRUE);
 
   default:
@@ -2810,7 +2806,7 @@ int citizen(struct char_data *ch, const char *cmd, char *arg, struct char_data *
       return (FALSE);
 
     if (number(0, 18) == 0) {
-      do_shout(ch, "Guards! Help me! Please!", 0);
+      shout(ch, "Guards! Help me! Please!");
     }
     else {
       act("$n shouts 'Guards!  Help me! Please!'", TRUE, ch, 0, 0, TO_ROOM);
@@ -4440,7 +4436,7 @@ int new_thalos_citizen(struct char_data *ch, const char *cmd, char *arg,
     if (!check_soundproof(ch)) {
 
       if (number(0, 18) == 0) {
-        do_shout(ch, "Guards! Help me! Please!", 0);
+        shout(ch, "Guards! Help me! Please!");
       }
       else {
         act("$n shouts 'Guards!  Help me! Please!'", TRUE, ch, 0, 0, TO_ROOM);

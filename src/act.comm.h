@@ -11,5 +11,6 @@ void do_write(struct char_data *ch, char *argument, const char * cmd);
 void do_sign(struct char_data *ch, char *argument, const char * cmd);
 
 #define say(ch, words) do_say((ch), (words), "say")
+#define shout(ch, words) do_shout((ch), (words), "shout")
 
 #endif

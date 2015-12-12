@@ -470,7 +470,7 @@ int jive_box(struct char_data *ch, const char *cmd, char *arg,
   }
   else if (STREQ(cmd, "tell")) {
     invert(arg, buf);
-    do_shout(ch, buf, "shout");
+    shout(ch, buf);
     return (TRUE);
   }
   else {
@@ -2340,7 +2340,7 @@ int generic_cityguardHateUndead(struct char_data *ch, const char *cmd, char *arg
     if (!check_soundproof(ch)) {
 
       if (number(0, 100) == 0) {
-        do_shout(ch, "To me, my fellows! I am in need of thy aid!", 0);
+        shout(ch, "To me, my fellows! I am in need of thy aid!");
       }
       else {
         act("$n shouts 'To me, my fellows! I need thy aid!'",
@@ -2424,7 +2424,7 @@ int generic_cityguard(struct char_data *ch, const char *cmd, char *arg,
 
     if (!check_soundproof(ch)) {
       if (number(0, 120) == 0) {
-        do_shout(ch, "To me, my fellows! I am in need of thy aid!", 0);
+        shout(ch, "To me, my fellows! I am in need of thy aid!");
       }
       else {
         act("$n shouts 'To me, my fellows! I need thy aid!'",
@@ -3516,7 +3516,7 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
           go_direction(ch, dir);
 
           if (ch->in_room == i->in_room) {      /* we're here! */
-            do_shout(ch, "The dragon must die!", 0);
+            shout(ch, "The dragon must die!");
 
             for (j = real_roomp(ch->in_room)->people; j; j = j->next_in_room)
               if (IS_MOB(j) && (mob_index[j->nr].virtual == WHO_TO_CALL))
@@ -3568,7 +3568,7 @@ int dragon_hunter_leader(struct char_data *ch, const char * UNUSED(cmd),
         (*mob_index[i->nr].func) (i, 0, "", ch, EVENT_GATHER);
       }
 
-    do_shout(ch, "All who want to hunt a dragon, come to me!", 0);
+    shout(ch, "All who want to hunt a dragon, come to me!");
     stand(ch);
   }
 
