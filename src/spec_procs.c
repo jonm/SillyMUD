@@ -908,7 +908,7 @@ int eric_johnson(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     switch (state) {
     case E_HACKING:
       if (GET_POS(eric) == POSITION_SLEEPING) {
-        do_wake(eric, "", NULL);
+        wake_self(eric);
         return TRUE;
       }
       break;
@@ -935,7 +935,7 @@ int eric_johnson(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       char *s;
     case E_SLEEPING:
       if (time_info.hours > 9 && time_info.hours < 12) {
-        do_wake(eric, "", NULL);
+        wake_self(eric);
         act("$n says 'Ahh, that was a good night's sleep'", FALSE, eric,
             0, 0, TO_ROOM);
         state = E_HACKING;
@@ -2897,7 +2897,7 @@ int ringwraith(struct char_data *ch, const char *cmd, char *arg,
     else {
       switch (wh->chances) {
       case 0:
-        do_wake(ch, GET_NAME(victim), 0);
+        wake_other(ch, GET_NAME(victim));
         if (!check_soundproof(ch))
           act("$n says '$N, give me The Ring'.", FALSE, ch, NULL, victim,
               TO_ROOM);
@@ -3876,7 +3876,7 @@ int delivery_elf(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     }
     else if (ch->in_room != Elf_Home) {
       if (GET_POS(ch) == POSITION_SLEEPING) {
-        do_wake(ch, "", 0);
+        wake_self(ch);
         stand(ch);
       }
       say(ch, "Woah! How did i get here!");
@@ -3896,7 +3896,7 @@ int delivery_elf(struct char_data *ch, const char *cmd, char *UNUSED(arg),
   case ELF_RESTING:
     {
       if ((time_info.hours > 6) && (time_info.hours < 9)) {
-        do_wake(ch, "", 0);
+        wake_self(ch);
         stand(ch);
         ch->generic = ELF_GETTING;
       }

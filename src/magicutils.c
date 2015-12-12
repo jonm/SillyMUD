@@ -105,7 +105,7 @@ void fail_charm(struct char_data *victim, struct char_data *ch) {
         set_fighting(victim, ch);
       }
       else {
-        do_wake(victim, "", NULL);
+        wake_self(victim);
       }
     }
   }
@@ -140,7 +140,7 @@ void fail_sleep(struct char_data *victim, struct char_data *ch) {
         set_fighting(victim, ch);
       }
       else {
-        do_wake(victim, "", 0);
+        wake_self(victim);
       }
     }
   }
@@ -161,7 +161,7 @@ void fail_para(struct char_data *victim, struct char_data *ch) {
         set_fighting(victim, ch);
       }
       else {
-        do_wake(victim, "", 0);
+        wake_self(victim);
       }
     }
   }

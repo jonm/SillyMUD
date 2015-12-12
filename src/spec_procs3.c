@@ -487,7 +487,7 @@ int baby_bear(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     for (t = rp->people; t; t = t->next_in_room) {
       if (GET_POS(t) == POSITION_SLEEPING)
         if (number(0, 1))
-          do_wake(t, "", 0);
+          wake_self(t);
     }
   }
   return (FALSE);
