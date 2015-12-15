@@ -144,7 +144,7 @@ int raw_move(struct char_data *ch, int dir) {
   bool has_boat;
   struct room_data *from_here, *to_here;
 
-  if (special(ch, move_dir_string[dir], "")) /* Check for special routines(North is 1) */
+  if (special(ch, move_dir_string[dir], ""))
     return (FALSE);
 
   if (!valid_move(ch, dir)) {
