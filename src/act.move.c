@@ -27,7 +27,7 @@ extern int rev_dir[];
 extern char *dirs[];
 extern int movement_loss[];
 
-const char *move_dir_string[MOVE_DIR_LAST + 1] = {
+const char *move_dir_string[] = {
   "north", "east", "south", "west", "up", "down"
 };
 
