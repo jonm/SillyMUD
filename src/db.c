@@ -2145,8 +2145,6 @@ int load_char(char *name, struct char_file_u *char_element) {
   FILE *fl;
   int player_i;
 
-  int find_name(char *name);
-
   if ((player_i = find_name(name)) >= 0) {
 
     if (!(fl = fopen(PLAYER_FILE, "r"))) {

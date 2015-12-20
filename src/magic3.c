@@ -1307,10 +1307,6 @@ void spell_charm_veggie(byte UNUSED(level), struct char_data *ch,
                         struct obj_data *UNUSED(obj)) {
   struct affected_type af;
 
-  void add_follower(struct char_data *ch, struct char_data *leader);
-  bool circle_follow(struct char_data *ch, struct char_data *victim);
-  void stop_follower(struct char_data *ch);
-
   assert(ch && victim);
 
   if (victim == ch) {

@@ -261,9 +261,6 @@ void mobile_activity(struct char_data *ch) {
   int k;
   extern int no_specials;
 
-  void do_move(struct char_data *ch, char *argument, int cmd);
-  void do_get(struct char_data *ch, char *argument, int cmd);
-
   /* Examine call for special procedure */
 
   /* some status checking for errors */

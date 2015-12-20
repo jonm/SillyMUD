@@ -189,8 +189,6 @@ void obj_store_to_char(struct char_data *ch, struct obj_file_u *st) {
   struct obj_data *obj;
   int i, j;
 
-  void obj_to_char(struct obj_data *object, struct char_data *ch);
-
   for (i = 0; i < st->number; i++) {
     if (st->objects[i].item_number > -1 &&
         real_object(st->objects[i].item_number) > -1) {
@@ -492,8 +490,6 @@ void update_obj_file() {
   long i;
   long days_passed, secs_lost;
   char buf[200];
-
-  int find_name(char *name);
 
   if (!(char_file = fopen(PLAYER_FILE, "r+"))) {
     perror("Opening player file for reading. (reception.c, update_obj_file)");

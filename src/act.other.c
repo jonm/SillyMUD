@@ -176,8 +176,6 @@ void do_title(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 void do_quit(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
-  void die(struct char_data *ch);
-
   if (IS_NPC(ch) || !ch->desc || IS_AFFECTED(ch, AFF_CHARM))
     return;
 
