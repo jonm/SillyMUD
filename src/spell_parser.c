@@ -13,6 +13,7 @@
 #include "protos.h"
 #include "act.info.h"
 #include "act.off.h"
+#include "act.other.h"
 #include "utility.h"
 
 /* because I don't want to recompile */

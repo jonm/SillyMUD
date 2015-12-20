@@ -12,6 +12,7 @@
 
 #include "protos.h"
 #include "act.off.h"
+#include "act.wizard.h"
 
 /* Extern structures */
 extern struct room_data *world;
