@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "utility.h"
 
 /* Global data */
 
@@ -1028,8 +1029,6 @@ void cast_shield(byte level, struct char_data *ch, char *UNUSED(arg),
 
 void cast_curse(byte level, struct char_data *ch, char *UNUSED(arg), int type,
                 struct char_data *tar_ch, struct obj_data *tar_obj) {
-  char buf[255];
-
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (tar_obj)                /* It is an object */
@@ -1066,8 +1065,7 @@ void cast_curse(byte level, struct char_data *ch, char *UNUSED(arg), int type,
         spell_curse(level, ch, tar_ch, 0);
     break;
   default:
-    SPRINTF(buf, "Serious screw up in curse! Char = %s.", ch->player.name);
-    log_msg(buf);
+    log_msgf("Serious screw up in curse! Char = %s.", ch->player.name);
     break;
   }
 }
@@ -1883,11 +1881,9 @@ void cast_dragon_breath(byte level, struct char_data *ch, char *UNUSED(arg),
        scan->vnum && scan->vnum != obj_index[potion->item_number].virtual;
        scan++);
   if (scan->vnum == 0) {
-    char buf[MAX_STRING_LENGTH];
     send_to_char("Hey, this potion isn't in my list!\n\r", ch);
-    SPRINTF(buf, "unlisted breath potion %s %d", potion->short_description,
-            obj_index[potion->item_number].virtual);
-    log_msg(buf);
+    log_msgf("unlisted breath potion %s %d", potion->short_description,
+             obj_index[potion->item_number].virtual);
     return;
   }
 

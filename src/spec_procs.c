@@ -15,6 +15,7 @@
 #include "db.h"
 #include "act.wizard.h"
 #include "act.move.h"
+#include "utility.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -274,9 +275,8 @@ int guildmaster(struct char_data *ch, int cmd, char *arg,
         }
         return (TRUE);
       default:
-        SPRINTF(buf, "Strangeness in guildmaster, class %d passed in by %s.",
-                class, GET_NAME(ch));
-        log_msg(buf);
+        log_msgf("Strangeness in guildmaster, class %d passed in by %s.",
+                 class, GET_NAME(ch));
         send_to_char(" 'Ack! I feel faint!'\n\r", ch);
         return (TRUE);
       }
@@ -318,8 +318,7 @@ int guildmaster(struct char_data *ch, int cmd, char *arg,
         }
         return (TRUE);
       default:
-        SPRINTF(buf, "Strangeness in guildmaster for class %d.\n\r", class);
-        log_msg(buf);
+        log_msgf("Strangeness in guildmaster for class %d.\n\r", class);
         send_to_char("Ack, I feel faint!\n\r", ch);
       }                         /* switch */
       return (TRUE);
@@ -4795,7 +4794,6 @@ int tyrannosaurus_swallower(struct char_data *ch, int cmd, char *UNUSED(arg),
   struct char_data *targ;
   struct room_data *rp;
   int i;
-  char buf[256];
 
   extern char DestroyedItems;
 
@@ -4845,8 +4843,7 @@ int tyrannosaurus_swallower(struct char_data *ch, int cmd, char *UNUSED(arg),
            kill target:
          */
         GET_HIT(targ) = 0;
-        SPRINTF(buf, "%s killed by being swallowed whole", GET_NAME(targ));
-        log_msg(buf);
+        log_msgf("%s killed by being swallowed whole", GET_NAME(targ));
         die(targ);
         /*
            all stuff to monster:  this one is tricky.  assume that corpse is
@@ -5582,7 +5579,6 @@ int coldcaster(struct char_data *ch, int cmd, char *UNUSED(arg),
 int trapper(struct char_data *ch, int cmd, char *UNUSED(arg),
             struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tch;
-  char buf[256];
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -5624,9 +5620,8 @@ int trapper(struct char_data *ch, int cmd, char *UNUSED(arg),
       act("$n has suffocated inside $N!",
           FALSE, ch->specials.fighting, 0, ch, TO_ROOM);
       act("$n is dead!", FALSE, ch->specials.fighting, 0, ch, TO_ROOM);
-      SPRINTF(buf, "%s has suffocated to death.",
-              GET_NAME(ch->specials.fighting));
-      log_msg(buf);
+      log_msgf("%s has suffocated to death.",
+               GET_NAME(ch->specials.fighting));
       die(ch->specials.fighting);
       ch->specials.fighting = 0x0;
       return (TRUE);

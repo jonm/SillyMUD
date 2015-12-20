@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 #include "protos.h"
+#include "utility.h"
 
 #define NOT !
 #define AND &&
@@ -1307,15 +1308,13 @@ void nanny(struct descriptor_data *d, char *arg) {
           STATE(d) = CON_PLYNG;
 
           act("$n has reconnected.", TRUE, tmp_ch, 0, 0, TO_ROOM);
-          SPRINTF(buf, "%s[%s] has reconnected.",
-                  GET_NAME(d->character), d->host);
-          log_msg(buf);
+          log_msgf("%s[%s] has reconnected.",
+                   GET_NAME(d->character), d->host);
           return;
         }
 
 
-      SPRINTF(buf, "%s[%s] has connected.", GET_NAME(d->character), d->host);
-      log_msg(buf);
+      log_msgf("%s[%s] has connected.", GET_NAME(d->character), d->host);
       SEND_TO_Q(motd, d);
       SEND_TO_Q("\n\r\n*** PRESS RETURN: ", d);
 
@@ -1654,8 +1653,8 @@ void nanny(struct descriptor_data *d, char *arg) {
         SEND_TO_Q("***PRESS ENTER**", d);
 #else
         if (STATE(d) != CON_QCLASS) {
-          SPRINTF(buf, "%s [%s] new player.", GET_NAME(d->character), d->host);
-          log_msg(buf);
+          log_msgf("%s [%s] new player.", GET_NAME(d->character),
+                   d->host);
           /*
            ** now that classes are set, initialize
            */
@@ -1785,8 +1784,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       case '1':
 
         reset_char(d->character);
-        SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
-        log_msg(buf);
+        log_msgf("Loading %s's equipment", d->character->player.name);
         load_char_objs(d->character);
         save_char(d->character, AUTO_RENT);
         send_to_char(WELC_MESSG, d->character);
@@ -1812,8 +1810,7 @@ void nanny(struct descriptor_data *d, char *arg) {
       case '2':
 
         reset_char(d->character);
-        SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
-        log_msg(buf);
+        log_msgf("Loading %s's equipment", d->character->player.name);
         load_char_objs(d->character);
         save_char(d->character, AUTO_RENT);
         send_to_char(WELC_MESSG, d->character);
@@ -1839,8 +1836,8 @@ void nanny(struct descriptor_data *d, char *arg) {
         if (get_max_level(d->character) > 5) {
 
           reset_char(d->character);
-          SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
-          log_msg(buf);
+          log_msgf("Loading %s's equipment",
+                   d->character->player.name);
           load_char_objs(d->character);
           save_char(d->character, AUTO_RENT);
           send_to_char(WELC_MESSG, d->character);
@@ -1872,8 +1869,8 @@ void nanny(struct descriptor_data *d, char *arg) {
         if (get_max_level(d->character) > 5) {
 
           reset_char(d->character);
-          SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
-          log_msg(buf);
+          log_msgf("Loading %s's equipment",
+                   d->character->player.name);
           load_char_objs(d->character);
           save_char(d->character, AUTO_RENT);
           send_to_char(WELC_MESSG, d->character);
@@ -1905,8 +1902,8 @@ void nanny(struct descriptor_data *d, char *arg) {
         if (get_max_level(d->character) > 5) {
 
           reset_char(d->character);
-          SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
-          log_msg(buf);
+          log_msgf("Loading %s's equipment",
+                   d->character->player.name);
           load_char_objs(d->character);
           save_char(d->character, AUTO_RENT);
           send_to_char(WELC_MESSG, d->character);
@@ -1952,8 +1949,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 
     case '1':
       reset_char(d->character);
-      SPRINTF(buf, "Loading %s's equipment", d->character->player.name);
-      log_msg(buf);
+      log_msgf("Loading %s's equipment", d->character->player.name);
       load_char_objs(d->character);
       save_char(d->character, AUTO_RENT);
       send_to_char(WELC_MESSG, d->character);

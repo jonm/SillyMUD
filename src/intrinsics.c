@@ -10,6 +10,7 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "utility.h"
 
 extern struct time_info_data time_info; /* In db.c */
 extern unsigned char moontype;
@@ -49,8 +50,7 @@ void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   level = GET_LEVEL(ch, DRUID_LEVEL_IND);
 
   level = (level ? level : get_max_level(ch));  /* for vampires */
-  SPRINTF(buf, "Level %d thing doing a changeform.", level);
-  log_msg(buf);
+  log_msgf("Level %d thing doing a changeform.", level);
 
   one_argument(argument, buf);
 

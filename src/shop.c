@@ -11,6 +11,7 @@
 
 #include "protos.h"
 #include "db.h"
+#include "utility.h"
 
 #define SHOP_FILE "tinyworld.shp"
 #define MAX_TRADE 5
@@ -697,8 +698,7 @@ void boot_the_shops() {
         char *fmt = "***WARNING***: Shop %d has invalid keeper mobile %d";
         char *buf;
         buf = (char *)malloc(strlen(fmt) + 40);
-        SPRINTF(buf, fmt, number_of_shops, keeper);
-        log_msg(buf);
+        log_msgf(fmt, number_of_shops, keeper);
         free(buf);
       }
 

@@ -11,6 +11,7 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "utility.h"
 
 #define DUAL_WIELD(ch) (ch->equipment[WIELD] && ch->equipment[HOLD]&&\
 			ITEM_TYPE(ch->equipment[WIELD])==ITEM_WEAPON && \
@@ -884,15 +885,13 @@ void dam_message(int dam, struct char_data *ch, struct char_data *victim,
 
 int dam_check_deny(struct char_data *ch, struct char_data *victim, int type) {
   struct room_data *rp;
-  char buf[MAX_INPUT_LENGTH];
 
   assert(GET_POS(victim) > POSITION_DEAD);
 
   rp = real_roomp(ch->in_room);
   if (rp && (rp->room_flags & PEACEFUL) && type != SPELL_POISON &&
       type != SPELL_HEAT_STUFF) {
-    SPRINTF(buf, "damage(,,,%d) called in PEACEFUL room", type);
-    log_msg(buf);
+    log_msgf("damage(,,,%d) called in PEACEFUL room", type);
     return (TRUE);              /* true, they are denied from fighting */
   }
   return (FALSE);
@@ -1560,21 +1559,18 @@ int Getw_type(struct obj_data *wielded) {
 
 int hit_check_deny(struct char_data *ch, struct char_data *victim) {
   struct room_data *rp;
-  char buf[256];
   extern char PeacefulWorks;
 
   rp = real_roomp(ch->in_room);
   if (rp && rp->room_flags & PEACEFUL && PeacefulWorks) {
-    SPRINTF(buf, "hit() called in PEACEFUL room");
-    log_msg(buf);
+    log_msgf("hit() called in PEACEFUL room");
     stop_fighting(ch);
     return (TRUE);
   }
 
   if (ch->in_room != victim->in_room) {
-    SPRINTF(buf, "NOT in same room when fighting : %s, %s", ch->player.name,
-            victim->player.name);
-    log_msg(buf);
+    log_msgf("NOT in same room when fighting : %s, %s", ch->player.name,
+             victim->player.name);
     stop_fighting(ch);
     return (TRUE);
   }
@@ -1841,7 +1837,6 @@ int get_weapon_dam(struct char_data *ch, struct char_data *v,
 
 int get_backstab_mult(struct char_data *ch, struct char_data *v) {
   int mult, our_skill;
-  char buf[80];
 
   if (GET_LEVEL(ch, THIEF_LEVEL_IND)) {
     mult = backstab_mult[(int)GET_LEVEL(ch, THIEF_LEVEL_IND)];
@@ -1944,9 +1939,8 @@ int get_backstab_mult(struct char_data *ch, struct char_data *v) {
   }
 
   if (!our_skill) {
-    SPRINTF(buf, "Warning, race %d was unaccounted for in get_backstab_mult()",
-            GET_RACE(v));
-    log_msg(buf);
+    log_msgf("Warning, race %d was unaccounted for in get_backstab_mult()",
+             GET_RACE(v));
     return (mult);
   }
 
@@ -1976,7 +1970,6 @@ int get_backstab_mult(struct char_data *ch, struct char_data *v) {
 
 void hit_victim(struct char_data *ch, struct char_data *v, int dam,
                 int type, int w_type, int (*dam_func) ()) {
-  char buf[80];
   extern byte backstab_mult[];
   int dead;
 
@@ -1984,9 +1977,9 @@ void hit_victim(struct char_data *ch, struct char_data *v, int dam,
     int tmp;
 
     tmp = get_backstab_mult(ch, v);
-    SPRINTF(buf, "BS multiplier for %dth level char is %d.", get_max_level(ch),
-            tmp);
-    log_msg(buf);
+    log_msgf("BS multiplier for %dth level char is %d.",
+             get_max_level(ch),
+             tmp);
     dam *= tmp;
     dead = (*dam_func) (ch, v, dam, type);
 
@@ -2112,11 +2105,9 @@ void perform_violence() {
 
     rp = real_roomp(ch->in_room);
     if (rp && rp->room_flags & PEACEFUL) {
-      char buf[MAX_INPUT_LENGTH];
-      SPRINTF(buf, "perform_violence() found %s fighting in a PEACEFUL room.",
-              ch->player.name);
       stop_fighting(ch);
-      log_msg(buf);
+      log_msgf("perform_violence() found %s fighting in a PEACEFUL room.",
+               ch->player.name);
     }
     else if (ch == ch->specials.fighting) {
       stop_fighting(ch);
