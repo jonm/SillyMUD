@@ -460,13 +460,6 @@ int mayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   static int index;
   static bool move = FALSE;
 
-  void do_move(struct char_data *ch, char *argument, int cmd);
-  void do_open(struct char_data *ch, char *argument, int cmd);
-  void do_lock(struct char_data *ch, char *argument, int cmd);
-  void do_unlock(struct char_data *ch, char *argument, int cmd);
-  void do_close(struct char_data *ch, char *argument, int cmd);
-
-
   if (type == EVENT_WINTER) {
     GET_POS(ch) = POSITION_STANDING;
     do_shout(ch, "Aieee!   The rats!  The rats are coming!  Aieeee!", 0);
@@ -1232,12 +1225,6 @@ void exec_social(struct char_data *npc, char *cmd, int next_line,
                  int *cur_line, void **thing) {
   bool ok;
 
-  void do_move(struct char_data *ch, char *argument, int cmd);
-  void do_open(struct char_data *ch, char *argument, int cmd);
-  void do_lock(struct char_data *ch, char *argument, int cmd);
-  void do_unlock(struct char_data *ch, char *argument, int cmd);
-  void do_close(struct char_data *ch, char *argument, int cmd);
-
   if (GET_POS(npc) == POSITION_FIGHTING)
     return;
 
@@ -1356,8 +1343,6 @@ void npc_steal(struct char_data *ch, struct char_data *victim) {
 
 int snake(struct char_data *ch, int cmd, char *UNUSED(arg),
           struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_poison(byte level, struct char_data *ch, char *arg, int type,
-                   struct char_data *tar_ch, struct obj_data *tar_obj);
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1626,9 +1611,6 @@ int ghoul(struct char_data *ch, int cmd, char *UNUSED(arg),
           struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tar;
 
-  void cast_paralyze(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1654,9 +1636,6 @@ int carrion_crawler(struct char_data *ch, int cmd, char *UNUSED(arg),
                     struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tar;
   int i;
-
-  void cast_paralyze(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *tar_ch, struct obj_data *tar_obj);
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1717,9 +1696,6 @@ int wizard_guard(struct char_data *ch, int cmd, char *arg,
 
 int vampire(struct char_data *ch, int cmd, char *UNUSED(arg),
             struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_energy_drain(byte level, struct char_data *ch, char *arg, int type,
-                         struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1740,9 +1716,6 @@ int vampire(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 int wraith(struct char_data *ch, int cmd, char *UNUSED(arg),
            struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_energy_drain(byte level, struct char_data *ch, char *arg, int type,
-                         struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1759,11 +1732,6 @@ int wraith(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 int shadow(struct char_data *ch, int cmd, char *UNUSED(arg),
            struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_chill_touch(byte level, struct char_data *ch, char *arg, int type,
-                        struct char_data *tar_ch, struct obj_data *tar_obj);
-  void cast_weakness(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1783,9 +1751,6 @@ int shadow(struct char_data *ch, int cmd, char *UNUSED(arg),
 int geyser(struct char_data *ch, int cmd, char *UNUSED(arg),
            struct char_data *UNUSED(mob), int UNUSED(type)) {
 
-  void cast_geyser(byte level, struct char_data *ch, char *arg, int type,
-                   struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1801,9 +1766,6 @@ int geyser(struct char_data *ch, int cmd, char *UNUSED(arg),
 int green_slime(struct char_data *ch, int cmd, char *UNUSED(arg),
                 struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *cons;
-
-  void cast_green_slime(byte level, struct char_data *ch, char *arg, int type,
-                        struct char_data *tar_ch, struct obj_data *tar_obj);
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1904,10 +1866,6 @@ int puff(struct char_data *ch, int cmd, char *UNUSED(arg),
          struct char_data *UNUSED(mob), int type) {
   struct char_data *i, *tmp_ch;
   char buf[80];
-
-  void do_say(struct char_data *ch, char *argument, int cmd);
-  void do_emote(struct char_data *ch, char *argument, int cmd);
-  void do_shout(struct char_data *ch, char *argument, int cmd);
 
   if (type == EVENT_DWARVES_STRIKE) {
     do_shout(ch,
@@ -2581,8 +2539,6 @@ int rust_monster(struct char_data *ch, int cmd, char *UNUSED(arg),
 
 int temple_labrynth_liar(struct char_data *ch, int cmd, char *UNUSED(arg),
                          struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void do_say(struct char_data *ch, char *argument, int cmd);
-
   if (cmd || !AWAKE(ch))
     return (0);
 
@@ -2630,10 +2586,6 @@ int temple_labrynth_sentry(struct char_data *ch, int cmd, char *UNUSED(arg),
                            struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tch;
   int counter;
-
-  void cast_fireball(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *victim, struct obj_data *tar_obj);
-  void do_say(struct char_data *ch, char *argument, int cmd);
 
   if (cmd || !AWAKE(ch))
     return FALSE;
@@ -3251,10 +3203,6 @@ int fountain(struct char_data *ch, int cmd, char *arg,
   struct char_data *tmp_char;
   char container[20];           /* so we can be flexible */
   struct obj_data *obj;
-
-  void name_to_drinkcon(struct obj_data *obj, int type);
-  void name_from_drinkcon(struct obj_data *obj);
-
 
   if (cmd == 248) {             /* fill */
 

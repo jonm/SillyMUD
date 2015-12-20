@@ -45,9 +45,6 @@ extern int gSeason;             /* what season is it ? */
 
 int ghost(struct char_data *ch, int cmd, char *UNUSED(arg),
           struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_energy_drain(byte level, struct char_data *ch, char *arg,
-                         int type, struct char_data *tar_ch,
-                         struct obj_data *tar_obj);
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -111,9 +108,6 @@ int magic__fountain(struct char_data *ch, int cmd, char *arg,
                     struct room_data *UNUSED(rp), int UNUSED(type)) {
 
   char buf[MAX_INPUT_LENGTH];
-
-  void name_to_drinkcon(struct obj_data *obj, int type);
-  void name_from_drinkcon(struct obj_data *obj);
 
   if (cmd == 11) {              /* drink */
 
@@ -3869,10 +3863,6 @@ extern float shop_multiplier;
 
 int dwarven_miners(struct char_data *ch, int UNUSED(cmd), char *UNUSED(arg),
                    struct char_data *UNUSED(mob), int type) {
-  void do_emote(struct char_data *ch, char *arg, int cmd);
-  void do_stand(struct char_data *ch, char *arg, int cmd);
-  void do_sit(struct char_data *ch, char *arg, int cmd);
-
   if (type == PULSE_COMMAND)
     return (FALSE);
 

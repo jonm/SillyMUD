@@ -138,8 +138,6 @@ int raw_move(struct char_data *ch, int dir) {
   bool has_boat;
   struct room_data *from_here, *to_here;
 
-  int special(struct char_data *ch, int dir, char *arg);
-
   if (special(ch, dir + 1, "")) /* Check for special routines(North is 1) */
     return (FALSE);
 
@@ -1455,9 +1453,6 @@ void do_wake(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 void do_follow(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   char name[160];
   struct char_data *leader;
-
-  void stop_follower(struct char_data *ch);
-  void add_follower(struct char_data *ch, struct char_data *leader);
 
   only_argument(argument, name);
 

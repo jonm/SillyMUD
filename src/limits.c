@@ -817,9 +817,6 @@ void gain_condition(struct char_data *ch, int condition, int value) {
 
 
 void check_idling(struct char_data *ch) {
-  void do_save(struct char_data *ch, char *argument, int cmd);
-
-
   if (++(ch->specials.timer) == 8) {
     do_save(ch, "", 0);
 

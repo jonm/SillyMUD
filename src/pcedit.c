@@ -167,7 +167,6 @@ void menu2() {
 }
 
 void muck(int orig_ammt, char name[80]) {
-  void menu2();
   register i;
   int l, count, f;
   char temp[10];
@@ -376,8 +375,6 @@ int search_for_name_from_pos(char *arg, int pos)
 
 void access_rent_files(int number, int ITEM, char buf[40]) {
 /*
-  int read_objs(FILE *fl, struct obj_file_u *st);
-
   char buff2[80];
   FILE *fl;
   int i,j,tried,succeed;

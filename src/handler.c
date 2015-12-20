@@ -1415,11 +1415,6 @@ void extract_char_smarter(struct char_data *ch, int save_room) {
   extern long mob_count;
   extern struct char_data *combat_list;
 
-  void do_save(struct char_data *ch, char *argument, int cmd);
-  void do_return(struct char_data *ch, char *argument, int cmd);
-
-  void die_follower(struct char_data *ch);
-
   if (IS_SET(ch->specials.act, ACT_FIGURINE) && ch->link)
     extract_obj(ch->link);
 
