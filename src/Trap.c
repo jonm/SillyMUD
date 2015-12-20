@@ -11,6 +11,7 @@
 
 #include "protos.h"
 #include "act.info.h"
+#include "utility.h"
 
 extern struct char_data *character_list;
 struct room_data *real_roomp(int);
@@ -122,8 +123,6 @@ void find_trap_damage(struct char_data *v, struct obj_data *i) {
 
 void trap_damage(struct char_data *v, int damtype, int amnt,
                  struct obj_data *t) {
-  char buf[132];
-
   amnt = skip_immortals(v, amnt);
   if (amnt == -1) {
     return;
@@ -151,9 +150,8 @@ void trap_damage(struct char_data *v, int damtype, int amnt,
   if (GET_POS(v) == POSITION_DEAD) {
     if (!IS_NPC(v)) {
       if (real_roomp(v->in_room)->name)
-        SPRINTF(buf, "%s killed by a trap at %s",
-                GET_NAME(v), real_roomp(v->in_room)->name);
-      log_msg(buf);
+        log_msgf("%s killed by a trap at %s",
+                 GET_NAME(v), real_roomp(v->in_room)->name);
     }
 
     die(v);

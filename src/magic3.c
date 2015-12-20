@@ -15,6 +15,7 @@
 #include "act.move.h"
 #include "act.info.h"
 #include "act.off.h"
+#include "utility.h"
 
 /* Extern structures */
 extern struct room_data *world;
@@ -1308,10 +1309,6 @@ void spell_charm_veggie(byte UNUSED(level), struct char_data *ch,
                         struct obj_data *UNUSED(obj)) {
   struct affected_type af;
 
-  void add_follower(struct char_data *ch, struct char_data *leader);
-  bool circle_follow(struct char_data *ch, struct char_data *victim);
-  void stop_follower(struct char_data *ch);
-
   assert(ch && victim);
 
   if (victim == ch) {
@@ -2263,9 +2260,7 @@ void spell_portal(byte level, struct char_data *ch,
   }
 
   if (!(nrp = real_roomp(tmp_ch->in_room))) {
-    char str[180];
-    SPRINTF(str, "%s not in any room.", GET_NAME(tmp_ch));
-    log_msg(str);
+    log_msgf("%s not in any room.", GET_NAME(tmp_ch));
     send_to_char("Your magic cannot locate the target.\n\r", ch);
     return;
   }

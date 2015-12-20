@@ -13,6 +13,8 @@
 
 #include "protos.h"
 #include "db.h"
+#include "utility.h"
+
 
 #define MAX_MSGS 99             /* Max number of messages.          */
 #define MAX_MESSAGE_LENGTH 2048 /* that should be enough            */
@@ -351,7 +353,6 @@ void board_load_board() {
   FILE *the_file;
   int ind;
   int bnum;
-  char buf[256];
 
   memset(boards, 0, sizeof(boards));    /* Zero out the array, make sure no */
   /* Funky pointers are left in the   */
@@ -367,13 +368,12 @@ void board_load_board() {
     boards[bnum].number = -1;
     the_file = fopen(save_file[bnum], "r");
     if (!the_file) {
-      SPRINTF(buf, "Can't open message file for board %d.\n\r", bnum);
-      log_msg(buf);
+      log_msgf("Can't open message file for board %d.\n\r", bnum);
       continue;
     }
 
     if (EOF == fscanf(the_file, " %d ", &boards[bnum].number)) {
-      log_msg("Board-message file is emptyish.");
+      log_msgf("Board-message file %s is emptyish.", save_file[bnum]);
     }
     else if (boards[bnum].number < 0 || boards[bnum].number > MAX_MSGS ||
         feof(the_file)) {

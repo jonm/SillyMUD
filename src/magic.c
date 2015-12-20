@@ -751,8 +751,6 @@ void spell_create_water(byte level, struct char_data *ch,
   int water;
 
   extern struct weather_data weather_info;
-  void name_to_drinkcon(struct obj_data *obj, int type);
-  void name_from_drinkcon(struct obj_data *obj);
 
   assert(ch && obj);
 
@@ -1888,10 +1886,6 @@ void spell_charm_person(byte UNUSED(level), struct char_data *ch,
                         struct obj_data *UNUSED(obj)) {
   struct affected_type af;
 
-  void add_follower(struct char_data *ch, struct char_data *leader);
-  bool circle_follow(struct char_data *ch, struct char_data *victim);
-  void stop_follower(struct char_data *ch);
-
   assert(ch && victim);
 
   if (victim == ch) {
@@ -1985,10 +1979,6 @@ void spell_charm_monster(byte UNUSED(level), struct char_data *ch,
                          struct char_data *victim,
                          struct obj_data *UNUSED(obj)) {
   struct affected_type af;
-
-  void add_follower(struct char_data *ch, struct char_data *leader);
-  bool circle_follow(struct char_data *ch, struct char_data *victim);
-  void stop_follower(struct char_data *ch);
 
   assert(ch && victim);
 
@@ -2375,8 +2365,6 @@ void spell_acid_breath(byte level, struct char_data *ch,
                        struct obj_data *UNUSED(obj)) {
   int dam;
   int hpch;
-
-  int apply_ac(struct char_data *ch, int eq_pos);
 
   assert(victim && ch);
   assert((level >= 1) && (level <= ABS_MAX_LVL));

@@ -15,6 +15,7 @@
 #include "spec_procs2.h"
 #include "spec_procs3.h"
 #include "reception.h"
+#include "utility.h"
 
 #if HASH
 extern struct hash_header room_db;
@@ -1014,14 +1015,12 @@ void assign_mobiles() {
   };
 
   int i, rnum;
-  char buf[MAX_STRING_LENGTH];
 
   for (i = 0; specials[i].vnum >= 0; i++) {
     rnum = real_mobile(specials[i].vnum);
     if (rnum < 0) {
-      SPRINTF(buf, "mobile_assign: Mobile %d not found in database.",
-              specials[i].vnum);
-      log_msg(buf);
+      log_msgf("mobile_assign: Mobile %d not found in database.",
+               specials[i].vnum);
     }
     else {
       mob_index[rnum].func = specials[i].proc;
@@ -1072,8 +1071,7 @@ void assign_objects() {
         "***WARNING***: assigning special proc to non-existent object %d";
       char *buf;
       buf = (char *)malloc(strlen(fmt) + 20);
-      SPRINTF(buf, fmt, obj_procs[i].virtual_obj_num);
-      log_msg(buf);
+      log_msgf(fmt, obj_procs[i].virtual_obj_num);
       free(buf);
     }
     i++;
@@ -1124,13 +1122,11 @@ void assign_rooms() {
   };
   int i;
   struct room_data *rp;
-  char buf[80];
 
   for (i = 0; specials[i].vnum >= 0; i++) {
     rp = real_roomp(specials[i].vnum);
     if (rp == NULL) {
-      SPRINTF(buf, "assign_rooms: room %d unknown", specials[i].vnum);
-      log_msg(buf);
+      log_msgf("assign_rooms: room %d unknown", specials[i].vnum);
     }
     else
       rp->funct = specials[i].proc;

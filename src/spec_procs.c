@@ -23,7 +23,7 @@
 #include "spec_procs.h"
 #include "spec_procs2.h"
 #include "spec_procs3.h"
-
+#include "utility.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
@@ -285,9 +285,8 @@ guildmaster(struct char_data *ch, const char *cmd, char *arg,
         }
         return (TRUE);
       default:
-        SPRINTF(buf, "Strangeness in guildmaster, class %d passed in by %s.",
-                class, GET_NAME(ch));
-        log_msg(buf);
+        log_msgf("Strangeness in guildmaster, class %d passed in by %s.",
+                 class, GET_NAME(ch));
         send_to_char(" 'Ack! I feel faint!'\n\r", ch);
         return (TRUE);
       }
@@ -329,8 +328,7 @@ guildmaster(struct char_data *ch, const char *cmd, char *arg,
         }
         return (TRUE);
       default:
-        SPRINTF(buf, "Strangeness in guildmaster for class %d.\n\r", class);
-        log_msg(buf);
+        log_msgf("Strangeness in guildmaster for class %d.\n\r", class);
         send_to_char("Ack, I feel faint!\n\r", ch);
       }                         /* switch */
       return (TRUE);
@@ -1350,8 +1348,6 @@ void npc_steal(struct char_data *ch, struct char_data *victim) {
 
 int snake(struct char_data *ch, const char *cmd, char *UNUSED(arg),
           struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_poison(byte level, struct char_data *ch, char *arg, int type,
-                   struct char_data *tar_ch, struct obj_data *tar_obj);
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1624,9 +1620,6 @@ int ghoul(struct char_data *ch, const char *cmd, char *UNUSED(arg),
           struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tar;
 
-  void cast_paralyze(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1652,9 +1645,6 @@ int carrion_crawler(struct char_data *ch, const char *cmd, char *UNUSED(arg),
                     struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tar;
   int i;
-
-  void cast_paralyze(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *tar_ch, struct obj_data *tar_obj);
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1715,9 +1705,6 @@ int wizard_guard(struct char_data *ch, const char *cmd, char *arg,
 
 int vampire(struct char_data *ch, const char *cmd, char *UNUSED(arg),
             struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_energy_drain(byte level, struct char_data *ch, char *arg, int type,
-                         struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1738,9 +1725,6 @@ int vampire(struct char_data *ch, const char *cmd, char *UNUSED(arg),
 
 int wraith(struct char_data *ch, const char *cmd, char *UNUSED(arg),
            struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_energy_drain(byte level, struct char_data *ch, char *arg, int type,
-                         struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1757,11 +1741,6 @@ int wraith(struct char_data *ch, const char *cmd, char *UNUSED(arg),
 
 int shadow(struct char_data *ch, const char *cmd, char *UNUSED(arg),
            struct char_data *UNUSED(mob), int UNUSED(type)) {
-  void cast_chill_touch(byte level, struct char_data *ch, char *arg, int type,
-                        struct char_data *tar_ch, struct obj_data *tar_obj);
-  void cast_weakness(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1781,9 +1760,6 @@ int shadow(struct char_data *ch, const char *cmd, char *UNUSED(arg),
 int geyser(struct char_data *ch, const char *cmd, char *UNUSED(arg),
            struct char_data *UNUSED(mob), int UNUSED(type)) {
 
-  void cast_geyser(byte level, struct char_data *ch, char *arg, int type,
-                   struct char_data *tar_ch, struct obj_data *tar_obj);
-
   if (cmd || !AWAKE(ch))
     return (FALSE);
 
@@ -1799,9 +1775,6 @@ int geyser(struct char_data *ch, const char *cmd, char *UNUSED(arg),
 int green_slime(struct char_data *ch, const char *cmd, char *UNUSED(arg),
                 struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *cons;
-
-  void cast_green_slime(byte level, struct char_data *ch, char *arg, int type,
-                        struct char_data *tar_ch, struct obj_data *tar_obj);
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -3235,12 +3208,7 @@ int fountain(struct char_data *ch, const char *cmd, char *arg,
   char container[20];           /* so we can be flexible */
   struct obj_data *obj;
 
-  void name_to_drinkcon(struct obj_data *obj, int type);
-  void name_from_drinkcon(struct obj_data *obj);
-
-
   if (STREQ(cmd, "fill")) {
-
     arg = one_argument(arg, buf);       /* buf = object */
     bits = generic_find(buf, FIND_OBJ_INV | FIND_OBJ_ROOM |
                         FIND_OBJ_EQUIP, ch, &tmp_char, &obj);
@@ -4844,7 +4812,6 @@ int tyrannosaurus_swallower(struct char_data *ch, const char *cmd, char *UNUSED(
   struct char_data *targ;
   struct room_data *rp;
   int i;
-  char buf[256];
 
   extern char DestroyedItems;
 
@@ -4894,8 +4861,7 @@ int tyrannosaurus_swallower(struct char_data *ch, const char *cmd, char *UNUSED(
            kill target:
          */
         GET_HIT(targ) = 0;
-        SPRINTF(buf, "%s killed by being swallowed whole", GET_NAME(targ));
-        log_msg(buf);
+        log_msgf("%s killed by being swallowed whole", GET_NAME(targ));
         die(targ);
         /*
            all stuff to monster:  this one is tricky.  assume that corpse is
@@ -5626,7 +5592,6 @@ int coldcaster(struct char_data *ch, const char *cmd, char *UNUSED(arg),
 int trapper(struct char_data *ch, const char *cmd, char *UNUSED(arg),
             struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *tch;
-  char buf[256];
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -5668,9 +5633,8 @@ int trapper(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       act("$n has suffocated inside $N!",
           FALSE, ch->specials.fighting, 0, ch, TO_ROOM);
       act("$n is dead!", FALSE, ch->specials.fighting, 0, ch, TO_ROOM);
-      SPRINTF(buf, "%s has suffocated to death.",
-              GET_NAME(ch->specials.fighting));
-      log_msg(buf);
+      log_msgf("%s has suffocated to death.",
+               GET_NAME(ch->specials.fighting));
       die(ch->specials.fighting);
       ch->specials.fighting = 0x0;
       return (TRUE);

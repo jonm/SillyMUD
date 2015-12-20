@@ -13,6 +13,7 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "utility.h"
 
 /* extern variables */
 
@@ -26,18 +27,15 @@ extern struct skill_data skill_info[];
 void weight_change_object(struct obj_data *obj, int weight) {
   struct obj_data *tmp_obj;
   struct char_data *tmp_ch;
-  char buf[255];
 
   if (GET_OBJ_WEIGHT(obj) + weight < 1) {
     weight = 0 - (GET_OBJ_WEIGHT(obj) - 1);
     if (obj->carried_by) {
-      SPRINTF(buf, "Bad weight change on %s, carried by %s.", obj->name,
-              obj->carried_by->player.name);
-      log_msg(buf);
+      log_msgf("Bad weight change on %s, carried by %s.", obj->name,
+               obj->carried_by->player.name);
     }
     else {
-      SPRINTF(buf, "Bad weight change on %s.", obj->name);
-      log_msg(buf);
+      log_msgf("Bad weight change on %s.", obj->name);
     }
   }
 

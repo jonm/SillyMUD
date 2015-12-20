@@ -677,11 +677,9 @@ int determine_exp(struct char_data *mob, int exp_flags) {
   int base;
   int phit;
   int sab;
-  char buf[200];
 
   if (exp_flags > 100) {
-    SPRINTF(buf, "Exp flags on %s are > 100 (%d)", GET_NAME(mob), exp_flags);
-    log_msg(buf);
+    log_msgf("Exp flags on %s are > 100 (%d)", GET_NAME(mob), exp_flags);
   }
 
 /* 

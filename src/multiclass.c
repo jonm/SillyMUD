@@ -18,6 +18,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "utility.h"
 
 
 /* extern variables */
@@ -130,8 +131,8 @@ int best_fighting_class(struct char_data *ch) {
   if (GET_LEVEL(ch, MAGE_LEVEL_IND))
     return (MAGE_LEVEL_IND);
 
-  log_msg("Massive error.. character has no recognized class.");
-  log_msg(GET_NAME(ch));
+  log_msgf("Massive error.. character has no recognized class.: %s",
+           GET_NAME(ch));
   assert(0);
 
   return (1);
@@ -152,8 +153,8 @@ int best_thief_class(struct char_data *ch) {
   if (GET_LEVEL(ch, CLERIC_LEVEL_IND))
     return (CLERIC_LEVEL_IND);
 
-  log_msg("Massive error.. character has no recognized class.");
-  log_msg(GET_NAME(ch));
+  log_msgf("Massive error.. character has no recognized class.: %s",
+           GET_NAME(ch));
   assert(0);
 
   return (1);
@@ -174,8 +175,8 @@ int best_magic_class(struct char_data *ch) {
   if (GET_LEVEL(ch, MONK_LEVEL_IND))
     return (MONK_LEVEL_IND);
 
-  log_msg("Massive error.. character has no recognized class.");
-  log_msg(GET_NAME(ch));
+  log_msgf("Massive error.. character has no recognized class.: %s", 
+           GET_NAME(ch));
   ch->player.class = 4;
 
   return (1);

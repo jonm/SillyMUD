@@ -766,8 +766,6 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 
   char *buf;
 
-  void do_snoop(struct char_data *ch, char *argument, int cmd);
-
   /*
    *  Check to make sure that there is no snooping going on.
    */
@@ -1499,8 +1497,6 @@ void spell_dispel_magic(byte level, struct char_data *ch,
                         struct char_data *victim, struct obj_data *obj) {
   int yes = 0;
   int i;
-
-  int check_falling(struct char_data *ch);
 
   assert(ch && (victim || obj));
 

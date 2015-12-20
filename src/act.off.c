@@ -13,6 +13,7 @@
 #include "act.off.h"
 #include "act.other.h"
 #include "spec_procs2.h"
+#include "utility.h"
 
 /* extern variables */
 
@@ -1368,7 +1369,7 @@ cast_geyser, cast_fire_breath, cast_gas_breath, cast_frost_breath,
 void do_breath(struct char_data *ch, char *argument,
                const char * UNUSED(cmd)) {
   struct char_data *victim;
-  char buf[MAX_STRING_LENGTH], name[MAX_STRING_LENGTH];
+  char name[MAX_STRING_LENGTH];
   int count, manacost;
   void (*weapon) (byte, struct char_data *, char *, int, struct char_data *,
                   struct obj_data *);
@@ -1395,8 +1396,7 @@ void do_breath(struct char_data *ch, char *argument,
     for (count = 0; scan->breaths[count]; count++);
 
     if (count < 1) {
-      SPRINTF(buf, "monster %s has no breath weapons", ch->player.short_descr);
-      log_msg(buf);
+      log_msgf("monster %s has no breath weapons", ch->player.short_descr);
       send_to_char("Hey, why don't you have any breath weapons!?\n\r", ch);
       return;
     }

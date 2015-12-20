@@ -15,6 +15,7 @@
 #include "act.comm.h"
 #include "act.off.h"
 #include "act.wizard.h"
+#include "utility.h"
 
 extern struct char_data *character_list;
 extern struct index_data *mob_index;
@@ -273,8 +274,8 @@ void mobile_activity(struct char_data *ch) {
 #else
   if ((ch->in_room < 0) || !room_find(&room_db, ch->in_room)) {
 #endif
-    log_msg("Char not in correct room.  moving to 50 ");
-    log_msg(GET_NAME(ch));
+    log_msgf("Char not in correct room.  moving to 50: %s", 
+             GET_NAME(ch));
     assert(ch->in_room >= 0);   /* if they are in a - room, assume an error */
     char_from_room(ch);
     char_to_room(ch, 50);
@@ -289,10 +290,8 @@ void mobile_activity(struct char_data *ch) {
   if (((IS_SET(ch->specials.act, ACT_SPEC) || mob_index[ch->nr].func))
       && !no_specials) {
     if (!mob_index[ch->nr].func) {
-      char buf[180];
-      SPRINTF(buf, "Attempting to call a non-existing mob func on %s",
-              GET_NAME(ch));
-      log_msg(buf);
+      log_msgf("Attempting to call a non-existing mob func on %s",
+               GET_NAME(ch));
       REMOVE_BIT(ch->specials.act, ACT_SPEC);
     }
     else {
@@ -467,7 +466,6 @@ int same_race(struct char_data *ch1, struct char_data *ch2) {
 int assist_friend(struct char_data *ch) {
   struct char_data *damsel, *targ, *tmp_ch, *next;
   int t, found;
-  char buf[256];
 
   damsel = 0;
   targ = 0;
@@ -475,8 +473,7 @@ int assist_friend(struct char_data *ch) {
   if (check_peaceful(ch, ""))
     return (0);
   if (ch->in_room < 0) {
-    SPRINTF(buf, "Mob %s in negative room", ch->player.name);
-    log_msg(buf);
+    log_msgf("Mob %s in negative room", ch->player.name);
     ch->in_room = 0;
     extract_char(ch);
     return (0);
@@ -811,7 +808,7 @@ void end2(char *UNUSED(arg), struct char_data *ch) {
 }
 
 void sgoto(char *arg, struct char_data *ch) {
-  char *p, buf[255];
+  char *p;
   struct char_data *mob;
   int dir, room;
 
@@ -834,9 +831,8 @@ void sgoto(char *arg, struct char_data *ch) {
     }
   }
   else {
-    SPRINTF(buf, "Error in script %s, no destination for goto",
-            script_data[ch->script].filename);
-    log_msg(buf);
+    log_msgf("Error in script %s, no destination for goto",
+             script_data[ch->script].filename);
     ch->commandp++;
     return;
   }
@@ -888,9 +884,8 @@ void do_jmp(char *arg, struct char_data *ch) {
     }
   }
 
-  SPRINTF(buf, "Label %s undefined in script assigned to %s.  Ignoring.", arg,
-          GET_NAME(ch));
-  log_msg(buf);
+  log_msgf("Label %s undefined in script assigned to %s.  Ignoring.",
+           arg, GET_NAME(ch));
 
   ch->commandp++;
 }
@@ -911,9 +906,8 @@ void do_jsr(char *arg, struct char_data *ch) {
     }
   }
 
-  SPRINTF(buf, "Label %s undefined in script assigned to %s.  Ignoring.", arg,
-          GET_NAME(ch));
-  log_msg(buf);
+  log_msgf("Label %s undefined in script assigned to %s.  Ignoring.",
+           arg, GET_NAME(ch));
 
   ch->commandp++;
 }

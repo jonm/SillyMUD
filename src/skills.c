@@ -14,6 +14,7 @@
 #include "act.move.h"
 #include "act.obj1.h"
 #include "act.info.h"
+#include "utility.h"
 
 extern char *dirs[];
 extern struct char_data *character_list;
@@ -1343,10 +1344,8 @@ void do_palm(struct char_data *ch, char *arg, const char *cmd) {
               GET_GOLD(ch) += obj_object->obj_flags.value[0];
               if (GET_GOLD(ch) > 100000 &&
                   obj_object->obj_flags.value[0] > 10000) {
-                char buf[MAX_INPUT_LENGTH];
-                SPRINTF(buf, "%s just got %d coins!",
-                        GET_NAME(ch), obj_object->obj_flags.value[0]);
-                log_msg(buf);
+                log_msgf("%s just got %d coins!",
+                         GET_NAME(ch), obj_object->obj_flags.value[0]);
               }
               extract_obj(obj_object);
             }
@@ -1411,10 +1410,8 @@ void do_palm(struct char_data *ch, char *arg, const char *cmd) {
                     GET_GOLD(ch) += obj_object->obj_flags.value[0];
                     if (GET_GOLD(ch) > 100000 &&
                         obj_object->obj_flags.value[0] > 10000) {
-                      char buf[MAX_INPUT_LENGTH];
-                      SPRINTF(buf, "%s just got %d coins!",
-                              GET_NAME(ch), obj_object->obj_flags.value[0]);
-                      log_msg(buf);
+                      log_msgf("%s just got %d coins!", GET_NAME(ch),
+                               obj_object->obj_flags.value[0]);
                     }
                     extract_obj(obj_object);
                   }
@@ -1644,11 +1641,7 @@ void do_makepotion(struct char_data *ch, char *argument,
     }
   }
 
-  {
-    char buf[80];
-    SPRINTF(buf, "Min brew level is: %d", max);
-    log_msg(buf);
-  }
+  log_msgf("Min brew level is: %d", max);
 
   extract_obj(potion);
 

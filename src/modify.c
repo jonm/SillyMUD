@@ -961,8 +961,6 @@ void night_watchman() {
 
   extern int mudshutdown;
 
-  void send_to_all(char *messg);
-
   tc = time(0);
   t_info = localtime(&tc);
 
