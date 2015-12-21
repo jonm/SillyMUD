@@ -1607,8 +1607,6 @@ void do_set(struct char_data *ch, char *argument,
   char field[20], name[20], parmstr[50];
   struct char_data *mob;
   int parm, parm2;
-  char buf[256];
-
 
   extern char PeacefulWorks;
   extern char EasySummon;

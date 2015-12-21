@@ -189,7 +189,6 @@ int
 guildmaster(struct char_data *ch, const char *cmd, char *arg,
                 struct char_data *mob, int type, int class) {
   int number, i, percent, class_level_ind, level_num, teacher;
-  char buf[MAX_INPUT_LENGTH];
   struct char_data *guildmaster;
   extern char *spells[];
   extern struct skill_data skill_info[MAX_SPL_LIST];

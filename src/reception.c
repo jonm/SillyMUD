@@ -290,7 +290,6 @@ void load_char_objs(struct char_data *ch) {
     found = TRUE;
   }
   else {
-    char buf[MAX_STRING_LENGTH];
     if (ch->in_room == NOWHERE)
       log_msg("Char reconnecting after autorent");
 #ifdef NEW_RENT

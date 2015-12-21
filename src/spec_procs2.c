@@ -1131,9 +1131,6 @@ int hunter(struct char_data *ch, const char *cmd, char *arg, struct char_data *m
 int teacher(struct char_data *ch, const char *cmd, char *arg,
             struct char_data *UNUSED(mob), int UNUSED(type), int teacher,
             char *say_str) {
-
-  char buf[256];
-
   int number, i, charge, percent;
   extern char *spells[];
   extern struct skill_data skill_info[MAX_SPL_LIST];
