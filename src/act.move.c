@@ -451,7 +451,8 @@ void display_group_move(struct char_data *ch, int dir, int was_in, int total) {
 
 
 int move_string_to_dir(const char *str) {
-  for (int i = MOVE_DIR_FIRST; i <= MOVE_DIR_LAST; i++) {
+  int i;
+  for (i = MOVE_DIR_FIRST; i <= MOVE_DIR_LAST; i++) {
     if (!strcmp (str, move_dir_string[i])) {
       return i;
       break;
