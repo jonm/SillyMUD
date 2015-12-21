@@ -11,6 +11,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <syslog.h>
 
 #include "protos.h"
 #include "utility.h"
@@ -21,6 +22,7 @@
 #include "act.move.h"
 
 void log_msg(char *s) {
+  syslog(LOG_INFO, "%s", s);
   log_sev(s, 1);
 }                               /*thought this was a prototype - heheh */
 
@@ -28,6 +30,7 @@ void log_msgf(const char *fmt, ...) {
   char buf[256];
   va_list args;
   va_start(args, fmt);
+  syslog(LOG_INFO, fmt, args);
   vsnprintf(buf, sizeof(buf), fmt, args);
   log_sev(buf, 1);
   va_end(args);
@@ -342,17 +345,8 @@ int strn_cmp(char *arg1, char *arg2, int n) {
 
 /* writes a string to the log */
 void log_sev(char *str, int sev) {
-  long ct;
-  char *tmstr;
   static char buf[500];
   struct descriptor_data *i;
-
-
-  ct = time(0);
-  tmstr = asctime(localtime(&ct));
-  *(tmstr + strlen(tmstr) - 1) = '\0';
-  fprintf(stderr, "%s :: %s\n", tmstr, str);
-
 
   if (str)
     SPRINTF(buf, "/* %s */\n\r", str);

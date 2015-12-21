@@ -22,6 +22,7 @@
 #include <signal.h>
 #include <sys/resource.h>
 #include <unistd.h>
+#include <syslog.h>
 
 #include "structs.h"
 #include "protos.h"
@@ -105,7 +106,7 @@ int real_main(int argc, char **argv) {
   int res;
 #endif
 
-
+  openlog("silly", LOG_CONS|LOG_PID, LOG_USER);
 
   port = DFLT_PORT;
   dir = DEFAULT_LIBDIR;
