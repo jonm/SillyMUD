@@ -154,7 +154,8 @@ void boot_db() {
   log_msg("Generating index tables for mobile and object files.");
   mob_index = make_mob_indices(generate_indices(mob_f, &top_of_mobt),
                                top_of_mobt);
-  obj_index = generate_indices(obj_f, &top_of_objt);
+  obj_index = make_obj_indices(generate_indices(obj_f, &top_of_objt),
+                               top_of_objt);
 
   log_msg("Renumbering zone table.");
   renum_zone_table();
@@ -656,6 +657,27 @@ struct mob_index_data *make_mob_indices(struct index_data *base_idx,
     free(base_idx);
   }
   return mob_idx;
+}
+
+struct obj_index_data *make_obj_indices(struct index_data *base_idx,
+                                        int top) {
+  struct obj_index_data *obj_idx = NULL;
+
+  if (base_idx) {
+    CREATE(obj_idx, struct obj_index_data, top + 1);
+
+    for (int i = 0; i < top + 1; i++) {
+      obj_idx[i].virtual = base_idx[i].virtual;
+      obj_idx[i].pos = base_idx[i].pos;
+      obj_idx[i].number = base_idx[i].number;
+      obj_idx[i].func = (obj_func*)base_idx[i].func;
+      obj_idx[i].name = base_idx[i].name;
+      obj_idx[i].short_desc = base_idx[i].short_desc;
+      obj_idx[i].long_desc = base_idx[i].long_desc;
+    }
+    free(base_idx);
+  }
+  return obj_idx;
 }
 
 /* generate index table for object or monster file */
@@ -3164,9 +3186,10 @@ void reboot_text(struct char_data *ch, char *UNUSED(arg),
 
 
   log_msg("Generating index tables for mobile and object files.");
-  mob_index = (struct mob_index_data*)generate_indices(mob_f,
-                                                       &top_of_mobt);
-  obj_index = generate_indices(obj_f, &top_of_objt);
+  mob_index = make_mob_indices(generate_indices(mob_f, &top_of_mobt),
+                               top_of_mobt);
+  obj_index = make_obj_indices(generate_indices(obj_f, &top_of_objt),
+                               top_of_objt);
 
 /* log_msg("Initializing Scripts.");
  init_scripts();
