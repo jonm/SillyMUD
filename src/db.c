@@ -2068,7 +2068,7 @@ void reset_zone(int zone) {
                     "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n",
                     zone, cmd_no, obj_index[ZCMD.arg1].virtual,
                     mob_index[mob->nr].virtual, ZCMD.arg3);
-            log_sev(buf, 6);
+            log_wiz(buf, 6);
           }
           last_cmd = 1;
         }
@@ -3574,7 +3574,7 @@ void read_text_zone(FILE * fl) {
             SPRINTF(buf, "eq error - zone %d, cmd %d, item %d, mob %d, loc %d",
                     zone, 1, obj_index[i].virtual,
                     mob_index[mob->nr].virtual, k);
-            log_sev(buf, 6);
+            log_wiz(buf, 6);
           }
           last_cmd = 1;
         }
@@ -3640,12 +3640,12 @@ int verify_mob(struct char_data *ch) {
 
   if (ch->specials.damnodice < 0) {
     SPRINTF(buf, "%s's number of damage dice is negative\n", ch->player.name);
-    log_sev(buf, 6);
+    log_wiz(buf, 6);
   }
 
   if (ch->specials.damsizedice < 0) {
     SPRINTF(buf, "%s's size of damage dice is negative\n", ch->player.name);
-    log_sev(buf, 6);
+    log_wiz(buf, 6);
   }
   return (1);
 }

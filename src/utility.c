@@ -23,7 +23,7 @@
 
 void log_msg(char *s) {
   syslog(LOG_INFO, "%s", s);
-  log_sev(s, 1);
+  log_wiz(s, 1);
 }                               /*thought this was a prototype - heheh */
 
 void log_msgf(const char *fmt, ...) {
@@ -32,7 +32,7 @@ void log_msgf(const char *fmt, ...) {
   va_start(args, fmt);
   vsyslog(LOG_INFO, fmt, args);
   vsnprintf(buf, sizeof(buf), fmt, args);
-  log_sev(buf, 1);
+  log_wiz(buf, 1);
   va_end(args);
 }
 
@@ -343,8 +343,8 @@ int strn_cmp(char *arg1, char *arg2, int n) {
 
 
 
-/* writes a string to the log */
-void log_sev(char *str, int sev) {
+/* writes a string to the logged in wizards */
+void log_wiz(char *str, int sev) {
   static char buf[500];
   struct descriptor_data *i;
 

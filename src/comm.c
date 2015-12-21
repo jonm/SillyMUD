@@ -621,7 +621,7 @@ int get_from_q(struct txt_q *queue, char *dest) {
     return (0);
 
   if (!dest) {
-    log_sev("Sending message to null destination.", 5);
+    log_wiz("Sending message to null destination.", 5);
     return (0);
   }
 
@@ -822,13 +822,13 @@ int new_descriptor(int s) {
       *(newd->host + 49) = '\0';
       SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
               maxdesc);
-      log_sev(buf, 3);
+      log_wiz(buf, 3);
     }
 #else
     strcpy(newd->host, (char *)inet_ntoa(&sock.sin_addr));
     SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
             maxdesc);
-    log_sev(buf, 3);
+    log_wiz(buf, 3);
 #endif
   }
 

@@ -412,23 +412,23 @@ void switch_light(byte why) {
 
   switch (why) {
   case MOON_SET:
-    log_sev("setting all rooms to dark", 2);
+    log_wiz("setting all rooms to dark", 2);
     gLightLevel = 0;
     break;
   case SUN_LIGHT:
-    log_sev("setting all rooms to light", 2);
+    log_wiz("setting all rooms to light", 2);
     gLightLevel = 4;
     break;
   case SUN_DARK:
-    log_sev("setting all rooms to dark", 2);
+    log_wiz("setting all rooms to dark", 2);
     gLightLevel = 0;
     break;
   case MOON_RISE:
-    log_sev("setting all non-forest to light", 2);
+    log_wiz("setting all non-forest to light", 2);
     gLightLevel = 1;
     break;
   default:
-    log_sev("Unknown switch on switch_light", 2);
+    log_wiz("Unknown switch on switch_light", 2);
     break;
   }
 

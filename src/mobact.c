@@ -112,7 +112,7 @@ void mobile_wander(struct char_data *ch) {
         if (ch->in_room == 0) {
           if (or != 0) {
             SPRINTF(buf, "%s just entered void from %d", GET_NAME(ch), or);
-            log_sev(buf, 5);
+            log_wiz(buf, 5);
           }
         }
         return;
