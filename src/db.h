@@ -99,6 +99,30 @@ struct index_data {
   char *long_desc;
 };
 
+typedef int (obj_func)(struct char_data*, int, char*, struct obj_data*, int);
+
+struct obj_index_data {
+  int virtual;                  /* virtual number of this mob/obj           */
+  long pos;                     /* file position of this field              */
+  int number;                   /* number of existing units of this mob/obj   */
+  obj_func *func;
+  char *name;
+  char *short_desc;
+  char *long_desc;
+};
+
+typedef int (mob_func)(struct char_data*, int, char*, int);
+
+struct mob_index_data {
+  int virtual;                  /* virtual number of this mob/obj           */
+  long pos;                     /* file position of this field              */
+  int number;                   /* number of existing units of this mob/obj   */
+  mob_func *func;
+  char *name;
+  char *short_desc;
+  char *long_desc;
+};
+
 extern int top_of_mobt;
 extern int top_of_objt;
 
