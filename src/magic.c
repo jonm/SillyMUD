@@ -1863,7 +1863,6 @@ void raw_summon(struct char_data *v, struct char_data *c) {
                 (IS_NPC(c) ? c->player.short_descr : GET_NAME(c)));
   look_room(v);
 
-
   for (tmp = real_roomp(v->in_room)->people; tmp; tmp = tmp->next_in_room) {
     if (IS_NPC(tmp) && !(IS_SET(tmp->specials.act, ACT_POLYSELF)) &&
         ((IS_SET(tmp->specials.act, ACT_AGGRESSIVE) ||
