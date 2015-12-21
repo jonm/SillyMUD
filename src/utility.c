@@ -364,7 +364,7 @@ void slog(char *str) {
   ct = time(0);
   tmstr = asctime(localtime(&ct));
   *(tmstr + strlen(tmstr) - 1) = '\0';
-  fprintf(stderr, "%s :: %s\n", tmstr, str);
+  log_msgf("%s :: %s\n", tmstr, str);
 
 }
 
@@ -2271,7 +2271,7 @@ int mob_count_in_room(struct char_data *list) {
 
 void *mymalloc(long size) {
   if (size < 1) {
-    fprintf(stderr, "attempt to malloc negative memory - %ld\n", size);
+    log_msgf("attempt to malloc negative memory - %ld\n", size);
     assert(0);
   }
   return (malloc(size));

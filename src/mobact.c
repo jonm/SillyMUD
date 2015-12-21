@@ -817,8 +817,8 @@ void sgoto(char *arg, struct char_data *ch) {
       arg++;
       p = strtok(arg, " ");
       if ((mob = get_char_vis(ch, p)) == NULL) {
-        fprintf(stderr, "%s couldn't find mob by name %s\n",
-                script_data[ch->script].filename, p);
+        log_msgf("%s couldn't find mob by name %s\n",
+                 script_data[ch->script].filename, p);
         ch->commandp++;
         return;
       }

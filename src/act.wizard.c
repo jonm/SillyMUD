@@ -3427,7 +3427,7 @@ void create_one_room(int loc_nr) {
          rp->number > zone_table[zone].top && zone <= top_of_zone_table;
          zone++);
     if (zone > top_of_zone_table) {
-      fprintf(stderr, "Room %d is outside of any zone.\n", rp->number);
+      log_msgf("Room %d is outside of any zone.\n", rp->number);
       zone--;
     }
     rp->zone = zone;

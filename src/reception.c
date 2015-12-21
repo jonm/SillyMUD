@@ -528,9 +528,9 @@ void update_obj_file() {
             log_msgf("   Deautorenting %s", st.owner);
 
 #if LIMITED_ITEMS
-            fprintf(stderr, "Counting limited items\n");
+            log_msgf("Counting limited items\n");
             count_limited_items(&st);
-            fprintf(stderr, "Done\n");
+            log_msgf("Done\n");
 #endif
             fseek(char_file, (long)(player_table[i].nr *
                                     sizeof(struct char_file_u)), 0);
