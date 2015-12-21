@@ -30,7 +30,7 @@ void log_msgf(const char *fmt, ...) {
   char buf[256];
   va_list args;
   va_start(args, fmt);
-  syslog(LOG_INFO, fmt, args);
+  vsyslog(LOG_INFO, fmt, args);
   vsnprintf(buf, sizeof(buf), fmt, args);
   log_sev(buf, 1);
   va_end(args);
