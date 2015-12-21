@@ -233,7 +233,6 @@ void boot_db();
 void reset_time();
 void update_time();
 void build_player_index();
-struct index_data *generate_indices(FILE * fl, int *top);
 void cleanout_room(struct room_data *rp);
 void completely_cleanout_room(struct room_data *rp);
 void load_one_room(FILE * fl, struct room_data *rp);

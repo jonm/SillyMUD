@@ -173,4 +173,7 @@ char *fread_string(FILE *f1);
 int fread_string_na(char *dst, size_t max_len, FILE *f1);
 void reboot_text(struct char_data *ch, char *arg, const char * cmd);
 
+struct mob_index_data *make_mob_indices(struct index_data *base_idx, int top);
+struct index_data *generate_indices(FILE * fl, int *top);
+
 #endif

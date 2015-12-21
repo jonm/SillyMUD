@@ -68,7 +68,7 @@ FILE *mob_f,                    /* file containing mob prototypes  */
  *obj_f,                        /* obj prototypes                  */
  *help_fl;                      /* file for help texts (HELP <kwd>) */
 
-struct index_data *mob_index;   /* index table for mobile file     */
+struct mob_index_data *mob_index;   /* index table for mobile file     */
 struct index_data *obj_index;   /* index table for object file     */
 struct help_index_element *help_index = 0;
 
@@ -152,7 +152,8 @@ void boot_db() {
 
 
   log_msg("Generating index tables for mobile and object files.");
-  mob_index = generate_indices(mob_f, &top_of_mobt);
+  mob_index = make_mob_indices(generate_indices(mob_f, &top_of_mobt),
+                               top_of_mobt);
   obj_index = generate_indices(obj_f, &top_of_objt);
 
   log_msg("Renumbering zone table.");
@@ -636,7 +637,26 @@ void build_player_index() {
 }
 
 
+struct mob_index_data *make_mob_indices(struct index_data *base_idx,
+                                        int top) {
+  struct mob_index_data *mob_idx = NULL;
 
+  if (base_idx) {
+    CREATE(mob_idx, struct mob_index_data, top + 1);
+
+    for (int i = 0; i < top + 1; i++) {
+      mob_idx[i].virtual = base_idx[i].virtual;
+      mob_idx[i].pos = base_idx[i].pos;
+      mob_idx[i].number = base_idx[i].number;
+      mob_idx[i].func = (mob_func*)base_idx[i].func;
+      mob_idx[i].name = base_idx[i].name;
+      mob_idx[i].short_desc = base_idx[i].short_desc;
+      mob_idx[i].long_desc = base_idx[i].long_desc;
+    }
+    free(base_idx);
+  }
+  return mob_idx;
+}
 
 /* generate index table for object or monster file */
 struct index_data *generate_indices(FILE * fl, int *top) {
@@ -3144,7 +3164,8 @@ void reboot_text(struct char_data *ch, char *UNUSED(arg),
 
 
   log_msg("Generating index tables for mobile and object files.");
-  mob_index = generate_indices(mob_f, &top_of_mobt);
+  mob_index = (struct mob_index_data*)generate_indices(mob_f,
+                                                       &top_of_mobt);
   obj_index = generate_indices(obj_f, &top_of_objt);
 
 /* log_msg("Initializing Scripts.");
