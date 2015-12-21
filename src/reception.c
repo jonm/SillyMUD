@@ -256,7 +256,6 @@ void load_char_objs(struct char_data *ch) {
 
   if (!read_objs(fl, &st)) {
     log_msg("No objects found");
-    fclose(fl);
     return;
   }
 
