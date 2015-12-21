@@ -10,4 +10,4 @@ addons:
     - check
 install:
   - ./ci/install-dependencies.sh
-script: CFLAGS="-Wall -Wextra -Werror -I`pwd`/Criterion/include" LDFLAGS="-L`pwd`/Criterion/build -Wl,-R -Wl,`pwd`/Criterion/build" ./configure && make && make check
+script: CFLAGS="-std=gnu99 -Wall -Wextra -Werror -I`pwd`/Criterion/include" LDFLAGS="-L`pwd`/Criterion/build -Wl,-R -Wl,`pwd`/Criterion/build" ./configure && make && make check

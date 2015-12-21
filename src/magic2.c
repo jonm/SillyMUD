@@ -836,8 +836,9 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 
 
   /* do some fiddling with the strings */
-  buf = (char *)malloc(strlen(GET_NAME(mob)) + strlen(GET_NAME(ch)) + 2);
-  SPRINTF(buf, "%s %s", GET_NAME(ch), GET_NAME(mob));
+  int len = strlen(GET_NAME(mob)) + strlen(GET_NAME(ch)) + 2;
+  buf = (char *)malloc(len);
+  snprintf(buf, len, "%s %s", GET_NAME(ch), GET_NAME(mob));
 
 #if TITAN
 #else
@@ -847,9 +848,9 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 #endif
 
   GET_NAME(mob) = buf;
-  buf = (char *)malloc(strlen(mob->player.short_descr)
-                       + strlen(GET_NAME(ch)) + 2);
-  SPRINTF(buf, "%s %s", GET_NAME(ch), mob->player.short_descr);
+  len = strlen(mob->player.short_descr) + strlen(GET_NAME(ch)) + 2;
+  buf = (char *)malloc(len);
+  snprintf(buf, len, "%s %s", GET_NAME(ch), mob->player.short_descr);
 
 #if TITAN
   if (mob->player.short_descr)
@@ -857,8 +858,9 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 #endif
   mob->player.short_descr = buf;
 
-  buf = (char *)malloc(strlen(mob->player.short_descr) + 12);
-  SPRINTF(buf, "%s is here\n\r", mob->player.short_descr);
+  len = strlen(mob->player.short_descr) + 12;
+  buf = (char *)malloc(len);
+  snprintf(buf, len, "%s is here\n\r", mob->player.short_descr);
 
 #if TITAN
 #else
