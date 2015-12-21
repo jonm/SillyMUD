@@ -3754,8 +3754,9 @@ void ensure_file_exists(const char *path) {
     if ((fd = open(path, O_CREAT | O_WRONLY, 0644)) == -1) {
       char *buf;
       const char *fmt = "ensure_file_exists(%s)(open)";
-      buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
-      SPRINTF(buf, fmt, path);
+      int len = strlen(path) + strlen(fmt) - 1;
+      buf = (char *)malloc(len);
+      snprintf(buf, len, fmt, path);
       perror(buf);
       free(buf);
       exit(-1);
@@ -3765,8 +3766,9 @@ void ensure_file_exists(const char *path) {
   else {
     char *buf;
     const char *fmt = "ensure_file_exists(%s)(stat)";
-    buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
-    SPRINTF(buf, fmt, path);
+    int len = strlen(path) + strlen(fmt) - 1;
+    buf = (char *)malloc(len);
+    snprintf(buf, len, fmt, path);
     perror(buf);
     free(buf);
     exit(-1);
