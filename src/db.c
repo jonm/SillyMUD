@@ -3112,7 +3112,8 @@ int workhours() {
   return (0);
 }
 
-void reboot_text(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void reboot_text(struct char_data *ch, char *UNUSED(arg),
+                 const char * UNUSED(cmd)) {
   if (IS_NPC(ch))
     return;
 

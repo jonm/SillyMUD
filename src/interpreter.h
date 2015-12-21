@@ -57,4 +57,6 @@ for doldrums to silly, so it is now possible to telnet to \n\r\
 silly.cis.ufl.edu .  \n\r\
    and that, more or less, is the story of Silly Mud.\n\r"
 
+int special(struct char_data *ch, const char *cmd, char *arg);
+
 #endif

@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.other.h"
 
 struct room_data *real_roomp(int);
 

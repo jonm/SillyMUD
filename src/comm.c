@@ -23,7 +23,9 @@
 #include <sys/resource.h>
 #include <unistd.h>
 
+#include "structs.h"
 #include "protos.h"
+#include "act.other.h"
 #include "utility.h"
 
 #define DFLT_PORT 4000          /* default port */

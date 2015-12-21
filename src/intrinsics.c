@@ -10,6 +10,7 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "act.social.h"
 #include "utility.h"
 
 extern struct time_info_data time_info; /* In db.c */
@@ -41,7 +42,7 @@ struct PolyType DruidList[17] = {
 
 #define VAMPIRE_BAT 3066
 
-void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_changeform(struct char_data *ch, char *argument, const char * UNUSED(cmd)) {
   char buf[80];
   int mobn, X = LAST_DRUID_MOB, found = FALSE, level;
   struct char_data *mob;
@@ -190,7 +191,7 @@ void do_changeform(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_bite(struct char_data *ch, char *argument, int cmd) {
+void do_bite(struct char_data *ch, char *argument, const char *cmd) {
   char arg[80];
   struct char_data *victim;
 

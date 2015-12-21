@@ -11,6 +11,9 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.info.h"
+#include "act.off.h"
+#include "act.other.h"
 #include "utility.h"
 
 /* because I don't want to recompile */
@@ -937,7 +940,7 @@ char *skip_spaces(char *string) {
 
 /* Assumes that *argument does start with first letter of chopped string */
 
-void do_cast(struct char_data *ch, char *argument, int cmd) {
+void do_cast(struct char_data *ch, char *argument, const char *cmd) {
   struct obj_data *tar_obj;
   struct char_data *tar_char;
   char name[MAX_INPUT_LENGTH];
@@ -1224,7 +1227,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
       }
 
 
-      if (cmd == 283) {         /* recall */
+      if (STREQ(cmd, "recall")) { 
         if (!MEMORIZED(ch, spl)) {
           send_to_char("You don't have that spell memorized!\n\r", ch);
           return;
@@ -1353,7 +1356,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
                                          ch, argument, SPELL_TYPE_SPELL,
                                          tar_char, tar_obj));
       cost = (int)USE_MANA(ch, (int)spl);
-      if (cmd == 283) {         /* recall */
+      if (STREQ(cmd, "recall")) { 
         forget(ch, spl);
       }
       else if (!intrinsic) {
@@ -1965,7 +1968,7 @@ void check_decharm(struct char_data *ch) {
   stop_follower(ch);            /* stop following the master */
   REMOVE_BIT(ch->specials.act, ACT_SENTINEL);
   add_feared(ch, m);
-  do_flee(ch, "", 0);
+  do_flee(ch, "", "flee");
 
 }
 
@@ -2056,7 +2059,7 @@ int check_falling(struct char_data *ch) {
     act("$n falls from the sky", FALSE, ch, 0, 0, TO_ROOM);
     count++;
 
-    do_look(ch, "", 0);
+    look_room(ch);
 
     if (IS_SET(targ->room_flags, DEATH) && !IS_IMMORTAL(ch)) {
       nail_this_sucker(ch);
@@ -2130,7 +2133,7 @@ int check_falling(struct char_data *ch) {
     log_msg("Someone fucked up an air room.");
     char_from_room(ch);
     char_to_room(ch, 2);
-    do_look(ch, "", 0);
+    look_room(ch);
     return (FALSE);
   }
   return (FALSE);

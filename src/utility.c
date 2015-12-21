@@ -16,6 +16,9 @@
 #include "utility.h"
 #include "act.off.h"
 #include "skills.h"
+#include "act.info.h"
+#include "act.other.h"
+#include "act.move.h"
 
 void log_msg(char *s) {
   log_sev(s, 1);
@@ -1020,9 +1023,9 @@ void down_river(int pulse) {
                       char_to_room(ch,
                                    (real_roomp(or))->dir_option[rd]->to_room);
 
-                      do_look(ch, "\0", 15);
+                      look_room(ch);
                       if (RIDDEN(ch)) {
-                        do_look(RIDDEN(ch), "\0", 15);
+                        look_room(RIDDEN(ch));
                       }
                     }
                     if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -1948,11 +1951,11 @@ void rem_all_affects(struct char_data *ch) {
 
 }
 
-int check_for_blocked_move(struct char_data *ch, int cmd, char *UNUSED(arg),
+int check_for_blocked_move(struct char_data *ch, int cmd_dir, char *UNUSED(arg),
                            int room, int dir, int class) {
   char buf[256], buf2[256];
 
-  if (cmd > 6 || cmd < 1)
+  if (cmd_dir == MOVE_DIR_INVALID)
     return (FALSE);
 
   strcpy(buf, "The guard humiliates you, and block your way.\n\r");
@@ -1963,7 +1966,7 @@ int check_for_blocked_move(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 
 
-  if ((ch->in_room == room) && (cmd == dir + 1)) {
+  if ((ch->in_room == room) && (cmd_dir == dir)) {
     if (!has_class(ch, class)) {
       act(buf2, FALSE, ch, 0, 0, TO_ROOM);
       send_to_char(buf, ch);
@@ -2045,7 +2048,7 @@ void teleport_pulse_stuff(int pulse) {
           char_to_room(tmp, rp->tele_targ);
 
           if (IS_SET(TELE_LOOK, rp->tele_mask) && IS_PC(tmp)) {
-            do_look(tmp, "\0", 15);
+            look_room(tmp);
           }
 
           if (IS_SET(dest->room_flags, DEATH) && (!IS_IMMORTAL(tmp))) {
@@ -2149,9 +2152,9 @@ void river_pulse_stuff(int pulse) {
                           char_to_room(ch,
                                        (real_roomp(or))->
                                        dir_option[rd]->to_room);
-                          do_look(ch, "\0", 15);
+                          look_room(ch);
                           if (RIDDEN(ch)) {
-                            do_look(RIDDEN(ch), "\0", 15);
+                            look_room(RIDDEN(ch));
                           }
 
 

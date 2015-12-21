@@ -11,6 +11,14 @@
 #include <ctype.h>
 
 #include "protos.h"
+#include "act.info.h"
+#include "act.comm.h"
+#include "act.off.h"
+#include "act.move.h"
+#include "act.wizard.h"
+#include "spec_procs.h"
+#include "spec_procs2.h"
+#include "spec_procs3.h"
 
 /*   external vars  */
 
@@ -119,7 +127,7 @@ int square_empty(struct room_data *square) {
   return TRUE;
 }
 
-int chess_game(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
+int chess_game(struct char_data *ch, const char *cmd, char *arg, struct char_data *mob,
                int type) {
   struct room_data *rp = NULL, *crp = real_roomp(ch->in_room);
   struct char_data *ep = NULL;
@@ -384,39 +392,39 @@ int chess_game(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   }
 
   if (move_found && rp) {
-    do_emote(ch, "leaves the room.", 0);
+    emote(ch, "leaves the room.");
     char_from_room(ch);
     char_to_room(ch, rp->number);
-    do_emote(ch, "has arrived.", 0);
+    emote(ch, "has arrived.");
 
     if (ep) {
       if (side)
         switch (number(0, 3)) {
         case 0:
-          do_emote(ch, "grins evilly and says, 'ONLY EVIL shall rule!'", 0);
+          emote(ch, "grins evilly and says, 'ONLY EVIL shall rule!'");
           break;
         case 1:
-          do_emote(ch, "leers cruelly and says, 'You will die now!'", 0);
+          emote(ch, "leers cruelly and says, 'You will die now!'");
           break;
         case 2:
-          do_emote(ch, "issues a bloodcurdling scream.", 0);
+          emote(ch, "issues a bloodcurdling scream.");
           break;
         case 3:
-          do_emote(ch, "glares with black anger.", 0);
+          emote(ch, "glares with black anger.");
         }
       else
         switch (number(0, 3)) {
         case 0:
-          do_emote(ch, "glows an even brighter pristine white.", 0);
+          emote(ch, "glows an even brighter pristine white.");
           break;
         case 1:
-          do_emote(ch, "chants a prayer and begins battle.", 0);
+          emote(ch, "chants a prayer and begins battle.");
           break;
         case 2:
-          do_emote(ch, "says, 'Black shall lose!", 0);
+          emote(ch, "says, 'Black shall lose!");
           break;
         case 3:
-          do_emote(ch, "shouts, 'For the Flame! The Flame!'", 0);
+          emote(ch, "shouts, 'For the Flame! The Flame!'");
         }
       hit(ch, ep, TYPE_UNDEFINED);
     }
@@ -426,7 +434,7 @@ int chess_game(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
   return FALSE;
 }
 
-int acid_blob(struct char_data *ch, int cmd, char *UNUSED(arg),
+int acid_blob(struct char_data *ch, const char *cmd, char *UNUSED(arg),
               struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct obj_data *i;
 
@@ -446,7 +454,7 @@ int acid_blob(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int death_knight(struct char_data *UNUSED(ch), int cmd, char *arg,
+int death_knight(struct char_data *UNUSED(ch), const char *cmd, char *arg,
                  struct char_data *mob, int type) {
 
   if (cmd)
@@ -462,7 +470,7 @@ int death_knight(struct char_data *UNUSED(ch), int cmd, char *arg,
   }
 }
 
-int baby_bear(struct char_data *ch, int cmd, char *UNUSED(arg),
+int baby_bear(struct char_data *ch, const char *cmd, char *UNUSED(arg),
               struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *t;
   struct room_data *rp;
@@ -479,7 +487,7 @@ int baby_bear(struct char_data *ch, int cmd, char *UNUSED(arg),
     for (t = rp->people; t; t = t->next_in_room) {
       if (GET_POS(t) == POSITION_SLEEPING)
         if (number(0, 1))
-          do_wake(t, "", 0);
+          wake_self(t);
     }
   }
   return (FALSE);
@@ -489,7 +497,7 @@ int baby_bear(struct char_data *ch, int cmd, char *UNUSED(arg),
 #define TIMNUSNORTHLIMIT 30
 #define TIMNUSWESTLIMIT 12
 
-int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
+int timnus(struct char_data *ch, const char *cmd, char *UNUSED(arg),
            struct char_data *mob, int UNUSED(type)) {
   /* north = 1 */
   /* west  = 4 */
@@ -513,7 +521,7 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
   }
 
   if (cmd) {
-    if (cmd == 1 && ch->in_room == TimnusRoom) {
+    if (STREQ(cmd, "north") && ch->in_room == TimnusRoom) {
       if ((TIMNUSNORTHLIMIT < get_max_level(ch)) &&
           (get_max_level(ch) < LOW_IMMORTAL)) {
         if (!check_soundproof(ch)) {
@@ -525,7 +533,7 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
       }
       return (FALSE);
     }
-    else if (cmd == 4 && ch->in_room == TimnusRoom) {
+    else if (STREQ(cmd, "west") && ch->in_room == TimnusRoom) {
       if ((TIMNUSWESTLIMIT < get_max_level(ch)) &&
           (get_max_level(ch) < LOW_IMMORTAL)) {
         if (!check_soundproof(ch)) {
@@ -639,7 +647,7 @@ int timnus(struct char_data *ch, int cmd, char *UNUSED(arg),
   return (FALSE);
 }
 
-int winger(struct char_data *ch, int cmd, char *UNUSED(arg),
+int winger(struct char_data *ch, const char *cmd, char *UNUSED(arg),
            struct char_data *UNUSED(mob), int UNUSED(type)) {
   struct char_data *vict;
 
@@ -719,15 +727,15 @@ int death_room(int dt_room) {
   return (FALSE);
 }
 
-int youth_potion(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *UNUSED(mob), int UNUSED(type)) {
+int youth_potion(struct char_data *ch, const char *cmd, char *arg,
+                 struct obj_data *UNUSED(mob), int UNUSED(type)) {
   char buf[MAX_INPUT_LENGTH];
   /*   struct char_data *vict; */
   struct obj_data *obj;
   int agepoints, negativeage, modifiedage;
   bool equipped;
 
-  if (cmd == 206) {             /* quaff */
+  if (STREQ(cmd, "quaff")) {
     if (!AWAKE(ch))
       return (FALSE);
 
@@ -776,13 +784,13 @@ int youth_potion(struct char_data *ch, int cmd, char *arg,
 
 #define WARPSTONE 29
 
-int warpstone(struct char_data *ch, int cmd, char *arg,
-              struct char_data *UNUSED(mob), int UNUSED(type)) {
+int warpstone(struct char_data *ch, const char *cmd, char *arg,
+              struct obj_data *UNUSED(mob), int UNUSED(type)) {
 
   char buf[100];
   struct obj_data *temp;
 
-  if (cmd != 12 || !AWAKE(ch))  /* eat */
+  if (!STREQ(cmd, "eat") || !AWAKE(ch))  /* eat */
     return (FALSE);
 
   if (GET_RACE(ch) != RACE_DRAAGDIM)
@@ -836,21 +844,25 @@ const struct turbolift_keywords TurboLiftList[5] = {
 
 #define TURBO_LIFT 2639
 
-int entering_turbo_lift(struct char_data *ch, int cmd, char *UNUSED(arg),
+int entering_turbo_lift(struct char_data *ch, const char *cmd, char *UNUSED(arg),
                         struct room_data *rp, int UNUSED(type)) {
   int i;
 
-  if (cmd != 1 && cmd != 2 && cmd != 3 && cmd != 4 && cmd != 5 && cmd != 6)
+  int dir = move_string_to_dir(cmd);
+
+  if (dir == MOVE_DIR_INVALID) {
     return (FALSE);
-  if (rp->dir_option[cmd - 1]
-      && rp->dir_option[cmd - 1]->to_room == TURBO_LIFT) {
+  }
+  
+  if (rp->dir_option[dir]
+      && rp->dir_option[dir]->to_room == TURBO_LIFT) {
     char_from_room(ch);
     char_to_room(ch, TURBO_LIFT);
 
     rp = real_roomp(ch->in_room);
     send_to_char("The doors open as you approach.\n\r", ch);
     send_to_char("\n\rThey then close quietly behind you.\n\r", ch);
-    do_look(ch, "", 0);
+    look_room(ch);
     for (i = 0; i < 6; i++) {
       if (rp->dir_option[i]) {
         rp->dir_option[i] = 0;
@@ -863,17 +875,18 @@ int entering_turbo_lift(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 }
 
-int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
+int turbo_lift(struct char_data *ch, const char *cmd, char *arg, struct room_data *rp,
                int UNUSED(type)) {
   int i, dest;
   char buf[80];
 
-  if (cmd > 0 && cmd < 7) {     /* movement */
-    if (rp->dir_option[cmd - 1]) {
+  int dir = move_string_to_dir(cmd);
+  if (dir != MOVE_DIR_INVALID) {
+    if (rp->dir_option[dir]) {
       char_from_room(ch);
-      char_to_room(ch, rp->dir_option[cmd - 1]->to_room);
+      char_to_room(ch, rp->dir_option[dir]->to_room);
       act("$n has entered the room.", TRUE, ch, 0, 0, TO_ROOM);
-      do_look(ch, "", 0);
+      look_room(ch);
       send_to_char("\n\rThe doors close quietly behind you.\n\r", ch);
     }
     else {
@@ -883,11 +896,10 @@ int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
     return (TRUE);
   }
 
-
-  if (cmd != 169 && cmd != 17)
+  if (!STREQ(cmd, "'") && !STREQ(cmd, "say"))
     return (FALSE);
 
-  do_say(ch, arg, cmd);
+  say(ch, arg);
 
   for (i = dest = 0; TurboLiftList[i].trigger[0] != '\n'; i++)
     if (!str_cmp(arg, TurboLiftList[i].trigger)) {
@@ -948,7 +960,7 @@ char *scroll_text[] = {
 #define MAX_SCROLL     18       /* Max of scrolls */
 #define SCROLL_OBJ     87       /* Scroll to load */
 
-int old_hag(struct char_data *UNUSED(ch), int UNUSED(cmd), char *UNUSED(arg),
+int old_hag(struct char_data *UNUSED(ch), const char * UNUSED(cmd), char *UNUSED(arg),
             struct char_data *mob, int UNUSED(type)) {
   /* Mob is always passed as the mobile, no matter what */
   /* So we'll intercept the first call here, no matter  */

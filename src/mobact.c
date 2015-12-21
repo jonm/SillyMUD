@@ -10,6 +10,11 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.obj1.h"
+#include "act.obj2.h"
+#include "act.comm.h"
+#include "act.off.h"
+#include "act.wizard.h"
 #include "utility.h"
 
 extern struct char_data *character_list;
@@ -193,7 +198,7 @@ void mob_scavenge(struct char_data *ch) {
         if (obj->contains) {
           if (is_humanoid(ch) && !number(0, 4)) {
             SPRINTF(buf, " all %d.corpse", cc);
-            do_get(ch, buf, 0);
+            do_get(ch, buf, NULL);
             return;
           }
         }
@@ -224,7 +229,7 @@ void mob_scavenge(struct char_data *ch) {
   if (!number(0, 3)) {
     if (is_humanoid(ch) && ch->carrying) {
       SPRINTF(buf, "all");
-      do_wear(ch, buf, 0);
+      do_wear(ch, buf, NULL);
     }
   }
 }
@@ -347,7 +352,7 @@ void mobile_activity(struct char_data *ch) {
       if (!ch->specials.fighting) {
         if (IS_SET(ch->specials.act, ACT_AFRAID)) {
           if ((tmp_ch = find_a_fearee(ch)) != NULL) {
-            do_flee(ch, "", 0);
+            do_flee(ch, "", "flee");
           }
         }
       }
@@ -583,9 +588,9 @@ void find_a_better_weapon(struct char_data *mob) {
      */
     if (best->carried_by == mob) {
       if (mob->equipment[WIELD]) {
-        do_remove(mob, mob->equipment[WIELD]->name, 0);
+        do_remove(mob, mob->equipment[WIELD]->name, NULL);
       }
-      do_wield(mob, best->name, 0);
+      do_wield(mob, best->name, NULL);
     }
     else if (best->equipped_by == mob) {
       /* do nothing */
@@ -834,11 +839,11 @@ void sgoto(char *arg, struct char_data *ch) {
   if (ch->in_room != room) {
     dir = choose_exit_global(ch->in_room, room, MAX_ROOMS);
     if (dir < 0) {
-      do_say(ch, "Woah!  How'd i get here??", 0);
-      do_emote(ch, "vanishes in a puff of smoke", 0);
+      say(ch, "Woah!  How'd i get here??");
+      emote(ch, "vanishes in a puff of smoke");
       char_from_room(ch);
       char_to_room(ch, room);
-      do_emote(ch, "arrives with a Bamf!", 0);
+      emote(ch, "arrives with a Bamf!");
       ch->commandp++;
       return;
     }

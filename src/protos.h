@@ -80,37 +80,11 @@ void inform_mess(struct char_data *v);
 
 void update_screen(struct char_data *ch, int update);
 void init_screen(struct char_data *ch);
-void do_say(struct char_data *ch, char *argument, int cmd);
-void do_shout(struct char_data *ch, char *argument, int cmd);
-void do_commune(struct char_data *ch, char *argument, int cmd);
-void do_tell(struct char_data *ch, char *argument, int cmd);
-void do_whisper(struct char_data *ch, char *argument, int cmd);
-void do_ask(struct char_data *ch, char *argument, int cmd);
-void do_write(struct char_data *ch, char *argument, int cmd);
 char *random_word();
-void do_sign(struct char_data *ch, char *argument, int cmd);
-void do_move(struct char_data *ch, char *argument, int cmd);
-void do_enter(struct char_data *ch, char *argument, int cmd);
-void do_rest(struct char_data *ch, char *argument, int cmd);
-void do_stand(struct char_data *ch, char *argument, int cmd);
-void do_sit(struct char_data *ch, char *argument, int cmd);
-void do_lock(struct char_data *ch, char *argument, int cmd);
-void do_unlock(struct char_data *ch, char *argument, int cmd);
-void do_pick(struct char_data *ch, char *argument, int cmd);
-void do_sleep(struct char_data *ch, char *argument, int cmd);
-void do_wake(struct char_data *ch, char *argument, int cmd);
-void do_trans(struct char_data *ch, char *argument, int cmd);
-void do_follow(struct char_data *ch, char *argument, int cmd);
-void do_open(struct char_data *ch, char *argument, int cmd);
-void do_close(struct char_data *ch, char *argument, int cmd);
-void do_enter(struct char_data *ch, char *argument, int cmd);
-void do_leave(struct char_data *ch, char *argument, int cmd);
 void bird_garble(char *buf, char *buf2, struct char_data *ch);
 void rat_garble(char *buf, char *buf2, struct char_data *ch);
 void half_orc_garble(char *buf, char *buf2, struct char_data *ch);
 void ogre_garble(char *buf, char *buf2, struct char_data *ch);
-void do_fly(struct char_data *ch, char *argument, int cmd);
-void do_walk(struct char_data *ch, char *argument, int cmd);
 int move_one(struct char_data *ch, int dir);
 void display_one_move(struct char_data *ch, int dir, int was_in);
 void display_group_move(struct char_data *ch, int dir, int was_in, int total);
@@ -126,9 +100,7 @@ void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp,
 
 /* From act.info.c */
 
-void do_resize(struct char_data *ch, char *arg, int cmd);
 void screen_off(struct char_data *ch);
-void do_display(struct char_data *ch, char *arg, int cmd);
 int singular(struct obj_data *o);
 void argument_split_2(char *argument, char *first_arg, char *second_arg);
 struct obj_data *get_object_in_equip_vis(struct char_data *ch,
@@ -146,36 +118,12 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode);
 void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int m,
                             int n);
 void list_char_in_room(struct char_data *list, struct char_data *ch);
-void do_look(struct char_data *ch, char *argument, int cmd);
-void do_read(struct char_data *ch, char *argument, int cmd);
-void do_examine(struct char_data *ch, char *argument, int cmd);
-void do_exits(struct char_data *ch, char *argument, int cmd);
-void do_score(struct char_data *ch, char *argument, int cmd);
-void do_time(struct char_data *ch, char *argument, int cmd);
-void do_weather(struct char_data *ch, char *argument, int cmd);
-void do_help(struct char_data *ch, char *argument, int cmd);
-void do_wizhelp(struct char_data *ch, char *argument, int cmd);
-void do_who(struct char_data *ch, char *argument, int cmd);
-void do_users(struct char_data *ch, char *argument, int cmd);
-void do_inventory(struct char_data *ch, char *argument, int cmd);
-void do_equipment(struct char_data *ch, char *argument, int cmd);
-void do_credits(struct char_data *ch, char *argument, int cmd);
-void do_news(struct char_data *ch, char *argument, int cmd);
-void do_info(struct char_data *ch, char *argument, int cmd);
-void do_wizlist(struct char_data *ch, char *argument, int cmd);
 int which_number_mobile(struct char_data *mob);
 char *numbered_person(struct char_data *ch, struct char_data *person);
 void do_where_person(struct char_data *ch, struct char_data *p,
                      struct string_block *sb);
 void do_where_object(struct char_data *ch, struct obj_data *obj,
                      int recurse, struct string_block *sb);
-void do_where(struct char_data *ch, char *argument, int cmd);
-void do_levels(struct char_data *ch, char *argument, int cmd);
-void do_consider(struct char_data *ch, char *argument, int cmd);
-void do_spells(struct char_data *ch, char *argument, int cmd);
-void do_world(struct char_data *ch, char *argument, int cmd);
-void do_attribute(struct char_data *ch, char *argument, int cmd);
-void do_value(struct char_data *ch, char *argument, int cmd);
 char *align_desc(int a);
 char *armor_desc(int a);
 char *hit_roll_desc(int a);
@@ -192,11 +140,7 @@ void show_exits(struct char_data *ch);
 
 void get(struct char_data *ch, struct obj_data *obj_object,
          struct obj_data *sub_object);
-void do_get(struct char_data *ch, char *argument, int cmd);
-void do_drop(struct char_data *ch, char *argument, int cmd);
-void do_put(struct char_data *ch, char *argument, int cmd);
 int newstrlen(char *p);
-void do_give(struct char_data *ch, char *argument, int cmd);
 
 
 /* From act.obj2.c */
@@ -204,142 +148,27 @@ void do_give(struct char_data *ch, char *argument, int cmd);
 void weight_change_object(struct obj_data *obj, int weight);
 void name_from_drinkcon(struct obj_data *obj);
 void name_to_drinkcon(struct obj_data *obj, int type);
-void do_drink(struct char_data *ch, char *argument, int cmd);
-void do_eat(struct char_data *ch, char *argument, int cmd);
-void do_pour(struct char_data *ch, char *argument, int cmd);
-void do_sip(struct char_data *ch, char *argument, int cmd);
-void do_taste(struct char_data *ch, char *argument, int cmd);
 void perform_wear(struct char_data *ch, struct obj_data *obj_object,
                   int keyword);
 int is_restricted(int Mask, int Class);
 void wear(struct char_data *ch, struct obj_data *obj_object, int keyword);
-void do_wear(struct char_data *ch, char *argument, int cmd);
-void do_wield(struct char_data *ch, char *argument, int cmd);
-void do_grab(struct char_data *ch, char *argument, int cmd);
-void do_remove(struct char_data *ch, char *argument, int cmd);
-
-
-/* From act.off.c */
-
-void do_hit(struct char_data *ch, char *argument, int cmd);
-void do_kill(struct char_data *ch, char *argument, int cmd);
-void do_backstab(struct char_data *ch, char *argument, int cmd);
-void do_order(struct char_data *ch, char *argument, int cmd);
-void do_flee(struct char_data *ch, char *argument, int cmd);
-void do_bash(struct char_data *ch, char *argument, int cmd);
-void do_rescue(struct char_data *ch, char *argument, int cmd);
-void do_assist(struct char_data *ch, char *argument, int cmd);
-void do_kick(struct char_data *ch, char *argument, int cmd);
-void do_wimp(struct char_data *ch, char *argument, int cmd);
-void do_breath(struct char_data *ch, char *argument, int cmd);
-void do_shoot(struct char_data *ch, char *argument, int cmd);
-void do_springleap(struct char_data *ch, char *argument, int cmd);
-void do_quivering_palm(struct char_data *ch, char *arg, int cmd);
-void kick_messages(struct char_data *ch, struct char_data *victim, int damage);
-
-
-/* From act.other.c */
-
-void do_gain(struct char_data *ch, char *argument, int cmd);
-void do_guard(struct char_data *ch, char *argument, int cmd);
-void do_junk(struct char_data *ch, char *argument, int cmd);
-void do_qui(struct char_data *ch, char *argument, int cmd);
-void do_title(struct char_data *ch, char *argument, int cmd);
-void do_quit(struct char_data *ch, char *argument, int cmd);
-void do_save(struct char_data *ch, char *argument, int cmd);
-void do_not_here(struct char_data *ch, char *argument, int cmd);
-void do_sneak(struct char_data *ch, char *argument, int cmd);
-void do_hide(struct char_data *ch, char *argument, int cmd);
-void do_steal(struct char_data *ch, char *argument, int cmd);
-void do_practice(struct char_data *ch, char *arg, int cmd);
-void do_idea(struct char_data *ch, char *argument, int cmd);
-void do_typo(struct char_data *ch, char *argument, int cmd);
-void do_bug(struct char_data *ch, char *argument, int cmd);
-void do_brief(struct char_data *ch, char *argument, int cmd);
-void do_compact(struct char_data *ch, char *argument, int cmd);
-void do_group(struct char_data *ch, char *argument, int cmd);
-void do_quaff(struct char_data *ch, char *argument, int cmd);
-void do_recite(struct char_data *ch, char *argument, int cmd);
-void do_use(struct char_data *ch, char *argument, int cmd);
-void do_plr_noshout(struct char_data *ch, char *argument, int cmd);
-void do_alias(struct char_data *ch, char *arg, int cmd);
-void dismount(struct char_data *ch, struct char_data *h, int pos);
-void do_mount(struct char_data *ch, char *arg, int cmd);
-void do_donate(struct char_data *ch, char *argument, int cmd);
-void do_auto(struct char_data *ch, char *argument, int cmd);
-void do_gname(struct char_data *ch, char *argument, int cmd);
-void do_show_exits(struct char_data *ch, char *arg, int cmd);
-void do_split(struct char_data *ch, char *arg, int cmd);
-void do_report(struct char_data *ch, char *arg, int cmd);
-void do_prompt(struct char_data *ch, char *argument, int cmd);
-
 
 /* From act.social.c */
 
 char *fread_action(FILE * fl);
 void boot_social_messages();
-int find_action(int cmd);
-void do_action(struct char_data *ch, char *argument, int cmd);
-void do_insult(struct char_data *ch, char *argument, int cmd);
 void boot_pose_messages();
-void do_pose(struct char_data *ch, char *argument, int cmd);
 
 
 /* From act.wizard.c */
 
-void do_auth(struct char_data *ch, char *argument, int cmd);
-void do_imptest(struct char_data *ch, char *arg, int cmd);
-void do_passwd(struct char_data *ch, char *argument, int cmdnum);
-void do_setsev(struct char_data *ch, char *arg, int cmd);
 void dsearch(char *string, char *tmp);
-void do_bamfin(struct char_data *ch, char *arg, int cmd);
-void do_bamfout(struct char_data *ch, char *arg, int cmd);
-void do_instazone(struct char_data *ch, char *argument, int cmdnum);
-void do_highfive(struct char_data *ch, char *argument, int cmd);
-void do_addhost(struct char_data *ch, char *argument, int command);
-void do_removehost(struct char_data *ch, char *argument, int command);
-void do_listhosts(struct char_data *ch, char *argument, int command);
-void do_silence(struct char_data *ch, char *argument, int cmd);
-void do_wizlock(struct char_data *ch, char *argument, int cmd);
-void do_rload(struct char_data *ch, char *argument, int cmd);
-void do_rsave(struct char_data *ch, char *argument, int cmd);
-void do_emote(struct char_data *ch, char *argument, int cmd);
-void do_echo(struct char_data *ch, char *argument, int cmd);
-void do_system(struct char_data *ch, char *argument, int cmd);
-void do_trans(struct char_data *ch, char *argument, int cmd);
-void do_at(struct char_data *ch, char *argument, int cmd);
-void do_goto(struct char_data *ch, char *argument, int cmd);
-void do_stat(struct char_data *ch, char *argument, int cmd);
-void do_set(struct char_data *ch, char *argument, int cmd);
-void do_shutdow(struct char_data *ch, char *argument, int cmd);
-void do_shutdown(struct char_data *ch, char *argument, int cmd);
-void do_snoop(struct char_data *ch, char *argument, int cmd);
-void do_switch(struct char_data *ch, char *argument, int cmd);
-void do_return(struct char_data *ch, char *argument, int cmd);
-void do_force(struct char_data *ch, char *argument, int cmd);
-void do_load(struct char_data *ch, char *argument, int cmd);
 void purge_one_room(int rnum, struct room_data *rp, int *range);
-void do_purge(struct char_data *ch, char *argument, int cmd);
 void roll_abilities(struct char_data *ch);
-void do_start(struct char_data *ch);
-void do_advance(struct char_data *ch, char *argument, int cmd);
-void do_reroll(struct char_data *ch, char *argument, int cmd);
-void do_restore(struct char_data *ch, char *argument, int cmd);
-void do_noshout(struct char_data *ch, char *argument, int cmd);
-void do_nohassle(struct char_data *ch, char *argument, int cmd);
-void do_stealth(struct char_data *ch, char *argument, int cmd);
 void print_room(int rnum, struct room_data *rp, struct string_block *sb);
 void print_death_room(int rnum, struct room_data *rp, struct string_block *sb);
 void print_private_room(int r, struct room_data *rp, struct string_block *sb);
-void do_show(struct char_data *ch, char *argument, int cmd);
-void do_debug(struct char_data *ch, char *argument, int cmd);
-void do_invis(struct char_data *ch, char *argument, int cmd);
-void do_create(struct char_data *ch, char *argument, int cmd);
 void create_one_room(int loc_nr);
-void do_set_log(struct char_data *ch, char *arg, int cmd);
-void do_event(struct char_data *ch, char *arg, int cmd);
-void do_beep(struct char_data *ch, char *argument, int cmd);
-
 
 /* From board.c */
 
@@ -350,8 +179,6 @@ void board_save_board();
 void board_load_board();
 int board_show_board(struct char_data *ch, char *arg, int bnum);
 int fwrite_string(char *buf, FILE * fl);
-int board(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
-          int type);
 char *fix_returns(char *text_string);
 int board_check_locks(int bnum, struct char_data *ch);
 
@@ -444,7 +271,6 @@ int str_len(char *buf);
 int load();
 void gr();
 int workhours();
-void reboot_text(struct char_data *ch, char *arg, int cmd);
 void init_scripts();
 void reload_rooms();
 void free_zone(int zone_nr);
@@ -624,7 +450,6 @@ void only_argument(char *argument, char *dest);
 int fill_word(char *argument);
 int is_abbrev(char *arg1, char *arg2);
 void half_chop(char *string, char *arg1, char *arg2);
-int special(struct char_data *ch, int cmd, char *arg);
 void assign_command_pointers();
 int find_name(char *name);
 int _parse_name(char *arg, char *name);
@@ -1056,10 +881,7 @@ void mob_hit(struct char_data *, struct char_data *, int);
 void string_add(struct descriptor_data *d, char *str);
 void string_add_static(struct descriptor_data *d, char *str);
 void quad_arg(char *arg, int *type, char *name, int *field, char *string);
-void do_string(struct char_data *ch, char *arg, int cmd);
 void bisect_arg(char *arg, int *field, char *string);
-void do_edit(struct char_data *ch, char *arg, int cmd);
-void do_setskill(struct char_data *ch, char *arg, int cmd);
 char *one_word(char *argument, char *first_arg);
 struct help_index_element *build_help_index(FILE * fl, int *num);
 void page_string(struct descriptor_data *d, char *str, int keep_internal);
@@ -1104,8 +926,6 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int delete);
 void update_obj_file();
 void count_limited_items(struct obj_file_u *st);
 void print_limited_items();
-int receptionist(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
 void zero_rent(struct char_data *ch);
 void zero_rent_by_name(char *n);
 int read_objs(FILE * fl, struct obj_file_u *st);
@@ -1149,10 +969,6 @@ void signal_setup();
 
 /* From skills.c */
 
-void do_inset(struct char_data *ch, char *argument, int cmd);
-void do_train(struct char_data *ch, char *argument, int cmd);
-void do_disarm(struct char_data *ch, char *argument, int cmd);
-void do_track(struct char_data *ch, char *argument, int cmd);
 int track(struct char_data *ch, struct char_data *vict);
 int dir_track(struct char_data *ch, struct char_data *vict);
 void donothing();
@@ -1162,21 +978,10 @@ int choose_exit_global(int in_room, int tgt_room, int depth);
 int choose_exit_in_zone(int in_room, int tgt_room, int depth);
 int go_direction(struct char_data *ch, int dir);
 void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp);
-void do_doorbash(struct char_data *ch, char *arg, int cmd);
-void do_swim(struct char_data *ch, char *arg, int cmd);
 int spy_check(struct char_data *ch);
-void do_spy(struct char_data *ch, char *arg, int cmd);
 int remove_trap(struct char_data *ch, struct obj_data *trap);
-void do_feign_death(struct char_data *ch, char *arg, int cmd);
-void do_first_aid(struct char_data *ch, char *arg, int cmd);
-void do_disguise(struct char_data *ch, char *argument, int cmd);
-void do_climb(struct char_data *ch, char *arg, int cmd);
 void slip_in_climb(struct char_data *ch, int dir, int room);
-void do_makepotion(struct char_data *ch, char *argument, int cmd);
 void add_skill(int nr, int taught_by, int class_use, int percent);
-void do_berserk(struct char_data *ch, char *arg, int cmd);
-void do_palm(struct char_data *ch, char *arg, int cmd);
-void do_peek(struct char_data *ch, char *arg, int cmd);
 void assign_skills();
 
 /* From spec_assign.c */
@@ -1192,309 +997,11 @@ int named_object_on_ground(int room, void *c_data);
 char *how_good(int percent);
 int gain_level(struct char_data *ch, int class);
 struct char_data *find_mob_in_room_with_function(int room, int (*func) ());
-int mage_guild_master(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int type);
-int cleric_guild_master(struct char_data *ch, int cmd, char *arg,
-                        struct char_data *mob, int type);
-int thief_guild_master(struct char_data *ch, int cmd, char *arg,
-                       struct char_data *mob, int type);
-int warrior_guild_master(struct char_data *ch, int cmd, char *arg,
-                         struct char_data *mob, int type);
-int guildmaster(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type, int class);
-int dump(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-         int type);
-int mayor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int andy_wilcox(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-struct char_data *find_mobile_here_with_spec_proc(int (*fcn) (), int rnumber);
-int eric_johnson(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-void exec_social(struct char_data *npc, char *cmd, int next_line,
-                 int *cur_line, void **thing);
-void npc_steal(struct char_data *ch, struct char_data *victim);
-int snake(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int midgaard_cityguard(struct char_data *ch, int cmd, char *arg,
-                       struct char_data *mob, int type);
-int paladin_guild_guard(struct char_data *ch, int cmd, char *arg,
-                        struct char_data *mob, int type);
-int game_guard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int grey_paramedic(struct char_data *ch, int cmd, char *arg,
-                   struct char_data *mob, int types);
-int amber_paramedic(struct char_data *ch, int cmd, char *arg,
-                    struct char_data *mob, int type);
-int blink(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int midgaard_citizen(struct char_data *ch, int cmd, char *arg,
-                     struct char_data *mob, int type);
-int ghoul(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int carrion_crawler(struct char_data *ch, int cmd, char *arg,
-                    struct char_data *mob, int type);
-int wizard_guard(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-int vampire(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-            int type);
-int wraith(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int shadow(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int geyser(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int green_slime(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int drow(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-         int type);
-int thief(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int guild_guard(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int inquisitor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int puff(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-         int type);
-int regenerator(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int replicant(struct char_data *ch, int cmd, char *arg, struct char_data *mob1,
-              int type);
-int tytan(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int abbarach_dragon(struct char_data *ch, int cmd, char *arg,
-                    struct char_data *mob, int type);
-int fido(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-         int type);
-int janitor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-            int type);
-int tormentor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type);
-int rust_monster(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-int temple_labrynth_liar(struct char_data *ch, int cmd, char *arg,
-                         struct char_data *mob, int type);
-int temple_labrynth_sentry(struct char_data *ch, int cmd, char *arg,
-                           struct char_data *mob, int type);
-int whirlwind(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type);
-int nudge_nudge(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int AGGRESSIVE(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int citizen(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-            int type);
-int ringwraith(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int warren_guard(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-int zm_tired(struct char_data *zmaster);
-int zm_stunned_followers(struct char_data *zmaster);
-void zm_init_combat(struct char_data *zmaster, struct char_data *target);
-int zm_kill_fidos(struct char_data *zmaster);
-int zm_kill_aggressor(struct char_data *zmaster);
-int zombie_master(struct char_data *ch, int cmd, char *arg,
-                  struct char_data *mob, int type);
-int pet_shops(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-              int type);
-int fountain(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-             int type);
-int bank(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-         int type);
-int pray_for_items(struct char_data *ch, int cmd, char *arg,
-                   struct room_data *rp, int type);
-int chalice(struct char_data *ch, int cmd, char *arg);
-int kings_hall(struct char_data *ch, int cmd, char *arg);
-int donation(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-             int type);
-int house(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-          int type);
-int sisyphus(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-             int type);
-int jabberwocky(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int flame(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int banana(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int paramedics(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int jugglernaut(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int delivery_elf(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-int delivery_beast(struct char_data *ch, int cmd, char *arg,
-                   struct char_data *mob, int type);
-int keftab(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int storm_giant(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int fighter(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-            int type);
-int new_thalos_mayor(struct char_data *ch, int cmd, char *arg,
-                     struct char_data *mob, int type);
-int sultan_guard(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-int new_thalos_citizen(struct char_data *ch, int cmd, char *arg,
-                       struct char_data *mob, int type);
-int new_thalos_guild_guard(struct char_data *ch, int cmd, char *arg,
-                           struct char_data *mob, int type);
-int magic_user2(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int mord_guard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int mord_guild_guard(struct char_data *ch, int cmd, char *arg,
-                     struct char_data *mob, int type);
-int caravan_guild_guard(struct char_data *ch, int cmd, char *arg,
-                        struct char_data *mob, int type);
-int stat_teller(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-void throw_char(struct char_data *ch, struct char_data *v, int dir);
-int thrower_mob(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int tyrannosaurus_swallower(struct char_data *ch, int cmd, char *arg,
-                            struct char_data *mob, int type);
-int soap(struct char_data *ch, int cmd, char *arg, struct obj_data *tobj,
-         int type);
-int nodrop(struct char_data *ch, int cmd, char *arg, struct obj_data *tobj,
-           int type);
-int lattimore(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type);
-int coldcaster(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int trapper(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-            int type);
-int trogcook(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-             int type);
-int shaman(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int golgar(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int troguard(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-             int type);
-int ghostsoldier(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-int valik(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int guardian(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-             int type);
-int web_slinger(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
 
 
 /* From spec_procs2.c */
 
-int ghost(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int druid_protector(struct char_data *ch, int cmd, char *arg,
-                    struct char_data *mob, int type);
-int magic__fountain(struct char_data *ch, int cmd, char *arg,
-                    struct room_data *rp, int type);
-int druid_attack_spells(struct char_data *ch, struct char_data *vict,
-                        int level);
-int summoner(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-             int type);
-int monk(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-         int type);
 void invert(char *arg1, char *arg2);
-int jive_box(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
-             int type);
-int magic_user(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int cleric(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int ninja_master(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-int ettin(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int repair_guy(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int samah(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int bitter_blade(struct char_data *ch, int cmd, char *arg,
-                 struct obj_data *tobj, int type);
-int make_quest(struct char_data *ch, struct char_data *gm, int Class,
-               char *arg, int cmd);
-int abyss_gate_keeper(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int type);
-int creeping_death(struct char_data *ch, int cmd, char *arg,
-                   struct char_data *mob, int type);
-void submit(struct char_data *ch, struct char_data *t);
-void say_hello(struct char_data *ch, struct char_data *t);
-void greet_people(struct char_data *ch);
-int generic_cityguardHateUndead(struct char_data *ch, int cmd, char *arg,
-                                struct char_data *mob, int type);
-int generic_cityguard(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int type);
-int prydain_guard(struct char_data *ch, int cmd, char *arg,
-                  struct char_data *mob, int type);
-struct breath_victim *choose_victims(struct char_data *ch,
-                                     struct char_data *first_victim);
-void free_victims(struct breath_victim *head);
-void breath_weapon(struct char_data *ch, struct char_data *target,
-                   int mana_cost, void (*func) (byte, struct char_data *,
-                                                char *, int,
-                                                struct char_data *,
-                                                struct obj_data *));
-void use_breath_weapon(struct char_data *ch, struct char_data *target,
-                       int cost, void (*func) (byte, struct char_data *,
-                                               char *, int, struct char_data *,
-                                               struct obj_data *));
-int breath_weapon_mob(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int type);
-int sailor(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int loremaster(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int hunter(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int monk_master(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int druid_guild_master(struct char_data *ch, int cmd, char *arg,
-                       struct char_data *mob, int type);
-int teacher(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-            int type, int teacher, char *say_str);
-int devil(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-int demon(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-          int type);
-void druid_heal(struct char_data *ch, int level);
-void druid_tree(struct char_data *ch);
-void druid_mob(struct char_data *ch);
-int druid_challenger(struct char_data *ch, int cmd, char *arg,
-                     struct char_data *mob, int type);
-int monk_challenger(struct char_data *ch, int cmd, char *arg,
-                    struct char_data *mob, int type);
-int druid_challenge_prep_room(struct char_data *ch, int cmd, char *arg,
-                              struct room_data *rp, int type);
-int druid_challenge_room(struct char_data *ch, int cmd, char *arg,
-                         struct room_data *rp, int type);
-int monk_challenge_room(struct char_data *ch, int cmd, char *arg,
-                        struct room_data *rp, int type);
-int monk_challenge_prep_room(struct char_data *ch, int cmd, char *arg,
-                             struct room_data *rp, int type);
-int portal(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
-           int type);
-int scraps(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
-           int type);
-int attack_rats(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int dragon_hunter_leader(struct char_data *ch, int cmd, char *arg,
-                         struct char_data *mob, int type);
-int hunting_mercenary(struct char_data *ch, int cmd, char *arg,
-                      struct char_data *mob, int type);
-int slot_machine(struct char_data *ch, int cmd, char *arg,
-                 struct obj_data *obj, int type);
-int astral_portal(struct char_data *ch, int cmd, char *arg,
-                  struct char_data *mob, int type);
-int dwarven_miners(struct char_data *ch, int cmd, char *arg,
-                   struct char_data *mob, int type);
-int real_rabbit(struct char_data *ch, int cmd, char *arg,
-                struct char_data *mob, int type);
-int real_fox(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-             int type);
-int antioch_grenade(struct char_data *ch, int cmd, char *arg,
-                    struct obj_data *obj, int type);
 
 
 /* From spec_procs3.c */
@@ -1510,27 +1017,6 @@ struct room_data *back_left_square(struct room_data *room);
 struct char_data *square_contains_enemy(struct room_data *square);
 int square_contains_friend(struct room_data *square);
 int square_empty(struct room_data *square);
-int chess_game(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-               int type);
-int acid_blob(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type);
-int baby_bear(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type);
-int timnus(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int winger(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-           int type);
-int death_room(int dt_room);
-int youth_potion(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-int warpstone(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type);
-int turbo_lift(struct char_data *ch, int cmd, char *arg, struct room_data *rp,
-               int type);
-int entering_turbo_lift(struct char_data *ch, int cmd, char *arg,
-                        struct room_data *rp, int type);
-int old_hag(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-            int type);
 /* From spell_parser.c */
 
 void spello(int nr, byte beat, byte pos, byte mlev, byte clev, byte dlev,
@@ -1546,7 +1032,6 @@ void say_spell(struct char_data *ch, int si);
 bool saves_spell(struct char_data *ch, sh_int save_type);
 bool imp_save_spell(struct char_data *ch, sh_int save_type, int mod);
 char *skip_spaces(char *string);
-void do_cast(struct char_data *ch, char *argument, int cmd);
 void assign_spell_pointers();
 void spell_wear_off_soon(int s, struct char_data *ch);
 void spell_wear_off(int s, struct char_data *ch);
@@ -1555,8 +1040,6 @@ int check_falling(struct char_data *ch);
 void check_drowning(struct char_data *ch);
 void check_falling_obj(struct obj_data *obj, int room);
 void check_nature(struct char_data *i);
-int death_knight(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
 int is_intrinsic(struct char_data *ch, int spl);
 int cast_intrinsic(struct char_data *ch, int spl);
 
@@ -2077,7 +1560,6 @@ void change_room_flags(struct room_data *rp, struct char_data *ch, char *arg,
 void change_room_desc(struct room_data *rp, struct char_data *ch, char *arg,
                       int type);
 void update_room_menu(struct char_data *ch);
-void do_redit(struct char_data *ch, char *arg, int cmd);
 void room_edit(struct char_data *ch, char *arg);
 void change_room_name(struct room_data *rp, struct char_data *ch, char *arg,
                       int type);
@@ -2104,9 +1586,7 @@ void init_radix();
 NODE *find_valid_command(char *name);
 
 /* from intrinsics.c */
-void do_changeform(struct char_data *ch, char *argument, int cmd);
 void mindflayer_attack(struct char_data *ch, struct char_data *v);
-void do_bite(struct char_data *ch, char *argument, int cmd);
 void vampire_bite(struct char_data *ch, struct char_data *v);
 int veggie_gain_mods(struct char_data *ch, int gain, bool msgs);
 int vamp_gain_mods(struct char_data *ch, int gain, bool msgs);

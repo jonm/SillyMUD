@@ -12,6 +12,8 @@
 #include "protos.h"
 #include "skills.h"
 #include "act.move.h"
+#include "act.obj1.h"
+#include "act.info.h"
 #include "utility.h"
 
 extern char *dirs[];
@@ -44,14 +46,15 @@ int named_object_on_ground(int room, void *c_data);
 */
 
 void do_train(struct char_data *UNUSED(ch), char *UNUSED(argument),
-              int UNUSED(cmd)) {
+              const char * UNUSED(cmd)) {
   /* 
      code to allow high level characters to train low level
      characters.
    */
 }
 
-void do_inset(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_inset(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   /* code which allows a character to inset a stone into
      a weapon.  The stone's powers are added to the 
      weapon
@@ -192,7 +195,8 @@ void do_inset(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 **  Disarm:
 */
 
-void do_disarm(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_disarm(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   disarm_action(ch, argument, 0);
 }
 
@@ -350,7 +354,8 @@ int named_mobile_in_room(int room, struct hunting_data *c_data) {
   return 0;
 }
 
-void do_track(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_track(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char name[256], buf[256], found = FALSE;
   int dist, code;
   struct hunting_data huntd;
@@ -727,7 +732,8 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp) {
 /*
   skill to allow fighters to break down doors
 */
-void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_doorbash(struct char_data *ch, char *arg,
+                 const char * UNUSED(cmd)) {
   extern char *dirs[];
   int dir;
   int ok;
@@ -790,7 +796,7 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
     was_in = ch->in_room;
     char_from_room(ch);
     char_to_room(ch, exitp->to_room);
-    do_look(ch, "", 0);
+    look_room(ch);
 
     display_move(ch, dir, was_in, 1);
     if (!check_falling(ch)) {
@@ -852,7 +858,7 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
           char_from_room(ch);
           char_to_room(ch, exitp->to_room);
-          do_look(ch, "", 0);
+          look_room(ch);
           display_move(ch, dir, was_in, 1);
           if (!check_falling(ch)) {
             if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -891,7 +897,8 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   skill to allow anyone to move through rivers and underwater
 */
 
-void do_swim(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_swim(struct char_data *ch, char *UNUSED(arg),
+             const char * UNUSED(cmd)) {
 
   struct affected_type af;
   byte percent;
@@ -955,7 +962,8 @@ int spy_check(struct char_data *ch) {
 
 }
 
-void do_spy(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_spy(struct char_data *ch, char *UNUSED(arg),
+            const char * UNUSED(cmd)) {
 
   struct affected_type af;
 
@@ -1020,7 +1028,8 @@ int remove_trap(struct char_data *ch, struct obj_data *trap) {
   }
 }
 
-void do_feign_death(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_feign_death(struct char_data *ch, char *UNUSED(arg),
+                    const char * UNUSED(cmd)) {
   struct room_data *rp;
   struct char_data *t;
 
@@ -1071,7 +1080,8 @@ void do_feign_death(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   }
 }
 
-void do_first_aid(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_first_aid(struct char_data *ch, char *UNUSED(arg),
+                  const char * UNUSED(cmd)) {
   struct affected_type af;
 
   send_to_char("You attempt to render first aid unto yourself.\n\r", ch);
@@ -1101,7 +1111,8 @@ void do_first_aid(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   return;
 }
 
-void do_disguise(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_disguise(struct char_data *ch, char *UNUSED(arg),
+                 const char * UNUSED(cmd)) {
   struct affected_type af;
 
   send_to_char("You attempt to disguise yourself\n\r", ch);
@@ -1142,7 +1153,8 @@ void do_disguise(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
 }
 
 /* Skill for climbing walls and the like -DM */
-void do_climb(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_climb(struct char_data *ch, char *arg,
+              const char * UNUSED(cmd)) {
   extern char *dirs[];
   int dir;
   struct room_direction_data *exitp;
@@ -1222,7 +1234,7 @@ void do_climb(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
         char_from_room(ch);
         char_to_room(ch, exitp->to_room);
-        do_look(ch, "", 0);
+        look_room(ch);
         display_move(ch, dir, was_in, 1);
         if (!check_falling(ch)) {
           if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -1266,7 +1278,7 @@ void slip_in_climb(struct char_data *ch, int dir, int room) {
     i += number(1, 6);
     char_from_room(ch);
     char_to_room(ch, room);
-    do_look(ch, "", 0);
+    look_room(ch);
   }
 
   GET_POS(ch) = POSITION_SITTING;
@@ -1276,7 +1288,7 @@ void slip_in_climb(struct char_data *ch, int dir, int room) {
     GET_HIT(ch) -= i;
 }
 
-void do_palm(struct char_data *ch, char *arg, int cmd) {
+void do_palm(struct char_data *ch, char *arg, const char *cmd) {
   char arg1[MAX_STRING_LENGTH], arg2[MAX_STRING_LENGTH],
     buffer[MAX_STRING_LENGTH];
   struct obj_data *sub_object;
@@ -1444,7 +1456,7 @@ void do_palm(struct char_data *ch, char *arg, int cmd) {
 }
 
 
-void do_peek(struct char_data *ch, char *arg, int cmd) {
+void do_peek(struct char_data *ch, char *arg, const char *cmd) {
   char *argument;
   struct char_data *peeked;
   struct obj_data *dummy;
@@ -1489,7 +1501,8 @@ void do_peek(struct char_data *ch, char *arg, int cmd) {
   }
 }
 
-void do_berserk(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_berserk(struct char_data *ch, char *UNUSED(arg),
+                const char * UNUSED(cmd)) {
 
   struct affected_type af;
 
@@ -1564,7 +1577,8 @@ void do_berserk(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   }
 }
 
-void do_makepotion(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_makepotion(struct char_data *ch, char *argument,
+                   const char * UNUSED(cmd)) {
   int i, ingredients = 0, which_potion = 0, match = 0, j, max;
   bool object[5];
   struct obj_data *o, *in_o, *next, *potion;

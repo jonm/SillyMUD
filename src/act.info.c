@@ -13,6 +13,13 @@
 #include <time.h>
 
 #include "protos.h"
+#include "utils.h"
+#include "act.comm.h"
+#include "act.wizard.h"
+#include "spec_procs.h"
+#include "spec_procs2.h"
+#include "act.info.h"
+#include "act.comm.h"
 
 /* extern variables */
 #if HASH
@@ -998,7 +1005,8 @@ void list_char_in_room(struct char_data *list, struct char_data *ch) {
   }
 }
 
-void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_look(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   char buffer[MAX_STRING_LENGTH];
   char arg1[MAX_INPUT_LENGTH];
   char arg2[MAX_INPUT_LENGTH];
@@ -1414,21 +1422,23 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_read(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_read(struct char_data *ch, char *argument,
+             const char *UNUSED(cmd)) {
   char buf[100];
 
   /* This is just for now - To be changed later.! */
   SPRINTF(buf, "at %s", argument);
-  do_look(ch, buf, 15);
+  look_at(ch, buf);
 }
 
-void do_examine(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_examine(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   char name[100], buf[100];
   struct char_data *tmp_char;
   struct obj_data *tmp_object;
 
   SPRINTF(buf, "at %s", argument);
-  do_look(ch, buf, 15);
+  look_at(ch, buf);
 
   one_argument(argument, name);
 
@@ -1445,7 +1455,7 @@ void do_examine(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         (GET_ITEM_TYPE(tmp_object) == ITEM_CONTAINER)) {
       send_to_char("When you look inside, you see:\n\r", ch);
       SPRINTF(buf, "in %s", argument);
-      do_look(ch, buf, 15);
+      look_at(ch, buf);
     }
   }
 }
@@ -1481,7 +1491,8 @@ void show_exits(struct char_data *ch) {
 
 /*  Gecko's spiffy enhancement to do_exits() from act.info.c */
 
-void do_exits(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_exits(struct char_data *ch, char *UNUSED(argument),
+              const char *UNUSED(cmd)) {
   /* NOTE: Input var 'cmd' is not used. */
   int door;
   char buf[1000];
@@ -1532,7 +1543,8 @@ void do_exits(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 }
 
 
-void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_score(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
   struct time_info_data playing_time;
   static char buf[100], buf2[100];
   struct time_info_data my_age;
@@ -1674,7 +1686,8 @@ void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 }
 
 
-void do_time(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_time(struct char_data *ch, char *UNUSED(argument),
+             const char * UNUSED(cmd)) {
   char buf[100], *suf;
   int weekday, day;
   extern struct time_info_data time_info;
@@ -1717,7 +1730,8 @@ void do_time(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 }
 
 
-void do_weather(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_weather(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   extern struct weather_data weather_info;
   static char buf[100];
   static char *sky_look[4] = {
@@ -1740,7 +1754,8 @@ void do_weather(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 }
 
 
-void do_help(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_help(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
 
   extern int top_of_helpt;
   extern struct help_index_element *help_index;
@@ -1802,7 +1817,8 @@ void do_help(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_wizhelp(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_wizhelp(struct char_data *ch, char *UNUSED(arg),
+                const char * UNUSED(cmd)) {
   char buf[1000];
   int i, j = 1;
   NODE *n;
@@ -1832,7 +1848,7 @@ void do_wizhelp(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
 }
 
 
-void do_who(struct char_data *ch, char *argument, int cmd) {
+void do_who(struct char_data *ch, char *argument, const char * cmd) {
   struct descriptor_data *d;
   char buf[256];
   int count, gods = FALSE, group = FALSE;
@@ -1856,7 +1872,7 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
     return;
   }
 
-  if (!IS_IMMORTAL(ch) || cmd == 234) {
+  if (!IS_IMMORTAL(ch) || STREQ(cmd, "whozone")) {
 
     send_to_char("Players\n\r-------\n\r", ch);
     count = 0;
@@ -1866,13 +1882,13 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
                       )->in_room)) &&
           (real_roomp((person = (d->original ? d->original : d->character)
                       )->in_room)->zone == real_roomp(ch->in_room)->zone ||
-           cmd != 234) && (!gods || IS_IMMORTAL(d->character))) {
+           !STREQ(cmd, "whozone")) && (!gods || IS_IMMORTAL(d->character))) {
         count++;
         SPRINTF(buf, "%s %s",
                 GET_NAME(person),
                 (person->player.title ? person->player.title : "(Null)"));
 
-        if (cmd == 234) {       /* it's a whozone command */
+        if (STREQ(cmd, "whozone")) {       /* it's a whozone command */
           if ((!IS_AFFECTED(person, AFF_HIDE)) || (IS_IMMORTAL(ch))) {
             SPRINTF(buf, "%-25s - %s ", GET_NAME(person),
                     real_roomp(person->in_room)->name);
@@ -2073,7 +2089,8 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
   }
 }
 
-void do_users(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_users(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
   char buf[MAX_STRING_LENGTH], line[200], buf2[255];
   extern const char *connected_types[];
 
@@ -2108,14 +2125,14 @@ void do_users(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 
 
 void do_inventory(struct char_data *ch, char *UNUSED(argument),
-                  int UNUSED(cmd)) {
+                  const char * UNUSED(cmd)) {
   send_to_char("You are carrying:\n\r", ch);
   list_obj_in_heap(ch->carrying, ch);
 }
 
 
 void do_equipment(struct char_data *ch, char *UNUSED(argument),
-                  int UNUSED(cmd)) {
+                  const char * UNUSED(cmd)) {
   int j, Worn_Index;
   bool found;
   char String[256];
@@ -2143,22 +2160,26 @@ void do_equipment(struct char_data *ch, char *UNUSED(argument),
 }
 
 
-void do_credits(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_credits(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   page_string(ch->desc, credits, 0);
 }
 
 
-void do_news(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_news(struct char_data *ch, char *UNUSED(argument),
+             const char * UNUSED(cmd)) {
   page_string(ch->desc, news, 0);
 }
 
 
-void do_info(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_info(struct char_data *ch, char *UNUSED(argument),
+             const char * UNUSED(cmd)) {
   page_string(ch->desc, info, 0);
 }
 
 
-void do_wizlist(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_wizlist(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   page_string(ch->desc, wizlist, 0);
 }
 
@@ -2245,7 +2266,8 @@ void do_where_object(struct char_data *ch, struct obj_data *obj,
   }
 }
 
-void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_where(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char name[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
   char *nameonly;
   register struct char_data *i;
@@ -2345,7 +2367,8 @@ void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   destroy_string_block(&sb);
 }
 
-void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_levels(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int i, RaceMax, class;
   char buf[MAX_STRING_LENGTH];
 
@@ -2479,7 +2502,8 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_consider(struct char_data *ch, char *argument,
+                 const char * UNUSED(cmd)) {
   struct char_data *victim;
   char name[256], buf[256];
   int diff;
@@ -2658,7 +2682,8 @@ void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 }
 
-void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_spells(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int spl, i;
   char buf[MAX_EXIST_SPELL * 80];
   extern char *spells[];
@@ -2837,7 +2862,8 @@ void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
 }
-void do_world(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_world(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
   static char buf[100];
   long ct, ot;
   char *tmstr, *otmstr;
@@ -2887,7 +2913,7 @@ void do_world(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 }
 
 void do_attribute(struct char_data *ch, char *UNUSED(argument),
-                  int UNUSED(cmd)) {
+                  const char * UNUSED(cmd)) {
   char buf[MAX_STRING_LENGTH];
   struct affected_type *aff;
 
@@ -2952,7 +2978,8 @@ void do_attribute(struct char_data *ch, char *UNUSED(argument),
   }
 }
 
-void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_value(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char buf[100], buf2[100], name[100];
   struct obj_data *obj = 0;
   struct char_data *vict = 0;
@@ -3351,7 +3378,8 @@ char *desc_attacks(float a) {
   }
 }
 
-void do_display(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_display(struct char_data *ch, char *arg,
+                const char * UNUSED(cmd)) {
   int i;
 
   if (IS_NPC(ch))
@@ -3398,7 +3426,8 @@ void screen_off(struct char_data *ch) {
   send_to_char(VT_HOMECLR, ch);
 }
 
-void do_resize(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_resize(struct char_data *ch, char *arg,
+               const char * UNUSED(cmd)) {
   int i;
 
   if (IS_NPC(ch))
@@ -3449,7 +3478,8 @@ int mob_lev_bonus(struct char_data *ch) {
   return (t);
 }
 
-void do_report(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_report(struct char_data *ch, char *UNUSED(argument),
+               const char * UNUSED(cmd)) {
   /* do a 'say' containing one's vital statistics */
   char buf[256];
 
@@ -3461,7 +3491,7 @@ void do_report(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
           GET_HIT(ch), GET_MAX_HIT(ch), GET_MANA(ch),
           GET_MAX_MANA(ch), GET_MOVE(ch), GET_MAX_MOVE(ch), GET_EXP(ch));
 
-  do_say(ch, buf, 0);
+  say(ch, buf);
 
 }
 

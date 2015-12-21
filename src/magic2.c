@@ -11,6 +11,8 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "act.off.h"
+#include "act.wizard.h"
 
 /* Extern structures */
 extern struct room_data *world;
@@ -434,7 +436,7 @@ void spell_turn(byte level, struct char_data *ch,
               act("$n forces you from this room.",
                   TRUE, ch, 0, victim, TO_VICT);
               add_feared(victim, ch);
-              do_flee(victim, "", 0);
+              do_flee(victim, "", "flee");
               turned = TRUE;
               break;
             }

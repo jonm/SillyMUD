@@ -14,6 +14,12 @@
 
 #include "protos.h"
 #include "reception.h"
+#include "act.info.h"
+#include "act.other.h"
+#include "act.wizard.h"
+#include "act.social.h"
+#include "utility.h"
+#include "spec_procs.h"
 #include "utility.h"
 
 #define OBJ_FILE_FREE "\0\0\0"
@@ -624,28 +630,25 @@ void print_limited_items() {
 ************************************************************************* */
 #define DONATION_ROOM 99
 
-int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
-                 struct char_data *mob, int type) {
+int receptionist(struct char_data *ch, const char *cmd,
+                 char *UNUSED(arg), struct char_data *mob, int type) {
   struct obj_cost cost;
   struct char_data *recep = 0;
   struct char_data *temp_char;
   sh_int save_room;
-  sh_int action_tabel[9];
-
+  char * action_table[] = {
+    "smile",
+    "dance",
+    "sigh",
+    "blush",
+    "burp",
+    "cough",
+    "fart",
+    "twiddle",
+    "yawn"};
 
   if (!ch->desc)
     return (FALSE);             /* You've forgot FALSE - NPC couldn't leave */
-
-  action_tabel[0] = 23;
-  action_tabel[1] = 24;
-  action_tabel[2] = 36;
-  action_tabel[3] = 105;
-  action_tabel[4] = 106;
-  action_tabel[5] = 109;
-  action_tabel[6] = 111;
-  action_tabel[7] = 142;
-  action_tabel[8] = 147;
-
 
   for (temp_char = real_roomp(ch->in_room)->people; (temp_char) && (!recep);
        temp_char = temp_char->next_in_room)
@@ -684,7 +687,7 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
 
             char_from_room(temp_char);
             char_to_room(temp_char, going_to);
-            do_look(temp_char, "", 0);
+            look_room(temp_char);
           }
           else {                /* must be some other direction */
             int k;
@@ -695,14 +698,14 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
 
                 char_from_room(temp_char);
                 char_to_room(temp_char, going_to);
-                do_look(temp_char, "", 0);
+                look_room(temp_char);
               }
             }
           }
           return (FALSE);
         }
 
-  if ((cmd != 92) && (cmd != 93)) {
+  if (!STREQ(cmd,"rent") && !STREQ(cmd, "offer")) {
     if (!cmd) {
       if (recep->specials.fighting) {
         return (citizen(recep, 0, "", mob, type));
@@ -722,10 +725,10 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
       }
     }
 
-
-
-    if (!number(0, 30))
-      do_action(recep, "", action_tabel[number(0, 8)]);
+    if (!number(0, 30)) {
+      int act_num = number(0, sizeof(action_table)/sizeof(char*) - 1);
+      do_action(recep, "", action_table[act_num]);
+    }
     return (FALSE);
   }
 
@@ -741,7 +744,7 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (TRUE);
   }
 
-  if (cmd == 92) {              /* Rent  */
+  if (STREQ(cmd, "rent")) {
     if (recep_offer(ch, recep, &cost)) {
 
       act("$n stores your stuff in the safe, and helps you into your chamber.",
@@ -896,10 +899,10 @@ void load_char_extra(struct char_data *ch) {
       s = (char *)strtok(0, "\0");
       if (p) {
         if (!strcmp(p, "out")) {        /*setup bamfout */
-          do_bamfout(ch, s, 0);
+          do_bamfout(ch, s, NULL);
         }
         else if (!strcmp(p, "in")) {    /* setup bamfin */
-          do_bamfin(ch, s, 0);
+          do_bamfin(ch, s, NULL);
         }
         else if (!strcmp(p, "zone")) {  /* set zone permisions */
           GET_ZONE(ch) = atoi(s);
@@ -925,7 +928,7 @@ void load_char_extra(struct char_data *ch) {
             n = atoi(p);
             if (n >= 0 && n <= 9) {     /* set up alias */
               SPRINTF(tmp, "%d %s", n, s + 1);
-              do_alias(ch, tmp, 260);
+              do_alias(ch, tmp, "alias");
             }
           }
         }

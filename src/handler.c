@@ -13,6 +13,7 @@
 
 #include "protos.h"
 #include "act.wizard.h"
+#include "act.other.h"
 #include "utility.h"
 
 #if HASH
@@ -856,7 +857,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos) {
     act("$p falls to the floor", 0, ch, obj, 0, TO_CHAR);
     act("$p removes itself, and falls to the floor", 0, ch, obj, 0, TO_ROOM);
     obj_to_room(obj, ch->in_room);
-    do_save(ch, "", 0);
+    do_save(ch, "", "save");
     return;
   }
   else if (j < 0) {
