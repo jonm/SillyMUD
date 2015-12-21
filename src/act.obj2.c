@@ -79,8 +79,9 @@ void name_to_drinkcon(struct obj_data *obj, int type) {
   char *new_name;
   extern char *drinknames[];
 
-  CREATE(new_name, char, strlen(obj->name) + strlen(drinknames[type]) + 2);
-  SPRINTF(new_name, "%s %s", drinknames[type], obj->name);
+  int len = strlen(obj->name) + strlen(drinknames[type]) + 2;
+  CREATE(new_name, char, len);
+  snprintf(new_name, len, "%s %s", drinknames[type], obj->name);
   free(obj->name);
   obj->name = new_name;
 }

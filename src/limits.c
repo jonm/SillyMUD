@@ -28,7 +28,8 @@ extern struct time_info_data time_info;
 
 char *class_titles(struct char_data *ch) {
   unsigned char i, count = 0;
-  char *buf = malloc(256);
+  int len = 256;
+  char *buf = malloc(len);
 
   for (i = MAGE_LEVEL_IND; i <= MONK_LEVEL_IND; i++) {
     if (GET_LEVEL(ch, i)) {
@@ -37,7 +38,7 @@ char *class_titles(struct char_data *ch) {
         SAPPENDF(buf, "/%s", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)));
       }
       else {
-        SPRINTF(buf, "%s", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)));
+        snprintf(buf, len, "%s", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)));
       }
     }
   }
