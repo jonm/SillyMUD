@@ -16,6 +16,7 @@
 #include "act.social.h"
 #include "act.comm.h"
 #include "utility.h"
+#include "db.h"
 
 #define SHOP_FILE "tinyworld.shp"
 #define MAX_TRADE 5
@@ -23,7 +24,6 @@
 
 
 extern struct str_app_type str_app[];
-extern struct index_data *mob_index;
 extern struct chr_app_type chr_apply[];
 
 char *fread_string(FILE * fl);

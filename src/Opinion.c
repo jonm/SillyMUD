@@ -12,12 +12,12 @@
 #include <time.h>
 
 #include "protos.h"
+#include "db.h"
 
 /*
   external stuff
 */
 
-extern struct index_data *mob_index;
 extern struct room_data *world;
 
 void free_hates(struct char_data *ch) {

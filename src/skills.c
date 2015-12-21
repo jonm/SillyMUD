@@ -15,6 +15,7 @@
 #include "act.obj1.h"
 #include "act.info.h"
 #include "utility.h"
+#include "db.h"
 
 extern char *dirs[];
 extern struct char_data *character_list;
@@ -22,7 +23,6 @@ extern struct str_app_type str_app[];
 extern struct room_data *world;
 extern struct dex_app_type dex_app[];
 extern struct skill_data skill_info[];
-extern struct index_data *obj_index;
 
 struct hunting_data {
   char *name;
@@ -1584,7 +1584,6 @@ void do_makepotion(struct char_data *ch, char *argument,
   struct obj_data *o, *in_o, *next, *potion;
   struct room_data *rp;
 
-  extern struct index_data *obj_index;
   extern struct BrewMeister BrewList[MAX_POTIONS];
 
   for (i = 0; i < 5; i++)       /* very important indeed */

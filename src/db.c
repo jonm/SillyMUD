@@ -649,10 +649,10 @@ struct mob_index_data *make_mob_indices(struct index_data *base_idx,
       mob_idx[i].virtual = base_idx[i].virtual;
       mob_idx[i].pos = base_idx[i].pos;
       mob_idx[i].number = base_idx[i].number;
-      mob_idx[i].func = (mob_func*)base_idx[i].func;
       mob_idx[i].name = base_idx[i].name;
       mob_idx[i].short_desc = base_idx[i].short_desc;
       mob_idx[i].long_desc = base_idx[i].long_desc;
+      mob_idx[i].func = NULL;
     }
     free(base_idx);
   }
@@ -670,10 +670,10 @@ struct obj_index_data *make_obj_indices(struct index_data *base_idx,
       obj_idx[i].virtual = base_idx[i].virtual;
       obj_idx[i].pos = base_idx[i].pos;
       obj_idx[i].number = base_idx[i].number;
-      obj_idx[i].func = (obj_func*)base_idx[i].func;
       obj_idx[i].name = base_idx[i].name;
       obj_idx[i].short_desc = base_idx[i].short_desc;
       obj_idx[i].long_desc = base_idx[i].long_desc;
+      obj_idx[i].func = NULL;
     }
     free(base_idx);
   }
@@ -708,7 +708,6 @@ struct index_data *generate_indices(FILE * fl, int *top) {
         sscanf(buf, "#%d", &index[i].virtual);
         index[i].pos = ftell(fl);
         index[i].number = 0;
-        index[i].func = 0;
         index[i].name = (index[i].virtual < 99999) ? fread_string(fl) :
           strdup("omega");
         i++;

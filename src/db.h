@@ -83,17 +83,10 @@ struct zone_data {
 
 
 /* element in monster and object index-tables   */
-struct index_data {
+struct _index_data {
   int virtual;                  /* virtual number of this mob/obj           */
   long pos;                     /* file position of this field              */
   int number;                   /* number of existing units of this mob/obj   */
-
-  /* mob special procs are:
-     int (*func)(struct char_data *, int, char *, char *, int);
-     obj special procs are:
-     int (*func)(struct char_data *, int, char *, struct obj_data *, int);
-   */
-  int (*func) ();
   char *name;
   char *short_desc;
   char *long_desc;
@@ -123,6 +116,8 @@ struct mob_index_data {
   char *long_desc;
 };
 
+extern struct mob_index_data *mob_index;   /* index table for mobile file     */
+extern struct index_data *obj_index;   /* index table for object file     */
 extern int top_of_mobt;
 extern int top_of_objt;
 
@@ -176,5 +171,6 @@ void reboot_text(struct char_data *ch, char *arg, const char * cmd);
 struct mob_index_data *make_mob_indices(struct index_data *base_idx, int top);
 struct obj_index_data *make_obj_indices(struct index_data *base_idx, int top);
 struct index_data *generate_indices(FILE * fl, int *top);
+
 
 #endif

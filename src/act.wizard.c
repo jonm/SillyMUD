@@ -20,6 +20,7 @@
 #include "act.wizard.h"
 #include "act.info.h"
 #include "utility.h"
+#include "db.h"
 
 /*   external vars  */
 
@@ -35,8 +36,6 @@ extern struct descriptor_data *descriptor_list;
 extern struct title_type titles[MAX_CLASS][ABS_MAX_LVL];
 extern struct time_info_data time_info;
 extern struct weather_data weather_info;
-extern struct index_data *mob_index;
-extern struct index_data *obj_index;
 extern int top_of_mobt;
 extern int top_of_objt;
 extern struct int_app_type int_app[26];
@@ -3127,7 +3126,7 @@ void do_show(struct char_data *ch, char *argument,
              const char * UNUSED(cmd)) {
   int zone;
   char buf[MAX_STRING_LENGTH], zonenum[MAX_INPUT_LENGTH];
-  struct index_data *which_i;
+  struct obj_index_data *which_i;
   int bottom, top, topi;
   struct string_block sb;
 
@@ -3185,7 +3184,7 @@ void do_show(struct char_data *ch, char *argument,
            (is_abbrev(buf, "mobiles") &&
             (which_i = mob_index, topi = top_of_mobt))) {
     int objn;
-    struct index_data *oi;
+    struct obj_index_data *oi;
 
     only_argument(argument, zonenum);
     zone = -1;
@@ -3268,7 +3267,7 @@ void do_show(struct char_data *ch, char *argument,
   else if (is_abbrev(buf, "top")) {
 
     int objn, top_ten[10], i, insert, tmp, bot;
-    struct index_data *oi, *oi2;
+    struct obj_index_data *oi, *oi2;
     char buf[80];
 
     which_i = obj_index;

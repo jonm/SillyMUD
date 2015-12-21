@@ -16,6 +16,7 @@
 #include "act.info.h"
 #include "act.off.h"
 #include "utility.h"
+#include "db.h"
 
 /* Extern structures */
 extern struct room_data *world;
@@ -1833,7 +1834,6 @@ void spell_gust_of_wind(byte level, struct char_data *ch,
 void spell_silence(byte level, struct char_data *ch,
                    struct char_data *victim, struct obj_data *UNUSED(obj)) {
   struct affected_type af;
-  extern struct index_data *mob_index;
 
   assert(ch && victim);
 

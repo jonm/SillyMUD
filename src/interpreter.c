@@ -33,6 +33,7 @@
 #include "act.social.h"
 #include "spell_parser.h"
 #include "utility.h"
+#include "db.h"
 
 #define NOT !
 #define AND &&
@@ -48,8 +49,6 @@ extern char wmotd[MAX_STRING_LENGTH];
 extern struct char_data *character_list;
 extern struct player_index_element *player_table;
 extern int top_of_p_table;
-extern struct index_data *mob_index;
-extern struct index_data *obj_index;
 #if HASH
 extern struct hash_header room_db;
 #else

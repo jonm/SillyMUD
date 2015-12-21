@@ -14,6 +14,7 @@
 #include "act.other.h"
 #include "spec_procs2.h"
 #include "utility.h"
+#include "db.h"
 
 /* extern variables */
 
@@ -1360,7 +1361,6 @@ void do_wimp(struct char_data *ch, char *argument,
 
 
 extern struct breather breath_monsters[];
-extern struct index_data *mob_index;
 void (*bweapons[]) (byte, struct char_data *, char *, int, struct char_data *,
                     struct obj_data *) = {
 cast_geyser, cast_fire_breath, cast_gas_breath, cast_frost_breath,

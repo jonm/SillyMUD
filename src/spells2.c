@@ -11,6 +11,7 @@
 
 #include "protos.h"
 #include "utility.h"
+#include "db.h"
 
 /* Global data */
 
@@ -23,7 +24,6 @@ extern char *dirs[];
 extern int movement_loss[];
 extern struct weather_data weather_info;
 extern struct time_info_data time_info;
-extern struct index_data *obj_index;
 struct PolyType DruidList[17];
 /* Extern procedures */
 

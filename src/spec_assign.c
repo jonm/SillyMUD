@@ -16,14 +16,13 @@
 #include "spec_procs3.h"
 #include "reception.h"
 #include "utility.h"
+#include "db.h"
 
 #if HASH
 extern struct hash_header room_db;
 #else
 extern struct room_data *room_db;
 #endif
-extern struct index_data *mob_index;
-extern struct index_data *obj_index;
 void boot_the_shops();
 void assign_the_shopkeepers();
 

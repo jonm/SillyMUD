@@ -19,6 +19,7 @@
 #include "act.info.h"
 #include "act.other.h"
 #include "act.move.h"
+#include "db.h"
 
 void log_msg(char *s) {
   log_sev(s, 1);
@@ -37,7 +38,6 @@ extern char *article_list[];
 extern struct time_data time_info;
 extern struct descriptor_data *descriptor_list;
 extern struct char_data *character_list;
-extern struct index_data *mob_index, *obj_index;
 extern struct chr_app_type chr_apply[];
 #if HASH
 extern struct hash_header room_db;      /* In db.c */
