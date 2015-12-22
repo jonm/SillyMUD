@@ -16,6 +16,7 @@
 #include "act.off.h"
 #include "act.wizard.h"
 #include "utility.h"
+#include "fight.h"
 
 extern struct char_data *character_list;
 extern struct index_data *mob_index;

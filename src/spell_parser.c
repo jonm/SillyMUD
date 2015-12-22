@@ -15,6 +15,7 @@
 #include "act.off.h"
 #include "act.other.h"
 #include "utility.h"
+#include "fight.h"
 
 /* because I don't want to recompile */
 
