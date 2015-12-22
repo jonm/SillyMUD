@@ -55,14 +55,9 @@ struct breath_victim *choose_victims(struct char_data *ch,
                                      struct char_data *first_victim);
 void free_victims(struct breath_victim *head);
 void breath_weapon(struct char_data *ch, struct char_data *target,
-                   int mana_cost, void (*func) (byte, struct char_data *,
-                                                char *, int,
-                                                struct char_data *,
-                                                struct obj_data *));
+                   int mana_cost, breath_weapon_func *func);
 void use_breath_weapon(struct char_data *ch, struct char_data *target,
-                       int cost, void (*func) (byte, struct char_data *,
-                                               char *, int, struct char_data *,
-                                               struct obj_data *));
+                       int cost, breath_weapon_func *func);
 int breath_weapon_mob(struct char_data *ch, const char *cmd, char *arg,
                       struct char_data *mob, int type);
 int sailor(struct char_data *ch, const char *cmd, char *arg, struct char_data *mob,

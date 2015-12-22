@@ -17,6 +17,7 @@
 #include "act.wizard.h"
 #include "utility.h"
 #include "fight.h"
+#include "mobact.h"
 
 extern struct char_data *character_list;
 extern struct index_data *mob_index;
@@ -749,7 +750,7 @@ int command_search(char *arg) {
   return (-1);
 }
 
-void command_assign(char *arg, void (*p)) {
+ void command_assign(char *arg, mobact_func *p) {
   if (top_of_comp == 0)
     comp = (struct script_com *)malloc(sizeof(struct script_com));
   else

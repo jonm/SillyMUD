@@ -854,15 +854,7 @@ int mob_friend(struct char_data *ch, struct char_data *f);
 void pulse_mobiles(int type);
 void do_script(struct char_data *ch);
 int command_search(char *arg);
-void command_assign(char *arg, void (*p));
 void command_setup();
-void noop(char *arg, struct char_data *ch);
-void end2(char *arg, struct char_data *ch);
-void sgoto(char *arg, struct char_data *ch);
-void do_act(char *arg, struct char_data *ch);
-void do_jmp(char *arg, struct char_data *ch);
-void do_jsr(char *arg, struct char_data *ch);
-void do_rts(char *arg, struct char_data *ch);
 void mob_hit(struct char_data *, struct char_data *, int);
 
 
