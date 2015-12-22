@@ -3179,10 +3179,38 @@ void do_show(struct char_data *ch, char *argument,
 
 
   }
-  else if ((is_abbrev(buf, "objects") &&
-            (which_i = obj_index, topi = top_of_objt)) ||
-           (is_abbrev(buf, "mobiles") &&
-            (which_i = mob_index, topi = top_of_mobt))) {
+  else if (is_abbrev(buf, "mobiles")) {
+    topi = top_of_mobt;
+    int objn;
+    struct mob_index_data *mi;
+
+    only_argument(argument, zonenum);
+    zone = -1;
+    if (1 == sscanf(zonenum, "%i", &zone) &&
+        (zone < 0 || zone > top_of_zone_table)) {
+      append_to_string_block(&sb, "That is not a valid zone_number\n\r");
+      return;
+    }
+    if (zone >= 0) {
+      bottom = zone ? (zone_table[zone - 1].top + 1) : 0;
+      top = zone_table[zone].top;
+    }
+
+    append_to_string_block(&sb, "VNUM  rnum count names\n\r");
+    for (objn = 0; objn <= topi; objn++) {
+      mi = mob_index + objn;
+
+      if ((zone >= 0 && (mi->virtual < bottom || mi->virtual > top)) ||
+          (zone < 0 && !isname(zonenum, mi->name)))
+        continue;               /* optimize later */
+
+      SPRINTF(buf, "%5d %4d %3d  %s\n\r", mi->virtual, objn,
+              mi->number, mi->name);
+      append_to_string_block(&sb, buf);
+    }
+  }
+  else if (is_abbrev(buf, "objects")) {
+    topi = top_of_objt;
     int objn;
     struct obj_index_data *oi;
 
@@ -3200,7 +3228,7 @@ void do_show(struct char_data *ch, char *argument,
 
     append_to_string_block(&sb, "VNUM  rnum count names\n\r");
     for (objn = 0; objn <= topi; objn++) {
-      oi = which_i + objn;
+      oi = obj_index + objn;
 
       if ((zone >= 0 && (oi->virtual < bottom || oi->virtual > top)) ||
           (zone < 0 && !isname(zonenum, oi->name)))
@@ -3212,7 +3240,7 @@ void do_show(struct char_data *ch, char *argument,
     }
 
 
-  }
+  }  
   else if (is_abbrev(buf, "rooms")) {
 
     only_argument(argument, zonenum);

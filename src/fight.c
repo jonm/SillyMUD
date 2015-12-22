@@ -42,7 +42,6 @@ extern struct room_data *room_db;
 extern struct message_list fight_messages[MAX_MESSAGES];
 extern struct char_data *character_list;
 extern struct skill_data skill_info[];
-extern struct index_data *obj_index;
 extern char *ItemDamType[];
 extern int item_saveThrows[22][5];
 extern struct str_app_type str_app[];

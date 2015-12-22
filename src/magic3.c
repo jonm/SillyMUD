@@ -1855,7 +1855,7 @@ void spell_silence(byte level, struct char_data *ch,
       if ((!victim->specials.fighting)) {
         set_fighting(victim, ch);
         if (mob_index[victim->nr].func) {
-          (*mob_index[victim->nr].func) (victim, 0, "");
+          (*mob_index[victim->nr].func) (victim, 0, "", NULL, 0);
         }
       }
     }

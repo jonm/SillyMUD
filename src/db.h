@@ -92,7 +92,8 @@ struct _index_data {
   char *long_desc;
 };
 
-typedef int (obj_func)(struct char_data*, int, char*, struct obj_data*, int);
+typedef int (obj_func)(struct char_data*, const char *, char*,
+                       struct obj_data*, int);
 
 struct obj_index_data {
   int virtual;                  /* virtual number of this mob/obj           */
@@ -104,7 +105,8 @@ struct obj_index_data {
   char *long_desc;
 };
 
-typedef int (mob_func)(struct char_data*, int, char*, int);
+typedef int (mob_func)(struct char_data*, const char *, char*,
+                       struct char_data*, int);
 
 struct mob_index_data {
   int virtual;                  /* virtual number of this mob/obj           */
@@ -117,7 +119,7 @@ struct mob_index_data {
 };
 
 extern struct mob_index_data *mob_index;   /* index table for mobile file     */
-extern struct index_data *obj_index;   /* index table for object file     */
+extern struct obj_index_data *obj_index;   /* index table for object file     */
 extern int top_of_mobt;
 extern int top_of_objt;
 
@@ -168,9 +170,11 @@ char *fread_string(FILE *f1);
 int fread_string_na(char *dst, size_t max_len, FILE *f1);
 void reboot_text(struct char_data *ch, char *arg, const char * cmd);
 
-struct mob_index_data *make_mob_indices(struct index_data *base_idx, int top);
-struct obj_index_data *make_obj_indices(struct index_data *base_idx, int top);
-struct index_data *generate_indices(FILE * fl, int *top);
+struct mob_index_data *make_mob_indices(struct _index_data *base_idx, int top);
+struct obj_index_data *make_obj_indices(struct _index_data *base_idx, int top);
+struct _index_data *generate_indices(FILE * fl, int *top);
+
+extern struct obj_data *object_list;
 
 
 #endif

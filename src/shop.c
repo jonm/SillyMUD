@@ -17,6 +17,8 @@
 #include "act.comm.h"
 #include "utility.h"
 #include "db.h"
+#include "shop.h"
+#include "spec_procs.h"
 
 #define SHOP_FILE "tinyworld.shp"
 #define MAX_TRADE 5
@@ -553,15 +555,12 @@ void shopping_kill(char *UNUSED(arg), struct char_data *ch,
   }
 }
 
-int shop_keeper(struct char_data *ch, int cmd, char *arg, char *UNUSED(mob),
-                int type) {
+int shop_keeper(struct char_data *ch, const char *cmd, char *arg,
+                struct char_data *UNUSED(mob), int type) {
   char argm[100];
   struct char_data *temp_char;
   struct char_data *keeper;
   int shop_nr;
-
-  int citizen(struct char_data *ch, int cmd, char *arg, struct char_data *mob,
-              int type);
 
   if (type == EVENT_DWARVES_STRIKE) {
     ch->generic = DWARVES_STRIKE;
@@ -600,35 +599,35 @@ int shop_keeper(struct char_data *ch, int cmd, char *arg, char *UNUSED(mob),
     act("$n sneers at $N.", TRUE, keeper, 0, ch, TO_NOTVICT);
   }
 
-  if ((cmd == 56) && (ch->in_room == shop_index[shop_nr].in_room))
-    /* Buy */
+  if (STREQ(cmd, "buy") &&
+      (ch->in_room == shop_index[shop_nr].in_room))
   {
     shopping_buy(arg, ch, keeper, shop_nr);
     return (TRUE);
   }
 
-  if ((cmd == 57) && (ch->in_room == shop_index[shop_nr].in_room))
-    /* Sell */
+  if (STREQ(cmd, "sell") &&
+      (ch->in_room == shop_index[shop_nr].in_room))
   {
     shopping_sell(arg, ch, keeper, shop_nr);
     return (TRUE);
   }
 
-  if ((cmd == 58) && (ch->in_room == shop_index[shop_nr].in_room))
-    /* value */
+  if ((STREQ(cmd, "value") &&
+       (ch->in_room == shop_index[shop_nr].in_room)))
   {
     shopping_value(arg, ch, keeper, shop_nr);
     return (TRUE);
   }
 
-  if ((cmd == 59) && (ch->in_room == shop_index[shop_nr].in_room))
-    /* List */
+  if (STREQ(cmd, "list") &&
+      (ch->in_room == shop_index[shop_nr].in_room))
   {
     shopping_list(arg, ch, keeper, shop_nr);
     return (TRUE);
   }
 
-  if ((cmd == 25) || (cmd == 70)) {     /* Kill or Hit */
+  if (STREQ(cmd, "hit") || STREQ(cmd, "kill")) {
     only_argument(arg, argm);
 
     if (keeper == get_char_room(argm, ch->in_room)) {
@@ -636,7 +635,9 @@ int shop_keeper(struct char_data *ch, int cmd, char *arg, char *UNUSED(mob),
       return (TRUE);
     }
   }
-  else if ((cmd == 84) || (cmd == 207) || (cmd == 172)) {       /* Cast, recite, use */
+  else if (STREQ(cmd, "cast") ||
+           STREQ(cmd, "recite") ||
+           STREQ(cmd, "use")) {
     act("$N tells you 'No magic here - kid!'.", FALSE, ch, 0, keeper, TO_CHAR);
     return TRUE;
   }

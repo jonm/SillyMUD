@@ -69,7 +69,7 @@ FILE *mob_f,                    /* file containing mob prototypes  */
  *help_fl;                      /* file for help texts (HELP <kwd>) */
 
 struct mob_index_data *mob_index;   /* index table for mobile file     */
-struct index_data *obj_index;   /* index table for object file     */
+struct obj_index_data *obj_index;   /* index table for object file     */
 struct help_index_element *help_index = 0;
 
 int top_of_mobt = 0;            /* top of mobile index table       */
@@ -638,7 +638,7 @@ void build_player_index() {
 }
 
 
-struct mob_index_data *make_mob_indices(struct index_data *base_idx,
+struct mob_index_data *make_mob_indices(struct _index_data *base_idx,
                                         int top) {
   struct mob_index_data *mob_idx = NULL;
 
@@ -659,7 +659,7 @@ struct mob_index_data *make_mob_indices(struct index_data *base_idx,
   return mob_idx;
 }
 
-struct obj_index_data *make_obj_indices(struct index_data *base_idx,
+struct obj_index_data *make_obj_indices(struct _index_data *base_idx,
                                         int top) {
   struct obj_index_data *obj_idx = NULL;
 
@@ -681,10 +681,10 @@ struct obj_index_data *make_obj_indices(struct index_data *base_idx,
 }
 
 /* generate index table for object or monster file */
-struct index_data *generate_indices(FILE * fl, int *top) {
+struct _index_data *generate_indices(FILE * fl, int *top) {
   int i = 0;
   long bc = 1500;
-  struct index_data *index;
+  struct _index_data *index;
   char buf[82];
 
   rewind(fl);
@@ -693,12 +693,12 @@ struct index_data *generate_indices(FILE * fl, int *top) {
     if (fgets(buf, sizeof(buf), fl)) {
       if (*buf == '#') {
         if (!i) {               /* first cell */
-          CREATE(index, struct index_data, bc);
+          CREATE(index, struct _index_data, bc);
         }
         else {
           if (i >= bc) {
-            if (!(index = (struct index_data *)
-                  realloc(index, (i + 50) * sizeof(struct index_data)))) {
+            if (!(index = (struct _index_data *)
+                  realloc(index, (i + 50) * sizeof(struct _index_data)))) {
               perror("load indices");
               assert(0);
             }
