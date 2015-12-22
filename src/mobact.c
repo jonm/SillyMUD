@@ -65,7 +65,6 @@ void mobile_wander(struct char_data *ch) {
   int door, or;
   struct room_direction_data *exitp;
   struct room_data *rp;
-  char buf[100];
   extern int rev_dir[];
 
   if (GET_POS(ch) != POSITION_STANDING)
@@ -111,8 +110,8 @@ void mobile_wander(struct char_data *ch) {
         go_direction(ch, door);
         if (ch->in_room == 0) {
           if (or != 0) {
-            SPRINTF(buf, "%s just entered void from %d", GET_NAME(ch), or);
-            log_sev(buf, 5);
+            log_lev_msgf(LOG_CRIT, "%s just entered void from %d",
+                         GET_NAME(ch), or);
           }
         }
         return;
@@ -817,8 +816,8 @@ void sgoto(char *arg, struct char_data *ch) {
       arg++;
       p = strtok(arg, " ");
       if ((mob = get_char_vis(ch, p)) == NULL) {
-        fprintf(stderr, "%s couldn't find mob by name %s\n",
-                script_data[ch->script].filename, p);
+        log_msgf("%s couldn't find mob by name %s\n",
+                 script_data[ch->script].filename, p);
         ch->commandp++;
         return;
       }

@@ -1275,7 +1275,7 @@ int damage_epilog(struct char_data *ch, struct char_data *victim) {
                 GET_NAME(victim),
                 (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)));
       }
-      log_sev(buf, 6);
+      log_lev_msgf(LOG_ALERT, "%s", buf);
     }
     die(victim);
     /*

@@ -10,7 +10,6 @@
 #include <string.h>
 #include "utility.h"
 
-void log_msg(char *);
 
 int sec_check(char *arg, char *site) {
   char buf[255], buf2[255];

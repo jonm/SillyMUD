@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include "protos.h"
+#include "utility.h"
 
 
 /* Global data */

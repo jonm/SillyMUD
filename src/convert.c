@@ -159,14 +159,14 @@ main(int argc, char *argv[]) {
         fucked++;
         ok = FALSE;
       }
-    fprintf(stderr, "[%-4d] %s\n", i, pt2.name);
+    log_msgf("[%-4d] %s\n", i, pt2.name);
     if (!feof(f) && ok) {
       fwrite(&pt1, sizeof(struct char_file_u2), 1, f2);
       fwrite(&insert, sizeof(struct bart), 1, f2);
       fwrite(&pt2, sizeof(struct char_file_u3), 1, f2);
     }
     if (!(i % 100))
-      fprintf(stderr, ".");
+      log_msgf(".");
   }
 
   fclose(f);
