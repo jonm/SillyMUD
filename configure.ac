@@ -14,7 +14,7 @@ AC_CHECK_SIZEOF([void *])
 
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([bzero gethostbyaddr gethostbyname gethostname getpagesize gettimeofday inet_ntoa isascii memset select sigaddset sigemptyset sigprocmask socket strchr strdup strrchr strstr])
+AC_CHECK_FUNCS([arc4random arc4random_buf bzero gethostbyaddr gethostbyname gethostname getpagesize gettimeofday hstrerror htonl inet_addr inet_ntoa isascii memcmp memset srand rand select sigaddset sigemptyset sigprocmask socket strchr strdup strrchr strerror strstr time])
 
 AC_CHECK_HEADERS([criterion/criterion.h],[],[
   AC_MSG_WARN(unit tests will not be runnable without Criterion library)
