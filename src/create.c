@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "utility.h"
 
 #define MAIN_MENU           0
 #define CHANGE_NAME         1

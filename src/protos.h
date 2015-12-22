@@ -1423,7 +1423,6 @@ void cast_resist_blunt(byte level, struct char_data *ch, char *arg, int type,
 
 
 /* From utility.c */
-void log_msg(char *buf);
 int char_array_size(char *thingie[]);
 int ego_blade_save(struct char_data *ch);
 int MIN(int a, int b);

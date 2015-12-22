@@ -21,20 +21,28 @@
 #include "act.other.h"
 #include "act.move.h"
 
-void log_msg(char *s) {
-  syslog(LOG_INFO, "%s", s);
-  log_wiz(s, 1);
-}                               /*thought this was a prototype - heheh */
 
-void log_msgf(const char *fmt, ...) {
+void log_lev_msgf(int level, const char *fmt, ...) {
   char buf[256];
   va_list args;
   va_start(args, fmt);
-  vsyslog(LOG_INFO, fmt, args);
+  vsyslog(level, fmt, args);
   vsnprintf(buf, sizeof(buf), fmt, args);
-  log_wiz(buf, 1);
+  log_wiz(buf, level);
   va_end(args);
 }
+
+void log_msgf(const char *fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  log_lev_msgf(LOG_INFO, fmt, args);
+  va_end(args);
+}
+
+void log_msg(const char *s) {
+  log_msgf("%s", s);
+}
+
 
 extern char *article_list[];
 extern struct time_data time_info;
