@@ -34,6 +34,7 @@
 #include "spell_parser.h"
 #include "utility.h"
 #include "db.h"
+#include "security.h"
 
 #define NOT !
 #define AND &&

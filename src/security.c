@@ -4,11 +4,12 @@
   See license.doc for distribution terms.   SillyMUD is based on DIKUMUD
 */
 #include "config.h"
-#include "utils.h"
 
 #include <stdio.h>
 #include <string.h>
+#include "security.h"
 #include "utility.h"
+#include "utils.h"
 
 
 int sec_check(char *arg, char *site) {
