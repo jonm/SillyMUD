@@ -15,6 +15,7 @@
 #include "act.off.h"
 #include "act.other.h"
 #include "utility.h"
+#include "db.h"
 #include "fight.h"
 
 /* because I don't want to recompile */
@@ -54,7 +55,6 @@ extern char *spell_wear_off_soon_msg[];
 extern char *spell_wear_off_room_msg[];
 extern char *spell_wear_off_soon_room_msg[];
 extern struct obj_data *object_list;
-extern struct index_data *obj_index;
 extern struct con_app_type con_app[];
 extern struct weather_data weather_info;
 extern int sf_where[];

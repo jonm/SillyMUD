@@ -83,22 +83,43 @@ struct zone_data {
 
 
 /* element in monster and object index-tables   */
-struct index_data {
+struct _index_data {
   int virtual;                  /* virtual number of this mob/obj           */
   long pos;                     /* file position of this field              */
-  int number;                   /* number of existing units of this mob/obj   */
-
-  /* mob special procs are:
-     int (*func)(struct char_data *, int, char *, char *, int);
-     obj special procs are:
-     int (*func)(struct char_data *, int, char *, struct obj_data *, int);
-   */
-  int (*func) ();
+  int number;                   /* number of existing units of this mob/obj */
   char *name;
   char *short_desc;
   char *long_desc;
 };
 
+typedef int (obj_func)(struct char_data*, const char *, char*,
+                       struct obj_data*, int);
+
+struct obj_index_data {
+  int virtual;                  /* virtual number of this obj           */
+  long pos;                     /* file position of this field          */
+  int number;                   /* number of existing units of this obj */
+  obj_func *func;
+  char *name;
+  char *short_desc;
+  char *long_desc;
+};
+
+typedef int (mob_func)(struct char_data*, const char *, char*,
+                       struct char_data*, int);
+
+struct mob_index_data {
+  int virtual;                  /* virtual number of this mob           */
+  long pos;                     /* file position of this field          */
+  int number;                   /* number of existing units of this mob */
+  mob_func *func;
+  char *name;
+  char *short_desc;
+  char *long_desc;
+};
+
+extern struct mob_index_data *mob_index;   /* index table for mobile file */
+extern struct obj_index_data *obj_index;   /* index table for object file */
 extern int top_of_mobt;
 extern int top_of_objt;
 
@@ -148,5 +169,12 @@ void ensure_file_exists(const char *path);
 char *fread_string(FILE *f1);
 int fread_string_na(char *dst, size_t max_len, FILE *f1);
 void reboot_text(struct char_data *ch, char *arg, const char * cmd);
+
+struct mob_index_data *make_mob_indices(struct _index_data *base_idx, int top);
+struct obj_index_data *make_obj_indices(struct _index_data *base_idx, int top);
+struct _index_data *generate_indices(FILE * fl, int *top);
+
+extern struct obj_data *object_list;
+
 
 #endif

@@ -233,7 +233,6 @@ void boot_db();
 void reset_time();
 void update_time();
 void build_player_index();
-struct index_data *generate_indices(FILE * fl, int *top);
 void cleanout_room(struct room_data *rp);
 void completely_cleanout_room(struct room_data *rp);
 void load_one_room(FILE * fl, struct room_data *rp);
@@ -939,7 +938,6 @@ void shopping_list(char *arg, struct char_data *ch,
                    struct char_data *keeper, int shop_nr);
 void shopping_kill(char *arg, struct char_data *ch,
                    struct char_data *keeper, int shop_nr);
-int shop_keeper(struct char_data *ch, int cmd, char *arg, char *mob, int type);
 void boot_the_shops();
 void assign_the_shopkeepers();
 int do_i_hate_you(struct char_data *v);

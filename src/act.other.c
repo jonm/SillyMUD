@@ -14,6 +14,7 @@
 #include "act.comm.h"
 #include "act.other.h"
 #include "utility.h"
+#include "db.h"
 
 
 /* extern variables */
@@ -23,7 +24,6 @@ extern struct descriptor_data *descriptor_list;
 extern struct dex_skill_type dex_app_skill[];
 extern struct skill_data skill_info[];
 extern struct char_data *character_list;
-extern struct index_data *obj_index;
 extern struct time_info_data time_info;
 
 

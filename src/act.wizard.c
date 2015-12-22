@@ -20,6 +20,7 @@
 #include "act.wizard.h"
 #include "act.info.h"
 #include "utility.h"
+#include "db.h"
 
 /*   external vars  */
 
@@ -35,8 +36,6 @@ extern struct descriptor_data *descriptor_list;
 extern struct title_type titles[MAX_CLASS][ABS_MAX_LVL];
 extern struct time_info_data time_info;
 extern struct weather_data weather_info;
-extern struct index_data *mob_index;
-extern struct index_data *obj_index;
 extern int top_of_mobt;
 extern int top_of_objt;
 extern struct int_app_type int_app[26];
@@ -3092,7 +3091,6 @@ void do_show(struct char_data *ch, char *argument,
              const char * UNUSED(cmd)) {
   int zone;
   char buf[MAX_STRING_LENGTH], zonenum[MAX_INPUT_LENGTH];
-  struct index_data *which_i;
   int bottom, top, topi;
   struct string_block sb;
 
@@ -3145,12 +3143,9 @@ void do_show(struct char_data *ch, char *argument,
 
 
   }
-  else if ((is_abbrev(buf, "objects") &&
-            (which_i = obj_index, topi = top_of_objt)) ||
-           (is_abbrev(buf, "mobiles") &&
-            (which_i = mob_index, topi = top_of_mobt))) {
-    int objn;
-    struct index_data *oi;
+  else if (is_abbrev(buf, "mobiles")) {
+    topi = top_of_mobt;
+    struct mob_index_data *mi;
 
     only_argument(argument, zonenum);
     zone = -1;
@@ -3165,8 +3160,37 @@ void do_show(struct char_data *ch, char *argument,
     }
 
     append_to_string_block(&sb, "VNUM  rnum count names\n\r");
-    for (objn = 0; objn <= topi; objn++) {
-      oi = which_i + objn;
+    for (int mobn = 0; mobn <= topi; mobn++) {
+      mi = mob_index + mobn;
+
+      if ((zone >= 0 && (mi->virtual < bottom || mi->virtual > top)) ||
+          (zone < 0 && !isname(zonenum, mi->name)))
+        continue;               /* optimize later */
+
+      SPRINTF(buf, "%5d %4d %3d  %s\n\r", mi->virtual, mobn,
+              mi->number, mi->name);
+      append_to_string_block(&sb, buf);
+    }
+  }
+  else if (is_abbrev(buf, "objects")) {
+    topi = top_of_objt;
+    struct obj_index_data *oi;
+
+    only_argument(argument, zonenum);
+    zone = -1;
+    if (1 == sscanf(zonenum, "%i", &zone) &&
+        (zone < 0 || zone > top_of_zone_table)) {
+      append_to_string_block(&sb, "That is not a valid zone_number\n\r");
+      return;
+    }
+    if (zone >= 0) {
+      bottom = zone ? (zone_table[zone - 1].top + 1) : 0;
+      top = zone_table[zone].top;
+    }
+
+    append_to_string_block(&sb, "VNUM  rnum count names\n\r");
+    for (int objn = 0; objn <= topi; objn++) {
+      oi = obj_index + objn;
 
       if ((zone >= 0 && (oi->virtual < bottom || oi->virtual > top)) ||
           (zone < 0 && !isname(zonenum, oi->name)))
@@ -3176,8 +3200,6 @@ void do_show(struct char_data *ch, char *argument,
               oi->number, oi->name);
       append_to_string_block(&sb, buf);
     }
-
-
   }
   else if (is_abbrev(buf, "rooms")) {
 
@@ -3198,14 +3220,11 @@ void do_show(struct char_data *ch, char *argument,
 #else
       room_iterate(room_db, print_private_room, &sb);
 #endif
-
     }
     else if (1 != sscanf(zonenum, "%i", &zone) ||
              zone < 0 || zone > top_of_zone_table) {
       append_to_string_block(&sb,
                              "I need a zone number with this command\n\r");
-
-
     }
     else {
       struct show_room_zone_struct srzs;
@@ -3233,10 +3252,10 @@ void do_show(struct char_data *ch, char *argument,
   else if (is_abbrev(buf, "top")) {
 
     int objn, top_ten[10], i, insert, tmp, bot;
-    struct index_data *oi, *oi2;
+    struct obj_index_data *oi, *oi2;
     char buf[80];
 
-    which_i = obj_index;
+    struct obj_index_data *which_i = obj_index;
     topi = top_of_objt;
     bot = 0;
 

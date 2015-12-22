@@ -14,6 +14,7 @@
 #include "act.other.h"
 #include "spec_procs3.h"
 #include "utility.h"
+#include "db.h"
 
 /*   external vars  */
 #if HASH
@@ -23,7 +24,6 @@ extern struct room_data *room_db;
 #endif
 extern struct char_data *character_list;
 extern struct descriptor_data *descriptor_list;
-extern struct index_data *obj_index;
 extern int rev_dir[];
 extern char *dirs[];
 extern int movement_loss[];

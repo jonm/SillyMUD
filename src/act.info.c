@@ -3398,7 +3398,6 @@ void do_resize(struct char_data *ch, char *arg,
 
 int mob_lev_bonus(struct char_data *ch) {
   int t = 0;
-  extern struct index_data *mob_index;
 
   if (mob_index[ch->nr].func == magic_user)
     t += 5;

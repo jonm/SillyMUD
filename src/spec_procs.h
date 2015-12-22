@@ -193,5 +193,6 @@ int guardian(struct char_data *ch, const char *cmd, char *arg, struct char_data 
 int web_slinger(struct char_data *ch, const char *cmd, char *arg,
                 struct char_data *mob, int type);
 
+int citizen(struct char_data *, const char *, char *, struct char_data *, int);
 
 #endif

@@ -16,18 +16,17 @@
 #include "act.off.h"
 #include "act.wizard.h"
 #include "utility.h"
+#include "db.h"
 #include "fight.h"
 #include "mobact.h"
 
 extern struct char_data *character_list;
-extern struct index_data *mob_index;
 #if HASH
 extern struct hash_header room_db;
 #else
 extern struct room_data *room_db;
 #endif
 extern struct str_app_type str_app[];
-extern struct index_data *mob_index;
 
 int top_of_comp = 0;
 

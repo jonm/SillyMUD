@@ -13,7 +13,6 @@
 
 /* extern variables */
 
-extern struct obj_data *object_list;
 extern struct char_data *character_list;
 
 int rec_get_obj_room(struct obj_data *obj) {

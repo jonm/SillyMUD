@@ -15,6 +15,7 @@
 #include "act.wizard.h"
 #include "act.other.h"
 #include "utility.h"
+#include "db.h"
 
 #if HASH
 extern struct hash_header room_db;
@@ -23,8 +24,6 @@ extern struct room_data *room_db;
 #endif
 extern struct obj_data *object_list;
 extern struct char_data *character_list;
-extern struct index_data *mob_index;
-extern struct index_data *obj_index;
 extern struct descriptor_data *descriptor_list;
 extern struct str_app_type str_app[];
 extern struct dex_app_type dex_app[];

@@ -14,6 +14,7 @@
 #include "act.other.h"
 #include "act.off.h"
 #include "utility.h"
+#include "db.h"
 #include "fight.h"
 
 #define DUAL_WIELD(ch) (ch->equipment[WIELD] && ch->equipment[HOLD]&&\
@@ -40,11 +41,8 @@ extern struct hash_header room_db;
 extern struct room_data *room_db;
 #endif
 extern struct message_list fight_messages[MAX_MESSAGES];
-extern struct obj_data *object_list;
-extern struct index_data *mob_index;
 extern struct char_data *character_list;
 extern struct skill_data skill_info[];
-extern struct index_data *obj_index;
 extern char *ItemDamType[];
 extern int item_saveThrows[22][5];
 extern struct str_app_type str_app[];
