@@ -1009,8 +1009,6 @@ int square_contains_friend(struct room_data *square);
 int square_empty(struct room_data *square);
 /* From spell_parser.c */
 
-void spello(int nr, byte beat, byte pos, byte mlev, byte clev, byte dlev,
-            ubyte mana, sh_int tar, void *func, sh_int sf);
 int SPELL_LEVEL(struct char_data *ch, int sn);
 void affect_update(int pulse);
 void clone_char(struct char_data *ch);
