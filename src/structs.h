@@ -1352,8 +1352,6 @@ struct chr_app_type {
 
 /************************************************************/
 
-typedef void (*funcp) ();
-
 typedef void (breath_weapon_func) (byte, struct char_data *, char *, int,
                                    struct char_data *, struct obj_data *);
 

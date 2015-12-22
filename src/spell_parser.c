@@ -497,7 +497,6 @@ void affect_update(int pulse) {
         }
         else if (af->type >= FIRST_BREATH_WEAPON &&
                  af->type <= LAST_BREATH_WEAPON) {
-          extern funcp bweapons[];
           bweapons[af->type - FIRST_BREATH_WEAPON] (-af->modifier / 2, i, "",
                                                     SPELL_TYPE_SPELL, i, 0);
           if (!i->affected) {
