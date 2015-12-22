@@ -14,6 +14,7 @@
 #include "act.other.h"
 #include "spec_procs2.h"
 #include "utility.h"
+#include "fight.h"
 
 /* extern variables */
 

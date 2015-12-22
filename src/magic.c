@@ -12,6 +12,7 @@
 
 #include "protos.h"
 #include "act.info.h"
+#include "fight.h"
 
 /* Extern structures */
 #if HASH

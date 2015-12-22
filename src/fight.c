@@ -14,6 +14,7 @@
 #include "act.other.h"
 #include "act.off.h"
 #include "utility.h"
+#include "fight.h"
 
 #define DUAL_WIELD(ch) (ch->equipment[WIELD] && ch->equipment[HOLD]&&\
 			ITEM_TYPE(ch->equipment[WIELD])==ITEM_WEAPON && \
@@ -1718,7 +1719,7 @@ int hit_or_miss(struct char_data *ch, struct char_data *victim, int calc_thaco) 
 }
 
 void miss_victim(struct char_data *ch, struct char_data *v, int type,
-                 int w_type, int (*dam_func) ()) {
+                 int w_type, damage_func *dam_func) {
   struct obj_data *o;
 
   if (type <= 0)
@@ -1968,7 +1969,7 @@ int get_backstab_mult(struct char_data *ch, struct char_data *v) {
 }
 
 void hit_victim(struct char_data *ch, struct char_data *v, int dam,
-                int type, int w_type, int (*dam_func) ()) {
+                int type, int w_type, damage_func *dam_func) {
   extern byte backstab_mult[];
   int dead;
 
@@ -2017,7 +2018,7 @@ void hit_victim(struct char_data *ch, struct char_data *v, int dam,
 
 
 void root_hit(struct char_data *ch, struct char_data *victim, int type,
-              int (*dam_func) ()) {
+              damage_func *dam_func) {
   int w_type, thaco, dam;
   struct obj_data *wielded = 0; /* this is rather important. */
 

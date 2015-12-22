@@ -13,6 +13,7 @@
 #include "protos.h"
 #include "utility.h"
 #include "act.other.h"
+#include "fight.h"
 
 struct room_data *real_roomp(int);
 

@@ -309,25 +309,15 @@ int do_damage(struct char_data *ch, struct char_data *v, int dam, int type);
 void damage_messages(struct char_data *ch, struct char_data *v, int dam,
                      int attacktype);
 int damage_epilog(struct char_data *ch, struct char_data *victim);
-int missile_damage(struct char_data *ch, struct char_data *victim,
-                   int dam, int attacktype);
-int damage(struct char_data *ch, struct char_data *victim,
-           int dam, int attacktype);
 int get_weapon_type(struct char_data *ch, struct obj_data **wielded);
 int Getw_type(struct obj_data *wielded);
 int hit_check_deny(struct char_data *ch, struct char_data *victim);
 int calc_thaco(struct char_data *ch);
 int hit_or_miss(struct char_data *ch, struct char_data *victim,
                 int calc_thaco);
-void miss_victim(struct char_data *ch, struct char_data *v, int type,
-                 int w_type, int (*dam_func) ());
 int get_weapon_dam(struct char_data *ch, struct char_data *v,
                    struct obj_data *wielded);
 int get_backstab_mult(struct char_data *ch, struct char_data *v);
-void hit_victim(struct char_data *ch, struct char_data *v, int dam,
-                int type, int w_type, int (*dam_func) ());
-void root_hit(struct char_data *ch, struct char_data *victim, int type,
-              int (*dam_func) ());
 void missile_hit(struct char_data *ch, struct char_data *victim, int type);
 void hit(struct char_data *ch, struct char_data *victim, int type);
 void perform_violence(void);
