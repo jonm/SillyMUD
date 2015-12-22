@@ -11,6 +11,7 @@
 #include <sys/time.h>
 
 #include "protos.h"
+#include "utility.h"
 
 void checkpointing(int);
 void shutdown_request(int);

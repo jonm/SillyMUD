@@ -308,25 +308,15 @@ int do_damage(struct char_data *ch, struct char_data *v, int dam, int type);
 void damage_messages(struct char_data *ch, struct char_data *v, int dam,
                      int attacktype);
 int damage_epilog(struct char_data *ch, struct char_data *victim);
-int missile_damage(struct char_data *ch, struct char_data *victim,
-                   int dam, int attacktype);
-int damage(struct char_data *ch, struct char_data *victim,
-           int dam, int attacktype);
 int get_weapon_type(struct char_data *ch, struct obj_data **wielded);
 int Getw_type(struct obj_data *wielded);
 int hit_check_deny(struct char_data *ch, struct char_data *victim);
 int calc_thaco(struct char_data *ch);
 int hit_or_miss(struct char_data *ch, struct char_data *victim,
                 int calc_thaco);
-void miss_victim(struct char_data *ch, struct char_data *v, int type,
-                 int w_type, int (*dam_func) ());
 int get_weapon_dam(struct char_data *ch, struct char_data *v,
                    struct obj_data *wielded);
 int get_backstab_mult(struct char_data *ch, struct char_data *v);
-void hit_victim(struct char_data *ch, struct char_data *v, int dam,
-                int type, int w_type, int (*dam_func) ());
-void root_hit(struct char_data *ch, struct char_data *victim, int type,
-              int (*dam_func) ());
 void missile_hit(struct char_data *ch, struct char_data *victim, int type);
 void hit(struct char_data *ch, struct char_data *victim, int type);
 void perform_violence(void);
@@ -1017,8 +1007,6 @@ int square_contains_friend(struct room_data *square);
 int square_empty(struct room_data *square);
 /* From spell_parser.c */
 
-void spello(int nr, byte beat, byte pos, byte mlev, byte clev, byte dlev,
-            ubyte mana, sh_int tar, void *func, sh_int sf);
 int SPELL_LEVEL(struct char_data *ch, int sn);
 void affect_update(int pulse);
 void clone_char(struct char_data *ch);
@@ -1081,8 +1069,6 @@ void cast_cause_serious(byte level, struct char_data *ch, char *arg, int type,
                         struct char_data *victim, struct obj_data *tar_obj);
 void cast_cause_critic(byte level, struct char_data *ch, char *arg, int type,
                        struct char_data *victim, struct obj_data *tar_obj);
-void cast_geyser(byte level, struct char_data *ch, char *arg, int type,
-                 struct char_data *victim, struct obj_data *tar_obj);
 void cast_green_slime(byte level, struct char_data *ch, char *arg, int type,
                       struct char_data *victim, struct obj_data *tar_obj);
 
@@ -1213,17 +1199,6 @@ void cast_identify(byte level, struct char_data *ch, char *arg, int type,
                    struct char_data *tar_ch, struct obj_data *tar_obj);
 void cast_dragon_breath(byte level, struct char_data *ch, char *arg, int type,
                         struct char_data *tar_ch, struct obj_data *potion);
-void cast_fire_breath(byte level, struct char_data *ch, char *arg, int type,
-                      struct char_data *tar_ch, struct obj_data *tar_obj);
-void cast_frost_breath(byte level, struct char_data *ch, char *arg, int type,
-                       struct char_data *tar_ch, struct obj_data *tar_obj);
-void cast_acid_breath(byte level, struct char_data *ch, char *arg, int type,
-                      struct char_data *tar_ch, struct obj_data *tar_obj);
-void cast_gas_breath(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *tar_ch, struct obj_data *tar_obj);
-void cast_lightning_breath(byte level, struct char_data *ch, char *arg,
-                           int type, struct char_data *tar_ch,
-                           struct obj_data *tar_obj);
 void cast_knock(byte level, struct char_data *ch, char *arg, int type,
                 struct char_data *tar_ch, struct obj_data *tar_obj);
 void cast_know_alignment(byte level, struct char_data *ch, char *arg, int type,
@@ -1421,7 +1396,6 @@ void cast_resist_blunt(byte level, struct char_data *ch, char *arg, int type,
 
 
 /* From utility.c */
-void log_msg(char *buf);
 int char_array_size(char *thingie[]);
 int ego_blade_save(struct char_data *ch);
 int MIN(int a, int b);
@@ -1445,7 +1419,6 @@ int dice(int number, int size);
 int scan_number(char *text, int *rval);
 int str_cmp(char *arg1, char *arg2);
 int strn_cmp(char *arg1, char *arg2, int n);
-void log_sev(char *str, int sev);
 void slog(char *str);
 void sprintbit(unsigned long vektor, char *names[], char *result);
 void sprinttype(int type, char *names[], char *result);

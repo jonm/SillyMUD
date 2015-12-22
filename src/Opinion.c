@@ -192,9 +192,7 @@ int hates(struct char_data *ch, struct char_data *v) {
   if (IS_SET(ch->hatefield, HATE_RACE)) {
     if (ch->hates.race != -1) {
       if (ch->hates.race == GET_RACE(v)) {
-        char buf[256];
-        SPRINTF(buf, "You hate %d", GET_RACE(v));
-        send_to_char(buf, ch);
+        send_to_charf(ch, "You hate %d", GET_RACE(v));
         return (TRUE);
       }
     }

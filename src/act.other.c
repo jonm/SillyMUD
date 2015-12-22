@@ -160,8 +160,6 @@ void do_qui(struct char_data *ch, char *UNUSED(argument),
 
 void do_title(struct char_data *ch, char *argument,
               const char * UNUSED(cmd)) {
-  char buf[512];
-
   if (IS_NPC(ch) || !ch->desc)
     return;
 
@@ -173,8 +171,7 @@ void do_title(struct char_data *ch, char *argument,
       send_to_char("Line too long, truncated\n", ch);
       *(argument + 151) = '\0';
     }
-    SPRINTF(buf, "Your title has been set to : <%s>\n\r", argument);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "Your title has been set to : <%s>\n\r", argument);
     free(ch->player.title);
     ch->player.title = strdup(argument);
   }
@@ -584,8 +581,7 @@ void do_steal(struct char_data *ch, char *argument,
       if (gold > 0) {
         GET_GOLD(ch) += gold;
         GET_GOLD(victim) -= gold;
-        SPRINTF(buf, "Bingo! You got %d gold coins.\n\r", gold);
-        send_to_char(buf, ch);
+        send_to_charf(ch, "Bingo! You got %d gold coins.\n\r", gold);
         if (IS_PC(ch) && IS_PC(victim))
           GET_ALIGNMENT(ch) -= 20;
       }
@@ -1332,7 +1328,6 @@ void do_use(struct char_data *ch, char *argument,
     return;
   }
   if (found) {
-    char buf[255];
 
     act("$n shakes and begins to shrink.", FALSE, f, 0, 0, TO_ROOM);
     REMOVE_BIT(f->specials.affected_by, AFF_CHARM);
@@ -1340,8 +1335,7 @@ void do_use(struct char_data *ch, char *argument,
     char_from_room(f);
     char_to_room(f, 3);
     obj_to_char(f->link, ch);
-    SPRINTF(buf, "You now have %s.\n", f->link->short_description);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You now have %s.\n", f->link->short_description);
     return;
   }
 
@@ -1430,7 +1424,6 @@ void do_use(struct char_data *ch, char *argument,
     }
   }
   else if (IS_SET(stick->obj_flags.extra_flags, ITEM_FIGURINE)) {
-    char buf[255];
     for (fol = ch->followers; fol; fol = fol->next)
       if (IS_SET(fol->follower->specials.act, ACT_FIGURINE)) {
         send_to_char
@@ -1441,10 +1434,9 @@ void do_use(struct char_data *ch, char *argument,
 
 
     if (number(1, 26) == 20) {  /* One in 20 chance of it destroying itself */
-      SPRINTF(buf,
-              "%s shudders and shakes, finally cracking into a million pieces.\n",
-              stick->short_description);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "%s shudders and shakes, finally cracking into a million pieces.\n",
+                    stick->short_description);
       stick = unequip_char(ch, HOLD);
       char_from_room(stick->link);
       extract_char(stick->link);
@@ -1459,9 +1451,8 @@ void do_use(struct char_data *ch, char *argument,
     stick = unequip_char(ch, HOLD);
     act("$p starts to shudder an shake in $n's hands.", FALSE, ch, stick, 0,
         TO_ROOM);
-    SPRINTF(buf, "%s shakes in your hands and grows into %s.\n",
-            stick->short_description, stick->link->player.short_descr);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s shakes in your hands and grows into %s.\n",
+                  stick->short_description, stick->link->player.short_descr);
     SET_BIT(stick->link->specials.affected_by, AFF_CHARM);
     char_from_room(stick->link);
     char_to_room(stick->link, ch->in_room);
@@ -1542,8 +1533,7 @@ void do_alias(struct char_data *ch, char *arg, const char *cmd) {
       if (ch->specials.A_list) {
         for (i = 0; i < 10; i++) {
           if (ch->specials.A_list->com[i]) {
-            SPRINTF(buf, "[%d] %s\n\r", i, ch->specials.A_list->com[i]);
-            send_to_char(buf, ch);
+            send_to_charf(ch, "[%d] %s\n\r", i, ch->specials.A_list->com[i]);
           }
         }
       }
@@ -1803,8 +1793,7 @@ void do_split(struct char_data *ch, char *arg,
       k = ch;
       GET_GOLD(k) += share;
       num -= share;
-      SPRINTF(buf, "You keep %d gold\n\r", share);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You keep %d gold\n\r", share);
     }
 
     for (f = k->followers; f; f = f->next)
@@ -1813,12 +1802,11 @@ void do_split(struct char_data *ch, char *arg,
           if (f->follower != ch) {
             SPRINTF(buf, "$N gives you %d gold", share);
             act(buf, 0, f->follower, 0, ch, TO_CHAR);
-            SPRINTF(buf, "You give $N %d gold", share);
+            send_to_charf(ch, "You give $N %d gold", share);
             act(buf, 0, ch, 0, f->follower, TO_CHAR);
           }
           else {
-            SPRINTF(buf, "You keep %d gold\n\r", share);
-            send_to_char(buf, ch);
+            send_to_charf(ch, "You keep %d gold\n\r", share);
           }
           GET_GOLD(f->follower) += share;
           num -= share;
@@ -1827,8 +1815,7 @@ void do_split(struct char_data *ch, char *arg,
 
     /* give rest to ch */
     GET_GOLD(ch) += num;
-    SPRINTF(buf, "And you keep the %d gold left over.\n\r", num);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "And you keep the %d gold left over.\n\r", num);
 
 
   }
@@ -1864,7 +1851,6 @@ void do_gname(struct char_data *ch, char *arg,
   /* set ch->specials.gname to the argument    */
   for (; *arg == ' '; arg++);
   send_to_char("Setting your group name to :", ch);
-  send_to_char(arg, ch);
   ch->specials.gname = strdup(arg);
 
 }

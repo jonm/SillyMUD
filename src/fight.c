@@ -15,6 +15,7 @@
 #include "act.off.h"
 #include "utility.h"
 #include "db.h"
+#include "fight.h"
 
 #define DUAL_WIELD(ch) (ch->equipment[WIELD] && ch->equipment[HOLD]&&\
 			ITEM_TYPE(ch->equipment[WIELD])==ITEM_WEAPON && \
@@ -551,7 +552,6 @@ void die(struct char_data *ch) {
 
   struct char_data *pers;
   int i, tmp;
-  char buf[80];
   int fraction;
   struct descriptor_data *fd;
   int onelife;
@@ -626,10 +626,9 @@ void die(struct char_data *ch) {
           ("\n\r\n\rWARNING WARNING WARNING WARNING WARNING WARNING\n\r", ch);
         send_to_char("Your next death will result in the loss of a level,\n\r",
                      ch);
-        SPRINTF(buf, "unless you get at least %d more exp points.\n\r",
-                (titles[i][(int)GET_LEVEL(ch, i)].exp / fraction) -
-                GET_EXP(ch));
-        send_to_char(buf, ch);
+        send_to_charf(ch, "unless you get at least %d more exp points.\n\r",
+                      (titles[i][(int)GET_LEVEL(ch, i)].exp / fraction) -
+                      GET_EXP(ch));
       }
     }
   }
@@ -1217,9 +1216,8 @@ int damage_epilog(struct char_data *ch, struct char_data *victim) {
           mula = GET_GOLD(victim);
           GET_GOLD(victim) = 0;
           GET_GOLD(ch) += mula;
-          SPRINTF(buf, "You loot %d gold from the body of %s.\n\r", mula,
-                  victim->player.short_descr);
-          send_to_char(buf, ch);
+          send_to_charf(ch, "You loot %d gold from the body of %s.\n\r", mula,
+                        victim->player.short_descr);
           gotsome = TRUE;
         }
         else
@@ -1273,7 +1271,7 @@ int damage_epilog(struct char_data *ch, struct char_data *victim) {
                 GET_NAME(victim),
                 (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)));
       }
-      log_sev(buf, 6);
+      log_lev_msgf(LOG_ALERT, "%s", buf);
     }
     die(victim);
     /*
@@ -1719,7 +1717,7 @@ int hit_or_miss(struct char_data *ch, struct char_data *victim, int calc_thaco) 
 }
 
 void miss_victim(struct char_data *ch, struct char_data *v, int type,
-                 int w_type, int (*dam_func) ()) {
+                 int w_type, damage_func *dam_func) {
   struct obj_data *o;
 
   if (type <= 0)
@@ -1969,7 +1967,7 @@ int get_backstab_mult(struct char_data *ch, struct char_data *v) {
 }
 
 void hit_victim(struct char_data *ch, struct char_data *v, int dam,
-                int type, int w_type, int (*dam_func) ()) {
+                int type, int w_type, damage_func *dam_func) {
   extern byte backstab_mult[];
   int dead;
 
@@ -2018,7 +2016,7 @@ void hit_victim(struct char_data *ch, struct char_data *v, int dam,
 
 
 void root_hit(struct char_data *ch, struct char_data *victim, int type,
-              int (*dam_func) ()) {
+              damage_func *dam_func) {
   int w_type, thaco, dam;
   struct obj_data *wielded = 0; /* this is rather important. */
 
@@ -2641,7 +2639,6 @@ struct char_data *find_any_victim(struct char_data *ch) {
 void break_life_saver_obj(struct char_data *ch) {
 
   int found = FALSE, i, j;
-  char buf[200];
   struct obj_data *o;
 
   /*
@@ -2665,9 +2662,8 @@ void break_life_saver_obj(struct char_data *ch) {
      *  break the object.
      */
 
-    SPRINTF(buf, "%s shatters with a blinding flash of light!\n\r",
-            ch->equipment[found]->name);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s shatters with a blinding flash of light!\n\r",
+                  ch->equipment[found]->name);
     if ((o = unequip_char(ch, found)) != NULL) {
       make_scrap(ch, o);
     }
@@ -2676,7 +2672,6 @@ void break_life_saver_obj(struct char_data *ch) {
 }
 
 int brittle_check(struct char_data *ch, int dam) {
-  char buf[200];
   struct obj_data *obj;
 
   if (dam <= 0)
@@ -2685,8 +2680,7 @@ int brittle_check(struct char_data *ch, int dam) {
   if (ch->equipment[WIELD]) {
     if (IS_OBJ_STAT(ch->equipment[WIELD], ITEM_BRITTLE)) {
       if ((obj = unequip_char(ch, WIELD)) != NULL) {
-        SPRINTF(buf, "%s shatters.\n\r", obj->short_description);
-        send_to_char(buf, ch);
+        send_to_charf(ch, "%s shatters.\n\r", obj->short_description);
         make_scrap(ch, obj);
         return (TRUE);
       }
@@ -2796,7 +2790,6 @@ int pre_proc_dam(struct char_data *ch, int type, int dam) {
 
 int damage_one_item(struct char_data *ch, int dam_type, struct obj_data *obj) {
   int num;
-  char buf[256];
 
   num = damaged_by_attack(obj, dam_type);
 
@@ -2804,9 +2797,8 @@ int damage_one_item(struct char_data *ch, int dam_type, struct obj_data *obj) {
     return (TRUE);
   }
   else if (num != 0) {
-    SPRINTF(buf, "%s is %s.\n\r", obj->short_description,
-            ItemDamType[dam_type - 1]);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s is %s.\n\r", obj->short_description,
+                  ItemDamType[dam_type - 1]);
     if (damage_item(obj, num)) {
       return (TRUE);
     }

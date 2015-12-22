@@ -289,7 +289,6 @@ void load_char_objs(struct char_data *ch) {
     found = TRUE;
   }
   else {
-    char buf[MAX_STRING_LENGTH];
     if (ch->in_room == NOWHERE)
       log_msg("Char reconnecting after autorent");
 #ifdef NEW_RENT
@@ -299,8 +298,7 @@ void load_char_objs(struct char_data *ch) {
                      (SECS_PER_REAL_DAY));
 #endif
     log_msgf("Char ran up charges of %g gold in rent", timegold);
-    SPRINTF(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You ran up charges of %g gold in rent.\n\r", timegold);
     GET_GOLD(ch) -= timegold;
     found = TRUE;
     if (GET_GOLD(ch) < 0) {
@@ -401,10 +399,9 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
   if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER)) {
 #if NODUPLICATES
 #else
-    SPRINTF(buf,
-            "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
-            obj->short_description);
-    send_to_char(buf, ch);
+    send_to_charf(ch,
+                  "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+                  obj->short_description);
 #endif
   }
   else if (obj->obj_flags.cost_per_day < 0) {
@@ -412,10 +409,9 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
 #if NODUPLICATES
 #else
     if (ch != NULL) {
-      SPRINTF(buf,
-              "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
-              obj->short_description);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+                    obj->short_description);
     }
 #endif
 
@@ -527,9 +523,9 @@ void update_obj_file() {
             log_msgf("   Deautorenting %s", st.owner);
 
 #if LIMITED_ITEMS
-            fprintf(stderr, "Counting limited items\n");
+            log_msgf("Counting limited items\n");
             count_limited_items(&st);
-            fprintf(stderr, "Done\n");
+            log_msgf("Done\n");
 #endif
             fseek(char_file, (long)(player_table[i].nr *
                                     sizeof(struct char_file_u)), 0);

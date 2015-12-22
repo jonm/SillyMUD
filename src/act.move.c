@@ -39,7 +39,6 @@ void not_legal_move(struct char_data *ch) {
 
 
 int valid_move(struct char_data *ch, int cmd) {
-  char tmp[256];
   struct room_direction_data *exitp;
 
   exitp = EXIT(ch, cmd);
@@ -86,8 +85,7 @@ int valid_move(struct char_data *ch, int cmd) {
     if (exitp->keyword) {
       if (!IS_SET(exitp->exit_info, EX_SECRET) &&
           (strcmp(fname(exitp->keyword), "secret"))) {
-        SPRINTF(tmp, "The %s seems to be closed.\n\r", fname(exitp->keyword));
-        send_to_char(tmp, ch);
+        send_to_charf(ch, "The %s seems to be closed.\n\r", fname(exitp->keyword));
         return (FALSE);
       }
       else {
@@ -553,15 +551,17 @@ void display_move(struct char_data *ch, int dir, int was_in, int total) {
             }
             else {
               if (MOUNTED(ch)) {
-                SPRINTF(tmp, "%s leaves %s, riding on %s\n\r", GET_NAME(ch),
-                        dirs[dir], MOUNTED(ch)->player.short_descr);
+                send_to_charf(tmp_ch, "%s leaves %s, riding on %s\n\r",
+                              GET_NAME(ch),
+                              dirs[dir],
+                              MOUNTED(ch)->player.short_descr);
               }
               else {
-                SPRINTF(tmp, "%s %s %s.\n\r", GET_NAME(ch), how, dirs[dir]);
+                send_to_charf(tmp_ch, "%s %s %s.\n\r", GET_NAME(ch),
+                              how, dirs[dir]);
               }
             }
           }
-          send_to_char(tmp, tmp_ch);
         }
       }
     }
@@ -676,7 +676,6 @@ int add_to_char_heap(struct char_data *heap[50], int *top, int total[50],
 
 
 int find_door(struct char_data *ch, char *type, char *dir) {
-  char buf[MAX_STRING_LENGTH];
   int door;
   extern char *dirs[];
   struct room_direction_data *exitp;
@@ -698,8 +697,7 @@ int find_door(struct char_data *ch, char *type, char *dir) {
           send_to_char("Thats a direction, not a portal.\n\r", ch);
           return (-1);
         }
-        SPRINTF(buf, "I see no %s there.\n\r", type);
-        send_to_char(buf, ch);
+        send_to_charf(ch, "I see no %s there.\n\r", type);
         return (-1);
       }
     }
@@ -708,8 +706,7 @@ int find_door(struct char_data *ch, char *type, char *dir) {
         send_to_char("Thats a direction, not a portal.\n\r", ch);
         return (-1);
       }
-      SPRINTF(buf, "I see no %s there.\n\r", type);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "I see no %s there.\n\r", type);
       return (-1);
     }
   }
@@ -725,8 +722,7 @@ int find_door(struct char_data *ch, char *type, char *dir) {
         return (-1);
       }
     }
-    SPRINTF(buf, "I see no %s here.\n\r", type);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "I see no %s here.\n\r", type);
     return (-1);
   }
 }
@@ -1182,7 +1178,7 @@ void do_pick(struct char_data *ch, char *argument,
 
 void do_enter(struct char_data *ch, char *argument, const char *UNUSED(cmd)) {
   int door;
-  char buf[MAX_INPUT_LENGTH], tmp[MAX_STRING_LENGTH];
+  char buf[MAX_INPUT_LENGTH];
   struct room_direction_data *exitp;
   struct room_data *rp;
 
@@ -1195,8 +1191,7 @@ void do_enter(struct char_data *ch, char *argument, const char *UNUSED(cmd)) {
         move_to_dir(ch, door);
         return;
       }
-    SPRINTF(tmp, "There is no %s here.\n\r", buf);
-    send_to_char(tmp, ch);
+    send_to_charf(ch, "There is no %s here.\n\r", buf);
   }
   else if (IS_SET(real_roomp(ch->in_room)->room_flags, INDOORS)) {
     send_to_char("You are already indoors.\n\r", ch);

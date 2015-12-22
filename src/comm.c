@@ -22,6 +22,8 @@
 #include <signal.h>
 #include <sys/resource.h>
 #include <unistd.h>
+#include <stdarg.h>
+#include <syslog.h>
 
 #include "structs.h"
 #include "protos.h"
@@ -105,7 +107,7 @@ int real_main(int argc, char **argv) {
   int res;
 #endif
 
-
+  openlog("silly", LOG_CONS|LOG_PID, LOG_USER);
 
   port = DFLT_PORT;
   dir = DEFAULT_LIBDIR;
@@ -620,7 +622,7 @@ int get_from_q(struct txt_q *queue, char *dest) {
     return (0);
 
   if (!dest) {
-    log_sev("Sending message to null destination.", 5);
+    log_lev_msgf(LOG_CRIT, "Sending message to null destination.");
     return (0);
   }
 
@@ -783,7 +785,6 @@ int new_descriptor(int s) {
   struct sockaddr peer;
 #endif
   struct sockaddr_in sock;
-  char buf[200];
 
   if ((desc = new_connection(s)) < 0)
     return (-1);
@@ -819,15 +820,13 @@ int new_descriptor(int s) {
 #ifndef sun
     if ((long)strncpy(newd->host, inet_ntoa(sock.sin_addr), 49) > 0) {
       *(newd->host + 49) = '\0';
-      SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
-              maxdesc);
-      log_sev(buf, 3);
+      log_lev_msgf(LOG_WARNING, "New connection from addr %s: %d: %d",
+                   newd->host, desc, maxdesc);
     }
 #else
     strcpy(newd->host, (char *)inet_ntoa(&sock.sin_addr));
-    SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
-            maxdesc);
-    log_sev(buf, 3);
+    log_lev_msgf(LOG_WARNING, "New connection from addr %s: %d: %d",
+                   newd->host, desc, maxdesc);
 #endif
   }
 
@@ -1247,6 +1246,15 @@ void send_to_char(char *messg, struct char_data *ch) {
       write_to_q(messg, &ch->desc->output);
 }
 
+void send_to_charf(struct char_data *ch, const char *fmt, ...) {
+  char buf[1024];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buf, sizeof(buf), fmt, args);
+  send_to_char(buf, ch);
+  va_end(args);
+}
+
 
 void save_all() {
   struct descriptor_data *i;
@@ -1506,12 +1514,10 @@ void act(char *str, int hide_invisible, struct char_data *ch,
 
 void raw_force_all(char *to_force) {
   struct descriptor_data *i;
-  char buf[400];
 
   for (i = descriptor_list; i; i = i->next)
     if (!i->connected) {
-      SPRINTF(buf, "The game has forced you to '%s'.\n\r", to_force);
-      send_to_char(buf, i->character);
+      send_to_charf(i->character, "The game has forced you to '%s'.\n\r", to_force);
       command_interpreter(i->character, to_force);
     }
 }
@@ -1601,39 +1607,24 @@ void update_screen(struct char_data *ch, int update) {
 
 
 void init_screen(struct char_data *ch) {
-  char buf[255];
   int size;
 
   size = ch->size;
-  SPRINTF(buf, VT_HOMECLR);
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_MARGSET, 0, size - 5);
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 4, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf,
-          "-===========================================================================-");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Hit Points: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 40);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Movement Points: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Mana: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 40);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Gold: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 1, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Experience Points: ");
-  send_to_char(buf, ch);
+  send_to_charf(ch, VT_HOMECLR);
+  send_to_charf(ch, VT_MARGSET, 0, size - 5);
+  send_to_charf(ch, VT_CURSPOS, size - 4, 1);
+  send_to_charf(ch,
+                "-===========================================================================-");
+  send_to_charf(ch, VT_CURSPOS, size - 3, 1);
+  send_to_charf(ch, "Hit Points: ");
+  send_to_charf(ch, VT_CURSPOS, size - 3, 40);
+  send_to_charf(ch, "Movement Points: ");
+  send_to_charf(ch, VT_CURSPOS, size - 2, 1);
+  send_to_charf(ch, "Mana: ");
+  send_to_charf(ch, VT_CURSPOS, size - 2, 40);
+  send_to_charf(ch, "Gold: ");
+  send_to_charf(ch, VT_CURSPOS, size - 1, 1);
+  send_to_charf(ch, "Experience Points: ");
 
   ch->last.mana = GET_MANA(ch);
   ch->last.mmana = GET_MAX_MANA(ch);
@@ -1645,28 +1636,16 @@ void init_screen(struct char_data *ch) {
   ch->last.gold = GET_GOLD(ch);
 
   /* Update all of the info parts */
-  SPRINTF(buf, VT_CURSPOS, size - 3, 13);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 58);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 7);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 47);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d", GET_GOLD(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 1, 20);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d", GET_EXP(ch));
-  send_to_char(buf, ch);
+  send_to_charf(ch, VT_CURSPOS, size - 3, 13);
+  send_to_charf(ch, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 3, 58);
+  send_to_charf(ch, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 2, 7);
+  send_to_charf(ch, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 2, 47);
+  send_to_charf(ch, "%d", GET_GOLD(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 1, 20);
+  send_to_charf(ch, "%d", GET_EXP(ch));
 
-  SPRINTF(buf, VT_CURSPOS, 0, 0);
-  send_to_char(buf, ch);
-
+  send_to_charf(ch, VT_CURSPOS, 0, 0);
 }

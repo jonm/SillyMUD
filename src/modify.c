@@ -12,6 +12,7 @@
 #include <time.h>
 
 #include "protos.h"
+#include "utility.h"
 
 #define REBOOT_AT    10         /* 0-23, time of optional reboot if -e lib/reboot */
 

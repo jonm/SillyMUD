@@ -17,6 +17,7 @@
 #include "act.off.h"
 #include "utility.h"
 #include "db.h"
+#include "fight.h"
 
 /* Extern structures */
 extern struct room_data *world;

@@ -15,6 +15,9 @@
 #include "spec_procs2.h"
 #include "utility.h"
 #include "db.h"
+#include "fight.h"
+#include "spells1.h"
+#include "spells2.h"
 
 /* extern variables */
 
@@ -407,15 +410,13 @@ void do_flee(struct char_data *ch, char *argument,
     0, die, percent, charm, nmbr, f, panic, j, tries, badroom;
   bool found;
   char buf[255];
-  char buf2[255];
 
   argument = one_argument(argument, buf);
 
   if (IS_PC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)) {
     if ((ch->desc->wait) > 1) { /* Someone is in a wait state */
       send_to_char("Your head is still spinning too much to flee!\n\r", ch);
-      SPRINTF(buf, "You must wait %d pulses\n\r", ch->desc->wait);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You must wait %d pulses\n\r", ch->desc->wait);
       return;
     }
 
@@ -432,13 +433,11 @@ void do_flee(struct char_data *ch, char *argument,
         send_to_char("Please choose a flee setting of 1 to 5 rooms.\n\r", ch);
         return;
       }
-      SPRINTF(buf2, "You used to flee %d rooms when you ran away.\n\r",
-              ch->specials.flee);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "You used to flee %d rooms when you ran away.\n\r",
+                    ch->specials.flee);
       ch->specials.flee = nmbr;
-      SPRINTF(buf2, "You will NOW flee %d rooms when you run away.\n\r",
-              ch->specials.flee);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "You will NOW flee %d rooms when you run away.\n\r",
+                    ch->specials.flee);
       return;
     }
   }
@@ -1279,7 +1278,6 @@ void kick_action(struct char_data *ch, char *argument, int npc_ok) {
 void do_wimp(struct char_data *ch, char *argument,
              const char * UNUSED(cmd)) {
   char buf[255];
-  char buf2[255];
   int pct;
 
   if (GET_RACE(ch) == RACE_OGRE) {
@@ -1310,10 +1308,8 @@ void do_wimp(struct char_data *ch, char *argument,
         REMOVE_BIT(ch->specials.act, PLR_WIMPY);
       send_to_char("Ok, you are no longer a wimp...\n\r", ch);
       ch->specials.pct = pct;
-      SPRINTF(buf2,
-              "And you will now get your BLEEDING message at %d%% of max hitpoints.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "And you will now get your BLEEDING message at %d%% of max hitpoints.\n\r",
+                    ch->specials.pct);
     }
     else {
       if (IS_NPC(ch))
@@ -1321,10 +1317,9 @@ void do_wimp(struct char_data *ch, char *argument,
       else
         REMOVE_BIT(ch->specials.act, PLR_WIMPY);
       send_to_char("Ok, you are no longer a wimp...\n\r", ch);
-      SPRINTF(buf2,
-              "However, you will still get your BLEEDING message at %d%% of max hitpoints.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch,
+                    "However, you will still get your BLEEDING message at %d%% of max hitpoints.\n\r",
+                    ch->specials.pct);
     }
   }
   else {
@@ -1338,17 +1333,14 @@ void do_wimp(struct char_data *ch, char *argument,
         send_to_char("Please choose a value between 1 and 50.\n\r", ch);
         return;
       }
-      SPRINTF(buf2, "Your wimpy percentage WAS %d%%.\n\r", ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage WAS %d%%.\n\r", ch->specials.pct);
       ch->specials.pct = pct;
-      SPRINTF(buf2, "Your wimpy percentage has now been set to %d%%.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage has now been set to %d%%.\n\r",
+                    ch->specials.pct);
     }
     else {
-      SPRINTF(buf2, "Your wimpy percentage remains at %d%%.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage remains at %d%%.\n\r",
+                    ch->specials.pct);
     }
     if (IS_NPC(ch))
       SET_BIT(ch->specials.act, ACT_WIMPY);
@@ -1359,12 +1351,15 @@ void do_wimp(struct char_data *ch, char *argument,
 
 }
 
-
 extern struct breather breath_monsters[];
-void (*bweapons[]) (byte, struct char_data *, char *, int, struct char_data *,
-                    struct obj_data *) = {
-cast_geyser, cast_fire_breath, cast_gas_breath, cast_frost_breath,
-    cast_acid_breath, cast_lightning_breath};
+breath_weapon_func *bweapons[] = {
+  cast_geyser,
+  cast_fire_breath,
+  cast_gas_breath,
+  cast_frost_breath,
+  cast_acid_breath,
+  cast_lightning_breath
+};
 
 void do_breath(struct char_data *ch, char *argument,
                const char * UNUSED(cmd)) {
