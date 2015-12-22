@@ -1873,7 +1873,6 @@ void zone_update() {
 /* execute the reset command table of a given zone */
 void reset_zone(int zone) {
   int cmd_no, last_cmd = 1;
-  char buf[256];
   struct char_data *mob;
   struct char_data *master;
   struct obj_data *obj, *obj_to;
@@ -2064,11 +2063,10 @@ void reset_zone(int zone) {
             equip_char(mob, obj, ZCMD.arg3);
           }
           else {
-            SPRINTF(buf,
-                    "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n",
-                    zone, cmd_no, obj_index[ZCMD.arg1].virtual,
-                    mob_index[mob->nr].virtual, ZCMD.arg3);
-            log_wiz(buf, 6);
+            log_lev_msgf(LOG_ALERT,
+                         "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n",
+                         zone, cmd_no, obj_index[ZCMD.arg1].virtual,
+                         mob_index[mob->nr].virtual, ZCMD.arg3);
           }
           last_cmd = 1;
         }
@@ -3571,10 +3569,10 @@ void read_text_zone(FILE * fl) {
             equip_char(mob, obj, k);
           }
           else {
-            SPRINTF(buf, "eq error - zone %d, cmd %d, item %d, mob %d, loc %d",
-                    zone, 1, obj_index[i].virtual,
-                    mob_index[mob->nr].virtual, k);
-            log_wiz(buf, 6);
+            log_lev_msgf(LOG_ALERT,
+                         "eq error - zone %d, cmd %d, item %d, mob %d, loc %d",
+                         zone, 1, obj_index[i].virtual,
+                         mob_index[mob->nr].virtual, k);
           }
           last_cmd = 1;
         }
@@ -3635,17 +3633,17 @@ void boot_figurines() {
 }
 
 int verify_mob(struct char_data *ch) {
-  char buf[256];
   /* check to see that the mob falls within certain parameters */
 
   if (ch->specials.damnodice < 0) {
-    SPRINTF(buf, "%s's number of damage dice is negative\n", ch->player.name);
-    log_wiz(buf, 6);
+    log_lev_msgf(LOG_ALERT,
+                 "%s's number of damage dice is negative\n",
+                 ch->player.name);
   }
 
   if (ch->specials.damsizedice < 0) {
-    SPRINTF(buf, "%s's size of damage dice is negative\n", ch->player.name);
-    log_wiz(buf, 6);
+    log_lev_msgf(LOG_ALERT, "%s's size of damage dice is negative\n",
+                 ch->player.name);
   }
   return (1);
 }

@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "protos.h"
+#include "utility.h"
 
 /* uses */
 
@@ -412,23 +413,23 @@ void switch_light(byte why) {
 
   switch (why) {
   case MOON_SET:
-    log_wiz("setting all rooms to dark", 2);
+    log_lev_msgf(LOG_NOTICE, "%s", "setting all rooms to dark");
     gLightLevel = 0;
     break;
   case SUN_LIGHT:
-    log_wiz("setting all rooms to light", 2);
+    log_lev_msgf(LOG_NOTICE, "%s", "setting all rooms to light");
     gLightLevel = 4;
     break;
   case SUN_DARK:
-    log_wiz("setting all rooms to dark", 2);
+    log_lev_msgf(LOG_NOTICE, "%s", "setting all rooms to dark");
     gLightLevel = 0;
     break;
   case MOON_RISE:
-    log_wiz("setting all non-forest to light", 2);
+    log_lev_msgf(LOG_NOTICE, "%s", "setting all non-forest to light");
     gLightLevel = 1;
     break;
   default:
-    log_wiz("Unknown switch on switch_light", 2);
+    log_lev_msgf(LOG_NOTICE, "%s", "Unknown switch on switch_light");
     break;
   }
 

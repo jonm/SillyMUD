@@ -1446,7 +1446,6 @@ int dice(int number, int size);
 int scan_number(char *text, int *rval);
 int str_cmp(char *arg1, char *arg2);
 int strn_cmp(char *arg1, char *arg2, int n);
-void log_wiz(char *str, int sev);
 void slog(char *str);
 void sprintbit(unsigned long vektor, char *names[], char *result);
 void sprinttype(int type, char *names[], char *result);

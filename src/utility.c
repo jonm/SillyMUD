@@ -22,20 +22,27 @@
 #include "act.move.h"
 
 
-void log_lev_msgf(int level, const char *fmt, ...) {
+void vlog_lev_msgf(int level, const char *fmt, va_list args) {
   char buf[256];
+  va_list nargs;
+  va_copy(nargs, args);
+  vsyslog(level, fmt, args);
+  vsnprintf(buf, sizeof(buf), fmt, nargs);
+  va_end(nargs);
+  log_wiz(buf, level);
+}
+
+void log_lev_msgf(int level, const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  vsyslog(level, fmt, args);
-  vsnprintf(buf, sizeof(buf), fmt, args);
-  log_wiz(buf, level);
+  vlog_lev_msgf(level, fmt, args);
   va_end(args);
 }
 
 void log_msgf(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  log_lev_msgf(LOG_INFO, fmt, args);
+  vlog_lev_msgf(LOG_INFO, fmt, args);
   va_end(args);
 }
 
