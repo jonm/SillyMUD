@@ -11,7 +11,7 @@
 
 #if DEBUG
 
-#define free(obj) fprintf(stderr, "freeing %d\n", sizeof(*obj));\
+#define free(obj) log_msgf("freeing %d\n", sizeof(*obj));\
 		      free(obj)
 
 #endif

@@ -23,6 +23,7 @@
 #include <sys/resource.h>
 #include <unistd.h>
 #include <stdarg.h>
+#include <syslog.h>
 
 #include "structs.h"
 #include "protos.h"
@@ -106,7 +107,7 @@ int real_main(int argc, char **argv) {
   int res;
 #endif
 
-
+  openlog("silly", LOG_CONS|LOG_PID, LOG_USER);
 
   port = DFLT_PORT;
   dir = DEFAULT_LIBDIR;
@@ -621,7 +622,7 @@ int get_from_q(struct txt_q *queue, char *dest) {
     return (0);
 
   if (!dest) {
-    log_sev("Sending message to null destination.", 5);
+    log_lev_msgf(LOG_CRIT, "Sending message to null destination.");
     return (0);
   }
 
@@ -784,7 +785,6 @@ int new_descriptor(int s) {
   struct sockaddr peer;
 #endif
   struct sockaddr_in sock;
-  char buf[200];
 
   if ((desc = new_connection(s)) < 0)
     return (-1);
@@ -820,15 +820,13 @@ int new_descriptor(int s) {
 #ifndef sun
     if ((long)strncpy(newd->host, inet_ntoa(sock.sin_addr), 49) > 0) {
       *(newd->host + 49) = '\0';
-      SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
-              maxdesc);
-      log_sev(buf, 3);
+      log_lev_msgf(LOG_WARNING, "New connection from addr %s: %d: %d",
+                   newd->host, desc, maxdesc);
     }
 #else
     strcpy(newd->host, (char *)inet_ntoa(&sock.sin_addr));
-    SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
-            maxdesc);
-    log_sev(buf, 3);
+    log_lev_msgf(LOG_WARNING, "New connection from addr %s: %d: %d",
+                   newd->host, desc, maxdesc);
 #endif
   }
 

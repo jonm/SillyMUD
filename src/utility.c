@@ -11,6 +11,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <syslog.h>
 
 #include "protos.h"
 #include "utility.h"
@@ -20,18 +21,35 @@
 #include "act.other.h"
 #include "act.move.h"
 
-void log_msg(char *s) {
-  log_sev(s, 1);
-}                               /*thought this was a prototype - heheh */
 
-void log_msgf(const char *fmt, ...) {
+void vlog_lev_msgf(int level, const char *fmt, va_list args) {
   char buf[256];
+  va_list nargs;
+  va_copy(nargs, args);
+  vsyslog(level, fmt, args);
+  vsnprintf(buf, sizeof(buf), fmt, nargs);
+  va_end(nargs);
+  log_wiz(buf, level);
+}
+
+void log_lev_msgf(int level, const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  vsnprintf(buf, sizeof(buf), fmt, args);
-  log_sev(buf, 1);
+  vlog_lev_msgf(level, fmt, args);
   va_end(args);
 }
+
+void log_msgf(const char *fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  vlog_lev_msgf(LOG_INFO, fmt, args);
+  va_end(args);
+}
+
+void log_msg(const char *s) {
+  log_msgf("%s", s);
+}
+
 
 extern char *article_list[];
 extern struct time_data time_info;
@@ -340,19 +358,10 @@ int strn_cmp(char *arg1, char *arg2, int n) {
 
 
 
-/* writes a string to the log */
-void log_sev(char *str, int sev) {
-  long ct;
-  char *tmstr;
+/* writes a string to the logged in wizards */
+void log_wiz(char *str, int sev) {
   static char buf[500];
   struct descriptor_data *i;
-
-
-  ct = time(0);
-  tmstr = asctime(localtime(&ct));
-  *(tmstr + strlen(tmstr) - 1) = '\0';
-  fprintf(stderr, "%s :: %s\n", tmstr, str);
-
 
   if (str)
     SPRINTF(buf, "/* %s */\n\r", str);
@@ -370,7 +379,7 @@ void slog(char *str) {
   ct = time(0);
   tmstr = asctime(localtime(&ct));
   *(tmstr + strlen(tmstr) - 1) = '\0';
-  fprintf(stderr, "%s :: %s\n", tmstr, str);
+  log_msgf("%s :: %s\n", tmstr, str);
 
 }
 
@@ -2276,7 +2285,7 @@ int mob_count_in_room(struct char_data *list) {
 
 void *mymalloc(long size) {
   if (size < 1) {
-    fprintf(stderr, "attempt to malloc negative memory - %ld\n", size);
+    log_msgf("attempt to malloc negative memory - %ld\n", size);
     assert(0);
   }
   return (malloc(size));

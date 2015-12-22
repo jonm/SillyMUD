@@ -200,19 +200,19 @@ void boot_db() {
     s = zone_table[i].name;
     d = (i ? (zone_table[i - 1].top + 1) : 0);
     e = zone_table[i].top;
-    fprintf(stderr, "Performing boot-time init of %s (rooms %d-%d).\n",
-            s, d, e);
+    log_msgf("Performing boot-time init of %s (rooms %d-%d)",
+             s, d, e);
     zone_table[i].start = 0;
 
 
     if (i == 0) {
-      fprintf(stderr, "Performing boot-time reload of static mobs\n");
+      log_msgf("Performing boot-time reload of static mobs");
       reset_zone(0);
 
     }
 
     if (i == 1) {
-      fprintf(stderr, "Automatic initialization of  %s\n", s);
+      log_msgf("Automatic initialization of  %s\n", s);
       reset_zone(1);
     }
   }
@@ -677,7 +677,7 @@ struct index_data *generate_indices(FILE * fl, int *top) {
       }
     }
     else {
-      fprintf(stderr, "generate indices");
+      log_msgf("generate indices");
       assert(0);
     }
   }
@@ -755,7 +755,7 @@ void load_one_room(FILE * fl, struct room_data *rp) {
          rp->number > zone_table[zone].top && zone <= top_of_zone_table;
          zone++);
     if (zone > top_of_zone_table) {
-      fprintf(stderr, "Room %d is outside of any zone.\n", rp->number);
+      log_msgf("Room %d is outside of any zone.\n", rp->number);
       assert(0);
     }
     rp->zone = zone;
@@ -828,13 +828,13 @@ void load_one_room(FILE * fl, struct room_data *rp) {
       if (new_descr->keyword && *new_descr->keyword)
         bc += strlen(new_descr->keyword);
       else
-        fprintf(stderr, "No keyword in room %d\n", rp->number);
+        log_msgf("No keyword in room %d\n", rp->number);
 
       new_descr->description = fread_string(fl);
       if (new_descr->description && *new_descr->description)
         bc += strlen(new_descr->description);
       else
-        fprintf(stderr, "No desc in room %d\n", rp->number);
+        log_msgf("No desc in room %d\n", rp->number);
 
       new_descr->next = rp->ex_description;
       rp->ex_description = new_descr;
@@ -843,7 +843,7 @@ void load_one_room(FILE * fl, struct room_data *rp) {
 
 #if BYTE_COUNT
       if (bc >= 1000)
-        fprintf(stderr, "Byte count for this room[%d]: %d\n", rp->number, bc);
+        log_msgf("Byte count for this room[%d]: %d\n", rp->number, bc);
 #endif
       total_bc += bc;
       room_count++;
@@ -886,7 +886,7 @@ void boot_world() {
     if (rp)
       bzero(rp, sizeof(*rp));
     else {
-      fprintf(stderr, "Error, room %d not in database!(%d)\n",
+      log_msgf("Error, room %d not in database!(%d)\n",
               virtual_nr, last);
       assert(0);
     }
@@ -1635,7 +1635,7 @@ struct char_data *read_mobile(int nr, int type) {
   mob_index[nr].number++;
 
 #if BYTE_COUNT
-  fprintf(stderr, "Mobile [%d]: byte count: %d\n", mob_index[nr].virtual, bc);
+  log_msgf("Mobile [%d]: byte count: %d\n", mob_index[nr].virtual, bc);
 #endif
 
   total_mbc += bc;
@@ -1785,7 +1785,7 @@ struct obj_data *read_object(int nr, int type) {
 
   obj_count++;
 #if BYTE_COUNT
-  fprintf(stderr, "Object [%d] uses %d bytes\n", obj_index[nr].virtual, bc);
+  log_msgf("Object [%d] uses %d bytes\n", obj_index[nr].virtual, bc);
 #endif
   total_obc += bc;
   return (obj);
@@ -1873,7 +1873,6 @@ void zone_update() {
 /* execute the reset command table of a given zone */
 void reset_zone(int zone) {
   int cmd_no, last_cmd = 1;
-  char buf[256];
   struct char_data *mob;
   struct char_data *master;
   struct obj_data *obj, *obj_to;
@@ -2064,11 +2063,10 @@ void reset_zone(int zone) {
             equip_char(mob, obj, ZCMD.arg3);
           }
           else {
-            SPRINTF(buf,
-                    "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n",
-                    zone, cmd_no, obj_index[ZCMD.arg1].virtual,
-                    mob_index[mob->nr].virtual, ZCMD.arg3);
-            log_sev(buf, 6);
+            log_lev_msgf(LOG_ALERT,
+                         "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n",
+                         zone, cmd_no, obj_index[ZCMD.arg1].virtual,
+                         mob_index[mob->nr].virtual, ZCMD.arg3);
           }
           last_cmd = 1;
         }
@@ -3251,9 +3249,9 @@ void init_scripts() {
             (struct foo_data *)realloc(script_data[top_of_scripts].script,
                                        sizeof(struct foo_data) * (count + 1));
         }
-        fprintf(stderr, "top_of_scripts %d\n", top_of_scripts);
-        fprintf(stderr, "count %d\n", count);
-        fprintf(stderr, "buf2: %s\n", buf2);
+        log_msgf("top_of_scripts %d\n", top_of_scripts);
+        log_msgf("count %d\n", count);
+        log_msgf("buf2: %s\n", buf2);
         script_data[top_of_scripts].script[count].line =
           (char *)malloc(sizeof(char) * (strlen(buf) + 1));
 
@@ -3571,10 +3569,10 @@ void read_text_zone(FILE * fl) {
             equip_char(mob, obj, k);
           }
           else {
-            SPRINTF(buf, "eq error - zone %d, cmd %d, item %d, mob %d, loc %d",
-                    zone, 1, obj_index[i].virtual,
-                    mob_index[mob->nr].virtual, k);
-            log_sev(buf, 6);
+            log_lev_msgf(LOG_ALERT,
+                         "eq error - zone %d, cmd %d, item %d, mob %d, loc %d",
+                         zone, 1, obj_index[i].virtual,
+                         mob_index[mob->nr].virtual, k);
           }
           last_cmd = 1;
         }
@@ -3635,17 +3633,17 @@ void boot_figurines() {
 }
 
 int verify_mob(struct char_data *ch) {
-  char buf[256];
   /* check to see that the mob falls within certain parameters */
 
   if (ch->specials.damnodice < 0) {
-    SPRINTF(buf, "%s's number of damage dice is negative\n", ch->player.name);
-    log_sev(buf, 6);
+    log_lev_msgf(LOG_ALERT,
+                 "%s's number of damage dice is negative\n",
+                 ch->player.name);
   }
 
   if (ch->specials.damsizedice < 0) {
-    SPRINTF(buf, "%s's size of damage dice is negative\n", ch->player.name);
-    log_sev(buf, 6);
+    log_lev_msgf(LOG_ALERT, "%s's size of damage dice is negative\n",
+                 ch->player.name);
   }
   return (1);
 }

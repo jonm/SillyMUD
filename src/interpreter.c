@@ -1698,8 +1698,8 @@ void nanny(struct descriptor_data *d, char *arg) {
         STATE(d) = CON_RMOTD;
       }
       else if (d->character->generic >= NEWBIE_REQUEST) {
-        SPRINTF(buf, "%s [%s] new player.", GET_NAME(d->character), d->host);
-        log_sev(buf, 7);
+        log_lev_msgf(LOG_EMERG, "%s [%s] new player.",
+                     GET_NAME(d->character), d->host);
         if (!strncmp(d->host, "128.197.152", 11))
           d->character->generic = 1;
         /* I decided to give them another chance.  -Steppenwolf  */
@@ -1710,10 +1710,11 @@ void nanny(struct descriptor_data *d, char *arg) {
         }
         else {
           if (top_of_p_table > 0) {
-            SPRINTF(buf, "type Auth[orize] %s to allow into game.",
-                    GET_NAME(d->character));
-            log_sev(buf, 6);
-            log_sev("type 'Help Authorize' for other commands", 2);
+            log_lev_msgf(LOG_ALERT,
+                         "type Auth[orize] %s to allow into game.",
+                         GET_NAME(d->character));
+            log_lev_msgf(LOG_NOTICE, "%s",
+                         "type 'Help Authorize' for other commands");
           }
           else {
             log_msg("Initial character.  Authorized Automatically");
