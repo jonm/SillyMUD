@@ -1016,8 +1016,7 @@ void down_river(int pulse) {
                                    ch);
                     }
                     else {
-                      SPRINTF(buf, "You drift %s...\n\r", dirs[rd]);
-                      send_to_char(buf, ch);
+                      send_to_charf(ch, "You drift %s...\n\r", dirs[rd]);
                       if (RIDDEN(ch))
                         send_to_char(buf, RIDDEN(ch));
 
