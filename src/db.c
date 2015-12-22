@@ -17,6 +17,7 @@
 
 #include "protos.h"
 #include "db.h"
+#include "utility.h"
 
 #define NEW_ZONE_SYSTEM
 
@@ -199,19 +200,19 @@ void boot_db() {
     s = zone_table[i].name;
     d = (i ? (zone_table[i - 1].top + 1) : 0);
     e = zone_table[i].top;
-    fprintf(stderr, "Performing boot-time init of %s (rooms %d-%d).\n",
-            s, d, e);
+    log_msgf("Performing boot-time init of %s (rooms %d-%d)",
+             s, d, e);
     zone_table[i].start = 0;
 
 
     if (i == 0) {
-      fprintf(stderr, "Performing boot-time reload of static mobs\n");
+      log_msgf("Performing boot-time reload of static mobs");
       reset_zone(0);
 
     }
 
     if (i == 1) {
-      fprintf(stderr, "Automatic initialization of  %s\n", s);
+      log_msgf("Automatic initialization of  %s\n", s);
       reset_zone(1);
     }
   }
@@ -225,7 +226,6 @@ void boot_db() {
 /* reset the time in the game from file */
 /* reset the time in the game from file */
 void reset_time() {
-  char buf[80];
   extern unsigned char moontype;
   long beginning_of_time = 650336715;
 
@@ -288,9 +288,8 @@ void reset_time() {
     }
   }
 
-  SPRINTF(buf, "   Current Gametime: %dH %dD %dM %dY.",
-          time_info.hours, time_info.day, time_info.month, time_info.year);
-  log_msg(buf);
+  log_msgf("   Current Gametime: %dH %dD %dM %dY.",
+           time_info.hours, time_info.day, time_info.month, time_info.year);
 
   weather_info.pressure = 960;
   if ((time_info.month >= 7) && (time_info.month <= 12))
@@ -384,10 +383,9 @@ void build_player_index() {
 
       for (i = 0; i <= 5; i++)
         if (dummy.level[i] >= 51) {
-          SPRINTF(buf, "GOD: %s, Levels [%d][%d][%d][%d][%d][%d]", dummy.name,
-                  dummy.level[0], dummy.level[1], dummy.level[2],
-                  dummy.level[3], dummy.level[4], dummy.level[5]);
-          log_msg(buf);
+          log_msgf("GOD: %s, Levels [%d][%d][%d][%d][%d][%d]", dummy.name,
+                   dummy.level[0], dummy.level[1], dummy.level[2],
+                   dummy.level[3], dummy.level[4], dummy.level[5]);
 
           max = 0;
           for (j = 0; j < MAX_CLASS; j++)
@@ -679,7 +677,7 @@ struct index_data *generate_indices(FILE * fl, int *top) {
       }
     }
     else {
-      fprintf(stderr, "generate indices");
+      log_msgf("generate indices");
       assert(0);
     }
   }
@@ -757,7 +755,7 @@ void load_one_room(FILE * fl, struct room_data *rp) {
          rp->number > zone_table[zone].top && zone <= top_of_zone_table;
          zone++);
     if (zone > top_of_zone_table) {
-      fprintf(stderr, "Room %d is outside of any zone.\n", rp->number);
+      log_msgf("Room %d is outside of any zone.\n", rp->number);
       assert(0);
     }
     rp->zone = zone;
@@ -813,7 +811,6 @@ void load_one_room(FILE * fl, struct room_data *rp) {
   rp->ex_description = 0;
 
   while (1 == fscanf(fl, " %s \n", chk)) {
-    static char buf[MAX_INPUT_LENGTH];
     switch (*chk) {
     case 'D':
       setup_dir(fl, rp->number, atoi(chk + 1));
@@ -831,13 +828,13 @@ void load_one_room(FILE * fl, struct room_data *rp) {
       if (new_descr->keyword && *new_descr->keyword)
         bc += strlen(new_descr->keyword);
       else
-        fprintf(stderr, "No keyword in room %d\n", rp->number);
+        log_msgf("No keyword in room %d\n", rp->number);
 
       new_descr->description = fread_string(fl);
       if (new_descr->description && *new_descr->description)
         bc += strlen(new_descr->description);
       else
-        fprintf(stderr, "No desc in room %d\n", rp->number);
+        log_msgf("No desc in room %d\n", rp->number);
 
       new_descr->next = rp->ex_description;
       rp->ex_description = new_descr;
@@ -846,15 +843,14 @@ void load_one_room(FILE * fl, struct room_data *rp) {
 
 #if BYTE_COUNT
       if (bc >= 1000)
-        fprintf(stderr, "Byte count for this room[%d]: %d\n", rp->number, bc);
+        log_msgf("Byte count for this room[%d]: %d\n", rp->number, bc);
 #endif
       total_bc += bc;
       room_count++;
       return;
     default:
-      SPRINTF(buf, "unknown auxiliary code `%s' in room load of #%d",
-              chk, rp->number);
-      log_msg(buf);
+      log_msgf("unknown auxiliary code `%s' in room load of #%d",
+               chk, rp->number);
       break;
     }
   }
@@ -890,7 +886,7 @@ void boot_world() {
     if (rp)
       bzero(rp, sizeof(*rp));
     else {
-      fprintf(stderr, "Error, room %d not in database!(%d)\n",
+      log_msgf("Error, room %d not in database!(%d)\n",
               virtual_nr, last);
       assert(0);
     }
@@ -974,15 +970,13 @@ void setup_dir(FILE * fl, int room, int dir) {
 }
 
 
-#define LOG_ZONE_ERROR(ch, type, zone, cmd) {\
-	SPRINTF(buf, "error in zone %s cmd %d (%c) resolving %s number", \
-		zone_table[zone].name, cmd, ch, type); \
-		  log_msg(buf); \
+#define LOG_ZONE_ERROR(ch, type, zone, cmd) {                       \
+	log_msgf("error in zone %s cmd %d (%c) resolving %s number",    \
+             zone_table[zone].name, cmd, ch, type);                 \
 		  }
 void renum_zone_table() {
   int zone, comm;
   struct reset_com *cmd;
-  char buf[256];
 
   for (zone = 0; zone <= top_of_zone_table; zone++)
     for (comm = 0; zone_table[zone].cmd[comm].command != 'S'; comm++)
@@ -1609,10 +1603,8 @@ struct char_data *read_mobile(int nr, int type) {
 #endif
 
   if (mob->points.gold > GET_LEVEL(mob, WARRIOR_LEVEL_IND) * 1500) {
-    char buf[200];
-    SPRINTF(buf, "%s has gold > level * 1500 (%d)", mob->player.short_descr,
-            mob->points.gold);
-    log_msg(buf);
+    log_msgf("%s has gold > level * 1500 (%d)", mob->player.short_descr,
+             mob->points.gold);
   }
 
   /* set up things that all members of the race have */
@@ -1643,7 +1635,7 @@ struct char_data *read_mobile(int nr, int type) {
   mob_index[nr].number++;
 
 #if BYTE_COUNT
-  fprintf(stderr, "Mobile [%d]: byte count: %d\n", mob_index[nr].virtual, bc);
+  log_msgf("Mobile [%d]: byte count: %d\n", mob_index[nr].virtual, bc);
 #endif
 
   total_mbc += bc;
@@ -1793,7 +1785,7 @@ struct obj_data *read_object(int nr, int type) {
 
   obj_count++;
 #if BYTE_COUNT
-  fprintf(stderr, "Object [%d] uses %d bytes\n", obj_index[nr].virtual, bc);
+  log_msgf("Object [%d] uses %d bytes\n", obj_index[nr].virtual, bc);
 #endif
   total_obc += bc;
   return (obj);
@@ -1881,7 +1873,6 @@ void zone_update() {
 /* execute the reset command table of a given zone */
 void reset_zone(int zone) {
   int cmd_no, last_cmd = 1;
-  char buf[256];
   struct char_data *mob;
   struct char_data *master;
   struct obj_data *obj, *obj_to;
@@ -1916,8 +1907,7 @@ void reset_zone(int zone) {
     s = zone_table[zone].name;
     d = (zone ? (zone_table[zone - 1].top + 1) : 0);
     e = zone_table[zone].top;
-    SPRINTF(buf, "Run time initialization of zone %s, rooms (%d-%d)", s, d, e);
-    log_msg(buf);
+    log_msgf("Run time initialization of zone %s, rooms (%d-%d)", s, d, e);
 
   }
 
@@ -2015,8 +2005,7 @@ void reset_zone(int zone) {
             }
           }
           else if ((obj = read_object(ZCMD.arg1, REAL)) != NULL) {
-            SPRINTF(buf, "Error finding room #%d", ZCMD.arg3);
-            log_msg(buf);
+            log_msgf("Error finding room #%d", ZCMD.arg3);
             last_cmd = 1;
           }
           else {
@@ -2074,11 +2063,10 @@ void reset_zone(int zone) {
             equip_char(mob, obj, ZCMD.arg3);
           }
           else {
-            SPRINTF(buf,
-                    "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n",
-                    zone, cmd_no, obj_index[ZCMD.arg1].virtual,
-                    mob_index[mob->nr].virtual, ZCMD.arg3);
-            log_sev(buf, 6);
+            log_lev_msgf(LOG_ALERT,
+                         "eq error - zone %d, cmd %d, item %d, mob %d, loc %d\n",
+                         zone, cmd_no, obj_index[ZCMD.arg1].virtual,
+                         mob_index[mob->nr].virtual, ZCMD.arg3);
           }
           last_cmd = 1;
         }
@@ -2114,9 +2102,8 @@ void reset_zone(int zone) {
         break;
 
       default:
-        SPRINTF(buf, "Undefd cmd [%c] in reset table; zone %d cmd %d.",
-                ZCMD.command, zone, cmd_no);
-        log_msg(buf);
+        log_msgf("Undefd cmd [%c] in reset table; zone %d cmd %d.",
+                 ZCMD.command, zone, cmd_no);
         break;
       }
     else
@@ -2155,8 +2142,6 @@ int is_empty(int zone_nr) {
 int load_char(char *name, struct char_file_u *char_element) {
   FILE *fl;
   int player_i;
-
-  int find_name(char *name);
 
   if ((player_i = find_name(name)) >= 0) {
 
@@ -2744,7 +2729,6 @@ void clear_dead_bit(struct char_data *ch) {
 
 /* clear some of the the working variables of a char */
 void reset_char(struct char_data *ch) {
-  char buf[100];
   struct affected_type *af;
   extern struct dex_app_type dex_app[];
 
@@ -2822,12 +2806,10 @@ void reset_char(struct char_data *ch) {
   }
 
   if (GET_BANK(ch) > get_max_level(ch) * 100000) {
-    SPRINTF(buf, "%s has %d coins in bank.", GET_NAME(ch), GET_BANK(ch));
-    log_msg(buf);
+    log_msgf("%s has %d coins in bank.", GET_NAME(ch), GET_BANK(ch));
   }
   if (GET_GOLD(ch) > get_max_level(ch) * 100000) {
-    SPRINTF(buf, "%s has %d coins.", GET_NAME(ch), GET_GOLD(ch));
-    log_msg(buf);
+    log_msgf("%s has %d coins.", GET_NAME(ch), GET_GOLD(ch));
   }
 
   /*
@@ -3128,7 +3110,8 @@ int workhours() {
   return (0);
 }
 
-void reboot_text(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void reboot_text(struct char_data *ch, char *UNUSED(arg),
+                 const char * UNUSED(cmd)) {
   if (IS_NPC(ch))
     return;
 
@@ -3233,16 +3216,14 @@ void init_scripts() {
       char garbage[4];
       strncpy(garbage, buf, 3);
       garbage[3] = '\0';
-      SPRINTF(buf, "%s read in, garbage.", garbage);
-      log_msg(buf);
+      log_msgf("%s read in, garbage.", garbage);
     }
 
     sscanf(buf, "%s %d", buf2, &i);
 
     SPRINTF(buf, "scripts/%s", buf2);
     if (!(f2 = fopen(buf, "r"))) {
-      SPRINTF(buf, "Unable to open script \"%s\" for reading.", buf2);
-      log_msg(buf);
+      log_msgf("Unable to open script \"%s\" for reading.", buf2);
     }
 
     else {
@@ -3268,9 +3249,9 @@ void init_scripts() {
             (struct foo_data *)realloc(script_data[top_of_scripts].script,
                                        sizeof(struct foo_data) * (count + 1));
         }
-        fprintf(stderr, "top_of_scripts %d\n", top_of_scripts);
-        fprintf(stderr, "count %d\n", count);
-        fprintf(stderr, "buf2: %s\n", buf2);
+        log_msgf("top_of_scripts %d\n", top_of_scripts);
+        log_msgf("count %d\n", count);
+        log_msgf("buf2: %s\n", buf2);
         script_data[top_of_scripts].script[count].line =
           (char *)malloc(sizeof(char) * (strlen(buf) + 1));
 
@@ -3283,18 +3264,16 @@ void init_scripts() {
       script_data[top_of_scripts].filename =
         (char *)malloc((strlen(buf2) + 1) * sizeof(char));
       strcpy(script_data[top_of_scripts].filename, buf2);
-      SPRINTF(buf, "Script %s assigned to mobile %d.", buf2, i);
-      log_msg(buf);
+      log_msgf("Script %s assigned to mobile %d.", buf2, i);
       top_of_scripts++;
       fclose(f2);
     }
   }
 
   if (top_of_scripts)
-    SPRINTF(buf, "%d scripts assigned.", top_of_scripts);
+    log_msgf("%d scripts assigned.", top_of_scripts);
   else
-    SPRINTF(buf, "No scripts found to assign.");
-  log_msg(buf);
+    log_msgf("No scripts found to assign.");
 
   fclose(f1);
 }
@@ -3528,8 +3507,7 @@ void read_text_zone(FILE * fl) {
             }
           }
           else if ((obj = read_object(i, VIRTUAL)) != NULL) {
-            SPRINTF(buf, "Error finding room #%d", k);
-            log_msg(buf);
+            log_msgf("Error finding room #%d", k);
             last_cmd = 1;
           }
           else {
@@ -3591,10 +3569,10 @@ void read_text_zone(FILE * fl) {
             equip_char(mob, obj, k);
           }
           else {
-            SPRINTF(buf, "eq error - zone %d, cmd %d, item %d, mob %d, loc %d",
-                    zone, 1, obj_index[i].virtual,
-                    mob_index[mob->nr].virtual, k);
-            log_sev(buf, 6);
+            log_lev_msgf(LOG_ALERT,
+                         "eq error - zone %d, cmd %d, item %d, mob %d, loc %d",
+                         zone, 1, obj_index[i].virtual,
+                         mob_index[mob->nr].virtual, k);
           }
           last_cmd = 1;
         }
@@ -3655,17 +3633,17 @@ void boot_figurines() {
 }
 
 int verify_mob(struct char_data *ch) {
-  char buf[256];
   /* check to see that the mob falls within certain parameters */
 
   if (ch->specials.damnodice < 0) {
-    SPRINTF(buf, "%s's number of damage dice is negative\n", ch->player.name);
-    log_sev(buf, 6);
+    log_lev_msgf(LOG_ALERT,
+                 "%s's number of damage dice is negative\n",
+                 ch->player.name);
   }
 
   if (ch->specials.damsizedice < 0) {
-    SPRINTF(buf, "%s's size of damage dice is negative\n", ch->player.name);
-    log_sev(buf, 6);
+    log_lev_msgf(LOG_ALERT, "%s's size of damage dice is negative\n",
+                 ch->player.name);
   }
   return (1);
 }
@@ -3703,9 +3681,8 @@ void clean_playerfile() {
       num_processed++;
       grunt.AXE = FALSE;
       if (!str_cmp(grunt.dummy.name, "111111")) {
-        SPRINTF(buf, "%s was deleted (111111 name hopefully).",
-                grunt.dummy.name);
-        log_msg(buf);
+        log_msgf("%s was deleted (111111 name hopefully).",
+                 grunt.dummy.name);
         ones++;
         num_deleted++;
         grunt.AXE = TRUE;
@@ -3727,17 +3704,15 @@ void clean_playerfile() {
               (long)j * (SECS_PER_REAL_DAY * 30)) {
             num_deleted++;
             grunt.AXE = TRUE;
-            SPRINTF(buf, "%s deleted after %d months of inactivity.",
-                    grunt.dummy.name, j);
-            log_msg(buf);
+            log_msgf("%s deleted after %d months of inactivity.",
+                     grunt.dummy.name, j);
           }
         }
         else if (max > LOW_IMMORTAL) {
           if (timeH - grunt.dummy.last_logon > (long)SECS_PER_REAL_DAY * 30) {
             num_demoted++;
-            SPRINTF(buf, "%s demoted from %d to %d due to inactivity.",
-                    grunt.dummy.name, max, max - 1);
-            log_msg(buf);
+            log_msgf("%s demoted from %d to %d due to inactivity.",
+                     grunt.dummy.name, max, max - 1);
             grunt.dummy.last_logon = timeH;     /* so it doesn't happen twice */
             max--;
             max = MAX(51, max); /* should not be necessary */
@@ -3753,14 +3728,10 @@ void clean_playerfile() {
     }
   }
 
-  SPRINTF(buf, "-- %d characters were processed.", num_processed);
-  log_msg(buf);
-  SPRINTF(buf, "-- %d characters were deleted.  ", num_deleted);
-  log_msg(buf);
-  SPRINTF(buf, "-- %d of these were allread deleted. (11111s)", ones);
-  log_msg(buf);
-  SPRINTF(buf, "-- %d gods were demoted due to inactivity.", num_demoted);
-  log_msg(buf);
+  log_msgf("-- %d characters were processed.", num_processed);
+  log_msgf("-- %d characters were deleted.  ", num_deleted);
+  log_msgf("-- %d of these were allread deleted. (11111s)", ones);
+  log_msgf("-- %d gods were demoted due to inactivity.", num_demoted);
   SPRINTF(buf, "mv %s %s.bak", PLAYER_FILE, PLAYER_FILE);
   system(buf);
   SPRINTF(buf, "mv temp %s", PLAYER_FILE);
@@ -3778,19 +3749,13 @@ void ensure_file_exists(const char *path) {
     return;
   if (errno == ENOENT) {
     int fd;
-    {
-      char *buf;
-      const char *fmt = "Creating empty file \"%s\"";
-      buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
-      SPRINTF(buf, fmt, path);
-      log_msg(buf);
-      free(buf);
-    }
+    log_msgf("Creating empty file \"%s\"", path);
     if ((fd = open(path, O_CREAT | O_WRONLY, 0644)) == -1) {
       char *buf;
       const char *fmt = "ensure_file_exists(%s)(open)";
-      buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
-      SPRINTF(buf, fmt, path);
+      int len = strlen(path) + strlen(fmt) - 1;
+      buf = (char *)malloc(len);
+      snprintf(buf, len, fmt, path);
       perror(buf);
       free(buf);
       exit(-1);
@@ -3800,8 +3765,9 @@ void ensure_file_exists(const char *path) {
   else {
     char *buf;
     const char *fmt = "ensure_file_exists(%s)(stat)";
-    buf = (char *)malloc(strlen(path) + strlen(fmt) - 1);
-    SPRINTF(buf, fmt, path);
+    int len = strlen(path) + strlen(fmt) - 1;
+    buf = (char *)malloc(len);
+    snprintf(buf, len, fmt, path);
     perror(buf);
     free(buf);
     exit(-1);

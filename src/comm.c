@@ -22,8 +22,13 @@
 #include <signal.h>
 #include <sys/resource.h>
 #include <unistd.h>
+#include <stdarg.h>
+#include <syslog.h>
 
+#include "structs.h"
 #include "protos.h"
+#include "act.other.h"
+#include "utility.h"
 
 #define DFLT_PORT 4000          /* default port */
 #define MAX_NAME_LENGTH 15
@@ -94,7 +99,7 @@ void close_socket_fd(int desc) {
 
 int real_main(int argc, char **argv) {
   int port, pos = 1;
-  char buf[512], *dir;
+  char *dir;
 
   extern int WizLock;
 #ifdef sun
@@ -102,7 +107,7 @@ int real_main(int argc, char **argv) {
   int res;
 #endif
 
-
+  openlog("silly", LOG_CONS|LOG_PID, LOG_USER);
 
   port = DFLT_PORT;
   dir = DEFAULT_LIBDIR;
@@ -141,8 +146,7 @@ int real_main(int argc, char **argv) {
       log_msg("Suppressing assignment of special routines.");
       break;
     default:
-      SPRINTF(buf, "Unknown option -% in argument string.", *(argv[pos] + 1));
-      log_msg(buf);
+      log_msgf("Unknown option -% in argument string.", *(argv[pos] + 1));
       break;
     }
     pos++;
@@ -164,16 +168,14 @@ int real_main(int argc, char **argv) {
 
   Uptime = time(0);
 
-  SPRINTF(buf, "Running game on port %d.", port);
-  log_msg(buf);
+  log_msgf("Running game on port %d.", port);
 
   if (chdir(dir) < 0) {
     perror("chdir");
     assert(0);
   }
 
-  SPRINTF(buf, "Using %s as data directory.", dir);
-  log_msg(buf);
+  log_msgf("Using %s as data directory.", dir);
 
   srandom(time(0));
   WizLock = FALSE;
@@ -211,9 +213,6 @@ int real_main(int argc, char **argv) {
 void run_the_game(int port) {
   int s;
   PROFILE(extern etext();)
-
-  void signal_setup(void);
-  int load(void);
 
   PROFILE(monstartup((int)2, etext);)
 
@@ -623,7 +622,7 @@ int get_from_q(struct txt_q *queue, char *dest) {
     return (0);
 
   if (!dest) {
-    log_sev("Sending message to null destination.", 5);
+    log_lev_msgf(LOG_CRIT, "Sending message to null destination.");
     return (0);
   }
 
@@ -786,7 +785,6 @@ int new_descriptor(int s) {
   struct sockaddr peer;
 #endif
   struct sockaddr_in sock;
-  char buf[200];
 
   if ((desc = new_connection(s)) < 0)
     return (-1);
@@ -822,15 +820,13 @@ int new_descriptor(int s) {
 #ifndef sun
     if ((long)strncpy(newd->host, inet_ntoa(sock.sin_addr), 49) > 0) {
       *(newd->host + 49) = '\0';
-      SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
-              maxdesc);
-      log_sev(buf, 3);
+      log_lev_msgf(LOG_WARNING, "New connection from addr %s: %d: %d",
+                   newd->host, desc, maxdesc);
     }
 #else
     strcpy(newd->host, (char *)inet_ntoa(&sock.sin_addr));
-    SPRINTF(buf, "New connection from addr %s: %d: %d", newd->host, desc,
-            maxdesc);
-    log_sev(buf, 3);
+    log_lev_msgf(LOG_WARNING, "New connection from addr %s: %d: %d",
+                   newd->host, desc, maxdesc);
 #endif
   }
 
@@ -1039,10 +1035,7 @@ void close_sockets(int s) {
 
 void close_socket(struct descriptor_data *d) {
   struct descriptor_data *tmp;
-  char buf[100];
   struct txt_block *txt, *txt2;
-
-  void do_save(struct char_data *ch, char *argument, int cmd);
 
   if (!d)
     return;
@@ -1065,8 +1058,7 @@ void close_socket(struct descriptor_data *d) {
     if (d->connected == CON_PLYNG) {
       do_save(d->character, "", 0);
       act("$n has lost $s link.", TRUE, d->character, 0, 0, TO_ROOM);
-      SPRINTF(buf, "Closing link to: %s.", GET_NAME(d->character));
-      log_msg(buf);
+      log_msgf("Closing link to: %s.", GET_NAME(d->character));
       if (IS_NPC(d->character)) {       /* poly, or switched god */
         if (d->character->desc)
           d->character->orig = d->character->desc->original;
@@ -1083,8 +1075,7 @@ void close_socket(struct descriptor_data *d) {
     }
     else {
       if (GET_NAME(d->character)) {
-        SPRINTF(buf, "Losing player: %s.", GET_NAME(d->character));
-        log_msg(buf);
+        log_msgf("Losing player: %s.", GET_NAME(d->character));
       }
       free_char(d->character);
     }
@@ -1172,8 +1163,6 @@ void coma(int s) {
   };
   int conn;
 
-  int workhours(void);
-  int load(void);
 #ifdef HAVE_SIGPROCMASK
   sigset_t sigmask;
 #endif
@@ -1255,6 +1244,15 @@ void send_to_char(char *messg, struct char_data *ch) {
   if (ch)
     if (ch->desc && messg)
       write_to_q(messg, &ch->desc->output);
+}
+
+void send_to_charf(struct char_data *ch, const char *fmt, ...) {
+  char buf[1024];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buf, sizeof(buf), fmt, args);
+  send_to_char(buf, ch);
+  va_end(args);
 }
 
 
@@ -1490,8 +1488,7 @@ void act(char *str, int hide_invisible, struct char_data *ch,
             i = "$";
             break;
           default:
-            log_msg("Illegal $-code to act():");
-            log_msg(str);
+            log_msgf("Illegal $-code to act(): %s", str);
             break;
           }
 
@@ -1517,12 +1514,10 @@ void act(char *str, int hide_invisible, struct char_data *ch,
 
 void raw_force_all(char *to_force) {
   struct descriptor_data *i;
-  char buf[400];
 
   for (i = descriptor_list; i; i = i->next)
     if (!i->connected) {
-      SPRINTF(buf, "The game has forced you to '%s'.\n\r", to_force);
-      send_to_char(buf, i->character);
+      send_to_charf(i->character, "The game has forced you to '%s'.\n\r", to_force);
       command_interpreter(i->character, to_force);
     }
 }
@@ -1612,39 +1607,24 @@ void update_screen(struct char_data *ch, int update) {
 
 
 void init_screen(struct char_data *ch) {
-  char buf[255];
   int size;
 
   size = ch->size;
-  SPRINTF(buf, VT_HOMECLR);
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_MARGSET, 0, size - 5);
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 4, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf,
-          "-===========================================================================-");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Hit Points: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 40);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Movement Points: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Mana: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 40);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Gold: ");
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 1, 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Experience Points: ");
-  send_to_char(buf, ch);
+  send_to_charf(ch, VT_HOMECLR);
+  send_to_charf(ch, VT_MARGSET, 0, size - 5);
+  send_to_charf(ch, VT_CURSPOS, size - 4, 1);
+  send_to_charf(ch,
+                "-===========================================================================-");
+  send_to_charf(ch, VT_CURSPOS, size - 3, 1);
+  send_to_charf(ch, "Hit Points: ");
+  send_to_charf(ch, VT_CURSPOS, size - 3, 40);
+  send_to_charf(ch, "Movement Points: ");
+  send_to_charf(ch, VT_CURSPOS, size - 2, 1);
+  send_to_charf(ch, "Mana: ");
+  send_to_charf(ch, VT_CURSPOS, size - 2, 40);
+  send_to_charf(ch, "Gold: ");
+  send_to_charf(ch, VT_CURSPOS, size - 1, 1);
+  send_to_charf(ch, "Experience Points: ");
 
   ch->last.mana = GET_MANA(ch);
   ch->last.mmana = GET_MAX_MANA(ch);
@@ -1656,28 +1636,16 @@ void init_screen(struct char_data *ch) {
   ch->last.gold = GET_GOLD(ch);
 
   /* Update all of the info parts */
-  SPRINTF(buf, VT_CURSPOS, size - 3, 13);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 3, 58);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 7);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 2, 47);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d", GET_GOLD(ch));
-  send_to_char(buf, ch);
-  SPRINTF(buf, VT_CURSPOS, size - 1, 20);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "%d", GET_EXP(ch));
-  send_to_char(buf, ch);
+  send_to_charf(ch, VT_CURSPOS, size - 3, 13);
+  send_to_charf(ch, "%d(%d)", GET_HIT(ch), GET_MAX_HIT(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 3, 58);
+  send_to_charf(ch, "%d(%d)", GET_MOVE(ch), GET_MAX_MOVE(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 2, 7);
+  send_to_charf(ch, "%d(%d)", GET_MANA(ch), GET_MAX_MANA(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 2, 47);
+  send_to_charf(ch, "%d", GET_GOLD(ch));
+  send_to_charf(ch, VT_CURSPOS, size - 1, 20);
+  send_to_charf(ch, "%d", GET_EXP(ch));
 
-  SPRINTF(buf, VT_CURSPOS, 0, 0);
-  send_to_char(buf, ch);
-
+  send_to_charf(ch, VT_CURSPOS, 0, 0);
 }

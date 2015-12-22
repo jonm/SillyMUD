@@ -10,6 +10,13 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.off.h"
+#include "act.other.h"
+#include "spec_procs2.h"
+#include "utility.h"
+#include "fight.h"
+#include "spells1.h"
+#include "spells2.h"
 
 /* extern variables */
 
@@ -25,7 +32,8 @@ extern char *att_kick_kill_room[];
 extern char *att_kick_kill_victim[];
 extern char *att_kick_kill_ch[];
 
-void do_hit(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_hit(struct char_data *ch, char *argument,
+            const char * UNUSED(cmd)) {
   char arg[80];
   struct char_data *victim;
 
@@ -94,7 +102,8 @@ void do_hit(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_kill(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_kill(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   static char arg[MAX_INPUT_LENGTH];
   struct char_data *victim;
 
@@ -123,7 +132,8 @@ void do_kill(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_backstab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_backstab(struct char_data *ch, char *argument,
+                 const char * UNUSED(cmd)) {
   struct char_data *victim;
   char name[256];
   byte percent, base = 0;
@@ -292,7 +302,8 @@ void do_backstab(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 }
 
-void do_order(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_order(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char name[100], message[256];
   char buf[256];
   bool found = FALSE;
@@ -392,22 +403,19 @@ void do_order(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_flee(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int i, attempt, loose =
     0, die, percent, charm, nmbr, f, panic, j, tries, badroom;
   bool found;
-  void gain_exp(struct char_data *ch, int gain);
-  int special(struct char_data *ch, int cmd, char *arg);
   char buf[255];
-  char buf2[255];
 
   argument = one_argument(argument, buf);
 
   if (IS_PC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)) {
     if ((ch->desc->wait) > 1) { /* Someone is in a wait state */
       send_to_char("Your head is still spinning too much to flee!\n\r", ch);
-      SPRINTF(buf, "You must wait %d pulses\n\r", ch->desc->wait);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You must wait %d pulses\n\r", ch->desc->wait);
       return;
     }
 
@@ -424,13 +432,11 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         send_to_char("Please choose a flee setting of 1 to 5 rooms.\n\r", ch);
         return;
       }
-      SPRINTF(buf2, "You used to flee %d rooms when you ran away.\n\r",
-              ch->specials.flee);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "You used to flee %d rooms when you ran away.\n\r",
+                    ch->specials.flee);
       ch->specials.flee = nmbr;
-      SPRINTF(buf2, "You will NOW flee %d rooms when you run away.\n\r",
-              ch->specials.flee);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "You will NOW flee %d rooms when you run away.\n\r",
+                    ch->specials.flee);
       return;
     }
   }
@@ -903,7 +909,12 @@ void do_flee(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_bash(struct char_data *ch, char *argument, int cmd) {
+void do_bash(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
+  bash_action(ch, argument, 0);
+}
+
+void bash_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim;
   char name[256];
   byte percent;
@@ -912,7 +923,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd) {
   if (!ch->skills)
     return;
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
@@ -1008,7 +1019,12 @@ void do_bash(struct char_data *ch, char *argument, int cmd) {
 
 
 
-void do_rescue(struct char_data *ch, char *argument, int cmd) {
+void do_rescue(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
+  rescue_action(ch, argument, 0);
+}
+
+void rescue_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim, *tmp_ch;
   int percent;
   char victim_name[240];
@@ -1019,7 +1035,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd) {
     return;
   }
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   if (check_peaceful(ch, "No one should need rescuing here.\n\r"))
@@ -1101,7 +1117,8 @@ void do_rescue(struct char_data *ch, char *argument, int cmd) {
 
 }
 
-void do_assist(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_assist(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   struct char_data *victim, *tmp_ch;
   char victim_name[240];
 
@@ -1152,7 +1169,12 @@ void do_assist(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_kick(struct char_data *ch, char *argument, int cmd) {
+void do_kick(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
+  kick_action(ch, argument, 0);
+}
+
+void kick_action(struct char_data *ch, char *argument, int npc_ok) {
   struct char_data *victim;
   char name[80];
   int dam;
@@ -1170,7 +1192,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd) {
   }
 
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   only_argument(argument, name);
@@ -1252,9 +1274,9 @@ void do_kick(struct char_data *ch, char *argument, int cmd) {
   WAIT_STATE(ch, PULSE_VIOLENCE * 3);
 }
 
-void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_wimp(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   char buf[255];
-  char buf2[255];
   int pct;
 
   if (GET_RACE(ch) == RACE_OGRE) {
@@ -1285,10 +1307,8 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         REMOVE_BIT(ch->specials.act, PLR_WIMPY);
       send_to_char("Ok, you are no longer a wimp...\n\r", ch);
       ch->specials.pct = pct;
-      SPRINTF(buf2,
-              "And you will now get your BLEEDING message at %d%% of max hitpoints.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "And you will now get your BLEEDING message at %d%% of max hitpoints.\n\r",
+                    ch->specials.pct);
     }
     else {
       if (IS_NPC(ch))
@@ -1296,10 +1316,9 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       else
         REMOVE_BIT(ch->specials.act, PLR_WIMPY);
       send_to_char("Ok, you are no longer a wimp...\n\r", ch);
-      SPRINTF(buf2,
-              "However, you will still get your BLEEDING message at %d%% of max hitpoints.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch,
+                    "However, you will still get your BLEEDING message at %d%% of max hitpoints.\n\r",
+                    ch->specials.pct);
     }
   }
   else {
@@ -1313,17 +1332,14 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         send_to_char("Please choose a value between 1 and 50.\n\r", ch);
         return;
       }
-      SPRINTF(buf2, "Your wimpy percentage WAS %d%%.\n\r", ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage WAS %d%%.\n\r", ch->specials.pct);
       ch->specials.pct = pct;
-      SPRINTF(buf2, "Your wimpy percentage has now been set to %d%%.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage has now been set to %d%%.\n\r",
+                    ch->specials.pct);
     }
     else {
-      SPRINTF(buf2, "Your wimpy percentage remains at %d%%.\n\r",
-              ch->specials.pct);
-      send_to_char(buf2, ch);
+      send_to_charf(ch, "Your wimpy percentage remains at %d%%.\n\r",
+                    ch->specials.pct);
     }
     if (IS_NPC(ch))
       SET_BIT(ch->specials.act, ACT_WIMPY);
@@ -1334,17 +1350,21 @@ void do_wimp(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 }
 
-
 extern struct breather breath_monsters[];
 extern struct index_data *mob_index;
-void (*bweapons[]) (byte, struct char_data *, char *, int, struct char_data *,
-                    struct obj_data *) = {
-cast_geyser, cast_fire_breath, cast_gas_breath, cast_frost_breath,
-    cast_acid_breath, cast_lightning_breath};
+breath_weapon_func *bweapons[] = {
+  cast_geyser,
+  cast_fire_breath,
+  cast_gas_breath,
+  cast_frost_breath,
+  cast_acid_breath,
+  cast_lightning_breath
+};
 
-void do_breath(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_breath(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   struct char_data *victim;
-  char buf[MAX_STRING_LENGTH], name[MAX_STRING_LENGTH];
+  char name[MAX_STRING_LENGTH];
   int count, manacost;
   void (*weapon) (byte, struct char_data *, char *, int, struct char_data *,
                   struct obj_data *);
@@ -1371,8 +1391,7 @@ void do_breath(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     for (count = 0; scan->breaths[count]; count++);
 
     if (count < 1) {
-      SPRINTF(buf, "monster %s has no breath weapons", ch->player.short_descr);
-      log_msg(buf);
+      log_msgf("monster %s has no breath weapons", ch->player.short_descr);
       send_to_char("Hey, why don't you have any breath weapons!?\n\r", ch);
       return;
     }
@@ -1404,7 +1423,8 @@ void do_breath(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 }
 
-void do_shoot(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_shoot(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char arg[80];
   struct char_data *victim;
 
@@ -1443,7 +1463,8 @@ void do_shoot(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_springleap(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_springleap(struct char_data *ch, char *argument,
+                   const char * UNUSED(cmd)) {
   struct char_data *victim;
   char name[256];
   byte percent;
@@ -1529,7 +1550,8 @@ void do_springleap(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 }
 
-void do_quivering_palm(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_quivering_palm(struct char_data *ch, char *arg,
+                       const char * UNUSED(cmd)) {
   struct char_data *victim;
   struct affected_type af;
   byte percent;

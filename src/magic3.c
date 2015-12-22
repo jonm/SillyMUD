@@ -12,6 +12,11 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "act.move.h"
+#include "act.info.h"
+#include "act.off.h"
+#include "utility.h"
+#include "fight.h"
 
 /* Extern structures */
 extern struct room_data *world;
@@ -89,7 +94,7 @@ void spell_transport_via_plant(byte UNUSED(level), struct char_data *ch,
   act("$p rustles slightly, and $n magically steps from within!", FALSE, ch,
       obj, 0, TO_ROOM);
   act("You are instantly transported to $p!", FALSE, ch, obj, 0, TO_CHAR);
-  do_look(ch, "\0", 0);
+  look_room(ch);
 
 }
 
@@ -239,7 +244,7 @@ void spell_chain_lightn(byte level, struct char_data *ch,
 void spell_scare(byte UNUSED(level), struct char_data *UNUSED(ch),
                  struct char_data *victim, struct obj_data *UNUSED(obj)) {
   if (get_max_level(victim) <= 5)
-    do_flee(victim, "\0", 0);
+    do_flee(victim, "\0", "flee");
 }
 
 void spell_haste(byte level, struct char_data *ch,
@@ -926,7 +931,7 @@ void spell_creeping_death(byte UNUSED(level), struct char_data *ch,
 
   /* move the creeping death in the proper direction */
 
-  do_move(cd, "\0", dir);
+  move_to_dir(cd, dir);
 
   GET_POS(ch) = POSITION_STUNNED;
 
@@ -1304,10 +1309,6 @@ void spell_charm_veggie(byte UNUSED(level), struct char_data *ch,
                         struct char_data *victim,
                         struct obj_data *UNUSED(obj)) {
   struct affected_type af;
-
-  void add_follower(struct char_data *ch, struct char_data *leader);
-  bool circle_follow(struct char_data *ch, struct char_data *victim);
-  void stop_follower(struct char_data *ch);
 
   assert(ch && victim);
 
@@ -2212,7 +2213,7 @@ void spell_teleport_wo_error(byte level, struct char_data *ch,
     char_to_room(ch, location);
     act("You are blinded for a moment as $n appears in a flash of light!",
         FALSE, ch, 0, 0, TO_ROOM);
-    do_look(ch, "", 15);
+    look_room(ch);
     check_falling(ch);
 
     if (IS_SET(real_roomp(ch->in_room)->room_flags, DEATH) &&
@@ -2260,9 +2261,7 @@ void spell_portal(byte level, struct char_data *ch,
   }
 
   if (!(nrp = real_roomp(tmp_ch->in_room))) {
-    char str[180];
-    SPRINTF(str, "%s not in any room.", GET_NAME(tmp_ch));
-    log_msg(str);
+    log_msgf("%s not in any room.", GET_NAME(tmp_ch));
     send_to_char("Your magic cannot locate the target.\n\r", ch);
     return;
   }

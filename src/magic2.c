@@ -11,6 +11,9 @@
 #include <assert.h>
 
 #include "protos.h"
+#include "act.off.h"
+#include "act.wizard.h"
+#include "fight.h"
 
 /* Extern structures */
 extern struct room_data *world;
@@ -434,7 +437,7 @@ void spell_turn(byte level, struct char_data *ch,
               act("$n forces you from this room.",
                   TRUE, ch, 0, victim, TO_VICT);
               add_feared(victim, ch);
-              do_flee(victim, "", 0);
+              do_flee(victim, "", "flee");
               turned = TRUE;
               break;
             }
@@ -765,8 +768,6 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 
   char *buf;
 
-  void do_snoop(struct char_data *ch, char *argument, int cmd);
-
   /*
    *  Check to make sure that there is no snooping going on.
    */
@@ -836,8 +837,9 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 
 
   /* do some fiddling with the strings */
-  buf = (char *)malloc(strlen(GET_NAME(mob)) + strlen(GET_NAME(ch)) + 2);
-  SPRINTF(buf, "%s %s", GET_NAME(ch), GET_NAME(mob));
+  int len = strlen(GET_NAME(mob)) + strlen(GET_NAME(ch)) + 2;
+  buf = (char *)malloc(len);
+  snprintf(buf, len, "%s %s", GET_NAME(ch), GET_NAME(mob));
 
 #if TITAN
 #else
@@ -847,9 +849,9 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 #endif
 
   GET_NAME(mob) = buf;
-  buf = (char *)malloc(strlen(mob->player.short_descr)
-                       + strlen(GET_NAME(ch)) + 2);
-  SPRINTF(buf, "%s %s", GET_NAME(ch), mob->player.short_descr);
+  len = strlen(mob->player.short_descr) + strlen(GET_NAME(ch)) + 2;
+  buf = (char *)malloc(len);
+  snprintf(buf, len, "%s %s", GET_NAME(ch), mob->player.short_descr);
 
 #if TITAN
   if (mob->player.short_descr)
@@ -857,8 +859,9 @@ void spell_poly_self(byte UNUSED(level), struct char_data *ch,
 #endif
   mob->player.short_descr = buf;
 
-  buf = (char *)malloc(strlen(mob->player.short_descr) + 12);
-  SPRINTF(buf, "%s is here\n\r", mob->player.short_descr);
+  len = strlen(mob->player.short_descr) + 12;
+  buf = (char *)malloc(len);
+  snprintf(buf, len, "%s is here\n\r", mob->player.short_descr);
 
 #if TITAN
 #else
@@ -1460,7 +1463,7 @@ void spell_know_alignment(byte UNUSED(level), struct char_data *ch,
                           struct char_data *victim,
                           struct obj_data *UNUSED(obj)) {
   int ap;
-  char buf[200], name[100];
+  char name[100];
 
   assert(victim && ch);
 
@@ -1472,34 +1475,29 @@ void spell_know_alignment(byte UNUSED(level), struct char_data *ch,
   ap = GET_ALIGNMENT(victim);
 
   if (ap > 700)
-    SPRINTF(buf, "%s has an aura as white as the driven snow.\n\r", name);
+    send_to_charf(ch, "%s has an aura as white as the driven snow.\n\r", name);
   else if (ap > 350)
-    SPRINTF(buf, "%s is of excellent moral character.\n\r", name);
+    send_to_charf(ch, "%s is of excellent moral character.\n\r", name);
   else if (ap > 100)
-    SPRINTF(buf, "%s is often kind and thoughtful.\n\r", name);
+    send_to_charf(ch, "%s is often kind and thoughtful.\n\r", name);
   else if (ap > 25)
-    SPRINTF(buf, "%s isn't a bad sort...\n\r", name);
+    send_to_charf(ch, "%s isn't a bad sort...\n\r", name);
   else if (ap > -25)
-    SPRINTF(buf, "%s doesn't seem to have a firm moral commitment\n\r", name);
+    send_to_charf(ch, "%s doesn't seem to have a firm moral commitment\n\r", name);
   else if (ap > -100)
-    SPRINTF(buf, "%s isn't the worst you've come across\n\r", name);
+    send_to_charf(ch, "%s isn't the worst you've come across\n\r", name);
   else if (ap > -350)
-    SPRINTF(buf, "%s could be a little nicer, but who couldn't?\n\r", name);
+    send_to_charf(ch, "%s could be a little nicer, but who couldn't?\n\r", name);
   else if (ap > -700)
-    SPRINTF(buf, "%s probably just had a bad childhood\n\r", name);
+    send_to_charf(ch, "%s probably just had a bad childhood\n\r", name);
   else
-    SPRINTF(buf, "I'd rather just not say anything at all about %s\n\r", name);
-
-  send_to_char(buf, ch);
-
+    send_to_charf(ch, "I'd rather just not say anything at all about %s\n\r", name);
 }
 
 void spell_dispel_magic(byte level, struct char_data *ch,
                         struct char_data *victim, struct obj_data *obj) {
   int yes = 0;
   int i;
-
-  int check_falling(struct char_data *ch);
 
   assert(ch && (victim || obj));
 

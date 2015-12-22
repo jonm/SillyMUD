@@ -2,6 +2,7 @@
 #define _DB_H
 
 #include "config.h"
+#include "structs.h"
 
 /* data files used by the game system */
 
@@ -146,6 +147,7 @@ void ensure_file_exists(const char *path);
 
 char *fread_string(FILE *f1);
 int fread_string_na(char *dst, size_t max_len, FILE *f1);
+void reboot_text(struct char_data *ch, char *arg, const char * cmd);
 
 #define FREAD_STRING_NA(dst, fp) fread_string_na(dst, sizeof(dst), fp)
 

@@ -11,6 +11,9 @@
 #include <string.h>
 
 #include "protos.h"
+#include "utility.h"
+#include "act.other.h"
+#include "fight.h"
 
 struct room_data *real_roomp(int);
 
@@ -28,7 +31,8 @@ extern struct time_info_data time_info;
 
 char *class_titles(struct char_data *ch) {
   unsigned char i, count = 0;
-  char *buf = malloc(256);
+  int len = 256;
+  char *buf = malloc(len);
 
   for (i = MAGE_LEVEL_IND; i <= MONK_LEVEL_IND; i++) {
     if (GET_LEVEL(ch, i)) {
@@ -37,7 +41,7 @@ char *class_titles(struct char_data *ch) {
         SAPPENDF(buf, "/%s", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)));
       }
       else {
-        SPRINTF(buf, "%s", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)));
+        snprintf(buf, len, "%s", GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i)));
       }
     }
   }
@@ -699,9 +703,8 @@ void gain_exp(struct char_data *ch, int gain) {
               /* do nothing..this is cool */
             }
             else if (GET_EXP(ch) + gain >= titles[i][GET_LEVEL(ch, i) + 1].exp) {
-              SPRINTF(buf, "You have gained enough to be a(n) %s\n\r",
-                      GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i) + 1));
-              send_to_char(buf, ch);
+              send_to_charf(ch, "You have gained enough to be a(n) %s\n\r",
+                            GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i) + 1));
               send_to_char("You must return to a guild to earn the level\n\r",
                            ch);
               if (GET_EXP(ch) + gain >= titles[i][GET_LEVEL(ch, i) + 2].exp) {
@@ -817,9 +820,6 @@ void gain_condition(struct char_data *ch, int condition, int value) {
 
 
 void check_idling(struct char_data *ch) {
-  void do_save(struct char_data *ch, char *argument, int cmd);
-
-
   if (++(ch->specials.timer) == 8) {
     do_save(ch, "", 0);
 

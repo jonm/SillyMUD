@@ -337,14 +337,11 @@
 #define TAR_VIOLENT	 (1<<12)
 #define TAR_ROOM         (1<<13)        /* spells which target the room  */
 
+typedef void (spell_func)(byte, struct char_data *, char *, int, struct char_data *,
+                          struct obj_data*);
+
 struct spell_info_type {
-  void (*spell_pointer)
-
-
-
-   
-    (byte level, struct char_data * ch, char *arg, int type,
-     struct char_data * tar_ch, struct obj_data * tar_obj);
+  spell_func *spell_pointer;
   byte minimum_position;        /* Position for caster                  */
   ubyte min_usesmana;           /* Amount of mana used by a spell        */
   byte beats;                   /* Heartbeats until ready for next */

@@ -13,11 +13,11 @@
 
 
 typedef struct command_node NODE;
+typedef void (*cmd_handler) (struct char_data * ch, char *arg, const char *cmd);
 
 struct command_node {
-  char *name;
-  void (*func) (struct char_data * ch, char *arg, int cmd);
-  int number;
+  char name[64];
+  cmd_handler func;
   byte min_pos;
   byte min_level;
   byte log;
@@ -30,5 +30,7 @@ struct radix_list {
   unsigned short int number;
   byte max_len;
 };
+
+void add_command(char *name, cmd_handler func, int min_pos, int min_lev);
 
 #endif

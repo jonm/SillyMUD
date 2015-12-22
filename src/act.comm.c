@@ -22,7 +22,8 @@ extern const char *half_orc_words[];
 extern const char *half_orc_noises[];
 extern const char *ogre_speak[];
 
-void do_say(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_say(struct char_data *ch, char *argument,
+            const char * UNUSED(cmd)) {
   char buf[MAX_INPUT_LENGTH + 40], buf2[MAX_INPUT_LENGTH + 40];
 
   if (apply_soundproof(ch))
@@ -35,8 +36,7 @@ void do_say(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Yes, but WHAT do you want to say?\n\r", ch);
   else {
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      SPRINTF(buf, "You say '%s'\n\r", argument);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You say '%s'\n\r", argument);
     }
 
     if (GET_RACE(ch) == RACE_OGRE) {
@@ -61,7 +61,8 @@ void do_say(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_shout(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_shout(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char buf1[MAX_INPUT_LENGTH + 40], buf2[MAX_INPUT_LENGTH + 40];
   struct descriptor_data *i;
   extern int Silence;
@@ -93,8 +94,7 @@ void do_shout(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Shout? Yes! Fine! Shout we must, but WHAT??\n\r", ch);
   else {
     if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-      SPRINTF(buf1, "You shout '%s'\n\r", argument);
-      send_to_char(buf1, ch);
+      send_to_charf(ch, "You shout '%s'\n\r", argument);
     }
 
     if (GET_RACE(ch) == RACE_DRAAGDIM) {
@@ -128,7 +128,8 @@ void do_shout(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_commune(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_commune(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   static char buf1[MAX_INPUT_LENGTH];
   struct descriptor_data *i;
 
@@ -139,8 +140,7 @@ void do_commune(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Communing among the gods is fine, but WHAT?\n\r", ch);
   else {
     if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-      SPRINTF(buf1, "You think '%s'\n\r", argument);
-      send_to_char(buf1, ch);
+      send_to_charf(ch, "You think '%s'\n\r", argument);
     }
     SPRINTF(buf1, "$n thinks '%s'", argument);
 
@@ -153,7 +153,8 @@ void do_commune(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_tell(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_tell(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   struct char_data *vict;
   char name[100], message[MAX_INPUT_LENGTH + 20],
     buf[MAX_INPUT_LENGTH + 60], buf2[MAX_INPUT_LENGTH + 60];
@@ -192,10 +193,10 @@ void do_tell(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
 
   if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-    SPRINTF(buf, "You tell %s '%s'\n\r",
-            (IS_NPC(vict) ? vict->player.short_descr : GET_NAME(vict)),
-            message);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You tell %s '%s'\n\r",
+                  (IS_NPC(vict) ? vict->player.short_descr :
+                   GET_NAME(vict)),
+                  message);
   }
 
   if (GET_RACE(ch) == RACE_DRAAGDIM) {
@@ -219,7 +220,8 @@ void do_tell(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_whisper(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_whisper(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *vict;
   char name[100], message[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH];
 
@@ -244,16 +246,17 @@ void do_whisper(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     SPRINTF(buf, "$n whispers to you, '%s'", message);
     act(buf, FALSE, ch, 0, vict, TO_VICT);
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      SPRINTF(buf, "You whisper to %s, '%s'\n\r",
-              (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You whisper to %s, '%s'\n\r",
+                    (IS_NPC(vict) ? vict->player.name :
+                     GET_NAME(vict)), message);
     }
     act("$n whispers something to $N.", FALSE, ch, 0, vict, TO_NOTVICT);
   }
 }
 
 
-void do_ask(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_ask(struct char_data *ch, char *argument,
+            const char * UNUSED(cmd)) {
   struct char_data *vict;
   char name[100], message[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH];
 
@@ -278,9 +281,10 @@ void do_ask(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     act(buf, FALSE, ch, 0, vict, TO_VICT);
 
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      SPRINTF(buf, "You ask %s, '%s'\n\r",
-              (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You ask %s, '%s'\n\r",
+                    (IS_NPC(vict) ? vict->player.name :
+                     GET_NAME(vict)),
+                    message);
     }
     act("$n asks $N a question.", FALSE, ch, 0, vict, TO_NOTVICT);
   }
@@ -290,10 +294,10 @@ void do_ask(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 #define MAX_NOTE_LENGTH 1000    /* arbitrary */
 
-void do_write(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_write(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   struct obj_data *paper = 0, *pen = 0;
-  char papername[MAX_INPUT_LENGTH], penname[MAX_INPUT_LENGTH],
-    buf[MAX_STRING_LENGTH];
+  char papername[MAX_INPUT_LENGTH], penname[MAX_INPUT_LENGTH];
 
   argument_interpreter(argument, papername, penname);
 
@@ -310,13 +314,11 @@ void do_write(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
   if (!(paper = get_obj_in_list_vis(ch, papername, ch->carrying))) {
-    SPRINTF(buf, "You have no %s.\n\r", papername);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You have no %s.\n\r", papername);
     return;
   }
   if (!(pen = get_obj_in_list_vis(ch, penname, ch->carrying))) {
-    SPRINTF(buf, "You have no %s.\n\r", papername);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You have no %s.\n\r", papername);
     return;
   }
 
@@ -403,7 +405,8 @@ char *random_word() {
 
 }
 
-void do_sign(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_sign(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int i;
   char buf[MAX_INPUT_LENGTH + 40];
   char buf2[MAX_INPUT_LENGTH];
@@ -472,8 +475,7 @@ void do_sign(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
 
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      SPRINTF(buf, "You sign '%s'\n\r", argument + i);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You sign '%s'\n\r", argument + i);
     }
   }
 }

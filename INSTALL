@@ -368,3 +368,10 @@ operates.
 
 `configure' also accepts some other, not widely useful, options.  Run
 `configure --help' for more details.
+
+
+Logging
+=======
+
+The game will log to syslog when avaliable with the program name 'silly'. You
+can filter based on this if you like.

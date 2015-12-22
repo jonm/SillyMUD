@@ -10,6 +10,11 @@
 #include <string.h>
 
 #include "protos.h"
+#include "skills.h"
+#include "act.move.h"
+#include "act.obj1.h"
+#include "act.info.h"
+#include "utility.h"
 
 extern char *dirs[];
 extern struct char_data *character_list;
@@ -41,14 +46,15 @@ int named_object_on_ground(int room, void *c_data);
 */
 
 void do_train(struct char_data *UNUSED(ch), char *UNUSED(argument),
-              int UNUSED(cmd)) {
+              const char * UNUSED(cmd)) {
   /* 
      code to allow high level characters to train low level
      characters.
    */
 }
 
-void do_inset(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_inset(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   /* code which allows a character to inset a stone into
      a weapon.  The stone's powers are added to the 
      weapon
@@ -189,7 +195,12 @@ void do_inset(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 **  Disarm:
 */
 
-void do_disarm(struct char_data *ch, char *argument, int cmd) {
+void do_disarm(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
+  disarm_action(ch, argument, 0);
+}
+
+void disarm_action(struct char_data *ch, char *argument, int npc_ok) {
   char name[30];
   int percent;
   struct char_data *victim;
@@ -201,7 +212,7 @@ void do_disarm(struct char_data *ch, char *argument, int cmd) {
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;
 
-  if (!IS_PC(ch) && cmd)
+  if (!IS_PC(ch) && !npc_ok)
     return;
 
   /*
@@ -343,8 +354,9 @@ int named_mobile_in_room(int room, struct hunting_data *c_data) {
   return 0;
 }
 
-void do_track(struct char_data *ch, char *argument, int UNUSED(cmd)) {
-  char name[256], buf[256], found = FALSE;
+void do_track(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
+  char name[256], found = FALSE;
   int dist, code;
   struct hunting_data huntd;
   struct char_data *scan;
@@ -449,8 +461,7 @@ void do_track(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   else {
     if (IS_LIGHT(ch->in_room) || IS_AFFECTED(ch, AFF_TRUE_SIGHT)) {
       SET_BIT(ch->specials.act, PLR_HUNTING);
-      SPRINTF(buf, "You see traces of your quarry to the %s.\n\r", dirs[code]);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You see traces of your quarry to the %s.\n\r", dirs[code]);
     }
     else {
       ch->specials.hunting = 0;
@@ -461,8 +472,6 @@ void do_track(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 int track(struct char_data *ch, struct char_data *vict) {
-
-  char buf[256];
   int code;
 
   if ((!ch) || (!vict))
@@ -489,16 +498,13 @@ int track(struct char_data *ch, struct char_data *vict) {
     return (FALSE);
   }
   else {
-    SPRINTF(buf, "##You see a faint trail to the %s.\n\r", dirs[code]);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "##You see a faint trail to the %s.\n\r", dirs[code]);
     return (TRUE);
   }
 
 }
 
 int dir_track(struct char_data *ch, struct char_data *vict) {
-
-  char buf[256];
   int code;
 
   if ((!ch) || (!vict))
@@ -527,8 +533,7 @@ int dir_track(struct char_data *ch, struct char_data *vict) {
     return (-1);                /* false to continue the hunt */
   }
   else {
-    SPRINTF(buf, "##You see a faint trail to the %s.\n\r", dirs[code]);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "##You see a faint trail to the %s.\n\r", dirs[code]);
     return (code);
   }
 
@@ -678,7 +683,7 @@ int go_direction(struct char_data *ch, int dir) {
     return 0;
 
   if (!IS_SET(EXIT(ch, dir)->exit_info, EX_CLOSED)) {
-    do_move(ch, "", dir + 1);
+    move_to_dir(ch, dir);
   }
   else if (is_humanoid(ch) && !IS_SET(EXIT(ch, dir)->exit_info, EX_LOCKED)) {
     open_door(ch, dir);
@@ -704,8 +709,7 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp) {
   else {
     strcpy(doorname, "barrier");
   }
-  SPRINTF(buf, "You slam against the %s with no effect.\n\r", doorname);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "You slam against the %s with no effect.\n\r", doorname);
   send_to_char("OUCH!  That REALLY Hurt!\n\r", ch);
   SPRINTF(buf, "$n crashes against the %s with no effect.\n\r", doorname);
   act(buf, FALSE, ch, 0, 0, TO_ROOM);
@@ -720,7 +724,8 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp) {
 /*
   skill to allow fighters to break down doors
 */
-void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_doorbash(struct char_data *ch, char *arg,
+                 const char * UNUSED(cmd)) {
   extern char *dirs[];
   int dir;
   int ok;
@@ -776,14 +781,13 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
   SPRINTF(buf, "$n charges %swards", dirs[dir]);
   act(buf, FALSE, ch, 0, 0, TO_ROOM);
-  SPRINTF(buf, "You charge %swards\n\r", dirs[dir]);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "You charge %swards\n\r", dirs[dir]);
 
   if (!IS_SET(exitp->exit_info, EX_CLOSED)) {
     was_in = ch->in_room;
     char_from_room(ch);
     char_to_room(ch, exitp->to_room);
-    do_look(ch, "", 0);
+    look_room(ch);
 
     display_move(ch, dir, was_in, 1);
     if (!check_falling(ch)) {
@@ -830,9 +834,8 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
         SPRINTF(buf, "$n slams into the %s, and it bursts open!",
                 fname(exitp->keyword));
         act(buf, FALSE, ch, 0, 0, TO_ROOM);
-        SPRINTF(buf, "You slam into the %s, and it bursts open!\n\r",
-                fname(exitp->keyword));
-        send_to_char(buf, ch);
+        send_to_charf(ch, "You slam into the %s, and it bursts open!\n\r",
+                      fname(exitp->keyword));
         raw_unlock_door(ch, exitp, dir);
         raw_open_door(ch, dir);
         GET_HIT(ch) -= number(1, 5);
@@ -845,7 +848,7 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
           char_from_room(ch);
           char_to_room(ch, exitp->to_room);
-          do_look(ch, "", 0);
+          look_room(ch);
           display_move(ch, dir, was_in, 1);
           if (!check_falling(ch)) {
             if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -884,7 +887,8 @@ void do_doorbash(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   skill to allow anyone to move through rivers and underwater
 */
 
-void do_swim(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_swim(struct char_data *ch, char *UNUSED(arg),
+             const char * UNUSED(cmd)) {
 
   struct affected_type af;
   byte percent;
@@ -948,7 +952,8 @@ int spy_check(struct char_data *ch) {
 
 }
 
-void do_spy(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_spy(struct char_data *ch, char *UNUSED(arg),
+            const char * UNUSED(cmd)) {
 
   struct affected_type af;
 
@@ -1013,7 +1018,8 @@ int remove_trap(struct char_data *ch, struct obj_data *trap) {
   }
 }
 
-void do_feign_death(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_feign_death(struct char_data *ch, char *UNUSED(arg),
+                    const char * UNUSED(cmd)) {
   struct room_data *rp;
   struct char_data *t;
 
@@ -1064,7 +1070,8 @@ void do_feign_death(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   }
 }
 
-void do_first_aid(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_first_aid(struct char_data *ch, char *UNUSED(arg),
+                  const char * UNUSED(cmd)) {
   struct affected_type af;
 
   send_to_char("You attempt to render first aid unto yourself.\n\r", ch);
@@ -1094,7 +1101,8 @@ void do_first_aid(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   return;
 }
 
-void do_disguise(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_disguise(struct char_data *ch, char *UNUSED(arg),
+                 const char * UNUSED(cmd)) {
   struct affected_type af;
 
   send_to_char("You attempt to disguise yourself\n\r", ch);
@@ -1135,7 +1143,8 @@ void do_disguise(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
 }
 
 /* Skill for climbing walls and the like -DM */
-void do_climb(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_climb(struct char_data *ch, char *arg,
+              const char * UNUSED(cmd)) {
   extern char *dirs[];
   int dir;
   struct room_direction_data *exitp;
@@ -1194,8 +1203,7 @@ void do_climb(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
   SPRINTF(buf, "$n attempts to climb %swards", dirs[dir]);
   act(buf, FALSE, ch, 0, 0, TO_ROOM);
-  SPRINTF(buf, "You attempt to climb %swards\n\r", dirs[dir]);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "You attempt to climb %swards\n\r", dirs[dir]);
 
   GET_MOVE(ch) -= 10;
 
@@ -1215,7 +1223,7 @@ void do_climb(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
         char_from_room(ch);
         char_to_room(ch, exitp->to_room);
-        do_look(ch, "", 0);
+        look_room(ch);
         display_move(ch, dir, was_in, 1);
         if (!check_falling(ch)) {
           if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -1259,7 +1267,7 @@ void slip_in_climb(struct char_data *ch, int dir, int room) {
     i += number(1, 6);
     char_from_room(ch);
     char_to_room(ch, room);
-    do_look(ch, "", 0);
+    look_room(ch);
   }
 
   GET_POS(ch) = POSITION_SITTING;
@@ -1269,7 +1277,7 @@ void slip_in_climb(struct char_data *ch, int dir, int room) {
     GET_HIT(ch) -= i;
 }
 
-void do_palm(struct char_data *ch, char *arg, int cmd) {
+void do_palm(struct char_data *ch, char *arg, const char *cmd) {
   char arg1[MAX_STRING_LENGTH], arg2[MAX_STRING_LENGTH],
     buffer[MAX_STRING_LENGTH];
   struct obj_data *sub_object;
@@ -1318,17 +1326,14 @@ void do_palm(struct char_data *ch, char *arg, int cmd) {
               if (obj_object->obj_flags.value[0] < 1)
                 obj_object->obj_flags.value[0] = 1;
               obj_from_char(obj_object);
-              SPRINTF(buffer, "There %s %d coins.\n\r",
-                      obj_object->obj_flags.value[0] > 1 ? "were" : "was",
-                      obj_object->obj_flags.value[0]);
-              send_to_char(buffer, ch);
+              send_to_charf(ch, "There %s %d coins.\n\r",
+                            obj_object->obj_flags.value[0] > 1 ? "were" : "was",
+                            obj_object->obj_flags.value[0]);
               GET_GOLD(ch) += obj_object->obj_flags.value[0];
               if (GET_GOLD(ch) > 100000 &&
                   obj_object->obj_flags.value[0] > 10000) {
-                char buf[MAX_INPUT_LENGTH];
-                SPRINTF(buf, "%s just got %d coins!",
-                        GET_NAME(ch), obj_object->obj_flags.value[0]);
-                log_msg(buf);
+                log_msgf("%s just got %d coins!",
+                         GET_NAME(ch), obj_object->obj_flags.value[0]);
               }
               extract_obj(obj_object);
             }
@@ -1339,22 +1344,19 @@ void do_palm(struct char_data *ch, char *arg, int cmd) {
           }
         }
         else {
-          SPRINTF(buffer, "%s : You can't carry that much weight.\n\r",
-                  obj_object->short_description);
-          send_to_char(buffer, ch);
+          send_to_charf(ch, "%s : You can't carry that much weight.\n\r",
+                        obj_object->short_description);
           return;
         }
       }
       else {
-        SPRINTF(buffer, "%s : You can't carry that many items.\n\r",
-                obj_object->short_description);
-        send_to_char(buffer, ch);
+        send_to_charf(ch, "%s : You can't carry that many items.\n\r",
+                      obj_object->short_description);
         return;
       }
     }
     else {
-      SPRINTF(buffer, "You do not see a %s here.\n\r", arg1);
-      send_to_char(buffer, ch);
+      send_to_charf(ch, "You do not see a %s here.\n\r", arg1);
       return;
     }
   }
@@ -1385,18 +1387,15 @@ void do_palm(struct char_data *ch, char *arg, int cmd) {
                     if (obj_object->obj_flags.value[0] < 1)
                       obj_object->obj_flags.value[0] = 1;
                     obj_from_char(obj_object);
-                    SPRINTF(buffer, "There %s %d coins.\n\r",
-                            obj_object->obj_flags.value[0] >
-                            1 ? "were" : "was",
-                            obj_object->obj_flags.value[0]);
-                    send_to_char(buffer, ch);
+                    send_to_charf(ch, "There %s %d coins.\n\r",
+                                  obj_object->obj_flags.value[0] >
+                                  1 ? "were" : "was",
+                                  obj_object->obj_flags.value[0]);
                     GET_GOLD(ch) += obj_object->obj_flags.value[0];
                     if (GET_GOLD(ch) > 100000 &&
                         obj_object->obj_flags.value[0] > 10000) {
-                      char buf[MAX_INPUT_LENGTH];
-                      SPRINTF(buf, "%s just got %d coins!",
-                              GET_NAME(ch), obj_object->obj_flags.value[0]);
-                      log_msg(buf);
+                      log_msgf("%s just got %d coins!", GET_NAME(ch),
+                               obj_object->obj_flags.value[0]);
                     }
                     extract_obj(obj_object);
                   }
@@ -1411,21 +1410,18 @@ void do_palm(struct char_data *ch, char *arg, int cmd) {
               }
             }
             else {
-              SPRINTF(buffer, "%s : You can't carry that much weight.\n\r",
-                      obj_object->short_description);
-              send_to_char(buffer, ch);
+              send_to_charf(ch, "%s : You can't carry that much weight.\n\r",
+                            obj_object->short_description);
             }
           }
           else {
-            SPRINTF(buffer, "%s : You can't carry that many items.\n\r",
-                    obj_object->short_description);
-            send_to_char(buffer, ch);
+            send_to_charf(ch, "%s : You can't carry that many items.\n\r",
+                          obj_object->short_description);
           }
         }
         else {
-          SPRINTF(buffer, "%s does not contain the %s.\n\r",
-                  sub_object->short_description, arg1);
-          send_to_char(buffer, ch);
+          send_to_charf(ch, "%s does not contain the %s.\n\r",
+                        sub_object->short_description, arg1);
         }
       }
       else {
@@ -1434,14 +1430,13 @@ void do_palm(struct char_data *ch, char *arg, int cmd) {
       }
     }
     else {
-      SPRINTF(buffer, "You do not see or have the %s.\n\r", arg2);
-      send_to_char(buffer, ch);
+      send_to_charf(ch, "You do not see or have the %s.\n\r", arg2);
     }
   }
 }
 
 
-void do_peek(struct char_data *ch, char *arg, int cmd) {
+void do_peek(struct char_data *ch, char *arg, const char *cmd) {
   char *argument;
   struct char_data *peeked;
   struct obj_data *dummy;
@@ -1486,7 +1481,8 @@ void do_peek(struct char_data *ch, char *arg, int cmd) {
   }
 }
 
-void do_berserk(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_berserk(struct char_data *ch, char *UNUSED(arg),
+                const char * UNUSED(cmd)) {
 
   struct affected_type af;
 
@@ -1561,7 +1557,8 @@ void do_berserk(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
   }
 }
 
-void do_makepotion(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_makepotion(struct char_data *ch, char *argument,
+                   const char * UNUSED(cmd)) {
   int i, ingredients = 0, which_potion = 0, match = 0, j, max;
   bool object[5];
   struct obj_data *o, *in_o, *next, *potion;
@@ -1624,11 +1621,7 @@ void do_makepotion(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
   }
 
-  {
-    char buf[80];
-    SPRINTF(buf, "Min brew level is: %d", max);
-    log_msg(buf);
-  }
+  log_msgf("Min brew level is: %d", max);
 
   extract_obj(potion);
 

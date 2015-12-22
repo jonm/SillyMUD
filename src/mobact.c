@@ -10,6 +10,14 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.obj1.h"
+#include "act.obj2.h"
+#include "act.comm.h"
+#include "act.off.h"
+#include "act.wizard.h"
+#include "utility.h"
+#include "fight.h"
+#include "mobact.h"
 
 extern struct char_data *character_list;
 extern struct index_data *mob_index;
@@ -59,7 +67,6 @@ void mobile_wander(struct char_data *ch) {
   int door, or;
   struct room_direction_data *exitp;
   struct room_data *rp;
-  char buf[100];
   extern int rev_dir[];
 
   if (GET_POS(ch) != POSITION_STANDING)
@@ -105,8 +112,8 @@ void mobile_wander(struct char_data *ch) {
         go_direction(ch, door);
         if (ch->in_room == 0) {
           if (or != 0) {
-            SPRINTF(buf, "%s just entered void from %d", GET_NAME(ch), or);
-            log_sev(buf, 5);
+            log_lev_msgf(LOG_CRIT, "%s just entered void from %d",
+                         GET_NAME(ch), or);
           }
         }
         return;
@@ -192,7 +199,7 @@ void mob_scavenge(struct char_data *ch) {
         if (obj->contains) {
           if (is_humanoid(ch) && !number(0, 4)) {
             SPRINTF(buf, " all %d.corpse", cc);
-            do_get(ch, buf, 0);
+            do_get(ch, buf, NULL);
             return;
           }
         }
@@ -223,7 +230,7 @@ void mob_scavenge(struct char_data *ch) {
   if (!number(0, 3)) {
     if (is_humanoid(ch) && ch->carrying) {
       SPRINTF(buf, "all");
-      do_wear(ch, buf, 0);
+      do_wear(ch, buf, NULL);
     }
   }
 }
@@ -260,9 +267,6 @@ void mobile_activity(struct char_data *ch) {
   int k;
   extern int no_specials;
 
-  void do_move(struct char_data *ch, char *argument, int cmd);
-  void do_get(struct char_data *ch, char *argument, int cmd);
-
   /* Examine call for special procedure */
 
   /* some status checking for errors */
@@ -271,8 +275,8 @@ void mobile_activity(struct char_data *ch) {
 #else
   if ((ch->in_room < 0) || !room_find(&room_db, ch->in_room)) {
 #endif
-    log_msg("Char not in correct room.  moving to 50 ");
-    log_msg(GET_NAME(ch));
+    log_msgf("Char not in correct room.  moving to 50: %s", 
+             GET_NAME(ch));
     assert(ch->in_room >= 0);   /* if they are in a - room, assume an error */
     char_from_room(ch);
     char_to_room(ch, 50);
@@ -287,10 +291,8 @@ void mobile_activity(struct char_data *ch) {
   if (((IS_SET(ch->specials.act, ACT_SPEC) || mob_index[ch->nr].func))
       && !no_specials) {
     if (!mob_index[ch->nr].func) {
-      char buf[180];
-      SPRINTF(buf, "Attempting to call a non-existing mob func on %s",
-              GET_NAME(ch));
-      log_msg(buf);
+      log_msgf("Attempting to call a non-existing mob func on %s",
+               GET_NAME(ch));
       REMOVE_BIT(ch->specials.act, ACT_SPEC);
     }
     else {
@@ -351,7 +353,7 @@ void mobile_activity(struct char_data *ch) {
       if (!ch->specials.fighting) {
         if (IS_SET(ch->specials.act, ACT_AFRAID)) {
           if ((tmp_ch = find_a_fearee(ch)) != NULL) {
-            do_flee(ch, "", 0);
+            do_flee(ch, "", "flee");
           }
         }
       }
@@ -465,7 +467,6 @@ int same_race(struct char_data *ch1, struct char_data *ch2) {
 int assist_friend(struct char_data *ch) {
   struct char_data *damsel, *targ, *tmp_ch, *next;
   int t, found;
-  char buf[256];
 
   damsel = 0;
   targ = 0;
@@ -473,8 +474,7 @@ int assist_friend(struct char_data *ch) {
   if (check_peaceful(ch, ""))
     return (0);
   if (ch->in_room < 0) {
-    SPRINTF(buf, "Mob %s in negative room", ch->player.name);
-    log_msg(buf);
+    log_msgf("Mob %s in negative room", ch->player.name);
     ch->in_room = 0;
     extract_char(ch);
     return (0);
@@ -589,9 +589,9 @@ void find_a_better_weapon(struct char_data *mob) {
      */
     if (best->carried_by == mob) {
       if (mob->equipment[WIELD]) {
-        do_remove(mob, mob->equipment[WIELD]->name, 0);
+        do_remove(mob, mob->equipment[WIELD]->name, NULL);
       }
-      do_wield(mob, best->name, 0);
+      do_wield(mob, best->name, NULL);
     }
     else if (best->equipped_by == mob) {
       /* do nothing */
@@ -750,7 +750,7 @@ int command_search(char *arg) {
   return (-1);
 }
 
-void command_assign(char *arg, void (*p)) {
+ void command_assign(char *arg, mobact_func *p) {
   if (top_of_comp == 0)
     comp = (struct script_com *)malloc(sizeof(struct script_com));
   else
@@ -809,7 +809,7 @@ void end2(char *UNUSED(arg), struct char_data *ch) {
 }
 
 void sgoto(char *arg, struct char_data *ch) {
-  char *p, buf[255];
+  char *p;
   struct char_data *mob;
   int dir, room;
 
@@ -818,8 +818,8 @@ void sgoto(char *arg, struct char_data *ch) {
       arg++;
       p = strtok(arg, " ");
       if ((mob = get_char_vis(ch, p)) == NULL) {
-        fprintf(stderr, "%s couldn't find mob by name %s\n",
-                script_data[ch->script].filename, p);
+        log_msgf("%s couldn't find mob by name %s\n",
+                 script_data[ch->script].filename, p);
         ch->commandp++;
         return;
       }
@@ -832,20 +832,19 @@ void sgoto(char *arg, struct char_data *ch) {
     }
   }
   else {
-    SPRINTF(buf, "Error in script %s, no destination for goto",
-            script_data[ch->script].filename);
-    log_msg(buf);
+    log_msgf("Error in script %s, no destination for goto",
+             script_data[ch->script].filename);
     ch->commandp++;
     return;
   }
   if (ch->in_room != room) {
     dir = choose_exit_global(ch->in_room, room, MAX_ROOMS);
     if (dir < 0) {
-      do_say(ch, "Woah!  How'd i get here??", 0);
-      do_emote(ch, "vanishes in a puff of smoke", 0);
+      say(ch, "Woah!  How'd i get here??");
+      emote(ch, "vanishes in a puff of smoke");
       char_from_room(ch);
       char_to_room(ch, room);
-      do_emote(ch, "arrives with a Bamf!", 0);
+      emote(ch, "arrives with a Bamf!");
       ch->commandp++;
       return;
     }
@@ -886,9 +885,8 @@ void do_jmp(char *arg, struct char_data *ch) {
     }
   }
 
-  SPRINTF(buf, "Label %s undefined in script assigned to %s.  Ignoring.", arg,
-          GET_NAME(ch));
-  log_msg(buf);
+  log_msgf("Label %s undefined in script assigned to %s.  Ignoring.",
+           arg, GET_NAME(ch));
 
   ch->commandp++;
 }
@@ -909,9 +907,8 @@ void do_jsr(char *arg, struct char_data *ch) {
     }
   }
 
-  SPRINTF(buf, "Label %s undefined in script assigned to %s.  Ignoring.", arg,
-          GET_NAME(ch));
-  log_msg(buf);
+  log_msgf("Label %s undefined in script assigned to %s.  Ignoring.",
+           arg, GET_NAME(ch));
 
   ch->commandp++;
 }

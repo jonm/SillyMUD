@@ -13,6 +13,8 @@
 
 #include "protos.h"
 #include "db.h"
+#include "utility.h"
+
 
 #define MAX_MSGS 99             /* Max number of messages.          */
 #define MAX_MESSAGE_LENGTH 2048 /* that should be enough            */
@@ -88,8 +90,8 @@ c   Added a board and message structure
 
 */
 
-int board(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
-          int type) {
+int board(struct char_data *ch, const char * cmd, char *arg,
+          struct obj_data *obj, int type) {
   static int has_loaded = 0;
   int bnum = -1;
   int obj_num;
@@ -118,17 +120,20 @@ int board(struct char_data *ch, int cmd, char *arg, struct obj_data *obj,
   else if (obj_num == (real_object(3097)))
     bnum = 2;
 
-  switch (cmd) {
-  case 15:                     /* look */
+  if (STREQ(cmd, "look")) {
     return (board_show_board(ch, arg, bnum));
-  case 149:                    /* write */
+  }
+  else if (STREQ(cmd, "write")) {
     board_write_msg(ch, arg, bnum);
     return 1;
-  case 63:                     /* read */
+  }
+  else if (STREQ(cmd, "read")) {
     return (board_display_msg(ch, arg, bnum));
-  case 66:                     /* remove */
+  }
+  else if (STREQ(cmd, "remove")) {
     return (board_remove_msg(ch, arg, bnum));
-  default:
+  }
+  else {
     return 0;
   }
 }
@@ -348,7 +353,6 @@ void board_load_board() {
   FILE *the_file;
   int ind;
   int bnum;
-  char buf[256];
 
   memset(boards, 0, sizeof(boards));    /* Zero out the array, make sure no */
   /* Funky pointers are left in the   */
@@ -364,13 +368,12 @@ void board_load_board() {
     boards[bnum].number = -1;
     the_file = fopen(save_file[bnum], "r");
     if (!the_file) {
-      SPRINTF(buf, "Can't open message file for board %d.\n\r", bnum);
-      log_msg(buf);
+      log_msgf("Can't open message file for board %d.\n\r", bnum);
       continue;
     }
 
     if (EOF == fscanf(the_file, " %d ", &boards[bnum].number)) {
-      log_msg("Board-message file is emptyish.");
+      log_msgf("Board-message file %s is emptyish.", save_file[bnum]);
     }
     else if (boards[bnum].number < 0 || boards[bnum].number > MAX_MSGS ||
         feof(the_file)) {
@@ -496,7 +499,6 @@ int fwrite_string(char *buf, FILE * fl) {
 
 int board_check_locks(int bnum, struct char_data *ch) {
 
-  char buf[MAX_INPUT_LENGTH];
   struct char_data *tmp_char;
   bool found = FALSE;
   if (!board_lock[bnum].lock)
@@ -519,17 +521,15 @@ int board_check_locks(int bnum, struct char_data *ch) {
   /* Check for link-death of lock holder */
 
   if (!board_lock[bnum].locked_for->desc) {
-    SPRINTF(buf, "You push %s aside and approach the board.\n\r",
-            board_lock[bnum].locked_for->player.name);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You push %s aside and approach the board.\n\r",
+                  board_lock[bnum].locked_for->player.name);
   }
 
   /* Else see if lock holder is still in write-string mode */
 
   else if (board_lock[bnum].locked_for->desc->str) {    /* Lock still holding */
-    SPRINTF(buf, "You try to approach the board but %s blocks your way.\n\r",
-            board_lock[bnum].locked_for->player.name);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You try to approach the board but %s blocks your way.\n\r",
+                  board_lock[bnum].locked_for->player.name);
     return (1);
   }
 

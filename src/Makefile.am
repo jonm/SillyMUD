@@ -11,7 +11,14 @@ common_sources = comm.c act.comm.c act.info.c act.move.c act.obj1.c \
 	reception.c constants.c spec_procs.c signals.c board.c magic.c \
 	magic2.c skills.c Opinion.c Trap.c magicutils.c multiclass.c hash.c \
 	Sound.c Heap.c spec_procs2.c magic3.c security.c spec_procs3.c \
-        create.c parser.c intrinsics.c
+        create.c parser.c intrinsics.c \
+	act.comm.h act.info.h act.move.h act.obj1.h act.obj2.h act.off.h \
+	act.other.h act.social.h act.wizard.h area.h board.h comm.h create.h \
+	db.h debug.h handler.h hash.h heap.h interpreter.h intrinsics.h \
+	limits.h memory.h modify.h parser.h poly.h protos.h race.h \
+	reception.h script.h skills.h spec_procs.h spec_procs2.h \
+	spec_procs3.h spell_parser.h spells.h structs.h temp.h trap.h \
+	utility.h utils.h vt100c.h wizlist.h
 sillymud_SOURCES = $(common_sources) main.c
 
 # unit tests

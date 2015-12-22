@@ -10,6 +10,12 @@
 #include <string.h>
 
 #include "protos.h"
+#include "board.h"
+#include "spec_procs.h"
+#include "spec_procs2.h"
+#include "spec_procs3.h"
+#include "reception.h"
+#include "utility.h"
 
 #if HASH
 extern struct hash_header room_db;
@@ -21,19 +27,17 @@ extern struct index_data *obj_index;
 void boot_the_shops();
 void assign_the_shopkeepers();
 
+typedef int (*sproc) (struct char_data *, const char *, char *,
+                      struct char_data *, int);
+
 struct special_proc_entry {
   int vnum;
-  int (*proc) ();
+  sproc proc;
 };
 
 /* ********************************************************************
 *  Assignments                                                        *
 ******************************************************************** */
-
-/* put here so we don't have to recompile EVERYTHING */
-int death_knight(struct char_data *ch, int cmd, char *arg,
-                 struct char_data *mob, int type);
-
 
 /* assign special procedures to mobiles */
 void assign_mobiles() {
@@ -1011,14 +1015,12 @@ void assign_mobiles() {
   };
 
   int i, rnum;
-  char buf[MAX_STRING_LENGTH];
 
   for (i = 0; specials[i].vnum >= 0; i++) {
     rnum = real_mobile(specials[i].vnum);
     if (rnum < 0) {
-      SPRINTF(buf, "mobile_assign: Mobile %d not found in database.",
-              specials[i].vnum);
-      log_msg(buf);
+      log_msgf("mobile_assign: Mobile %d not found in database.",
+               specials[i].vnum);
     }
     else {
       mob_index[rnum].func = specials[i].proc;
@@ -1029,9 +1031,13 @@ void assign_mobiles() {
   assign_the_shopkeepers();
 }
 
+typedef int (*oproc) (struct char_data *, const char *, char *,
+                      struct obj_data *, int);
+
+
 struct object_proc {
   int virtual_obj_num;
-  int (*func) ();
+  oproc func;
 };
 static struct object_proc obj_procs[] = {
   {15, slot_machine},
@@ -1065,18 +1071,24 @@ void assign_objects() {
         "***WARNING***: assigning special proc to non-existent object %d";
       char *buf;
       buf = (char *)malloc(strlen(fmt) + 20);
-      SPRINTF(buf, fmt, obj_procs[i].virtual_obj_num);
-      log_msg(buf);
+      log_msgf(fmt, obj_procs[i].virtual_obj_num);
       free(buf);
     }
     i++;
   }
 }
 
+typedef int (*rproc) (struct char_data *, const char *, char *,
+                      struct room_data *, int);
+
+struct room_proc_entry {
+  int vnum;
+  rproc proc;
+};
 
 /* assign special procedures to rooms */
 void assign_rooms() {
-  static struct special_proc_entry specials[] = {
+  static struct room_proc_entry specials[] = {
 
     {99, donation},
     {500, druid_challenge_prep_room},
@@ -1110,13 +1122,11 @@ void assign_rooms() {
   };
   int i;
   struct room_data *rp;
-  char buf[80];
 
   for (i = 0; specials[i].vnum >= 0; i++) {
     rp = real_roomp(specials[i].vnum);
     if (rp == NULL) {
-      SPRINTF(buf, "assign_rooms: room %d unknown", specials[i].vnum);
-      log_msg(buf);
+      log_msgf("assign_rooms: room %d unknown", specials[i].vnum);
     }
     else
       rp->funct = specials[i].proc;

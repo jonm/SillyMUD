@@ -11,6 +11,11 @@
 
 #include "protos.h"
 #include "db.h"
+#include "act.comm.h"
+#include "act.wizard.h"
+#include "act.social.h"
+#include "act.comm.h"
+#include "utility.h"
 
 #define SHOP_FILE "tinyworld.shp"
 #define MAX_TRADE 5
@@ -59,22 +64,22 @@ int number_of_shops;
 
 int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr) {
   if (shop_index[shop_nr].open1 > time_info.hours) {
-    do_say(keeper, "Come back later!", 17);
+    say(keeper, "Come back later!");
     return (FALSE);
   }
   else if (shop_index[shop_nr].close1 < time_info.hours) {
     if (shop_index[shop_nr].open2 > time_info.hours) {
-      do_say(keeper, "Sorry, we have closed, but come back later.", 17);
+      say(keeper, "Sorry, we have closed, but come back later.");
       return (FALSE);
     }
     else if (shop_index[shop_nr].close2 < time_info.hours) {
-      do_say(keeper, "Sorry, come back tomorrow.", 17);
+      say(keeper, "Sorry, come back tomorrow.");
       return (FALSE);
     };
   }
 
   if (!(CAN_SEE(keeper, ch))) {
-    do_say(keeper, "I don't trade with someone I can't see!", 17);
+    say(keeper, "I don't trade with someone I can't see!");
     return (FALSE);
   };
 
@@ -142,7 +147,7 @@ void shopping_buy(char *arg, struct char_data *ch,
   only_argument(arg, argm);
   if (!(*argm)) {
     SPRINTF(buf, "%s what do you want to buy??", GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
@@ -154,13 +159,13 @@ void shopping_buy(char *arg, struct char_data *ch,
 
   if (!(temp1 = get_obj_in_list_vis(ch, argm, keeper->carrying))) {
     SPRINTF(buf, shop_index[shop_nr].no_such_item1, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
   if (temp1->obj_flags.cost <= 0) {
     SPRINTF(buf, shop_index[shop_nr].no_such_item1, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     extract_obj(temp1);
     return;
   }
@@ -184,14 +189,14 @@ void shopping_buy(char *arg, struct char_data *ch,
 
   if (GET_GOLD(ch) < (int)(num * cost)) {
     SPRINTF(buf, shop_index[shop_nr].missing_cash2, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
 
     switch (shop_index[shop_nr].temper1) {
     case 0:
-      do_action(keeper, GET_NAME(ch), 30);
+      do_action(keeper, GET_NAME(ch), "puke");
       return;
     case 1:
-      do_emote(keeper, "grins happily", 36);
+      emote(keeper, "grins happily");
       return;
     default:
       return;
@@ -199,16 +204,14 @@ void shopping_buy(char *arg, struct char_data *ch,
   }
 
   if ((IS_CARRYING_N(ch) + num) > (CAN_CARRY_N(ch))) {
-    SPRINTF(buf, "%s : You can't carry that many items.\n\r",
-            fname(temp1->name));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s : You can't carry that many items.\n\r",
+                  fname(temp1->name));
     return;
   }
 
   if ((IS_CARRYING_W(ch) + (num * temp1->obj_flags.weight)) > CAN_CARRY_W(ch)) {
-    SPRINTF(buf, "%s : You can't carry that much weight.\n\r",
-            fname(temp1->name));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s : You can't carry that much weight.\n\r",
+                  fname(temp1->name));
     return;
   }
 
@@ -217,11 +220,10 @@ void shopping_buy(char *arg, struct char_data *ch,
   SPRINTF(buf, shop_index[shop_nr].message_buy,
           GET_NAME(ch), (int)(num * cost));
 
-  do_tell(keeper, buf, 19);
+  do_tell(keeper, buf, "tell");
 
-  SPRINTF(buf, "You now have %s (*%d).\n\r", temp1->short_description, num);
+  send_to_charf(ch, "You now have %s (*%d).\n\r", temp1->short_description, num);
 
-  send_to_char(buf, ch);
 
   if (cost < 1)
     cost = 1;
@@ -280,13 +282,13 @@ void shopping_sell(char *arg, struct char_data *ch,
 
   if (!(*argm)) {
     SPRINTF(buf, "%s What do you want to sell??", GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
   if (!(temp1 = get_obj_in_list_vis(ch, argm, ch->carrying))) {
     SPRINTF(buf, shop_index[shop_nr].no_such_item2, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
@@ -297,7 +299,7 @@ void shopping_sell(char *arg, struct char_data *ch,
 
   if (!(trade_with(temp1, shop_nr)) || (temp1->obj_flags.cost < 1)) {
     SPRINTF(buf, shop_index[shop_nr].do_not_buy, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
@@ -315,7 +317,7 @@ void shopping_sell(char *arg, struct char_data *ch,
 
   if (GET_GOLD(keeper) < (int)cost) {
     SPRINTF(buf, shop_index[shop_nr].missing_cash1, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
@@ -350,10 +352,9 @@ void shopping_sell(char *arg, struct char_data *ch,
 		((chr_apply[GET_CHR(ch)].reaction*temp1->obj_flags.cost)/100)))
 ; */
 
-  do_tell(keeper, buf, 19);
+  do_tell(keeper, buf, "tell");
 
-  SPRINTF(buf, "The shopkeeper now has %s.\n\r", temp1->short_description);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "The shopkeeper now has %s.\n\r", temp1->short_description);
 
   if (GET_GOLD(keeper) < temp_cost) {
     /* (int) (temp1->obj_flags.cost*
@@ -361,7 +362,7 @@ void shopping_sell(char *arg, struct char_data *ch,
        ((chr_apply[GET_CHR(ch)].reaction*temp1->obj_flags.cost)/100))) {
      */
     SPRINTF(buf, shop_index[shop_nr].missing_cash1, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
@@ -419,19 +420,19 @@ void shopping_value(char *arg, struct char_data *ch,
 
   if (!(*argm)) {
     SPRINTF(buf, "%s What do you want me to evaluate??", GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
   if (!(temp1 = get_obj_in_list_vis(ch, argm, ch->carrying))) {
     SPRINTF(buf, shop_index[shop_nr].no_such_item2, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
   if (!(trade_with(temp1, shop_nr))) {
     SPRINTF(buf, shop_index[shop_nr].do_not_buy, GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
   }
 
@@ -447,7 +448,7 @@ void shopping_value(char *arg, struct char_data *ch,
   SPRINTF(buf, "%s I'll give you %d gold coins for that!",
           GET_NAME(ch), (int)cost);
 
-  do_tell(keeper, buf, 19);
+  do_tell(keeper, buf, "tell");
 
   return;
 }
@@ -534,12 +535,12 @@ void shopping_kill(char *UNUSED(arg), struct char_data *ch,
   switch (shop_index[shop_nr].temper2) {
   case 0:
     SPRINTF(buf, "%s Don't ever try that again!", GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
 
   case 1:
     SPRINTF(buf, "%s Scram - midget!", GET_NAME(ch));
-    do_tell(keeper, buf, 19);
+    do_tell(keeper, buf, "tell");
     return;
 
   default:
@@ -696,8 +697,7 @@ void boot_the_shops() {
         char *fmt = "***WARNING***: Shop %d has invalid keeper mobile %d";
         char *buf;
         buf = (char *)malloc(strlen(fmt) + 40);
-        SPRINTF(buf, fmt, number_of_shops, keeper);
-        log_msg(buf);
+        log_msgf(fmt, number_of_shops, keeper);
         free(buf);
       }
 

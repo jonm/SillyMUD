@@ -13,6 +13,13 @@
 #include <time.h>
 
 #include "protos.h"
+#include "utils.h"
+#include "act.comm.h"
+#include "act.wizard.h"
+#include "spec_procs.h"
+#include "spec_procs2.h"
+#include "act.info.h"
+#include "act.comm.h"
 
 /* extern variables */
 #if HASH
@@ -303,7 +310,6 @@ void list_obj_in_room(struct obj_data *list, struct char_data *ch) {
   struct obj_data *i, *cond_ptr[50];
   int Inventory_Num = 1, num;
   int k, cond_top, cond_tot[50], found = FALSE;
-  char buf[MAX_STRING_LENGTH];
 
   cond_top = 0;
 
@@ -348,8 +354,7 @@ void list_obj_in_room(struct obj_data *list, struct char_data *ch) {
         num = number(1, 101);
         if (ch->skills && (num < (ch->skills[SKILL_LOCATE_TRAP].learned / 2))) {
           if (cond_tot[k] > 1) {
-            SPRINTF(buf, "[%2d] ", Inventory_Num++);
-            send_to_char(buf, ch);
+            send_to_charf(ch, "[%2d] ", Inventory_Num++);
             show_mult_obj_to_char(cond_ptr[k], ch, 0, cond_tot[k]);
           }
           else {
@@ -359,8 +364,7 @@ void list_obj_in_room(struct obj_data *list, struct char_data *ch) {
       }
       else {
         if (cond_tot[k] > 1) {
-          SPRINTF(buf, "[%2d] ", Inventory_Num++);
-          send_to_char(buf, ch);
+          send_to_charf(ch, "[%2d] ", Inventory_Num++);
           show_mult_obj_to_char(cond_ptr[k], ch, 0, cond_tot[k]);
         }
         else {
@@ -374,7 +378,6 @@ void list_obj_in_room(struct obj_data *list, struct char_data *ch) {
 void list_obj_in_heap(struct obj_data *list, struct char_data *ch) {
   struct obj_data *i, *cond_ptr[255];
   int k, cond_top, cond_tot[255], found = FALSE;
-  char buf[MAX_STRING_LENGTH];
 
   int Num_Inventory = 1;
   cond_top = 0;
@@ -408,8 +411,7 @@ void list_obj_in_heap(struct obj_data *list, struct char_data *ch) {
 
   if (cond_top) {
     for (k = 0; k < cond_top; k++) {
-      SPRINTF(buf, "[%2d] ", Num_Inventory++);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "[%2d] ", Num_Inventory++);
       if (cond_tot[k] > 1) {
         Num_Inventory += cond_tot[k] - 1;
         show_mult_obj_to_char(cond_ptr[k], ch, 2, cond_tot[k]);
@@ -423,7 +425,6 @@ void list_obj_in_heap(struct obj_data *list, struct char_data *ch) {
 
 void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode,
                       bool show) {
-  char buf[MAX_STRING_LENGTH];
   int Num_In_Bag = 1;
   struct obj_data *i;
   bool found;
@@ -431,8 +432,7 @@ void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode,
   found = FALSE;
   for (i = list; i; i = i->next_content) {
     if (CAN_SEE_OBJ(ch, i)) {
-      SPRINTF(buf, "[%2d] ", Num_In_Bag++);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "[%2d] ", Num_In_Bag++);
       show_obj_to_char(i, ch, mode);
       found = TRUE;
     }
@@ -998,7 +998,8 @@ void list_char_in_room(struct char_data *list, struct char_data *ch) {
   }
 }
 
-void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_look(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   char buffer[MAX_STRING_LENGTH];
   char arg1[MAX_INPUT_LENGTH];
   char arg2[MAX_INPUT_LENGTH];
@@ -1090,15 +1091,14 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             if (IS_SET(exitp->exit_info, EX_CLOSED) && (exitp->keyword)) {
               if ((strcmp(fname(exitp->keyword), "secret")) &&
                   (!IS_SET(exitp->exit_info, EX_SECRET))) {
-                SPRINTF(buffer, "The %s is closed.\n\r",
-                        fname(exitp->keyword));
-                send_to_char(buffer, ch);
+                send_to_charf(ch, "The %s is closed.\n\r",
+                              fname(exitp->keyword));
               }
             }
             else {
               if (IS_SET(exitp->exit_info, EX_ISDOOR) && exitp->keyword) {
-                SPRINTF(buffer, "The %s is open.\n\r", fname(exitp->keyword));
-                send_to_char(buffer, ch);
+                send_to_charf(ch, "The %s is open.\n\r",
+                              fname(exitp->keyword));
               }
             }
           }
@@ -1111,8 +1111,8 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
                                            (exitp->exit_info, EX_CLOSED)))) {
             if (IS_AFFECTED(ch, AFF_SCRYING) || IS_IMMORTAL(ch)) {
               struct room_data *rp;
-              SPRINTF(buffer, "You look %swards.\n\r", dirs[keyword_no]);
-              send_to_char(buffer, ch);
+              send_to_charf(ch, "You look %swards.\n\r",
+                            dirs[keyword_no]);
 
               SPRINTF(buffer, "$n looks %swards.", dirs[keyword_no]);
               act(buffer, FALSE, ch, 0, 0, TO_ROOM);
@@ -1149,10 +1149,9 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
                   temp =
                     ((tmp_object->obj_flags.value[1] * 3) /
                      tmp_object->obj_flags.value[0]);
-                  SPRINTF(buffer, "It's %sfull of a %s liquid.\n\r",
-                          fullness[temp],
-                          color_liquid[tmp_object->obj_flags.value[2]]);
-                  send_to_char(buffer, ch);
+                  send_to_charf(ch, "It's %sfull of a %s liquid.\n\r",
+                                fullness[temp],
+                                color_liquid[tmp_object->obj_flags.value[2]]);
                 }
               }
               else if (GET_ITEM_TYPE(tmp_object) == ITEM_CONTAINER) {
@@ -1289,14 +1288,12 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         /* look ''                */
       case 8:
         if (IS_AFFECTED2(ch, AFF2_SUN_BLIND)) {
-          send_to_char(real_roomp(ch->in_room)->name, ch);
-          send_to_char("\n\r", ch);
+          send_to_charf(ch, "%s\n\r", real_roomp(ch->in_room)->name);
           send_to_char("Your eyes can't see much in this light!\n\r", ch);
         }
         else {
 
-          send_to_char(real_roomp(ch->in_room)->name, ch);
-          send_to_char("\n\r", ch);
+          send_to_charf(ch, "%s\n\r", real_roomp(ch->in_room)->name);
           if (!IS_SET(ch->specials.act, PLR_BRIEF))
             send_to_char(real_roomp(ch->in_room)->description, ch);
 
@@ -1414,21 +1411,23 @@ void do_look(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 
 
-void do_read(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_read(struct char_data *ch, char *argument,
+             const char *UNUSED(cmd)) {
   char buf[100];
 
   /* This is just for now - To be changed later.! */
   SPRINTF(buf, "at %s", argument);
-  do_look(ch, buf, 15);
+  look_at(ch, buf);
 }
 
-void do_examine(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_examine(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   char name[100], buf[100];
   struct char_data *tmp_char;
   struct obj_data *tmp_object;
 
   SPRINTF(buf, "at %s", argument);
-  do_look(ch, buf, 15);
+  look_at(ch, buf);
 
   one_argument(argument, name);
 
@@ -1445,7 +1444,7 @@ void do_examine(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         (GET_ITEM_TYPE(tmp_object) == ITEM_CONTAINER)) {
       send_to_char("When you look inside, you see:\n\r", ch);
       SPRINTF(buf, "in %s", argument);
-      do_look(ch, buf, 15);
+      look_at(ch, buf);
     }
   }
 }
@@ -1481,7 +1480,8 @@ void show_exits(struct char_data *ch) {
 
 /*  Gecko's spiffy enhancement to do_exits() from act.info.c */
 
-void do_exits(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_exits(struct char_data *ch, char *UNUSED(argument),
+              const char *UNUSED(cmd)) {
   /* NOTE: Input var 'cmd' is not used. */
   int door;
   char buf[1000];
@@ -1532,7 +1532,8 @@ void do_exits(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 }
 
 
-void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_score(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
   struct time_info_data playing_time;
   static char buf[100], buf2[100];
   struct time_info_data my_age;
@@ -1549,8 +1550,8 @@ void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
     strcat(buf, "\n\r");
   send_to_char(buf, ch);
 
-  SPRINTF(buf, "You belong to the %s race\n\r", RaceName[GET_RACE(ch)]);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "You belong to the %s race\n\r",
+                RaceName[GET_RACE(ch)]);
 
   if (!IS_IMMORTAL(ch) && (!IS_NPC(ch))) {
     if (GET_COND(ch, DRUNK) > 10)
@@ -1561,26 +1562,24 @@ void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
       send_to_char("You are thirsty...\n\r", ch);
   }
 
-  SPRINTF(buf,
+  send_to_charf(ch,
           "You have %d(%d) hit, %d(%d) mana and %d(%d) movement points.\n\r",
           GET_HIT(ch), GET_MAX_HIT(ch),
           GET_MANA(ch), GET_MAX_MANA(ch), GET_MOVE(ch), GET_MAX_MOVE(ch));
-  send_to_char(buf, ch);
 
   if (has_class(ch, CLASS_DRUID))
-    SPRINTF(buf, "Your alignment is: %s (%d).\n\r",
-            align_desc(GET_ALIGNMENT(ch)), GET_ALIGNMENT(ch));
+    send_to_charf(ch, "Your alignment is: %s (%d).\n\r",
+                  align_desc(GET_ALIGNMENT(ch)), GET_ALIGNMENT(ch));
   else
-    SPRINTF(buf, "Your alignment is: %s.\n\r", align_desc(GET_ALIGNMENT(ch)));
+    send_to_charf(ch, "Your alignment is: %s.\n\r",
+                  align_desc(GET_ALIGNMENT(ch)));
 
-  send_to_char(buf, ch);
+  send_to_charf(ch, "Your ego is of %s proportions.\n\r",
+                ego_desc(GET_EGO(ch)));
 
-  SPRINTF(buf, "Your ego is of %s proportions.\n\r", ego_desc(GET_EGO(ch)));
-  send_to_char(buf, ch);
-
-  SPRINTF(buf, "You have scored %d exp, and have %d gold coins.\n\r",
-          GET_EXP(ch), GET_GOLD(ch));
-  send_to_char(buf, ch);
+  send_to_charf(ch,
+                "You have scored %d exp, and have %d gold coins.\n\r",
+                GET_EXP(ch), GET_GOLD(ch));
 
   buf[0] = '\0';
   SPRINTF(buf, "Your levels:");
@@ -1613,15 +1612,15 @@ void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   send_to_char(buf, ch);
 
   if (GET_TITLE(ch)) {
-    SPRINTF(buf, "This ranks you as %s %s.\n\r", GET_NAME(ch), GET_TITLE(ch));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "This ranks you as %s %s.\n\r",
+                  GET_NAME(ch), GET_TITLE(ch));
   }
 
   playing_time = real_time_passed((time(0) - ch->player.time.logon) +
                                   ch->player.time.played, 0);
-  SPRINTF(buf, "You have been playing for %d days and %d hours.\n\r",
-          playing_time.day, playing_time.hours);
-  send_to_char(buf, ch);
+  send_to_charf(ch,
+                "You have been playing for %d days and %d hours.\n\r",
+                playing_time.day, playing_time.hours);
 
   switch (GET_POS(ch)) {
   case POSITION_DEAD:
@@ -1657,9 +1656,8 @@ void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
     break;
   case POSITION_MOUNTED:
     if (MOUNTED(ch)) {
-      send_to_char("You are riding on ", ch);
-      send_to_char(MOUNTED(ch)->player.short_descr, ch);
-      send_to_char("\n\r", ch);
+      send_to_charf(ch, "You are riding on %s\n\r",
+                    MOUNTED(ch)->player.short_descr);
     }
     else {
       send_to_char("You are standing.\n\r", ch);
@@ -1674,7 +1672,8 @@ void do_score(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 }
 
 
-void do_time(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_time(struct char_data *ch, char *UNUSED(argument),
+             const char * UNUSED(cmd)) {
   char buf[100], *suf;
   int weekday, day;
   extern struct time_info_data time_info;
@@ -1710,16 +1709,15 @@ void do_time(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   else
     suf = "th";
 
-  SPRINTF(buf, "The %d%s Day of the %s, Year %d.\n\r",
-          day, suf, month_name[(int)time_info.month], time_info.year);
-
-  send_to_char(buf, ch);
+  send_to_charf(ch, "The %d%s Day of the %s, Year %d.\n\r",
+                day, suf, month_name[(int)time_info.month],
+                time_info.year);
 }
 
 
-void do_weather(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_weather(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   extern struct weather_data weather_info;
-  static char buf[100];
   static char *sky_look[4] = {
     "cloudless",
     "cloudy",
@@ -1728,19 +1726,20 @@ void do_weather(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   };
 
   if (OUTSIDE(ch)) {
-    SPRINTF(buf,
-            "The sky is %s and %s.\n\r",
-            sky_look[weather_info.sky],
-            (weather_info.change >= 0 ? "you feel a warm wind from south" :
-             "your foot tells you bad weather is due"));
-    send_to_char(buf, ch);
+    send_to_charf(ch,
+                  "The sky is %s and %s.\n\r",
+                  sky_look[weather_info.sky],
+                  (weather_info.change >= 0 ?
+                   "you feel a warm wind from south" :
+                   "your foot tells you bad weather is due"));
   }
   else
     send_to_char("You have no feeling about the weather at all.\n\r", ch);
 }
 
 
-void do_help(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_help(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
 
   extern int top_of_helpt;
   extern struct help_index_element *help_index;
@@ -1802,7 +1801,8 @@ void do_help(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_wizhelp(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
+void do_wizhelp(struct char_data *ch, char *UNUSED(arg),
+                const char * UNUSED(cmd)) {
   char buf[1000];
   int i, j = 1;
   NODE *n;
@@ -1832,7 +1832,7 @@ void do_wizhelp(struct char_data *ch, char *UNUSED(arg), int UNUSED(cmd)) {
 }
 
 
-void do_who(struct char_data *ch, char *argument, int cmd) {
+void do_who(struct char_data *ch, char *argument, const char * cmd) {
   struct descriptor_data *d;
   char buf[256];
   int count, gods = FALSE, group = FALSE;
@@ -1856,7 +1856,7 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
     return;
   }
 
-  if (!IS_IMMORTAL(ch) || cmd == 234) {
+  if (!IS_IMMORTAL(ch) || STREQ(cmd, "whozone")) {
 
     send_to_char("Players\n\r-------\n\r", ch);
     count = 0;
@@ -1866,13 +1866,13 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
                       )->in_room)) &&
           (real_roomp((person = (d->original ? d->original : d->character)
                       )->in_room)->zone == real_roomp(ch->in_room)->zone ||
-           cmd != 234) && (!gods || IS_IMMORTAL(d->character))) {
+           !STREQ(cmd, "whozone")) && (!gods || IS_IMMORTAL(d->character))) {
         count++;
         SPRINTF(buf, "%s %s",
                 GET_NAME(person),
                 (person->player.title ? person->player.title : "(Null)"));
 
-        if (cmd == 234) {       /* it's a whozone command */
+        if (STREQ(cmd, "whozone")) {       /* it's a whozone command */
           if ((!IS_AFFECTED(person, AFF_HIDE)) || (IS_IMMORTAL(ch))) {
             SPRINTF(buf, "%-25s - %s ", GET_NAME(person),
                     real_roomp(person->in_room)->name);
@@ -1890,8 +1890,7 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
         send_to_char(buf, ch);
       }
     }
-    SPRINTF(buf, "\n\rTotal visible players: %d\n\r", count);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "\n\rTotal visible players: %d\n\r", count);
 
   }
   else {
@@ -1910,10 +1909,10 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
             lcount++;
           }
           else {
-            SPRINTF(buf, "%s %s\n\r",
-                    GET_NAME(person),
-                    (person->player.title ? person->player.title : "(Null)"));
-            send_to_char(buf, ch);
+            send_to_charf(ch, "%s %s\n\r",
+                          GET_NAME(person),
+                          (person->player.title ?
+                           person->player.title : "(Null)"));
           }
         }
       }
@@ -2049,10 +2048,9 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
                 lcount++;
               }
               else {
-                SPRINTF(buf, "%s %s\n\r", GET_NAME(person),
-                        (person->player.title ? person->
-                         player.title : "(null)"));
-                send_to_char(buf, ch);
+                send_to_charf(ch, "%s %s\n\r", GET_NAME(person),
+                              (person->player.title ? person->
+                               player.title : "(null)"));
               }
             }
           }
@@ -2060,20 +2058,19 @@ void do_who(struct char_data *ch, char *argument, int cmd) {
       }
     }
     if (listed == 0) {
-      SPRINTF(buf, "\n\rTotal players / Link dead [%d/%d] (%2.0f%%)\n\r",
-              count, lcount, ((float)lcount / (int)count) * 100);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "\n\rTotal players / Link dead [%d/%d] (%2.0f%%)\n\r",
+                    count, lcount, ((float)lcount / (int)count) * 100);
     }
     else {
-      SPRINTF(buf,
-              "\n\rTotal players / Link dead [%d/%d] (%2.0f%%) Number Listed: %d\n\r",
-              count, lcount, ((float)lcount / (int)count) * 100, listed);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "\n\rTotal players / Link dead [%d/%d] (%2.0f%%) Number Listed: %d\n\r",
+                    count, lcount, ((float)lcount / (int)count) * 100, listed);
     }
   }
 }
 
-void do_users(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_users(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
   char buf[MAX_STRING_LENGTH], line[200], buf2[255];
   extern const char *connected_types[];
 
@@ -2108,25 +2105,23 @@ void do_users(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 
 
 void do_inventory(struct char_data *ch, char *UNUSED(argument),
-                  int UNUSED(cmd)) {
+                  const char * UNUSED(cmd)) {
   send_to_char("You are carrying:\n\r", ch);
   list_obj_in_heap(ch->carrying, ch);
 }
 
 
 void do_equipment(struct char_data *ch, char *UNUSED(argument),
-                  int UNUSED(cmd)) {
+                  const char * UNUSED(cmd)) {
   int j, Worn_Index;
   bool found;
-  char String[256];
 
   send_to_char("You are using:\n\r", ch);
   found = FALSE;
   for (Worn_Index = j = 0; j < MAX_WEAR; j++) {
     if (ch->equipment[j]) {
       Worn_Index++;
-      SPRINTF(String, "[%d] %s", Worn_Index, where[j]);
-      send_to_char(String, ch);
+      send_to_charf(ch, "[%d] %s", Worn_Index, where[j]);
       if (CAN_SEE_OBJ(ch, ch->equipment[j])) {
         show_obj_to_char(ch->equipment[j], ch, 1);
         found = TRUE;
@@ -2143,22 +2138,26 @@ void do_equipment(struct char_data *ch, char *UNUSED(argument),
 }
 
 
-void do_credits(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_credits(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   page_string(ch->desc, credits, 0);
 }
 
 
-void do_news(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_news(struct char_data *ch, char *UNUSED(argument),
+             const char * UNUSED(cmd)) {
   page_string(ch->desc, news, 0);
 }
 
 
-void do_info(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_info(struct char_data *ch, char *UNUSED(argument),
+             const char * UNUSED(cmd)) {
   page_string(ch->desc, info, 0);
 }
 
 
-void do_wizlist(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_wizlist(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   page_string(ch->desc, wizlist, 0);
 }
 
@@ -2245,7 +2244,8 @@ void do_where_object(struct char_data *ch, struct obj_data *obj,
   }
 }
 
-void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_where(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char name[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
   char *nameonly;
   register struct char_data *i;
@@ -2345,7 +2345,8 @@ void do_where(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   destroy_string_block(&sb);
 }
 
-void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_levels(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int i, RaceMax, class;
   char buf[MAX_STRING_LENGTH];
 
@@ -2364,7 +2365,6 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   for (; isspace(*argument); argument++);
 
   if (!*argument) {
-    char buf[100];
     int exp;
 
     if (get_max_level(ch) >= LOW_IMMORTAL) {
@@ -2374,53 +2374,46 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       return;
     }
 
-    SPRINTF(buf, "You have scored %d experience points.\n\r", GET_EXP(ch));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "You have scored %d experience points.\n\r", GET_EXP(ch));
     if (has_class(ch, CLASS_MAGIC_USER)) {
       exp = (titles[MAGE_LEVEL_IND][GET_LEVEL(ch, MAGE_LEVEL_IND) + 1].exp);
-      SPRINTF(buf,
-              "You need %d experience points to become a level %d mage.\n\r",
-              exp - GET_EXP(ch), GET_LEVEL(ch, MAGE_LEVEL_IND) + 1);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You need %d experience points to become a level %d mage.\n\r",
+                    exp - GET_EXP(ch), GET_LEVEL(ch, MAGE_LEVEL_IND) + 1);
     }
 
     if (has_class(ch, CLASS_CLERIC)) {
       exp =
         (titles[CLERIC_LEVEL_IND][GET_LEVEL(ch, CLERIC_LEVEL_IND) + 1].exp);
-      SPRINTF(buf,
-              "You need %d experience points to become a level %d cleric.\n\r",
-              exp - GET_EXP(ch), GET_LEVEL(ch, CLERIC_LEVEL_IND) + 1);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You need %d experience points to become a level %d cleric.\n\r",
+                    exp - GET_EXP(ch), GET_LEVEL(ch, CLERIC_LEVEL_IND) + 1);
     }
 
     if (has_class(ch, CLASS_WARRIOR)) {
       exp =
         titles[WARRIOR_LEVEL_IND][GET_LEVEL(ch, WARRIOR_LEVEL_IND) + 1].exp;
-      SPRINTF(buf,
-              "You need %d experience points to become a level %d warrior.\n\r",
-              exp - GET_EXP(ch), GET_LEVEL(ch, WARRIOR_LEVEL_IND) + 1);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You need %d experience points to become a level %d warrior.\n\r",
+                    exp - GET_EXP(ch), GET_LEVEL(ch, WARRIOR_LEVEL_IND) + 1);
     }
     if (has_class(ch, CLASS_THIEF)) {
       exp = titles[THIEF_LEVEL_IND][GET_LEVEL(ch, THIEF_LEVEL_IND) + 1].exp;
-      SPRINTF(buf,
-              "You need %d experience points to become a level %d thief.\n\r",
-              exp - GET_EXP(ch), GET_LEVEL(ch, THIEF_LEVEL_IND) + 1);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You need %d experience points to become a level %d thief.\n\r",
+                    exp - GET_EXP(ch), GET_LEVEL(ch, THIEF_LEVEL_IND) + 1);
     }
     if (has_class(ch, CLASS_DRUID)) {
       exp = titles[DRUID_LEVEL_IND][GET_LEVEL(ch, DRUID_LEVEL_IND) + 1].exp;
-      SPRINTF(buf,
-              "You need %d experience points to become a level %d druid.\n\r",
-              exp - GET_EXP(ch), GET_LEVEL(ch, DRUID_LEVEL_IND) + 1);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You need %d experience points to become a level %d druid.\n\r",
+                    exp - GET_EXP(ch), GET_LEVEL(ch, DRUID_LEVEL_IND) + 1);
     }
     if (has_class(ch, CLASS_MONK)) {
       exp = titles[MONK_LEVEL_IND][GET_LEVEL(ch, MONK_LEVEL_IND) + 1].exp;
-      SPRINTF(buf,
-              "You need %d experience points to become a level %d monk.\n\r",
-              exp - GET_EXP(ch), GET_LEVEL(ch, MONK_LEVEL_IND) + 1);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You need %d experience points to become a level %d monk.\n\r",
+                    exp - GET_EXP(ch), GET_LEVEL(ch, MONK_LEVEL_IND) + 1);
     }
     return;
   }
@@ -2456,8 +2449,7 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     break;
 
   default:
-    SPRINTF(buf, "I don't recognize %s.\n\r", argument);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "I don't recognize %s.\n\r", argument);
     return;
     break;
   }
@@ -2466,22 +2458,22 @@ void do_levels(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
   for (i = 1; i <= RaceMax; i++) {
 
-    SPRINTF(buf, "[%2d] %9d-%-9d : %s\n\r", i,
-            titles[class][i].exp,
-            titles[class][i + 1].exp,
-            (GET_SEX(ch) ==
-             SEX_FEMALE ? titles[class][i].
-             title_f : titles[class][i].title_m));
+    send_to_charf(ch, "[%2d] %9d-%-9d : %s\n\r", i,
+                  titles[class][i].exp,
+                  titles[class][i + 1].exp,
+                  (GET_SEX(ch) ==
+                   SEX_FEMALE ? titles[class][i].
+                   title_f : titles[class][i].title_m));
 
-    send_to_char(buf, ch);
   }
 }
 
 
 
-void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_consider(struct char_data *ch, char *argument,
+                 const char * UNUSED(cmd)) {
   struct char_data *victim;
-  char name[256], buf[256];
+  char name[256];
   int diff;
 
   only_argument(argument, name);
@@ -2608,19 +2600,18 @@ void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     num = get_approx(GET_MAX_HIT(victim), learn);
     fnum = ((float)num / (float)GET_MAX_HIT(ch));
 
-    SPRINTF(buf, "Est Max hits are: %s\n\r", desc_ratio(fnum));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "Est Max hits are: %s\n\r", desc_ratio(fnum));
 
     num = get_approx(GET_AC(victim), learn);
     fnum = ((float)num / (float)GET_AC(ch));
 
-    SPRINTF(buf, "Est. armor class is : %s\n\r", desc_ratio(fnum));
-    send_to_char(buf, ch);
+    send_to_charf(ch,
+                  "Est. armor class is : %s\n\r", desc_ratio(fnum));
 
     if (learn > 60) {
-      SPRINTF(buf, "Est. # of attacks: %s\n\r",
-              desc_attacks(get_approx((int)victim->mult_att, learn)));
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Est. # of attacks: %s\n\r",
+                    desc_attacks(get_approx((int)victim->mult_att,
+                                            learn)));
     }
     if (learn > 70) {
 
@@ -2628,9 +2619,9 @@ void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       num2 = get_approx((int)victim->specials.damsizedice, learn);
 
       fnum = (float)num *(num2 / 2.0);
-      SPRINTF(buf, "Est. damage of attacks is %s\n\r", desc_damage(fnum));
+      send_to_charf(ch, "Est. damage of attacks is %s\n\r",
+                    desc_damage(fnum));
 
-      send_to_char(buf, ch);
     }
 
     if (learn > 80) {
@@ -2642,23 +2633,22 @@ void do_consider(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       else
         fnum = 2.0;
 
-      SPRINTF(buf, "Est. Thaco: %s\n\r", desc_ratio(fnum));
-
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Est. Thaco: %s\n\r", desc_ratio(fnum));
 
       num = get_approx(GET_DAMROLL(victim), learn);
       num2 = GET_DAMROLL(ch);
       fnum = (num / (float)num2);
 
-      SPRINTF(buf, "Est. Dam bonus is: %s\n\r", desc_ratio(fnum));
+      send_to_charf(ch, "Est. Dam bonus is: %s\n\r",
+                    desc_ratio(fnum));
 
-      send_to_char(buf, ch);
     }
   }
 
 }
 
-void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_spells(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int spl, i;
   char buf[MAX_EXIST_SPELL * 80];
   extern char *spells[];
@@ -2837,8 +2827,8 @@ void do_spells(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     return;
   }
 }
-void do_world(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
-  static char buf[100];
+void do_world(struct char_data *ch, char *UNUSED(argument),
+              const char * UNUSED(cmd)) {
   long ct, ot;
   char *tmstr, *otmstr;
   extern long Uptime;
@@ -2846,49 +2836,39 @@ void do_world(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   extern long mob_count;
   extern long obj_count;
 
-  SPRINTF(buf, "Base Source: SillyMUD Version %s.\n", VERSION);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "Base Source: SillyMUD Version %s.\n", VERSION);
   ot = Uptime;
   otmstr = asctime(localtime(&ot));
   *(otmstr + strlen(otmstr) - 1) = '\0';
-  SPRINTF(buf, "Start time was: %s (EST)\n\r", otmstr);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "Start time was: %s (EST)\n\r", otmstr);
 
   ct = time(0);
   tmstr = asctime(localtime(&ct));
   *(tmstr + strlen(tmstr) - 1) = '\0';
-  SPRINTF(buf, "Current time is: %s (EST)\n\r", tmstr);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "Current time is: %s (EST)\n\r", tmstr);
 #if HASH
-  SPRINTF(buf, "Total number of rooms in world: %d\n\r", room_db.klistlen);
+  send_to_charf(ch, "Total number of rooms in world: %d\n\r",
+                room_db.klistlen);
 #else
-  SPRINTF(buf, "Total number of rooms in world: %ld\n\r", room_count);
+  send_to_charf(ch, "Total number of rooms in world: %ld\n\r",
+                room_count);
 #endif
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Total number of zones in world: %d\n\r\n\r",
+  send_to_charf(ch, "Total number of zones in world: %d\n\r\n\r",
           top_of_zone_table + 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Total number of distinct mobiles in world: %d\n\r",
+  send_to_charf(ch, "Total number of distinct mobiles in world: %d\n\r",
           top_of_mobt + 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Total number of distinct objects in world: %d\n\r\n\r",
+  send_to_charf(ch, "Total number of distinct objects in world: %d\n\r\n\r",
           top_of_objt + 1);
-  send_to_char(buf, ch);
-  SPRINTF(buf, "Total number of registered players: %d\n\r",
+  send_to_charf(ch, "Total number of registered players: %d\n\r",
           top_of_p_table + 1);
-  send_to_char(buf, ch);
 
-  SPRINTF(buf, "Total number of monsters in game: %ld\n\r", mob_count);
-  send_to_char(buf, ch);
+  send_to_charf(ch, "Total number of monsters in game: %ld\n\r", mob_count);
 
-  SPRINTF(buf, "Total number of objects in game: %ld\n\r", obj_count);
-  send_to_char(buf, ch);
-
+  send_to_charf(ch, "Total number of objects in game: %ld\n\r", obj_count);
 }
 
 void do_attribute(struct char_data *ch, char *UNUSED(argument),
-                  int UNUSED(cmd)) {
-  char buf[MAX_STRING_LENGTH];
+                  const char * UNUSED(cmd)) {
   struct affected_type *aff;
 
   struct time_info_data my_age;
@@ -2896,39 +2876,34 @@ void do_attribute(struct char_data *ch, char *UNUSED(argument),
 
   age2(ch, &my_age);
 
-  SPRINTF(buf,
-          "You are %d years and %d months, %d cms, and you weigh %d lbs.\n\r",
-          my_age.year, my_age.month, ch->player.height, ch->player.weight);
+  send_to_charf(ch,
+                "You are %d years and %d months, %d cms, and you weigh %d lbs.\n\r",
+                my_age.year, my_age.month, ch->player.height, ch->player.weight);
 
-  send_to_char(buf, ch);
 
-  SPRINTF(buf, "You are carrying %d lbs of equipment.\n\r", IS_CARRYING_W(ch));
-  send_to_char(buf, ch);
+  send_to_charf(ch, "You are carrying %d lbs of equipment.\n\r",
+                IS_CARRYING_W(ch));
 
-  SPRINTF(buf, "You are %s \n\r", armor_desc(ch->points.armor));
-  send_to_char(buf, ch);
+  send_to_charf(ch, "You are %s \n\r", armor_desc(ch->points.armor));
 
   if ((get_max_level(ch) > 15) || (has_class(ch, CLASS_MAGIC_USER) ||
                                    has_class(ch, CLASS_MONK))) {
     if ((GET_STR(ch) == 18) && (has_class(ch, CLASS_WARRIOR))) {
-      SPRINTF(buf,
-              "You have %d/%d STR, %d INT, %d WIS, %d DEX, %d CON, %d CHR\n\r",
-              GET_STR(ch), GET_ADD(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch),
-              GET_CON(ch), GET_CHR(ch));
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You have %d/%d STR, %d INT, %d WIS, %d DEX, %d CON, %d CHR\n\r",
+                    GET_STR(ch), GET_ADD(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch),
+                    GET_CON(ch), GET_CHR(ch));
     }
     else {
-      SPRINTF(buf, "You have %d STR %d INT %d WIS %d DEX %d CON %d CHR\n\r",
-              GET_STR(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch), GET_CON(ch),
-              GET_CHR(ch));
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You have %d STR %d INT %d WIS %d DEX %d CON %d CHR\n\r",
+                    GET_STR(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch), GET_CON(ch),
+                    GET_CHR(ch));
     }
   }
 
-  SPRINTF(buf,
-          "Your hit bonus and damage bonus are %s and %s respectively.\n\r",
-          hit_roll_desc(GET_HITROLL(ch)), dam_roll_desc(GET_DAMROLL(ch)));
-  send_to_char(buf, ch);
+  send_to_charf(ch,
+                "Your hit bonus and damage bonus are %s and %s respectively.\n\r",
+                hit_roll_desc(GET_HITROLL(ch)), dam_roll_desc(GET_DAMROLL(ch)));
 
   /*
    **   by popular demand -- affected stuff
@@ -2943,8 +2918,7 @@ void do_attribute(struct char_data *ch, char *UNUSED(argument),
         case SPELL_CURSE:
           break;
         default:
-          SPRINTF(buf, "Spell : '%s'\n\r", spells[aff->type - 1]);
-          send_to_char(buf, ch);
+          send_to_charf(ch, "Spell : '%s'\n\r", spells[aff->type - 1]);
           break;
         }
       }
@@ -2952,7 +2926,8 @@ void do_attribute(struct char_data *ch, char *UNUSED(argument),
   }
 }
 
-void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_value(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char buf[100], buf2[100], name[100];
   struct obj_data *obj = 0;
   struct char_data *vict = 0;
@@ -3044,29 +3019,26 @@ void do_value(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char(buf, ch);
   }
 
-  SPRINTF(buf, "Weight: %d, Value: %d, Ego: %d  %s\n\r",
-          obj->obj_flags.weight,
-          get_approx(obj->obj_flags.cost,
-                     ch->skills[SKILL_EVALUATE].learned - 10),
-          get_approx(obj->obj_flags.cost_per_day,
-                     ch->skills[SKILL_EVALUATE].learned - 10),
-          obj->obj_flags.cost_per_day > LIM_ITEM_COST_MIN ? "[RARE]" : " ");
-  send_to_char(buf, ch);
+  send_to_charf(ch, "Weight: %d, Value: %d, Ego: %d  %s\n\r",
+                obj->obj_flags.weight,
+                get_approx(obj->obj_flags.cost,
+                           ch->skills[SKILL_EVALUATE].learned - 10),
+                get_approx(obj->obj_flags.cost_per_day,
+                           ch->skills[SKILL_EVALUATE].learned - 10),
+                obj->obj_flags.cost_per_day > LIM_ITEM_COST_MIN ? "[RARE]" : " ");
 
   if (ITEM_TYPE(obj) == ITEM_WEAPON) {
-    SPRINTF(buf, "Damage Dice is '%dD%d'\n\r",
-            get_approx(obj->obj_flags.value[1],
-                       ch->skills[SKILL_EVALUATE].learned - 10),
-            get_approx(obj->obj_flags.value[2],
-                       ch->skills[SKILL_EVALUATE].learned - 10));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "Damage Dice is '%dD%d'\n\r",
+                  get_approx(obj->obj_flags.value[1],
+                             ch->skills[SKILL_EVALUATE].learned - 10),
+                  get_approx(obj->obj_flags.value[2],
+                             ch->skills[SKILL_EVALUATE].learned - 10));
   }
   else if (ITEM_TYPE(obj) == ITEM_ARMOR) {
 
-    SPRINTF(buf, "AC-apply is %d\n\r",
-            get_approx(obj->obj_flags.value[0],
-                       ch->skills[SKILL_EVALUATE].learned - 10));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "AC-apply is %d\n\r",
+                  get_approx(obj->obj_flags.value[0],
+                             ch->skills[SKILL_EVALUATE].learned - 10));
   }
 }
 
@@ -3351,7 +3323,8 @@ char *desc_attacks(float a) {
   }
 }
 
-void do_display(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_display(struct char_data *ch, char *arg,
+                const char * UNUSED(cmd)) {
   int i;
 
   if (IS_NPC(ch))
@@ -3398,7 +3371,8 @@ void screen_off(struct char_data *ch) {
   send_to_char(VT_HOMECLR, ch);
 }
 
-void do_resize(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_resize(struct char_data *ch, char *arg,
+               const char * UNUSED(cmd)) {
   int i;
 
   if (IS_NPC(ch))
@@ -3449,7 +3423,8 @@ int mob_lev_bonus(struct char_data *ch) {
   return (t);
 }
 
-void do_report(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_report(struct char_data *ch, char *UNUSED(argument),
+               const char * UNUSED(cmd)) {
   /* do a 'say' containing one's vital statistics */
   char buf[256];
 
@@ -3461,7 +3436,7 @@ void do_report(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
           GET_HIT(ch), GET_MAX_HIT(ch), GET_MANA(ch),
           GET_MAX_MANA(ch), GET_MOVE(ch), GET_MAX_MOVE(ch), GET_EXP(ch));
 
-  do_say(ch, buf, 0);
+  say(ch, buf);
 
 }
 
@@ -3470,8 +3445,6 @@ void list_groups(struct char_data *ch) {
   struct char_data *person;
   struct follow_type *f;
   int count = 0;
-  char buf[200];
-
 
   /* go through the descriptor list */
   for (i = descriptor_list; i; i = i->next) {
@@ -3482,21 +3455,19 @@ void list_groups(struct char_data *ch) {
       /* list the master and the group name */
       if (!person->master && IS_AFFECTED(person, AFF_GROUP)) {
         if (person->specials.gname && CAN_SEE(ch, person)) {
-          SPRINTF(buf, "%s %s\n\r", fname(GET_NAME(person)),
-                  person->specials.gname);
-          send_to_char(buf, ch);
+          send_to_charf(ch, "%s %s\n\r", fname(GET_NAME(person)),
+                        person->specials.gname);
           /* list the members that ch can see */
           count = 0;
           for (f = person->followers; f; f = f->next) {
             if (IS_AFFECTED(f->follower, AFF_GROUP) && IS_PC(f->follower)) {
               count++;
               if (CAN_SEE(ch, f->follower)) {
-                SPRINTF(buf, "          %s\n\r", fname(GET_NAME(f->follower)));
+                send_to_charf(ch, "          %s\n\r", fname(GET_NAME(f->follower)));
               }
               else {
-                SPRINTF(buf, "          Someone\n\r");
+                send_to_charf(ch, "          Someone\n\r");
               }
-              send_to_char(buf, ch);
             }
           }
           /* if there are no group members, then remove the group title */

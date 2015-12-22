@@ -14,6 +14,13 @@
 
 #include "protos.h"
 #include "reception.h"
+#include "act.info.h"
+#include "act.other.h"
+#include "act.wizard.h"
+#include "act.social.h"
+#include "utility.h"
+#include "spec_procs.h"
+#include "utility.h"
 
 #define OBJ_FILE_FREE "\0\0\0"
 
@@ -188,8 +195,6 @@ void obj_store_to_char(struct char_data *ch, struct obj_file_u *st) {
   struct obj_data *obj;
   int i, j;
 
-  void obj_to_char(struct obj_data *object, struct char_data *ch);
-
   for (i = 0; i < st->number; i++) {
     if (st->objects[i].item_number > -1 &&
         real_object(st->objects[i].item_number) > -1) {
@@ -257,7 +262,6 @@ void load_char_objs(struct char_data *ch) {
 
   if (!read_objs(fl, &st)) {
     log_msg("No objects found");
-    fclose(fl);
     return;
   }
 
@@ -286,7 +290,6 @@ void load_char_objs(struct char_data *ch) {
     found = TRUE;
   }
   else {
-    char buf[MAX_STRING_LENGTH];
     if (ch->in_room == NOWHERE)
       log_msg("Char reconnecting after autorent");
 #ifdef NEW_RENT
@@ -295,10 +298,8 @@ void load_char_objs(struct char_data *ch) {
     timegold = (int)((st.total_cost * ((float)time(0) - st.last_update)) /
                      (SECS_PER_REAL_DAY));
 #endif
-    SPRINTF(buf, "Char ran up charges of %g gold in rent", timegold);
-    log_msg(buf);
-    SPRINTF(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
-    send_to_char(buf, ch);
+    log_msgf("Char ran up charges of %g gold in rent", timegold);
+    send_to_charf(ch, "You ran up charges of %g gold in rent.\n\r", timegold);
     GET_GOLD(ch) -= timegold;
     found = TRUE;
     if (GET_GOLD(ch) < 0) {
@@ -333,7 +334,6 @@ void load_char_objs(struct char_data *ch) {
 void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st) {
   int j;
   struct obj_file_elem *oe;
-  char buf[256];
 
   if (st->number >= MAX_OBJ_SAVE) {
     printf("holy shit, you want to rent more than %d items?!\n", st->number);
@@ -357,10 +357,8 @@ void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st) {
   if (obj->name)
     strcpy(oe->name, obj->name);
   else {
-    SPRINTF(buf, "object %d has no name!",
-            obj_index[obj->item_number].virtual);
-    log_msg(buf);
-
+    log_msgf("object %d has no name!",
+             obj_index[obj->item_number].virtual);
   }
 
   if (obj->short_description)
@@ -402,10 +400,9 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
   if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER)) {
 #if NODUPLICATES
 #else
-    SPRINTF(buf,
-            "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
-            obj->short_description);
-    send_to_char(buf, ch);
+    send_to_charf(ch,
+                  "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+                  obj->short_description);
 #endif
   }
   else if (obj->obj_flags.cost_per_day < 0) {
@@ -413,10 +410,9 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st,
 #if NODUPLICATES
 #else
     if (ch != NULL) {
-      SPRINTF(buf,
-              "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
-              obj->short_description);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+                    obj->short_description);
     }
 #endif
 
@@ -496,8 +492,6 @@ void update_obj_file() {
   long days_passed, secs_lost;
   char buf[200];
 
-  int find_name(char *name);
-
   if (!(char_file = fopen(PLAYER_FILE, "r+"))) {
     perror("Opening player file for reading. (reception.c, update_obj_file)");
     assert(0);
@@ -510,14 +504,12 @@ void update_obj_file() {
 
       if (read_objs(fl, &st)) {
         if (str_cmp(st.owner, player_table[i].name) != 0) {
-          SPRINTF(buf, "Ack!  Wrong person written into object file! (%s/%s)",
-                  st.owner, player_table[i].name);
-          log_msg(buf);
+          log_msgf("Ack!  Wrong person written into object file! (%s/%s)",
+                   st.owner, player_table[i].name);
           abort();
         }
         else {
-          SPRINTF(buf, "   Processing %s[%ld].", st.owner, i);
-          log_msg(buf);
+          log_msgf("   Processing %s[%ld].", st.owner, i);
           days_passed = ((time(0) - st.last_update) / SECS_PER_REAL_DAY);
           secs_lost = ((time(0) - st.last_update) % SECS_PER_REAL_DAY);
 
@@ -529,13 +521,12 @@ void update_obj_file() {
             ch_st.load_room = NOWHERE;
             st.last_update = time(0) + 3600;    /* one hour grace period */
 
-            SPRINTF(buf, "   Deautorenting %s", st.owner);
-            log_msg(buf);
+            log_msgf("   Deautorenting %s", st.owner);
 
 #if LIMITED_ITEMS
-            fprintf(stderr, "Counting limited items\n");
+            log_msgf("Counting limited items\n");
             count_limited_items(&st);
-            fprintf(stderr, "Done\n");
+            log_msgf("Done\n");
 #endif
             fseek(char_file, (long)(player_table[i].nr *
                                     sizeof(struct char_file_u)), 0);
@@ -548,8 +539,7 @@ void update_obj_file() {
 
               if ((st.total_cost * days_passed) > st.gold_left) {
 
-                SPRINTF(buf, "   Dumping %s from object file.", ch_st.name);
-                log_msg(buf);
+                log_msgf("   Dumping %s from object file.", ch_st.name);
 
                 ch_st.points.gold = 0;
                 ch_st.load_room = NOWHERE;
@@ -559,12 +549,9 @@ void update_obj_file() {
 
                 fclose(fl);
                 zero_rent_by_name(ch_st.name);
-
               }
               else {
-
-                SPRINTF(buf, "   Updating %s", st.owner);
-                log_msg(buf);
+                log_msgf("   Updating %s", st.owner);
                 st.gold_left -= (st.total_cost * days_passed);
                 st.last_update = time(0) - secs_lost;
                 fclose(fl);
@@ -579,8 +566,7 @@ void update_obj_file() {
 #if LIMITED_ITEMS
               count_limited_items(&st);
 #endif
-              SPRINTF(buf, "  same day update on %s", st.owner);
-              log_msg(buf);
+              log_msgf("  same day update on %s", st.owner);
               fclose(fl);
             }
           }
@@ -640,28 +626,25 @@ void print_limited_items() {
 ************************************************************************* */
 #define DONATION_ROOM 99
 
-int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
-                 struct char_data *mob, int type) {
+int receptionist(struct char_data *ch, const char *cmd,
+                 char *UNUSED(arg), struct char_data *mob, int type) {
   struct obj_cost cost;
   struct char_data *recep = 0;
   struct char_data *temp_char;
   sh_int save_room;
-  sh_int action_tabel[9];
-
+  char * action_table[] = {
+    "smile",
+    "dance",
+    "sigh",
+    "blush",
+    "burp",
+    "cough",
+    "fart",
+    "twiddle",
+    "yawn"};
 
   if (!ch->desc)
     return (FALSE);             /* You've forgot FALSE - NPC couldn't leave */
-
-  action_tabel[0] = 23;
-  action_tabel[1] = 24;
-  action_tabel[2] = 36;
-  action_tabel[3] = 105;
-  action_tabel[4] = 106;
-  action_tabel[5] = 109;
-  action_tabel[6] = 111;
-  action_tabel[7] = 142;
-  action_tabel[8] = 147;
-
 
   for (temp_char = real_roomp(ch->in_room)->people; (temp_char) && (!recep);
        temp_char = temp_char->next_in_room)
@@ -700,7 +683,7 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
 
             char_from_room(temp_char);
             char_to_room(temp_char, going_to);
-            do_look(temp_char, "", 0);
+            look_room(temp_char);
           }
           else {                /* must be some other direction */
             int k;
@@ -711,14 +694,14 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
 
                 char_from_room(temp_char);
                 char_to_room(temp_char, going_to);
-                do_look(temp_char, "", 0);
+                look_room(temp_char);
               }
             }
           }
           return (FALSE);
         }
 
-  if ((cmd != 92) && (cmd != 93)) {
+  if (!STREQ(cmd,"rent") && !STREQ(cmd, "offer")) {
     if (!cmd) {
       if (recep->specials.fighting) {
         return (citizen(recep, 0, "", mob, type));
@@ -738,10 +721,10 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
       }
     }
 
-
-
-    if (!number(0, 30))
-      do_action(recep, "", action_tabel[number(0, 8)]);
+    if (!number(0, 30)) {
+      int act_num = number(0, sizeof(action_table)/sizeof(char*) - 1);
+      do_action(recep, "", action_table[act_num]);
+    }
     return (FALSE);
   }
 
@@ -757,7 +740,7 @@ int receptionist(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (TRUE);
   }
 
-  if (cmd == 92) {              /* Rent  */
+  if (STREQ(cmd, "rent")) {
     if (recep_offer(ch, recep, &cost)) {
 
       act("$n stores your stuff in the safe, and helps you into your chamber.",
@@ -912,10 +895,10 @@ void load_char_extra(struct char_data *ch) {
       s = (char *)strtok(0, "\0");
       if (p) {
         if (!strcmp(p, "out")) {        /*setup bamfout */
-          do_bamfout(ch, s, 0);
+          do_bamfout(ch, s, NULL);
         }
         else if (!strcmp(p, "in")) {    /* setup bamfin */
-          do_bamfin(ch, s, 0);
+          do_bamfin(ch, s, NULL);
         }
         else if (!strcmp(p, "zone")) {  /* set zone permisions */
           GET_ZONE(ch) = atoi(s);
@@ -941,7 +924,7 @@ void load_char_extra(struct char_data *ch) {
             n = atoi(p);
             if (n >= 0 && n <= 9) {     /* set up alias */
               SPRINTF(tmp, "%d %s", n, s + 1);
-              do_alias(ch, tmp, 260);
+              do_alias(ch, tmp, "alias");
             }
           }
         }

@@ -11,22 +11,45 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <syslog.h>
 
 #include "protos.h"
 #include "utility.h"
+#include "act.off.h"
+#include "skills.h"
+#include "act.info.h"
+#include "act.other.h"
+#include "act.move.h"
 
-void log_msg(char *s) {
-  log_sev(s, 1);
-}                               /*thought this was a prototype - heheh */
 
-void log_msgf(const char *fmt, ...) {
+void vlog_lev_msgf(int level, const char *fmt, va_list args) {
   char buf[256];
+  va_list nargs;
+  va_copy(nargs, args);
+  vsyslog(level, fmt, args);
+  vsnprintf(buf, sizeof(buf), fmt, nargs);
+  va_end(nargs);
+  log_wiz(buf, level);
+}
+
+void log_lev_msgf(int level, const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  vsnprintf(buf, sizeof(buf), fmt, args);
-  log_sev(buf, 1);
+  vlog_lev_msgf(level, fmt, args);
   va_end(args);
 }
+
+void log_msgf(const char *fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  vlog_lev_msgf(LOG_INFO, fmt, args);
+  va_end(args);
+}
+
+void log_msg(const char *s) {
+  log_msgf("%s", s);
+}
+
 
 extern char *article_list[];
 extern struct time_data time_info;
@@ -335,19 +358,10 @@ int strn_cmp(char *arg1, char *arg2, int n) {
 
 
 
-/* writes a string to the log */
-void log_sev(char *str, int sev) {
-  long ct;
-  char *tmstr;
+/* writes a string to the logged in wizards */
+void log_wiz(char *str, int sev) {
   static char buf[500];
   struct descriptor_data *i;
-
-
-  ct = time(0);
-  tmstr = asctime(localtime(&ct));
-  *(tmstr + strlen(tmstr) - 1) = '\0';
-  fprintf(stderr, "%s :: %s\n", tmstr, str);
-
 
   if (str)
     SPRINTF(buf, "/* %s */\n\r", str);
@@ -365,7 +379,7 @@ void slog(char *str) {
   ct = time(0);
   tmstr = asctime(localtime(&ct));
   *(tmstr + strlen(tmstr) - 1) = '\0';
-  fprintf(stderr, "%s :: %s\n", tmstr, str);
+  log_msgf("%s :: %s\n", tmstr, str);
 
 }
 
@@ -672,11 +686,9 @@ int determine_exp(struct char_data *mob, int exp_flags) {
   int base;
   int phit;
   int sab;
-  char buf[200];
 
   if (exp_flags > 100) {
-    SPRINTF(buf, "Exp flags on %s are > 100 (%d)", GET_NAME(mob), exp_flags);
-    log_msg(buf);
+    log_msgf("Exp flags on %s are > 100 (%d)", GET_NAME(mob), exp_flags);
   }
 
 /* 
@@ -1004,8 +1016,7 @@ void down_river(int pulse) {
                                    ch);
                     }
                     else {
-                      SPRINTF(buf, "You drift %s...\n\r", dirs[rd]);
-                      send_to_char(buf, ch);
+                      send_to_charf(ch, "You drift %s...\n\r", dirs[rd]);
                       if (RIDDEN(ch))
                         send_to_char(buf, RIDDEN(ch));
 
@@ -1020,9 +1031,9 @@ void down_river(int pulse) {
                       char_to_room(ch,
                                    (real_roomp(or))->dir_option[rd]->to_room);
 
-                      do_look(ch, "\0", 15);
+                      look_room(ch);
                       if (RIDDEN(ch)) {
-                        do_look(RIDDEN(ch), "\0", 15);
+                        look_room(RIDDEN(ch));
                       }
                     }
                     if (IS_SET(RM_FLAGS(ch->in_room), DEATH) &&
@@ -1685,24 +1696,24 @@ void make_nifty_attack(struct char_data *ch) {
   if (num <= 2) {
     if (!ch->skills[SKILL_BASH].learned)
       ch->skills[SKILL_BASH].learned = 10 + get_max_level(ch) * 4;
-    do_bash(ch, GET_NAME(ch->specials.fighting), 0);
+    bash_action(ch, GET_NAME(ch->specials.fighting), 1);
   }
   else if (num == 3) {
     if (ch->equipment[WIELD]) {
       if (!ch->skills[SKILL_DISARM].learned)
         ch->skills[SKILL_DISARM].learned = 10 + get_max_level(ch) * 4;
-      do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
+      disarm_action(ch, GET_NAME(ch->specials.fighting), 1);
     }
     else {
       if (!ch->skills[SKILL_KICK].learned)
         ch->skills[SKILL_KICK].learned = 10 + get_max_level(ch) * 4;
-      do_kick(ch, GET_NAME(ch->specials.fighting), 0);
+      kick_action(ch, GET_NAME(ch->specials.fighting), 1);
     }
   }
   else {
     if (!ch->skills[SKILL_KICK].learned)
       ch->skills[SKILL_KICK].learned = 10 + get_max_level(ch) * 4;
-    do_kick(ch, GET_NAME(ch->specials.fighting), 0);
+    kick_action(ch, GET_NAME(ch->specials.fighting), 1);
   }
 }
 
@@ -1726,7 +1737,7 @@ void fighter_move(struct char_data *ch) {
         if (GET_HIT(friend) < GET_HIT(ch)) {
           if (!ch->skills[SKILL_RESCUE].learned)
             ch->skills[SKILL_RESCUE].learned = get_max_level(ch) * 3 + 30;
-          do_rescue(ch, GET_NAME(friend), 0);
+          rescue_action(ch, GET_NAME(friend), 1);
         }
         else {
           make_nifty_attack(ch);
@@ -1800,12 +1811,12 @@ void monk_move(struct char_data *ch) {
       if (ch->specials.fighting->equipment[WIELD]) {
         if (!ch->skills[SKILL_DISARM].learned)
           ch->skills[SKILL_DISARM].learned = (get_max_level(ch) * 3) / 2 + 25;
-        do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
+        disarm_action(ch, GET_NAME(ch->specials.fighting), 1);
         return;
       }
       if (!ch->skills[SKILL_KICK].learned)
         ch->skills[SKILL_KICK].learned = (get_max_level(ch) * 3) / 2 + 25;
-      do_kick(ch, GET_NAME(ch->specials.fighting), 0);
+      kick_action(ch, GET_NAME(ch->specials.fighting), 1);
     }
   }
 }
@@ -1932,11 +1943,11 @@ void rem_all_affects(struct char_data *ch) {
 
 }
 
-int check_for_blocked_move(struct char_data *ch, int cmd, char *UNUSED(arg),
+int check_for_blocked_move(struct char_data *ch, int cmd_dir, char *UNUSED(arg),
                            int room, int dir, int class) {
   char buf[256], buf2[256];
 
-  if (cmd > 6 || cmd < 1)
+  if (cmd_dir == MOVE_DIR_INVALID)
     return (FALSE);
 
   strcpy(buf, "The guard humiliates you, and block your way.\n\r");
@@ -1947,7 +1958,7 @@ int check_for_blocked_move(struct char_data *ch, int cmd, char *UNUSED(arg),
     return (FALSE);
 
 
-  if ((ch->in_room == room) && (cmd == dir + 1)) {
+  if ((ch->in_room == room) && (cmd_dir == dir)) {
     if (!has_class(ch, class)) {
       act(buf2, FALSE, ch, 0, 0, TO_ROOM);
       send_to_char(buf, ch);
@@ -2029,7 +2040,7 @@ void teleport_pulse_stuff(int pulse) {
           char_to_room(tmp, rp->tele_targ);
 
           if (IS_SET(TELE_LOOK, rp->tele_mask) && IS_PC(tmp)) {
-            do_look(tmp, "\0", 15);
+            look_room(tmp);
           }
 
           if (IS_SET(dest->room_flags, DEATH) && (!IS_IMMORTAL(tmp))) {
@@ -2133,9 +2144,9 @@ void river_pulse_stuff(int pulse) {
                           char_to_room(ch,
                                        (real_roomp(or))->
                                        dir_option[rd]->to_room);
-                          do_look(ch, "\0", 15);
+                          look_room(ch);
                           if (RIDDEN(ch)) {
-                            do_look(RIDDEN(ch), "\0", 15);
+                            look_room(RIDDEN(ch));
                           }
 
 
@@ -2258,7 +2269,7 @@ int mob_count_in_room(struct char_data *list) {
 
 void *mymalloc(long size) {
   if (size < 1) {
-    fprintf(stderr, "attempt to malloc negative memory - %ld\n", size);
+    log_msgf("attempt to malloc negative memory - %ld\n", size);
     assert(0);
   }
   return (malloc(size));

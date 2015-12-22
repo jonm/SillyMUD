@@ -11,7 +11,7 @@
 
 #if DEBUG
 
-#define free(obj) fprintf(stderr, "freeing %d\n", sizeof(*obj));\
+#define free(obj) log_msgf("freeing %d\n", sizeof(*obj));\
 		      free(obj)
 
 #endif
@@ -285,3 +285,6 @@
 
 #define SAPPENDF(str, ...)                                          \
   snprintf(str+strlen(str), sizeof(str)-strlen(str) - 1, __VA_ARGS__)
+
+#define STREQ(a, b) (a && b && !strcmp(a, b))
+

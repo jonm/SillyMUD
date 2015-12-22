@@ -1,4 +1,4 @@
-9 0 0
+kiss 0 0
 Isn't there someone you want to kiss?
 #
 You kiss $M.
@@ -8,12 +8,12 @@ Never around when required.
 All the lonely people :(
 #
 
-22 0 0
+bounce 0 0
 BOIINNNNNNGG!
 $n bounces around.
 #
 
-23 1 0
+smile 1 0
 You smile happily.
 $n smiles happily.
 You smile at $M.
@@ -24,7 +24,7 @@ You smile at yourself.
 $n smiles at $mself.
 
 
-24 1 8
+dance 1 8
 Feels silly, doesn't it?
 $n tries to dance breakdance, but nearly breaks $s neck!
 You lead $M to the dancefloor.
@@ -34,22 +34,22 @@ Eh, WHO?
 You skip and dance around by yourself.
 $n skips a light Fandango.
 
-26 0 0
+cackle 0 0
 You cackle gleefully.
 $n throws back $s head and cackles with insane glee!
 #
 
-27 0 0
+laugh 0 0
 You roll on the floor with laughter.
 $n rolls on the floor with laughter.
 #
 
-28 0 0
+giggle 0 0
 You giggle.
 $n giggles.
 #
 
-29 0 5
+shake 0 5
 You shake your head.
 $n shakes $s head.
 You shake $S hand.
@@ -59,7 +59,7 @@ Sorry good buddy, but that person doesn't seem to be here.
 You are shaken by yourself.
 $n shakes and quivers like a bowlful of jelly.
 
-30 0 0
+puke 0 0
 You puke.
 $n pukes.
 You puke on $M.
@@ -69,17 +69,17 @@ Once again?
 You puke on yourself.
 $n pukes on $s clothes.
 
-31 0 0
+growl 0 0
 Grrrrrrrrrr...
 $n growls.
 #
 
-32 0 0
+scream 0 0
 ARRRRRRRRRRGH!!!!!
 $n screams loudly!
 #
 
-34 0 5
+comfort 0 5
 Do you feel uncomfortable?
 #
 You comfort $M.
@@ -89,22 +89,22 @@ Comfort who?
 You make a vain attempt to comfort yourself.
 #
 
-35 1 0
+nod 1 0
 You nod solemnly.
 $n nods solemnly.
 #
 
-36 0 0
+sigh 0 0
 You sigh.
 $n sighs loudly.
 #
 
-37 1 0
+sulk 1 0
 You sulk.
 $n sulks in the corner.
 #
 
-49 1 5
+hug 1 5
 Hug who?
 #
 You hug $M.
@@ -114,7 +114,7 @@ Sorry, friend, I can't see that person here.
 You hug yourself.
 $n hugs $mself.
 
-50 1 5
+snuggle 1 5
 Who?
 #
 you snuggle $M.
@@ -124,7 +124,7 @@ They aren't here.
 Hmmm...
 #
 
-51 1 5
+cuddle 1 5
 Who do you feel like cuddling today?
 #
 You cuddle $M.
@@ -134,7 +134,7 @@ They aren't here.
 You must feel very cuddly indeed..   :)
 #
 
-52 1 5
+nuzzle 1 5
 Nuzzle who??
 #
 You nuzzle $S neck softly.
@@ -144,7 +144,7 @@ No.. they aren't here..
 I'm sorry, friend, but that's impossible.
 #
 
-53 0 5
+cry 0 5
 Waaaaah..
 $n bursts into tears.
 You cry on $S shoulder.
@@ -154,7 +154,7 @@ Who's that?
 You cry to yourself.
 $n sobs quietly to $mself.
 
-94 0 0
+poke 0 0
 Poke who??
 #
 You poke $M in the ribs.
@@ -164,7 +164,7 @@ You can't poke someone who's not here !.
 You poke yourself in the ribs, feeling very silly.
 $n pokes $mself in the ribs, looking very sheepish.
 
-96 0 5
+accuse 0 5
 Accuse who??
 #
 You look accusingly at $M.
@@ -174,12 +174,12 @@ Accuse somebody who's not even there ??
 You accuse yourself.
 $n seems to have a bad conscience.
 
-97 0 0
+grin 0 0
 You grin evilly.
 $n grins evilly.
 #
 
-98 0 5
+bow 0 5
 You bow deeply.
 $n bows deeply.
 You bow before $M.
@@ -189,52 +189,52 @@ Who's that?
 You kiss your toes.
 $n folds up like a jacknife and kisses $s own toes.
 
-104 0 0
+applaud 0 0
 Clap, clap, clap.
 $n gives a round of applause.
 #
 
-105 0 0
+blush 0 0
 Your cheeks are burning.
 $n blushes.
 #
 
-106 0 0
+burp 0 0
 You burp loudly.
 $n burps loudly.
 #
 
-107 0 0
+chuckle 0 0
 You chuckle politely.
 $n chuckles politely.
 #
 
-108 0 0
+clap 0 0
 You clap your small hands together.
 $n shows $s approval by clapping $s hands together.
 #
 
-109 0 0
+cough 0 0
 Yuck, try to cover your mouth next time !
 $n coughs loudly.
 #
 
-110 0 0
+curtsey 0 0
 You curtsey to your audience.
 $n curtseys gracefully.
 #
 
-111 0 0
+fart 0 0
 Where are your manners ?
 $n lets off a real rip-roarer !
 #
 
-112 0 0
+flip 0 0
 You flip head over heels.
 $n flips head over heels.
 #
 
-113 0 5
+fondle 0 5
 Who needs to be fondled ?
 #
 You fondly fondle $M.
@@ -244,17 +244,17 @@ You fondly try to fondle someone not in the room, but who cares.
 You fondly fondle yourself, feels funny doesn't it ?
 $n fondly fondles $mself - this is going too far !!
 
-114 0 0
+frown 0 0
 What's bothering you ?
 $n frowns.
 #
 
-115 0 0
+gasp 0 0
 You gasp in astonishment.
 $n gasps in astonishment.
 #
 
-116 0 5
+glare 0 5
 You glare at nothing in particular.
 $n glares around $m.
 You glare icily at $M.
@@ -264,12 +264,12 @@ You try to glare at somebody who is not present.
 You glare icily at your feet, they are suddenly very cold.
 $n glares at $s feet, what is bothering $m ?
 
-117 0 0
+groan 0 0
 You groan loudly.
 $n groans loudly.
 #
 
-118 0 5
+grope 0 5
 Whom do you wish to grope ??
 #
 Well, what sort of noise do you expect here ?
@@ -279,12 +279,12 @@ Try someone who's here.
 You grope yourself - YUCK.
 $n gropes $mself - YUCK.
 
-119 0 0
+hiccup 0 0
 *HIC*
 $n hiccups.
 #
 
-120 0 0
+lick 0 0
 You lick your mouth and smile.
 $n licks $s mouth and smiles.
 You lick $M.
@@ -294,7 +294,7 @@ Lick away, nobody's here with that name.
 You lick yourself.
 $n licks $mself - YUCK.
 
-121 0 0
+love 0 0
 You love the whole world.
 $n loves everybody in the world.
 You tell your true feelings to $N.
@@ -304,12 +304,12 @@ Alas, your love is not present...
 Well, we already know you love yourself (lucky someone does !)
 $n loves $mself, can you believe it ?
 
-122 0 0
+moan 0 0
 You start to moan.
 $n starts moaning.
 #
 
-123 0 0
+nibble 0 0
 Nibble on who ?
 #
 You nibble on $N's ear.
@@ -319,17 +319,17 @@ Sorry, not present.
 You nibble on your OWN ear ???????????????????
 $n nibbles on $s OWN ear ( I wonder how it is done !!).
 
-124 0 0
+pout 0 0
 Ah, don't take it so hard.
 $n pouts.
 #
 
-125 0 0
+purr 0 0
 MMMMEEEEEEEEOOOOOOOOOWWWWWWWWWWWW.
 $n purrs contentedly.
 #
 
-126 0 0
+ruffle 0 0
 You've got to ruffle SOMEONE.
 #
 You ruffle $N's hair playfully.
@@ -339,22 +339,22 @@ Might be a bit difficult.
 You ruffle your hair, wondering how far you can go before the rest think you're crazy.
 $n ruffles $s hair - weirdo !
 
-127 0 0
+shiver 0 0
 Brrrrrrrrr.
 $n shivers uncomfortably.
 #
 
-128 0 0
+shrug 0 0
 You shrug.
 $n shrugs helplessly.
 #
 
-129 0 0
+sing 0 0
 You raise your clear (?) voice towards the sky.
 SEEK SHELTER AT ONCE ! $n has begun to sing.
 #
 
-130 0 0
+slap 0 0
 Normally you slap SOMEBODY.
 #
 You slap $N.
@@ -364,37 +364,37 @@ How about slapping someone in the same room as you ??
 You slap yourself, silly you.
 $n slaps $mself, really strange...
 
-131 0 0
+smirk 0 0
 You smirk.
 $n smirks.
 #
 
-132 0 0
+snap 0 0
 PRONTO ! You snap your fingers.
 $n snaps $s fingers.
 #
 
-133 0 0
+sneeze 0 0
 Gesundheit !
 $n sneezes.
 #
 
-134 0 0
+snicker 0 0
 You snicker softly.
 $n snickers softly.
 #
 
-135 0 0
+sniff 0 0
 You sniff sadly. *SNIFF*
 $n sniffs sadly.
 #
 
-136 0 0
+snore 0 0
 Zzzzzzzzzzzzzzzzz.
 $n snores loudly.
 #
 
-137 0 0
+spit 0 0
 You spit over your left shoulder.
 $n spits over $s left shoulder.
 You spit on $M.
@@ -404,7 +404,7 @@ Can you spit that far ?
 You drool down your front.
 $n drools down $s front.
 
-138 0 0
+squeeze 0 0
 Where, what, how, WHO ???
 #
 You squeeze $M fondly.
@@ -414,7 +414,7 @@ Where, what, how, WHO ???
 You squeeze yourself - try to relax a little !
 $n squeezes $mself.
 
-139 0 5
+stare 0 5
 You stare at the sky.
 $n stares at the sky.
 You stare dreamily at $N, completely lost in $S eyes..
@@ -424,12 +424,12 @@ You stare and stare but can't see that person anywhere...
 You stare dreamily at yourself - enough narcissism for now.
 $n stares dreamily at $mself - NARCISSIST !
 
-140 0 0
+strut 0 0
 Strut your stuff.
 $n struts proudly.
 #
 
-141 0 5
+thank 0 5
 Thank you too.
 #
 You thank $N heartily.
@@ -439,12 +439,12 @@ No one answers to that name here.
 You thank yourself since nobody else wants to !
 $n thanks #hself since you won't.
 
-142 0 0
+twiddle 0 0
 You patiently twiddle your thumbs.
 $n patiently twiddles $s thumbs.
 #
 
-143 0 0
+wave 0 0
 You wave.
 $n waves happily.
 You wave goodbye to $N.
@@ -454,17 +454,17 @@ They didn't wait for you to wave goodbye.
 Are you going on adventures as well ??
 $n waves goodbye to $mself.
 
-144 0 0
+whistle 0 0
 You whistle appreciatively.
 $n whistles appreciatively.
 #
 
-145 0 0
+wiggle 0 0
 Your wiggle your bottom.
 $n wiggles $s bottom.
 #
 
-146 0 5
+wink 0 5
 Have you got something in your eye ?
 $n winks suggestively.
 You wink suggestively at $N.
@@ -474,12 +474,12 @@ No one with that name is present.
 You wink at yourself ?? - what are you up to ?
 $n winks at $mself - something strange is going on...
 
-147 0 0
+yawn 0 0
 Gosh, will you trade those teeth for mine ?? - you get my glasseyes in the bargain too !
 $n yawns.
 #
 
-148 0 0
+snowball 0 0
 Who do you want to throw a snowball at ??
 #
 You throw a snowball in $N's face.
@@ -489,7 +489,7 @@ You stand with the snowball in your hand because your victim is not here.
 You conjure a snowball from the thin air and throw it at yourself.
 $n conjures a snowball out of the thin air and throws it at $mself.
 
-160 0 0
+french 0 0
 Kiss whom ??
 #
 You give $N a long and passionate kiss, it seems to last forever...
@@ -499,7 +499,7 @@ Your heart is filled with despair as that person is not here.
 You gather yourself in your arms and try to kiss you.
 $n makes an attempt at kissing $mself.
 
-161 0 0
+comb 0 0
 You comb your hair - perfect.
 $n combs $s hair, what a dashing specimen !
 You patiently untangle $N's hair - what a mess !
@@ -509,7 +509,7 @@ That person is not here.
 You pull your hair, but it will not be combed.
 $n tries to comb $s tangled hair.
 
-162 0 0
+massage 0 0
 Massage what ? - thin air ?
 #
 You gently massage $N's shoulders.
@@ -519,7 +519,7 @@ You can only massage someone in the same room as you.
 You practise yoga as you try to massage yourself.
 $n gives a show on yoga-positions, trying to massage $mself.
 
-163 0 0
+tickle 0 0
 Who do you want to tickle ??
 #
 You tickle $N.
@@ -529,7 +529,7 @@ Who is that ??
 You tickle yourself, how funny !
 $n tickles $mself.
 
-165 0 0
+pat 0 0
 Pat who ??
 #
 You pat $N on $S back.
@@ -539,12 +539,12 @@ Who, where, what ??
 You pat yourself on your back, very reassuring.
 $n pats $mself on the back.
 
-171 0 0
+curse 0 0
 You swear loudly for a long time.
 $n swears : #@*"*&^$$%@*&! !!!!!
 #
 
-176 0 0
+pray 0 0
 You feel righteous, and maybe a little foolish.
 $n begs and grovels to the powers that be.
 You crawl in the dust before $M.
@@ -564,7 +564,7 @@ Your money-lender seems to be out for the moment.
 How ? - begging yourself for money doesn't help.
 #
 
-180 1 0
+cringe 1 0
 You cringe in terror.
 $n cringes in terror!
 You cringe away from $M.
@@ -574,12 +574,12 @@ I don't see anyone by that name here.. what are you afraid of?
 I beg your pardon?
 #
 
-181 1 0
+daydream 1 0
 You dream of better times.
 $n looks absent-minded, $s eyes staring into space.
 #
 
-182 1 5
+fume 1 5
 Take it easy now! count to ten, very slowly.
 $n grits $s teeth and fumes with rage.
 You stare at $M, fuming.
@@ -589,7 +589,7 @@ Fume away.. they ain't here.
 That's right - hate yourself!
 $n clenches $s fists and stomps $s feet, fuming with anger.
 
-183 1 0
+grovel 1 0
 You grovel in the dirt.
 $n grovels in the dirt.
 You grovel before $M
@@ -599,12 +599,12 @@ Who?
 That seems a little silly to me..
 #
 
-185 0 0
+nudge 0 0
 You happily hop around.
 $n hops around happily.
 #
 
-185 1 0
+nudge 1 0
 wink wink, nudge nudge, say no more!
 $n nudges you.
 You nudge $M.
@@ -614,7 +614,7 @@ Who?
 That seems a little silly to me...
 #
 
-186 1 0
+peer 1 0
 You peer around
 $n peers around, looking for something.
 You peer at $N.
@@ -624,7 +624,7 @@ who?
 You peer at yourself
 $n studies $mself intently
 
-187 1 0
+point 1 0
 You point in random directions, confusing everyone around you.
 $n points at Someone.
 You point at $M, how impolite.
@@ -634,7 +634,7 @@ You point at empty space, and feel foolish.
 You point at yourself.
 $n points at $mself
 
-188 1 0
+ponder 1 0
 You ponder your problems.
 $n ponders.
 You ponder $M.
@@ -644,7 +644,7 @@ You ponder their lack of existance.
 You think, therefore you are.
 $n ponders $s own existence.
 
-189 1 0
+punch 1 0
 You shadowbox dextrously.
 $n shadowboxes.
 You punch $M.
@@ -654,7 +654,7 @@ Who?
 You knock yourself upside the head.
 $n knocks $mself upside the head.
 
-190 1 0
+snarl 1 0
 You snarl angrily.
 $n snarls angrily.
 You snarl at $M.
@@ -664,7 +664,7 @@ Who?
 You snarl at yourself.
 $n snarls at $mself.
 
-191 1 0
+spank 1 0
 Who?
 #
 You spank $M, what a naughty person!
@@ -674,7 +674,7 @@ Who?
 You bend over and swat yourself on the rear.
 $n bends over and gives $mself a good spanking.
 
-192 0 0
+steam 0 0
 You feel steam rising from your collar.
 Steam rises from $n's collar.
 You steam at $M.
@@ -684,7 +684,7 @@ The rug? the carpet? what?
 You steam yourself, and iron out the wrinkles.
 $n steams $mself, and is now wrinkle free.
 
-193 1 0
+tackle 1 0
 You produce a bait and tackle out of nowhere.
 $n produces a bait and tackle from somewhere.
 You try to tackle $M, but miss.
@@ -694,7 +694,7 @@ who?
 silly person.
 #
 
-194 0 6
+taunt 0 6
 Taunt who?
 #
 You slap $N around the room, taunting $M.
@@ -704,12 +704,12 @@ Taunt WHO?
 You taunt yourself... woo woo!
 $n attempts to taunt $mself.
 
-196 0 0
+whine 0 0
 You whine piteously.
 $n whines, shivers run up and down your spine.
 #
 
-197 1 0
+worship 1 0
 You perform your daily worship ritual.
 $n worships $s one true god.
 You crawl in the dust before $M
@@ -718,7 +718,7 @@ $n worships before you.
 Who?
 That seems a little silly to me..
 
-246 0 6
+bonk 0 6
 Bonk who?
 #
 You bonk $M on the head.
@@ -728,7 +728,7 @@ The noggin has to be available first, doughhead.
 You bonk yourself on the head.
 $n bonks $mself on the head.
 
-259 1 0
+mosh 1 0
 You mosh madly around in a circle.
 $n moshes across the floor, dancing madly.
 You mosh wildly with $N.
@@ -738,7 +738,7 @@ You mosh madly around by yourself, cause they aren't around.
 You mosh madly around by yourself.
 $n moshes around madly.
 
-289 0 0
+bite 0 0
 Bite who?
 #
 You bare your fangs and bite $M on the neck.
@@ -747,11 +747,3 @@ $n bares $s fangs and bites you on the neck.
 No neck like that around here!
 You try to bite yourself.
 $n tries in vain to bite $mself.
-
-298 1 0
-You yodel with the best of them
-$n yodels'   YO DE LAY   HEE  HOOOOOOOOOOOOOOOOOOOOOOOOO!'
-#
-
--1
-

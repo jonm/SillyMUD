@@ -11,6 +11,11 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.info.h"
+#include "act.off.h"
+#include "act.other.h"
+#include "utility.h"
+#include "fight.h"
 
 /* because I don't want to recompile */
 
@@ -460,10 +465,6 @@ void affect_update(int pulse) {
   extern struct time_info_data time_info;
 
 
-  void update_char_objects(struct char_data *ch);       /* handler.c */
-  void do_save(struct char_data *ch, char *arg, int cmd);       /* act.other.c */
-
-
   for (i = character_list; i; i = next_char) {
     next_char = i->next;
     /*
@@ -496,7 +497,6 @@ void affect_update(int pulse) {
         }
         else if (af->type >= FIRST_BREATH_WEAPON &&
                  af->type <= LAST_BREATH_WEAPON) {
-          extern funcp bweapons[];
           bweapons[af->type - FIRST_BREATH_WEAPON] (-af->modifier / 2, i, "",
                                                     SPELL_TYPE_SPELL, i, 0);
           if (!i->affected) {
@@ -940,7 +940,7 @@ char *skip_spaces(char *string) {
 
 /* Assumes that *argument does start with first letter of chopped string */
 
-void do_cast(struct char_data *ch, char *argument, int cmd) {
+void do_cast(struct char_data *ch, char *argument, const char *cmd) {
   struct obj_data *tar_obj;
   struct char_data *tar_char;
   char name[MAX_INPUT_LENGTH];
@@ -1227,7 +1227,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
       }
 
 
-      if (cmd == 283) {         /* recall */
+      if (STREQ(cmd, "recall")) { 
         if (!MEMORIZED(ch, spl)) {
           send_to_char("You don't have that spell memorized!\n\r", ch);
           return;
@@ -1356,7 +1356,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd) {
                                          ch, argument, SPELL_TYPE_SPELL,
                                          tar_char, tar_obj));
       cost = (int)USE_MANA(ch, (int)spl);
-      if (cmd == 283) {         /* recall */
+      if (STREQ(cmd, "recall")) { 
         forget(ch, spl);
       }
       else if (!intrinsic) {
@@ -1968,7 +1968,7 @@ void check_decharm(struct char_data *ch) {
   stop_follower(ch);            /* stop following the master */
   REMOVE_BIT(ch->specials.act, ACT_SENTINEL);
   add_feared(ch, m);
-  do_flee(ch, "", 0);
+  do_flee(ch, "", "flee");
 
 }
 
@@ -1976,7 +1976,6 @@ void check_decharm(struct char_data *ch) {
 int check_falling(struct char_data *ch) {
   struct room_data *rp, *targ;
   int done, count, saved;
-  char buf[256];
 
   if (IS_AFFECTED(ch, AFF_FLYING))
     return (FALSE);
@@ -2029,8 +2028,7 @@ int check_falling(struct char_data *ch) {
 
         if (!IS_IMMORTAL(ch)) {
           GET_HIT(ch) = 0;
-          SPRINTF(buf, "%s has fallen to death", GET_NAME(ch));
-          log_msg(buf);
+          log_msgf("%s has fallen to death", GET_NAME(ch));
           if (!ch->desc)
             GET_GOLD(ch) = 0;
           die(ch);
@@ -2061,7 +2059,7 @@ int check_falling(struct char_data *ch) {
     act("$n falls from the sky", FALSE, ch, 0, 0, TO_ROOM);
     count++;
 
-    do_look(ch, "", 0);
+    look_room(ch);
 
     if (IS_SET(targ->room_flags, DEATH) && !IS_IMMORTAL(ch)) {
       nail_this_sucker(ch);
@@ -2100,8 +2098,7 @@ int check_falling(struct char_data *ch) {
 
         if (!IS_IMMORTAL(ch)) {
           GET_HIT(ch) = 0;
-          SPRINTF(buf, "%s has fallen to death", GET_NAME(ch));
-          log_msg(buf);
+          log_msgf("%s has fallen to death", GET_NAME(ch));
           if (!ch->desc)
             GET_GOLD(ch) = 0;
           die(ch);
@@ -2136,7 +2133,7 @@ int check_falling(struct char_data *ch) {
     log_msg("Someone fucked up an air room.");
     char_from_room(ch);
     char_to_room(ch, 2);
-    do_look(ch, "", 0);
+    look_room(ch);
     return (FALSE);
   }
   return (FALSE);
@@ -2144,7 +2141,6 @@ int check_falling(struct char_data *ch) {
 
 void check_drowning(struct char_data *ch) {
   struct room_data *rp;
-  char buf[256];
 
   if (IS_AFFECTED(ch, AFF_WATERBREATH))
     return;
@@ -2163,8 +2159,7 @@ void check_drowning(struct char_data *ch) {
     GET_MOVE(ch) -= number(10, 50);
     update_pos(ch);
     if (GET_HIT(ch) < -10) {
-      SPRINTF(buf, "%s killed by drowning", GET_NAME(ch));
-      log_msg(buf);
+      log_msgf("%s killed by drowning", GET_NAME(ch));
       if (!ch->desc)
         GET_GOLD(ch) = 0;
       die(ch);

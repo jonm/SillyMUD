@@ -10,6 +10,8 @@
 #include <string.h>
 
 #include "protos.h"
+#include "act.info.h"
+#include "utility.h"
 
 extern struct char_data *character_list;
 struct room_data *real_roomp(int);
@@ -121,8 +123,6 @@ void find_trap_damage(struct char_data *v, struct obj_data *i) {
 
 void trap_damage(struct char_data *v, int damtype, int amnt,
                  struct obj_data *t) {
-  char buf[132];
-
   amnt = skip_immortals(v, amnt);
   if (amnt == -1) {
     return;
@@ -150,9 +150,8 @@ void trap_damage(struct char_data *v, int damtype, int amnt,
   if (GET_POS(v) == POSITION_DEAD) {
     if (!IS_NPC(v)) {
       if (real_roomp(v->in_room)->name)
-        SPRINTF(buf, "%s killed by a trap at %s",
-                GET_NAME(v), real_roomp(v->in_room)->name);
-      log_msg(buf);
+        log_msgf("%s killed by a trap at %s",
+                 GET_NAME(v), real_roomp(v->in_room)->name);
     }
 
     die(v);
@@ -241,7 +240,7 @@ void trap_teleport(struct char_data *v) {
   char_to_room(v, to_room);
   act("$n slowly fade in to existence.", FALSE, v, 0, 0, TO_ROOM);
 
-  do_look(v, "", 0);
+  look_room(v);
 
   if (IS_SET(real_roomp(to_room)->room_flags, DEATH) &&
       get_max_level(v) < LOW_IMMORTAL) {

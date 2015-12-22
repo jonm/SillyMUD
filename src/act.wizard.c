@@ -17,6 +17,9 @@
 
 
 #include "protos.h"
+#include "act.wizard.h"
+#include "act.info.h"
+#include "utility.h"
 
 /*   external vars  */
 
@@ -84,23 +87,20 @@ void do_auth(struct char_data *ch, char *argument, int cmd) {
     one_argument(argument, word);
     if (str_cmp(word, "yes") == 0) {
       d->character->generic = NEWBIE_START;
-      SPRINTF(buf2, "%s has just accepted %s into the game.",
-              ch->player.name, name);
-      log_msg(buf2);
+      log_msgf("%s has just accepted %s into the game.",
+               ch->player.name, name);
       SEND_TO_Q("You have been accepted.  Press enter\n\r", d);
     }
     else if (str_cmp(word, "no") == 0) {
       SEND_TO_Q("You have been denied.  Press enter\n\r", d);
-      SPRINTF(buf2, "%s has just denied %s from the game.",
-              ch->player.name, name);
-      log_msg(buf2);
+      log_msgf("%s has just denied %s from the game.",
+               ch->player.name, name);
       d->character->generic = NEWBIE_AXE;
     }
     else {
       SEND_TO_Q(argument, d);
       SEND_TO_Q("\n\r", d);
-      SPRINTF(buf, "You send '%s'\n\r", argument);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You send '%s'\n\r", argument);
       return;
     }
   }
@@ -112,7 +112,8 @@ void do_auth(struct char_data *ch, char *argument, int cmd) {
 }
 #endif
 
-void do_imptest(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_imptest(struct char_data *ch, char *arg,
+                const char * UNUSED(cmd)) {
   struct char_data *i;
   struct StrHeap *H = 0;
   int x = 0;
@@ -134,7 +135,8 @@ void do_imptest(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
 }
 
-void do_passwd(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
+void do_passwd(struct char_data *ch, char *argument,
+               const char * UNUSED(cmdnum)) {
   int player_i, pos;
   char name[30], npasswd[20], pass[20];
   struct char_file_u tmp_store;
@@ -199,9 +201,9 @@ void do_passwd(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
   }
 }
 
-void do_setsev(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_setsev(struct char_data *ch, char *arg,
+               const char * UNUSED(cmd)) {
   char buf[255];
-  char buf2[255];
   int sev;
 
   arg = one_argument(arg, buf);
@@ -213,9 +215,8 @@ void do_setsev(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       return;
     }
     ch->specials.sev = sev;
-    SPRINTF(buf2, "Your severety level have been set to %d.\n\r",
-            ch->specials.sev);
-    send_to_char(buf2, ch);
+    send_to_charf(ch, "Your severety level have been set to %d.\n\r",
+                  ch->specials.sev);
     return;
   }
   else {
@@ -254,7 +255,8 @@ void dsearch(char *string, char *tmp) {
   strcpy(string, tmp);
 }
 
-void do_bamfin(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_bamfin(struct char_data *ch, char *arg,
+               const char * UNUSED(cmd)) {
   char buf[255];
   size_t len;
 
@@ -285,8 +287,7 @@ void do_bamfin(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   if (len > 150) {
     send_to_char("String too long.  Truncated to:\n\r", ch);
     arg[150] = '\0';
-    SPRINTF(buf, "%s\n\r", arg);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s\n\r", arg);
     len = 150;
   }
 
@@ -306,7 +307,8 @@ void do_bamfin(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   return;
 }
 
-void do_bamfout(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_bamfout(struct char_data *ch, char *arg,
+                const char * UNUSED(cmd)) {
   char buf[255];
   size_t len;
 
@@ -339,8 +341,7 @@ void do_bamfout(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   if (len > 150) {
     send_to_char("String too long.  Truncated to:\n\r", ch);
     arg[150] = '\0';
-    SPRINTF(buf, "%s\n\r", arg);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s\n\r", arg);
     len = 150;
   }
 
@@ -360,7 +361,8 @@ void do_bamfout(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   return;
 }
 
-void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
+void do_instazone(struct char_data *ch, char *argument,
+                  const char * UNUSED(cmdnum)) {
   char cmd, c, buf[80];
   int i, start_room, end_room, j, arg1, arg2, arg3;
   struct char_data *p;
@@ -474,7 +476,7 @@ void do_instazone(struct char_data *ch, char *argument, int UNUSED(cmdnum)) {
 
 }
 
-void do_highfive(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_highfive(struct char_data *ch, char *argument, const char * UNUSED(cmd)) {
   char buf[80];
   char mess[120];
   struct char_data *tch;
@@ -496,26 +498,25 @@ void do_highfive(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       }
     }
     else {
-      SPRINTF(buf, "I don't see anyone here like that.\n\r");
-      send_to_char(buf, ch);
+      send_to_charf(ch, "I don't see anyone here like that.\n\r");
     }
   }
 }
 
 void do_addhost(struct char_data *UNUSED(ch), char *UNUSED(argument),
-                int UNUSED(command)) {
+                const char * UNUSED(command)) {
 }
 
 void do_removehost(struct char_data *UNUSED(ch), char *UNUSED(argument),
-                   int UNUSED(command)) {
+                   const char * UNUSED(command)) {
 }
 
 void do_listhosts(struct char_data *UNUSED(ch), char *UNUSED(argument),
-                  int UNUSED(command)) {
+                  const char * UNUSED(command)) {
 }
 
-void do_silence(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
-  char buf[255];
+void do_silence(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   extern int Silence;
   if ((get_max_level(ch) < DEMIGOD) || (IS_NPC(ch))) {
     send_to_char("You cannot Silence.\n\r", ch);
@@ -525,20 +526,19 @@ void do_silence(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
   if (Silence == 0) {
     Silence = 1;
     send_to_char("You have now silenced polyed mobles.\n\r", ch);
-    SPRINTF(buf, "%s has stopped Polymophed characters from shouting.",
-            ch->player.name);
-    log_msg(buf);
+    log_msgf("%s has stopped Polymophed characters from shouting.",
+             ch->player.name);
   }
   else {
     Silence = 0;
     send_to_char("You have now unsilenced mobles.\n\r", ch);
-    SPRINTF(buf, "%s has allowed Polymophed characters to shout.",
-            ch->player.name);
-    log_msg(buf);
+    log_msgf("%s has allowed Polymophed characters to shout.",
+             ch->player.name);
   }
 }
 
-void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_wizlock(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
 #if SITELOCK
   char *test;
   int a, length, b;
@@ -620,9 +620,8 @@ void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
       }
     }
     strcpy(hostlist[numberhosts], buf);
-    SPRINTF(buf, "%s has added host %s to the access denied list.",
-            GET_NAME(ch), hostlist[numberhosts]);
-    log_msg(buf);
+    log_msgf("%s has added host %s to the access denied list.",
+             GET_NAME(ch), hostlist[numberhosts]);
     numberhosts++;
     return;
 
@@ -658,9 +657,8 @@ void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
       if (strncmp(hostlist[a], buf, length) == 0) {
         for (b = a; b <= numberhosts; b++)
           strcpy(hostlist[b], hostlist[b + 1]);
-        SPRINTF(buf, "%s has removed host %s from the access denied list.",
-                GET_NAME(ch), hostlist[numberhosts]);
-        log_msg(buf);
+        log_msgf("%s has removed host %s from the access denied list.",
+                 GET_NAME(ch), hostlist[numberhosts]);
         numberhosts--;
         return;
       }
@@ -676,8 +674,7 @@ void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
       return;
     }
     for (a = 0; a <= numberhosts - 1; a++) {
-      SPRINTF(buf, "Host: %s\n", hostlist[a]);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Host: %s\n", hostlist[a]);
     }
     return;
 
@@ -704,7 +701,8 @@ void do_wizlock(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
 
 }
 
-void do_rload(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_rload(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
 
   char i;
   int start = -1, end = -2;
@@ -726,7 +724,8 @@ void do_rload(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_rsave(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_rsave(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char i, buf[256];
   int start = -1, end = -2;
 
@@ -749,7 +748,8 @@ void do_rsave(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_emote(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_emote(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   int i;
   char buf[MAX_INPUT_LENGTH];
 
@@ -769,7 +769,8 @@ void do_emote(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_echo(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_echo(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int i;
   char buf[MAX_INPUT_LENGTH];
 
@@ -797,7 +798,8 @@ void do_echo(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_system(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_system(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int i;
   char buf[256];
 
@@ -814,7 +816,8 @@ void do_system(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_trans(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_trans(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   struct descriptor_data *i;
   struct char_data *victim;
   char buf[100];
@@ -837,7 +840,7 @@ void do_trans(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       act("Reality shifts, and $n appears.", FALSE, victim, 0, 0, TO_ROOM);
       act("Reality transforms itself as $n's hand grabs you.", FALSE, ch, 0,
           victim, TO_VICT);
-      do_look(victim, "", 15);
+      look_room(victim);
       send_to_char("Ok.\n\r", ch);
     }
   }
@@ -852,14 +855,15 @@ void do_trans(struct char_data *ch, char *argument, int UNUSED(cmd)) {
         char_to_room(victim, target);
         act("$n arrives from a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
         act("$n has transferred you!", FALSE, ch, 0, victim, TO_VICT);
-        do_look(victim, "", 15);
+        look_room(victim);
       }
 
     send_to_char("Ok.\n\r", ch);
   }
 }
 
-void do_at(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_at(struct char_data *ch, char *argument,
+           const char * UNUSED(cmd)) {
   char command[MAX_INPUT_LENGTH], loc_str[MAX_INPUT_LENGTH];
   int loc_nr, location, original_loc;
   struct char_data *target_mob;
@@ -916,13 +920,12 @@ void do_at(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     }
 }
 
-void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_goto(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   char buf[MAX_INPUT_LENGTH];
   int loc_nr, location, i;
   struct char_data *target_mob, *pers, *v;
   struct obj_data *target_obj;
-
-  void do_look(struct char_data *ch, char *argument, int cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1046,10 +1049,11 @@ void do_goto(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     else
       command_interpreter(ch, (ch->specials.poofin + 1));
   }
-  do_look(ch, "", 15);
+  look_room(ch);
 }
 
-void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_stat(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   extern char *spells[];
   struct affected_type *aff;
   char arg1[MAX_STRING_LENGTH];
@@ -1105,14 +1109,12 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     /* stats on room */
     if (!str_cmp("room", arg1)) {
       rm = real_roomp(ch->in_room);
-      SPRINTF(buf,
-              "Room name: %s, Of zone : %d. V-Number : %d, R-number : %d\n\r",
-              rm->name, rm->zone, rm->number, ch->in_room);
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "Room name: %s, Of zone : %d. V-Number : %d, R-number : %d\n\r",
+                    rm->name, rm->zone, rm->number, ch->in_room);
 
       sprinttype(rm->sector_type, sector_types, buf2);
-      SPRINTF(buf, "Sector type : %s ", buf2);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Sector type : %s ", buf2);
 
       strcpy(buf, "Special procedure : ");
       strcat(buf, (rm->funct) ? "Exists\n\r" : "No\n\r");
@@ -1163,13 +1165,11 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       for (i = 0; i <= 5; i++) {
         if (rm->dir_option[i]) {
           if (rm->dir_option[i]->keyword) {
-            SPRINTF(buf, "Direction %s . Keyword : %s\n\r",
-                    dirs[i], rm->dir_option[i]->keyword);
-            send_to_char(buf, ch);
+            send_to_charf(ch, "Direction %s . Keyword : %s\n\r",
+                          dirs[i], rm->dir_option[i]->keyword);
           }
           else {
-            SPRINTF(buf, "Direction %s \n\r", dirs[i]);
-            send_to_char(buf, ch);
+            send_to_charf(ch, "Direction %s \n\r", dirs[i]);
           }
           strcpy(buf, "Description:\n\r  ");
           if (rm->dir_option[i]->general_description)
@@ -1178,10 +1178,9 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
             strcat(buf, "UNDEFINED\n\r");
           send_to_char(buf, ch);
           sprintbit((unsigned)rm->dir_option[i]->exit_info, exit_bits, buf2);
-          SPRINTF(buf,
-                  "Exit flag: %s \n\rKey no: %d\n\rTo room (R-Number): %d\n\r",
-                  buf2, rm->dir_option[i]->key, rm->dir_option[i]->to_room);
-          send_to_char(buf, ch);
+          send_to_charf(ch,
+                        "Exit flag: %s \n\rKey no: %d\n\rTo room (R-Number): %d\n\r",
+                        buf2, rm->dir_option[i]->key, rm->dir_option[i]->to_room);
         }
       }
       return;
@@ -1215,8 +1214,7 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       strcat(buf, buf2);
       send_to_char(buf, ch);
       if (IS_MOB(k)) {
-        SPRINTF(buf, "V-Number [%d]\n\r", mob_index[k->nr].virtual);
-        send_to_char(buf, ch);
+        send_to_charf(ch, "V-Number [%d]\n\r", mob_index[k->nr].virtual);
       }
 
       strcpy(buf, "Short description: ");
@@ -1255,39 +1253,33 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       strcat(buf, buf2);
       send_to_char(buf, ch);
 
-      SPRINTF(buf, "Birth : [%ld]secs, Logon[%ld]secs, Played[%d]secs\n\r",
-              k->player.time.birth,
-              k->player.time.logon, k->player.time.played);
+      send_to_charf(ch, "Birth : [%ld]secs, Logon[%ld]secs, Played[%d]secs\n\r",
+                    k->player.time.birth,
+                    k->player.time.logon, k->player.time.played);
 
-      send_to_char(buf, ch);
 
       age2(k, &ma);
 
-      SPRINTF(buf, "Age: [%d] Y, [%d] M, [%d] D, [%d] H. ",
-              ma.year, ma.month, ma.day, ma.hours);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Age: [%d] Y, [%d] M, [%d] D, [%d] H. ",
+                    ma.year, ma.month, ma.day, ma.hours);
 
-      SPRINTF(buf, " Height [%d]cm, Wgt [%d]pounds \n\r", GET_HEIGHT(k),
-              GET_WEIGHT(k));
-      send_to_char(buf, ch);
+      send_to_charf(ch, " Height [%d]cm, Wgt [%d]pounds \n\r", GET_HEIGHT(k),
+                    GET_WEIGHT(k));
 
-      SPRINTF(buf,
-              "Str:[%d/%d] Int:[%d] Ws:[%d] Dex:[%d] Con:[%d] Ch:[%d], Ego: [%d]\n\r",
-              GET_STR(k), GET_ADD(k), GET_INT(k), GET_WIS(k), GET_DEX(k),
-              GET_CON(k), GET_CHR(k), GET_EGO(k));
-      send_to_char(buf, ch);
+      send_to_charf(ch
+                    , "Str:[%d/%d] Int:[%d] Ws:[%d] Dex:[%d] Con:[%d] Ch:[%d], Ego: [%d]\n\r",
+                    GET_STR(k), GET_ADD(k), GET_INT(k), GET_WIS(k), GET_DEX(k),
+                    GET_CON(k), GET_CHR(k), GET_EGO(k));
 
-      SPRINTF(buf, "Mana:[%d/%d+%d] Hit:[%d/%d] Move:[%d/%d+%d]\n\r",
-              GET_MANA(k), mana_limit(k), mana_gain(k),
-              GET_HIT(k), hit_limit(k),
-              GET_MOVE(k), move_limit(k), move_gain(k));
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Mana:[%d/%d+%d] Hit:[%d/%d] Move:[%d/%d+%d]\n\r",
+                    GET_MANA(k), mana_limit(k), mana_gain(k),
+                    GET_HIT(k), hit_limit(k),
+                    GET_MOVE(k), move_limit(k), move_gain(k));
 
-      SPRINTF(buf,
-              "AC:[%d/10], Coins: [%d], Exp: [%d], Hitroll: [%d], Damroll: [%d] sf[%d]\n\r",
-              GET_AC(k), GET_GOLD(k), GET_EXP(k), k->points.hitroll,
-              k->points.damroll, k->specials.spellfail);
-      send_to_char(buf, ch);
+      send_to_charf(ch
+                    , "AC:[%d/10], Coins: [%d], Exp: [%d], Hitroll: [%d], Damroll: [%d] sf[%d]\n\r",
+                    GET_AC(k), GET_GOLD(k), GET_EXP(k), k->points.hitroll,
+                    k->points.damroll, k->specials.spellfail);
 
       sprinttype(GET_POS(k), position_types, buf2);
       SPRINTF(buf, "Position: %s, Fighting: %s", buf2,
@@ -1326,9 +1318,8 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       }
 
       if (IS_NPC(k)) {
-        SPRINTF(buf, " NPC Bare Hand Damage %dd%d.\n\r",
-                k->specials.damnodice, k->specials.damsizedice);
-        send_to_char(buf, ch);
+        send_to_charf(ch, " NPC Bare Hand Damage %dd%d.\n\r",
+                      k->specials.damnodice, k->specials.damsizedice);
       }
 
       SPRINTF(buf, "Carried weight: %d   Carried items: %d ",
@@ -1341,22 +1332,19 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       strcat(buf, buf2);
       send_to_char(buf, ch);
 
-      SPRINTF(buf, "Apply saving throws: [%d] [%d] [%d] [%d] [%d], ",
-              k->specials.apply_saving_throw[0],
-              k->specials.apply_saving_throw[1],
-              k->specials.apply_saving_throw[2],
-              k->specials.apply_saving_throw[3],
-              k->specials.apply_saving_throw[4]);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Apply saving throws: [%d] [%d] [%d] [%d] [%d], ",
+                    k->specials.apply_saving_throw[0],
+                    k->specials.apply_saving_throw[1],
+                    k->specials.apply_saving_throw[2],
+                    k->specials.apply_saving_throw[3],
+                    k->specials.apply_saving_throw[4]);
 
-      SPRINTF(buf, "Thirst: %d, Hunger: %d, Drunk: %d\n\r",
-              k->specials.conditions[THIRST],
-              k->specials.conditions[FULL], k->specials.conditions[DRUNK]);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Thirst: %d, Hunger: %d, Drunk: %d\n\r",
+                    k->specials.conditions[THIRST],
+                    k->specials.conditions[FULL], k->specials.conditions[DRUNK]);
 
-      SPRINTF(buf, "Master is '%s'    ",
-              ((k->master) ? GET_NAME(k->master) : "NOBODY"));
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Master is '%s'    ",
+                    ((k->master) ? GET_NAME(k->master) : "NOBODY"));
       send_to_char("Followers are:\n\r", ch);
       for (fol = k->followers; fol; fol = fol->next)
         act("    $N", FALSE, ch, 0, fol->follower, TO_CHAR);
@@ -1380,8 +1368,7 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char("Race: ", ch);
       sprinttype((k->race), RaceName, buf2);
       send_to_char(buf2, ch);
-      SPRINTF(buf, "  Generic pointer: %d\n\r", (int)k->generic);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "  Generic pointer: %d\n\r", (int)k->generic);
 
       /* Showing the bitvector */
       sprintbit((unsigned)k->specials.affected_by, affected_bits, buf);
@@ -1399,26 +1386,21 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
           /* This is somewhat of a hack in order to  */
           if (aff->location == APPLY_IMMUNE && !(aff->modifier) &&
               aff->bitvector) {
-            SPRINTF(buf, "Spell : '%s'\n\r", spells[aff->type - 1]);
-            SPRINTF(buf, "     Modifies %s by %ld points\n\r",
-                    apply_types[(int)aff->location], aff->bitvector);
-            send_to_char(buf, ch);
-            SPRINTF(buf, "     Expires in %3d hours, Resistance Bits set ",
-                    aff->duration);
-            send_to_char(buf, ch);
+            send_to_charf(ch, "Spell : '%s'\n\r", spells[aff->type - 1]);
+            send_to_charf(ch, "     Modifies %s by %ld points\n\r",
+                          apply_types[(int)aff->location], aff->bitvector);
+            send_to_charf(ch, "     Expires in %3d hours, Resistance Bits set ",
+                          aff->duration);
             sprintbit((unsigned)aff->bitvector, immunity_names, buf);
             strcat(buf, "\n\r");
             send_to_char(buf, ch);
           }
           else {
-            SPRINTF(buf, "Spell : '%s'\n\r", spells[aff->type - 1]);
-            send_to_char(buf, ch);
-            SPRINTF(buf, "     Modifies %s by %d points\n\r",
-                    apply_types[(int)aff->location], aff->modifier);
-            send_to_char(buf, ch);
-            SPRINTF(buf, "     Expires in %3d hours, Bits set ",
-                    aff->duration);
-            send_to_char(buf, ch);
+            send_to_charf(ch, "Spell : '%s'\n\r", spells[aff->type - 1]);
+            send_to_charf(ch, "     Modifies %s by %d points\n\r",
+                          apply_types[(int)aff->location], aff->modifier);
+            send_to_charf(ch, "     Expires in %3d hours, Bits set ",
+                          aff->duration);
             if (aff->location != APPLY_BV2)
               sprintbit((unsigned)aff->bitvector, affected_bits, buf);
             else
@@ -1440,10 +1422,9 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       strcat(buf, buf2);
       strcat(buf, "\n\r");
       send_to_char(buf, ch);
-      SPRINTF(buf, "Short description: %s\n\rLong description:\n\r%s\n\r",
-              ((j->short_description) ? j->short_description : "None"),
-              ((j->description) ? j->description : "None"));
-      send_to_char(buf, ch);
+      send_to_charf(ch, "Short description: %s\n\rLong description:\n\r%s\n\r",
+                    ((j->short_description) ? j->short_description : "None"),
+                    ((j->description) ? j->description : "None"));
       if (j->ex_description) {
         strcpy(buf, "Extra description keyword(s):\n\r----------\n\r");
         for (desc = j->ex_description; desc; desc = desc->next) {
@@ -1473,11 +1454,10 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       strcat(buf, "\n\r");
       send_to_char(buf, ch);
 
-      SPRINTF(buf,
-              "Weight: %d, Value: %d, Cost/day: %d, Timer: %d, Ego: %d\n\r",
-              j->obj_flags.weight, j->obj_flags.cost,
-              j->obj_flags.cost_per_day, j->obj_flags.timer, GET_OBJ_EGO(j));
-      send_to_char(buf, ch);
+      send_to_charf(ch,
+                    "Weight: %d, Value: %d, Cost/day: %d, Timer: %d, Ego: %d\n\r",
+                    j->obj_flags.weight, j->obj_flags.cost,
+                    j->obj_flags.cost_per_day, j->obj_flags.timer, GET_OBJ_EGO(j));
 
       strcpy(buf, "In room: ");
       if (j->in_room == NOWHERE)
@@ -1611,9 +1591,8 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       send_to_char("Can affect char :\n\r", ch);
       for (i = 0; i < MAX_OBJ_AFFECT; i++) {
         sprinttype(j->affected[i].location, apply_types, buf2);
-        SPRINTF(buf, "    Affects : %s By %lu\n\r", buf2,
-                j->affected[i].modifier);
-        send_to_char(buf, ch);
+        send_to_charf(ch, "    Affects : %s By %lu\n\r", buf2,
+                      j->affected[i].modifier);
       }
       return;
     }
@@ -1623,12 +1602,11 @@ void do_stat(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_set(struct char_data *ch, char *argument,
+            const char * UNUSED(cmd)) {
   char field[20], name[20], parmstr[50];
   struct char_data *mob;
   int parm, parm2;
-  char buf[256];
-
 
   extern char PeacefulWorks;
   extern char EasySummon;
@@ -1802,8 +1780,7 @@ void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     sscanf(parmstr, "%d %d", &parm, &parm2);
     if (mob->skills) {
       mob->skills[parm].learned = parm2;
-      SPRINTF(buf, "You just set skill %d to value %d\n\r", parm, parm2);
-      send_to_char(buf, ch);
+      send_to_charf(ch, "You just set skill %d to value %d\n\r", parm, parm2);
     }
 
   }
@@ -1847,17 +1824,15 @@ void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     if (PeacefulWorks) {
       PeacefulWorks = FALSE;
       EasySummon = FALSE;
-      SPRINTF(buf, "Peaceful rooms and Easy Summon disabled by %s",
-              GET_NAME(ch));
+      log_msgf("Peaceful rooms and Easy Summon disabled by %s",
+               GET_NAME(ch));
     }
     else {
       PeacefulWorks = TRUE;
       EasySummon = TRUE;
-      SPRINTF(buf, "Peaceful rooms and Easy Summon enabled by %s",
-              GET_NAME(ch));
+      log_msgf("Peaceful rooms and Easy Summon enabled by %s",
+               GET_NAME(ch));
     }
-    log_msg(buf);
-
   }
   else if (!strcmp(field, "mana")) {
     sscanf(parmstr, "%d", &parm);
@@ -1876,11 +1851,13 @@ void do_set(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_shutdow(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_shutdow(struct char_data *ch, char *UNUSED(argument),
+                const char * UNUSED(cmd)) {
   send_to_char("If you want to shut something down - say so!\n\r", ch);
 }
 
-void do_shutdown(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_shutdown(struct char_data *ch, char *argument,
+                 const char * UNUSED(cmd)) {
   extern int mudshutdown, should_reboot;
   char buf[100], arg[MAX_INPUT_LENGTH];
 
@@ -1905,7 +1882,8 @@ void do_shutdown(struct char_data *ch, char *argument, int UNUSED(cmd)) {
     send_to_char("Go shut down someone your own size.\n\r", ch);
 }
 
-void do_snoop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_snoop(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   static char arg[MAX_STRING_LENGTH];
   struct char_data *victim;
 
@@ -1937,10 +1915,10 @@ void do_snoop(struct char_data *ch, char *argument, int UNUSED(cmd)) {
       if (ch->desc->snoop.snooping->desc)
         ch->desc->snoop.snooping->desc->snoop.snoop_by = 0;
       else {
-        char buf[MAX_STRING_LENGTH];
-        SPRINTF(buf, "caught %s snooping %s who didn't have a descriptor!",
-                ch->player.name, ch->desc->snoop.snooping->player.name);
-        log_msg(buf);
+        log_msgf(
+          "caught %s snooping %s who didn't have a descriptor!",
+          ch->player.name,
+          ch->desc->snoop.snooping->player.name);
 /*
 logically.. this person has returned from being a creature? 
 */
@@ -1971,7 +1949,8 @@ logically.. this person has returned from being a creature?
   return;
 }
 
-void do_switch(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_switch(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   static char arg[80];
   struct char_data *victim;
 
@@ -2013,10 +1992,13 @@ void do_switch(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
-  struct char_data *mob, *per;
+void do_return(struct char_data *ch, char *UNUSED(argument),
+               const char * UNUSED(cmd)) {
+  return_action(ch, 1);
+}
 
-  void do_snoop(struct char_data *ch, char *argument, int cmd);
+void return_action(struct char_data *ch, int call_as_self) {
+  struct char_data *mob, *per;
 
   if (get_max_level(ch) < LOW_IMMORTAL)
     if (ch->specials.fighting) {
@@ -2042,7 +2024,7 @@ void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
                GET_NAME(ch->desc->snoop.snoop_by), 0);
     }
 
-    if (IS_SET(ch->specials.act, ACT_POLYSELF) && cmd) {
+    if (IS_SET(ch->specials.act, ACT_POLYSELF) && call_as_self) {
       mob = ch;
       per = ch->desc->original;
 
@@ -2062,7 +2044,7 @@ void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
     ch->desc = 0;
 
 
-    if (IS_SET(ch->specials.act, ACT_POLYSELF) && cmd) {
+    if (IS_SET(ch->specials.act, ACT_POLYSELF) && call_as_self) {
       extract_char(mob);
       WAIT_STATE(ch, PULSE_VIOLENCE);
     }
@@ -2070,12 +2052,17 @@ void do_return(struct char_data *ch, char *UNUSED(argument), int cmd) {
 }
 
 
-void do_force(struct char_data *ch, char *argument, int cmd) {
+void do_force(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
+  force_action(ch, argument, 0);
+}
+
+void force_action(struct char_data *ch, char *argument, int npc_ok) {
   struct descriptor_data *i;
   struct char_data *vict;
   char name[100], to_force[100], buf[100];
 
-  if (IS_NPC(ch) && (cmd != 0))
+  if (IS_NPC(ch) && !npc_ok)
     return;
 
   half_chop(argument, name, to_force);
@@ -2112,7 +2099,8 @@ void do_force(struct char_data *ch, char *argument, int cmd) {
   }
 }
 
-void do_load(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_load(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   struct char_data *mob;
   struct obj_data *obj;
   char type[100], num[100];
@@ -2263,7 +2251,7 @@ void purge_one_room(int rnum, struct room_data *rp, int *range) {
        ch);
     char_from_room(ch);
     char_to_room(ch, 0);        /* send character to the void */
-    do_look(ch, "", 15);
+    look_room(ch);
     act("$n tumbles into the Void.", TRUE, ch, 0, 0, TO_ROOM);
   }
 
@@ -2285,7 +2273,8 @@ void purge_one_room(int rnum, struct room_data *rp, int *range) {
 
 
 /* clean a room of all mobiles and objects */
-void do_purge(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_purge(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   struct char_data *vict, *next_v;
   struct obj_data *obj, *next_o;
 
@@ -2725,12 +2714,11 @@ void do_start(struct char_data *ch) {
 
 }
 
-void do_advance(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_advance(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *victim;
   char name[100], level[100], class[100];
   int adv, newlevel, lin_class;
-
-  void gain_exp(struct char_data *ch, int gain);
 
   if (IS_NPC(ch))
     return;
@@ -2858,20 +2846,17 @@ void do_advance(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 }
 
 
-void do_reroll(struct char_data *ch, char *UNUSED(argument), int UNUSED(cmd)) {
+void do_reroll(struct char_data *ch, char *UNUSED(argument),
+               const char * UNUSED(cmd)) {
   send_to_char("Use @set str..charisma..\n\r", ch);
 }
 
 
-void do_restore(struct char_data *ch, char *argument, int cmd) {
+void do_restore(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *victim;
   char buf[100];
   int i;
-
-  void update_pos(struct char_data *victim);
-
-  if (cmd == 0)
-    return;
 
   only_argument(argument, buf);
   if (!*buf)
@@ -2920,7 +2905,8 @@ void do_restore(struct char_data *ch, char *argument, int cmd) {
   }
 }
 
-void do_noshout(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_noshout(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *vict;
   struct obj_data *dummy;
   char buf[MAX_INPUT_LENGTH];
@@ -2961,7 +2947,8 @@ void do_noshout(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 }
 
-void do_nohassle(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_nohassle(struct char_data *ch, char *argument,
+                 const char * UNUSED(cmd)) {
   struct char_data *vict;
   struct obj_data *dummy;
   char buf[MAX_INPUT_LENGTH];
@@ -2992,7 +2979,8 @@ void do_nohassle(struct char_data *ch, char *argument, int UNUSED(cmd)) {
 
 }
 
-void do_stealth(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_stealth(struct char_data *ch, char *argument,
+                const char * UNUSED(cmd)) {
   struct char_data *vict;
   struct obj_data *dummy;
   char buf[MAX_INPUT_LENGTH];
@@ -3100,7 +3088,8 @@ void show_room_zone(int rnum, struct room_data *rp,
   print_room(rnum, rp, srzs->sb);
 }
 
-void do_show(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_show(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
   int zone;
   char buf[MAX_STRING_LENGTH], zonenum[MAX_INPUT_LENGTH];
   struct index_data *which_i;
@@ -3296,7 +3285,8 @@ void do_show(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   destroy_string_block(&sb);
 }
 
-void do_debug(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_debug(struct char_data *ch, char *argument,
+              const char * UNUSED(cmd)) {
   char arg[MAX_INPUT_LENGTH];
   int i;
 
@@ -3310,22 +3300,21 @@ void do_debug(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   else {
 #if DEBUG
     malloc_debug(i);
-    SPRINTF(arg, "malloc debug level set to %d\n\r", i);
+    send_to_charf(ch, "malloc debug level set to %d\n\r", i);
 #else
-    SPRINTF(arg, "Debug level set to %d. May not be implemented\n\r", i);
+    send_to_charf(ch, "Debug level set to %d. May not be implemented\n\r", i);
 #endif
-    send_to_char(arg, ch);
   }
 }
 
-void do_invis(struct char_data *ch, char *argument, int cmd) {
-  char buf[MAX_INPUT_LENGTH];
+void do_invis(struct char_data *ch, char *argument,
+              const char * cmd) {
   int level;
 
-  if (cmd == 242 && !IS_IMMORTAL(ch))
+  if (STREQ(cmd, "invisible") && !IS_IMMORTAL(ch))
     return;
 
-  if (cmd != 242) {
+  if (!STREQ(cmd, "invisible")) {
     if (affected_by_spell(ch, SPELL_INVISIBLE)) {
       affect_from_char(ch, SPELL_INVISIBLE);
     }
@@ -3340,8 +3329,7 @@ void do_invis(struct char_data *ch, char *argument, int cmd) {
     else if (level > LOW_IMMORTAL)
       level = LOW_IMMORTAL;
     ch->invis_level = level;
-    SPRINTF(buf, "Invis level set to %d.\n\r", level);
-    send_to_char(buf, ch);
+    send_to_charf(ch, "Invis level set to %d.\n\r", level);
   }
   else {
     if (ch->invis_level > 0) {
@@ -3355,7 +3343,8 @@ void do_invis(struct char_data *ch, char *argument, int cmd) {
   }
 }
 
-void do_create(struct char_data *ch, char *argument, int UNUSED(cmd)) {
+void do_create(struct char_data *ch, char *argument,
+               const char * UNUSED(cmd)) {
   int i, count, start, end;
 
   if (!IS_IMMORTAL(ch) || IS_NPC(ch)) {
@@ -3400,7 +3389,7 @@ void create_one_room(int loc_nr) {
          rp->number > zone_table[zone].top && zone <= top_of_zone_table;
          zone++);
     if (zone > top_of_zone_table) {
-      fprintf(stderr, "Room %d is outside of any zone.\n", rp->number);
+      log_msgf("Room %d is outside of any zone.\n", rp->number);
       zone--;
     }
     rp->zone = zone;
@@ -3410,7 +3399,8 @@ void create_one_room(int loc_nr) {
   rp->description = (char *)strdup("Empty\n");
 }
 
-void do_set_log(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_set_log(struct char_data *ch, char *arg,
+                const char * UNUSED(cmd)) {
   char name[255];
   struct char_data *victim;
   struct obj_data *dummy;
@@ -3449,7 +3439,8 @@ void do_set_log(struct char_data *ch, char *arg, int UNUSED(cmd)) {
 
 void pulse_mobiles(int cmd);
 
-void do_event(struct char_data *ch, char *arg, int UNUSED(cmd)) {
+void do_event(struct char_data *ch, char *arg,
+              const char * UNUSED(cmd)) {
   int i;
   char buf[255];
 
@@ -3462,8 +3453,9 @@ void do_event(struct char_data *ch, char *arg, int UNUSED(cmd)) {
   pulse_mobiles(i);
 }
 
-void do_beep(struct char_data *ch, char *argument, int UNUSED(cmd)) {
-  char buf[255], name[255];
+void do_beep(struct char_data *ch, char *argument,
+             const char * UNUSED(cmd)) {
+  char name[255];
   struct char_data *victim;
   struct obj_data *dummy;
 
@@ -3494,22 +3486,20 @@ void do_beep(struct char_data *ch, char *argument, int UNUSED(cmd)) {
   }
 
   if (IS_SET(victim->specials.act, PLR_NOBEEP)) {
-    SPRINTF(buf, "%s can not be beeped right now.\n\r", GET_NAME(victim));
-    send_to_char(buf, ch);
+    send_to_charf(ch, "%s can not be beeped right now.\n\r", GET_NAME(victim));
     return;
   }
 
   else {
-    SPRINTF(buf, "%c%s is beeping you.\n\r", 7, GET_NAME(ch));
-    send_to_char(buf, victim);
-    SPRINTF(buf, "%s has been beeped.\n\r", GET_NAME(victim));
-    send_to_char(buf, ch);
+    send_to_charf(victim, "%c%s is beeping you.\n\r", 7, GET_NAME(ch));
+    send_to_charf(ch, "%s has been beeped.\n\r", GET_NAME(victim));
     return;
   }
 }
 
-void do_cset(struct char_data *ch, char *arg, int UNUSED(cmd)) {
-  char buf[1000], buf1[255], buf2[255], buf3[255], buf4[255];
+void do_cset(struct char_data *ch, char *arg,
+             const char * UNUSED(cmd)) {
+  char buf1[255], buf2[255], buf3[255], buf4[255];
   int i, radix;
   NODE *n;
   extern struct radix_list radix_head[];
@@ -3537,11 +3527,10 @@ void do_cset(struct char_data *ch, char *arg, int UNUSED(cmd)) {
       send_to_char("Sorry, command not found.\n\r", ch);
       return;
     }
-    SPRINTF(buf,
-            "Name: %s\n\rMinimum Position: %d\n\rMinimum Level: %d\n\rNumber: %d\n\rLog Bit: %s\n\r",
-            n->name, n->min_pos, n->min_level, n->number,
-            (n->log ? "On" : "Off"));
-    send_to_char(buf, ch);
+    send_to_charf(ch,
+                  "Name: %s\n\rMinimum Position: %d\n\rMinimum Level: %d\n\rLog Bit: %s\n\r",
+                  n->name, n->min_pos, n->min_level,
+                  (n->log ? "On" : "Off"));
     return;
   }
 
