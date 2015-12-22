@@ -3126,7 +3126,6 @@ void do_show(struct char_data *ch, char *argument,
              const char * UNUSED(cmd)) {
   int zone;
   char buf[MAX_STRING_LENGTH], zonenum[MAX_INPUT_LENGTH];
-  struct obj_index_data *which_i;
   int bottom, top, topi;
   struct string_block sb;
 
@@ -3181,7 +3180,6 @@ void do_show(struct char_data *ch, char *argument,
   }
   else if (is_abbrev(buf, "mobiles")) {
     topi = top_of_mobt;
-    int objn;
     struct mob_index_data *mi;
 
     only_argument(argument, zonenum);
@@ -3197,21 +3195,20 @@ void do_show(struct char_data *ch, char *argument,
     }
 
     append_to_string_block(&sb, "VNUM  rnum count names\n\r");
-    for (objn = 0; objn <= topi; objn++) {
-      mi = mob_index + objn;
+    for (int mobn = 0; mobn <= topi; mobn++) {
+      mi = mob_index + mobn;
 
       if ((zone >= 0 && (mi->virtual < bottom || mi->virtual > top)) ||
           (zone < 0 && !isname(zonenum, mi->name)))
         continue;               /* optimize later */
 
-      SPRINTF(buf, "%5d %4d %3d  %s\n\r", mi->virtual, objn,
+      SPRINTF(buf, "%5d %4d %3d  %s\n\r", mi->virtual, mobn,
               mi->number, mi->name);
       append_to_string_block(&sb, buf);
     }
   }
   else if (is_abbrev(buf, "objects")) {
     topi = top_of_objt;
-    int objn;
     struct obj_index_data *oi;
 
     only_argument(argument, zonenum);
@@ -3227,7 +3224,7 @@ void do_show(struct char_data *ch, char *argument,
     }
 
     append_to_string_block(&sb, "VNUM  rnum count names\n\r");
-    for (objn = 0; objn <= topi; objn++) {
+    for (int objn = 0; objn <= topi; objn++) {
       oi = obj_index + objn;
 
       if ((zone >= 0 && (oi->virtual < bottom || oi->virtual > top)) ||
@@ -3238,9 +3235,7 @@ void do_show(struct char_data *ch, char *argument,
               oi->number, oi->name);
       append_to_string_block(&sb, buf);
     }
-
-
-  }  
+  }
   else if (is_abbrev(buf, "rooms")) {
 
     only_argument(argument, zonenum);
@@ -3260,14 +3255,11 @@ void do_show(struct char_data *ch, char *argument,
 #else
       room_iterate(room_db, print_private_room, &sb);
 #endif
-
     }
     else if (1 != sscanf(zonenum, "%i", &zone) ||
              zone < 0 || zone > top_of_zone_table) {
       append_to_string_block(&sb,
                              "I need a zone number with this command\n\r");
-
-
     }
     else {
       struct show_room_zone_struct srzs;
@@ -3298,7 +3290,7 @@ void do_show(struct char_data *ch, char *argument,
     struct obj_index_data *oi, *oi2;
     char buf[80];
 
-    which_i = obj_index;
+    struct obj_index_data *which_i = obj_index;
     topi = top_of_objt;
     bot = 0;
 

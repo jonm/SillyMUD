@@ -86,7 +86,7 @@ struct zone_data {
 struct _index_data {
   int virtual;                  /* virtual number of this mob/obj           */
   long pos;                     /* file position of this field              */
-  int number;                   /* number of existing units of this mob/obj   */
+  int number;                   /* number of existing units of this mob/obj */
   char *name;
   char *short_desc;
   char *long_desc;
@@ -96,9 +96,9 @@ typedef int (obj_func)(struct char_data*, const char *, char*,
                        struct obj_data*, int);
 
 struct obj_index_data {
-  int virtual;                  /* virtual number of this mob/obj           */
-  long pos;                     /* file position of this field              */
-  int number;                   /* number of existing units of this mob/obj   */
+  int virtual;                  /* virtual number of this obj           */
+  long pos;                     /* file position of this field          */
+  int number;                   /* number of existing units of this obj */
   obj_func *func;
   char *name;
   char *short_desc;
@@ -109,17 +109,17 @@ typedef int (mob_func)(struct char_data*, const char *, char*,
                        struct char_data*, int);
 
 struct mob_index_data {
-  int virtual;                  /* virtual number of this mob/obj           */
-  long pos;                     /* file position of this field              */
-  int number;                   /* number of existing units of this mob/obj   */
+  int virtual;                  /* virtual number of this mob           */
+  long pos;                     /* file position of this field          */
+  int number;                   /* number of existing units of this mob */
   mob_func *func;
   char *name;
   char *short_desc;
   char *long_desc;
 };
 
-extern struct mob_index_data *mob_index;   /* index table for mobile file     */
-extern struct obj_index_data *obj_index;   /* index table for object file     */
+extern struct mob_index_data *mob_index;   /* index table for mobile file */
+extern struct obj_index_data *obj_index;   /* index table for object file */
 extern int top_of_mobt;
 extern int top_of_objt;
 
