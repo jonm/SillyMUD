@@ -1352,15 +1352,13 @@ struct chr_app_type {
 
 /************************************************************/
 
-typedef void (*funcp) ();
-
-typedef void (*breath_weapon_fp) (byte, struct char_data *, char *, int,
-                                  struct char_data *, struct obj_data *);
+typedef void (breath_weapon_func) (byte, struct char_data *, char *, int,
+                                   struct char_data *, struct obj_data *);
 
 struct breather {
   int vnum;
   int cost;
-  breath_weapon_fp *breaths;
+  breath_weapon_func **breaths;
 };
 
 struct figurine_data {

@@ -1073,8 +1073,6 @@ void cast_cause_serious(byte level, struct char_data *ch, char *arg, int type,
                         struct char_data *victim, struct obj_data *tar_obj);
 void cast_cause_critic(byte level, struct char_data *ch, char *arg, int type,
                        struct char_data *victim, struct obj_data *tar_obj);
-void cast_geyser(byte level, struct char_data *ch, char *arg, int type,
-                 struct char_data *victim, struct obj_data *tar_obj);
 void cast_green_slime(byte level, struct char_data *ch, char *arg, int type,
                       struct char_data *victim, struct obj_data *tar_obj);
 
@@ -1205,17 +1203,6 @@ void cast_identify(byte level, struct char_data *ch, char *arg, int type,
                    struct char_data *tar_ch, struct obj_data *tar_obj);
 void cast_dragon_breath(byte level, struct char_data *ch, char *arg, int type,
                         struct char_data *tar_ch, struct obj_data *potion);
-void cast_fire_breath(byte level, struct char_data *ch, char *arg, int type,
-                      struct char_data *tar_ch, struct obj_data *tar_obj);
-void cast_frost_breath(byte level, struct char_data *ch, char *arg, int type,
-                       struct char_data *tar_ch, struct obj_data *tar_obj);
-void cast_acid_breath(byte level, struct char_data *ch, char *arg, int type,
-                      struct char_data *tar_ch, struct obj_data *tar_obj);
-void cast_gas_breath(byte level, struct char_data *ch, char *arg, int type,
-                     struct char_data *tar_ch, struct obj_data *tar_obj);
-void cast_lightning_breath(byte level, struct char_data *ch, char *arg,
-                           int type, struct char_data *tar_ch,
-                           struct obj_data *tar_obj);
 void cast_knock(byte level, struct char_data *ch, char *arg, int type,
                 struct char_data *tar_ch, struct obj_data *tar_obj);
 void cast_know_alignment(byte level, struct char_data *ch, char *arg, int type,

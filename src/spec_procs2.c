@@ -22,6 +22,7 @@
 #include "spec_procs2.h"
 #include "spec_procs3.h"
 #include "utility.h"
+#include "spells2.h"
 
 /*   external vars  */
 
@@ -2509,10 +2510,7 @@ void free_victims(struct breath_victim *head) {
 }
 
 void breath_weapon(struct char_data *ch, struct char_data *target,
-                   int mana_cost, void (*func) (byte, struct char_data *,
-                                                char *, int,
-                                                struct char_data *,
-                                                struct obj_data *)) {
+                   int mana_cost, breath_weapon_func *func) {
   struct breath_victim *hitlist, *scan;
   struct char_data *tmp;
   int victim;
@@ -2572,11 +2570,10 @@ void use_breath_weapon(struct char_data *ch, struct char_data *target,
 }
 
 
-static void (*breaths[]) (byte, struct char_data * ch, char *, int,
-                          struct char_data *, struct obj_data *) = {
-cast_acid_breath, 0, cast_frost_breath, 0, cast_lightning_breath, 0,
-    cast_fire_breath, 0, cast_acid_breath, cast_fire_breath,
-    cast_lightning_breath, 0};
+static breath_weapon_func *breaths[] = {
+  cast_acid_breath, 0, cast_frost_breath, 0, cast_lightning_breath, 0,
+  cast_fire_breath, 0, cast_acid_breath, cast_fire_breath,
+  cast_lightning_breath, 0};
 
 struct breather breath_monsters[] = {
   {230, 55, breaths + 0},

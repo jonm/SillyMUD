@@ -25,6 +25,7 @@
 #include "spec_procs3.h"
 #include "utility.h"
 #include "fight.h"
+#include "spells1.h"
 
 #define INQ_SHOUT 1
 #define INQ_LOOSE 0
