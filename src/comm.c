@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -61,7 +62,7 @@ int mudshutdown = 0;            /* clean shutdown */
 int should_reboot = 0;          /* reboot the game after a shutdown */
 int no_specials = 0;            /* Suppress ass. of special routines */
 long Uptime;                    /* time that the game has been up */
-
+int daemon_mode = 0;            /* run as daemon process */
 
 int pulse;
 
@@ -97,6 +98,16 @@ void close_socket_fd(int desc) {
   }
 }
 
+void usage(char **argv) {
+  fprintf(stderr, "Usage: %s [-b] [-l] [-s] [-d pathname] [ port # ]\n",
+          argv[0]);
+  fprintf(stderr, "  -b : run in daemon (background) mode\n");
+  fprintf(stderr, "  -l : run in lawful mode\n");
+  fprintf(stderr, "  -s : suppress special procedures\n");
+  fprintf(stderr, "  -d : specify data directory\n");
+  exit(-1);
+}
+
 int real_main(int argc, char **argv) {
   int port, pos = 1;
   char *dir;
@@ -127,6 +138,10 @@ int real_main(int argc, char **argv) {
 
   while ((pos < argc) && (*(argv[pos]) == '-')) {
     switch (*(argv[pos] + 1)) {
+    case 'b':
+      daemon_mode = 1;
+      log_msg("Daemon (background) mode selected.");
+      break;
     case 'l':
       lawful = 1;
       log_msg("Lawful mode selected.");
@@ -146,7 +161,8 @@ int real_main(int argc, char **argv) {
       log_msg("Suppressing assignment of special routines.");
       break;
     default:
-      log_msgf("Unknown option -% in argument string.", *(argv[pos] + 1));
+      log_msgf("Unknown option -%c in argument string.", *(argv[pos] + 1));
+      usage(argv);
       break;
     }
     pos++;
@@ -154,9 +170,7 @@ int real_main(int argc, char **argv) {
 
   if (pos < argc) {
     if (!isdigit(*argv[pos])) {
-      fprintf(stderr, "Usage: %s [-l] [-s] [-d pathname] [ port # ]\n",
-              argv[0]);
-      assert(0);
+      usage(argv);
     }
     else {
       if ((port = atoi(argv[pos])) <= 1024) {
@@ -195,13 +209,35 @@ int real_main(int argc, char **argv) {
 #endif /* LOCKGROVE */
 #endif
 
-
-
   /* close stdin */
   close(0);
 
+  if (daemon_mode) run_as_daemon();
+
   run_the_game(port);
   return (0);
+}
+
+void run_as_daemon() {
+  pid_t pid, sid;
+  
+  if ((pid = fork()) < 0) {
+    perror("fork");
+    exit(EXIT_FAILURE);
+  }
+  if (pid > 0) exit(EXIT_SUCCESS);         /* parent exits */
+  
+  umask(0);
+  openlog("silly", LOG_CONS|LOG_PID, LOG_USER);
+
+  if ((sid = setsid()) < 0) {
+    perror("setsid");
+    exit(EXIT_FAILURE);
+  }
+  
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
 }
 
 
