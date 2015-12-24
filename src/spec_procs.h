@@ -190,6 +190,8 @@ int valik(struct char_data *ch, const char *cmd, char *arg, struct char_data *mo
           int type);
 int guardian(struct char_data *ch, const char *cmd, char *arg, struct char_data *mob,
              int type);
+int keystone(struct char_data *ch, const char *cmd, char *arg,
+             struct char_data *mob, int type);
 int web_slinger(struct char_data *ch, const char *cmd, char *arg,
                 struct char_data *mob, int type);
 
