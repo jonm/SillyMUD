@@ -9,7 +9,6 @@ struct ipv4_cidr {
   in_addr_t netmask;
 };
 
-int sec_check(char *arg, char *site);
 int wiz_security_check(int sock, char *name);
 void set_mask6(size_t nbits, struct in6_addr *mask);
 int ipv6_prefix_match(struct in6_addr *a1, struct in6_addr *a2,
