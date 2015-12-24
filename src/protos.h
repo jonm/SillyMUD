@@ -917,12 +917,6 @@ void obj_store_to_room(int room, struct obj_file_u *st);
 void load_room_objs(int room);
 void save_room(int room);
 
-
-/* From security.c */
-
-int sec_check(char *arg, char *site);
-
-
 /* From shop.c */
 
 int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr);

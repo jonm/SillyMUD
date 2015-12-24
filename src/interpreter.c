@@ -34,6 +34,7 @@
 #include "spell_parser.h"
 #include "utility.h"
 #include "db.h"
+#include "security.h"
 
 #define NOT !
 #define AND &&
@@ -1277,7 +1278,7 @@ void nanny(struct descriptor_data *d, char *arg) {
 #if IMPL_SECURITY
       if (top_of_p_table > 0) {
         if (get_max_level(d->character) >= 58) {
-          switch (sec_check(GET_NAME(d->character), d->host)) {
+          switch (wiz_security_check(d->descriptor, GET_NAME(d->character))) {
           case -1:
           case 0:
             SEND_TO_Q("Security check reveals invalid site\n\r", d);
