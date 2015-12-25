@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AC_INIT([sillymud], [0.1.5], [], [], [https://github.com/jonm/SillyMUD])
+AC_INIT([sillymud], [0.1.6], [], [], [https://github.com/jonm/SillyMUD])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
