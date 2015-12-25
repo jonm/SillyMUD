@@ -14,6 +14,7 @@
 #include <syslog.h>
 
 #include "protos.h"
+#include "options.h"
 #include "utility.h"
 #include "act.off.h"
 #include "skills.h"
@@ -27,8 +28,12 @@ void vlog_lev_msgf(int level, const char *fmt, va_list args) {
   char buf[256];
   va_list nargs;
   va_copy(nargs, args);
-  vsyslog(level, fmt, args);
-  vsnprintf(buf, sizeof(buf), fmt, nargs);
+  vsnprintf(buf, sizeof(buf)-1, fmt, nargs);
+  if (daemon_mode) {
+    vsyslog(level, fmt, args);
+  } else {
+    printf("%s\n", buf);
+  }
   va_end(nargs);
   log_wiz(buf, level);
 }

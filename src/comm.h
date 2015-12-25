@@ -20,5 +20,6 @@
 #define PLAYER_AUTH 0
 
 void send_to_charf(struct char_data *ch, const char *fmt, ...);
+void run_as_daemon();
 
 #endif
