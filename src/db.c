@@ -96,6 +96,7 @@ int verify_mob(struct char_data *ch);
 void boot_db() {
   int i;
   extern int no_specials;
+  struct _index_data *base_mob_idx, *base_obj_idx;
 
   log_msg("Boot db -- BEGIN.");
 
@@ -152,10 +153,10 @@ void boot_db() {
 
 
   log_msg("Generating index tables for mobile and object files.");
-  mob_index = make_mob_indices(generate_indices(mob_f, &top_of_mobt),
-                               top_of_mobt);
-  obj_index = make_obj_indices(generate_indices(obj_f, &top_of_objt),
-                               top_of_objt);
+  base_mob_idx = generate_indices(mob_f, &top_of_mobt);
+  mob_index = make_mob_indices(base_mob_idx, top_of_mobt);
+  base_obj_idx = generate_indices(obj_f, &top_of_objt);
+  obj_index = make_obj_indices(base_obj_idx, top_of_objt);
 
   log_msg("Renumbering zone table.");
   renum_zone_table();
