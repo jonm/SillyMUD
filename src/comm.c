@@ -118,8 +118,6 @@ int real_main(int argc, char **argv) {
   int res;
 #endif
 
-  openlog("silly", LOG_CONS|LOG_PID, LOG_USER);
-
   port = DFLT_PORT;
   dir = DEFAULT_LIBDIR;
 #ifdef sun
@@ -140,11 +138,11 @@ int real_main(int argc, char **argv) {
     switch (*(argv[pos] + 1)) {
     case 'b':
       daemon_mode = 1;
-      log_msg("Daemon (background) mode selected.");
+      fprintf(stderr, "Daemon (background) mode selected.\n");
       break;
     case 'l':
       lawful = 1;
-      log_msg("Lawful mode selected.");
+      fprintf(stderr, "Lawful mode selected.");
       break;
     case 'd':
       if (*(argv[pos] + 2))
@@ -152,16 +150,16 @@ int real_main(int argc, char **argv) {
       else if (++pos < argc)
         dir = argv[pos];
       else {
-        log_msg("Directory arg expected after option -d.");
+        fprintf(stderr, "Directory arg expected after option -d.");
         assert(0);
       }
       break;
     case 's':
       no_specials = 1;
-      log_msg("Suppressing assignment of special routines.");
+      fprintf(stderr, "Suppressing assignment of special routines.");
       break;
     default:
-      log_msgf("Unknown option -%c in argument string.", *(argv[pos] + 1));
+      fprintf(stderr, "Unknown option -%c in argument string.", *(argv[pos] + 1));
       usage(argv);
       break;
     }
@@ -174,7 +172,7 @@ int real_main(int argc, char **argv) {
     }
     else {
       if ((port = atoi(argv[pos])) <= 1024) {
-        printf("Illegal port #\n");
+        fprintf(stderr, "Illegal port #\n");
         assert(0);
       }
     }
@@ -182,14 +180,20 @@ int real_main(int argc, char **argv) {
 
   Uptime = time(0);
 
-  log_msgf("Running game on port %d.", port);
+  fprintf(stderr, "Running game on port %d.\n", port);
+  fprintf(stderr, "Using %s as data directory.\n", dir);
+
+
+  if (daemon_mode) {
+    run_as_daemon();
+  } else {
+    close(STDIN_FILENO);
+  }
 
   if (chdir(dir) < 0) {
     perror("chdir");
     assert(0);
   }
-
-  log_msgf("Using %s as data directory.", dir);
 
   srandom(time(0));
   WizLock = FALSE;
@@ -209,10 +213,6 @@ int real_main(int argc, char **argv) {
 #endif /* LOCKGROVE */
 #endif
 
-  /* close stdin */
-  close(0);
-
-  if (daemon_mode) run_as_daemon();
 
   run_the_game(port);
   return (0);
