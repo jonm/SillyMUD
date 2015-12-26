@@ -34,7 +34,7 @@ int wiz_security_check(int sock, char *name) {
   }
 
   CREATE(filename, char, strlen(name) + strlen("security/") + 1);
-  SPRINTF(filename, "security/%s", name);
+  sprintf(filename, "security/%s", name);
   if ((f = fopen(filename, "r")) == NULL) {
     log_msgf("Unable to open security file for %s", name);
     return(-1);
