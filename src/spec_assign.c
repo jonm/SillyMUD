@@ -413,17 +413,13 @@ void assign_mobiles() {
     {21124, golgar},
     {21118, troguard},
     {21119, troguard},
-/*
-    { 21130, valik},
-*/
+    {21130, valik},
     {21135, regenerator},
     {21138, ghostsoldier},
     {21139, ghostsoldier},
-/*
-    { 21140, keystone},
-    { 21141, lattimore},
-    { 21142, guardian},
-*/
+    {21140, keystone},
+    {21141, lattimore},
+    {21142, guardian},
     {21144, troguard},
     {21145, troguard},
     {21146, coldcaster},
