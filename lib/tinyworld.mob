@@ -1,3 +1,66 @@
+;; Mob file
+;;
+;; Mob format:
+;; -------------------------------------------------------------------------------------
+;; | #<mob number>                                                                     |
+;; | <name>~                                                                           |
+;; | <short description>~                                                              |
+;; | <long description>~                                                               |
+;; | <description>~                                                                    |
+;; | <action bitfield> <affected_by bitfield> <alignment> <mob_type> [<num_attacks>]   |
+;; | <warrior level> <hitroll> <armor> <max hitpoints> <damage roll>                   |
+;; | <reward spec>                                                                     |
+;; | <position> <default position> <gender_immunity_key> [<immunity spec>]             |
+;; | [<sound string>]                                                                  |
+;; | [<distant sound string>]                                                          |
+;; -------------------------------------------------------------------------------------
+
+;; Field Descriptions:
+;; -------------------
+;; mob number:           Unique id for mob
+;; name:                 How to address mob
+;; short description:    Name when looking at a mob
+;; long description:     Seen when looking in a room
+;; description:          Seen when looking at a mob
+;; action bitfield:      See ACT_* in structs.h
+;; affected_by bitfield: See AFF_* in structs.h
+;; alignment:            integer from -1000 (pure evil) to 1000 (pure good)
+;; mob_type:             Single character, one of {S,A,N,L,B}
+;;   S - Special mob
+;;   A - mob has mult_att
+;;   N - normal mob
+;;   L - mob makes noise (and has mult_att)
+;;   B - mob is HUGE (and has mult_att)
+;; num_attacks:          Number of attacks (only A,L,B types)
+;; warrior level: determines attributes
+;; hitroll:       value = 20 - stat
+;; armor:         value = 10*stat
+;;                *For S type value = 10*(abs(stat) > 10 ? stat / 10 : stat)
+;; max hitpoints: value = from die roll: (WARRIOR_LEVEL)d8 + stat
+;;                * For S type value = roll from die spec: #d#+#
+;; damage roll = as die spec: #d#+#
+;; reward spec:
+;;   one of:
+;;     -1 <gold> <xp> <race>
+;;     <gold>
+;; position: See POSITION_* in structs.h
+;; default position: See POSITION_* in structs.h
+;; gender_immunity_key:
+;;   if gender_immunity_key < 3:
+;;     gender = gender_key (0=neutral, 1=male, 2=female)
+;;     mob has no special resistances/immunities/susceptibilities
+;;   elif gender_key < 6:
+;;     gender = gender_key - 3
+;;     immunity spec = <resistances> <immunities> <susceptibilities>
+;;          See IMM_* in structs.h
+;;   else:
+;;     gender = neutral (0)
+;;
+;; NOTE:
+;; The code provides for an 'old style' mob where the mob_type is not one of
+;; {S,A,N,L,B} but it doesn't seem like any of the mobs below use this format
+;;
+
 #1
 Puff~
 Puff~
