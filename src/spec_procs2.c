@@ -2245,7 +2245,7 @@ void say_hello(struct char_data *ch, struct char_data *t) {
     else if (time_info.hours >= 20 && time_info.hours <= 24)
       SPRINTF(buf, "Good evening, %s", GET_NAME(t));
     else
-      SPRINTF(buf, "Up for a midnight stroll, %s?\n", GET_NAME(t));
+      SPRINTF(buf, "Up for a midnight stroll, %s?", GET_NAME(t));
     say(ch, buf);
     break;
   case 10:{
