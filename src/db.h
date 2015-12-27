@@ -175,6 +175,6 @@ struct obj_index_data *make_obj_indices(struct _index_data *base_idx, int top);
 struct _index_data *generate_indices(FILE * fl, int *top);
 
 extern struct obj_data *object_list;
-
+#define FREAD_STRING_NA(dst, fp) fread_string_na(dst, sizeof(dst), fp)
 
 #endif

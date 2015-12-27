@@ -1294,22 +1294,6 @@ void room_load(struct char_data *ch, int start, int end) {
 
 }
 
-void fake_setup_dir(FILE * fl, int UNUSED(room), int UNUSED(dir)) {
-  int tmp;
-  char *temp;
-
-  temp = fread_string(fl);      /* descr */
-  if (temp)
-    free(temp);
-  temp = fread_string(fl);      /* key */
-  if (temp)
-    free(temp);
-
-  fscanf(fl, " %d ", &tmp);
-  fscanf(fl, " %d ", &tmp);
-  fscanf(fl, " %d ", &tmp);
-}
-
 
 int is_humanoid(struct char_data *ch) {
 /* these are all very arbitrary */

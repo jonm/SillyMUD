@@ -1419,7 +1419,6 @@ int determine_exp(struct char_data *mob, int exp_flags);
 void down_river(int pulse);
 void room_save(struct char_data *ch, int start, int end);
 void room_load(struct char_data *ch, int start, int end);
-void fake_setup_dir(FILE * fl, int room, int dir);
 int is_humanoid(struct char_data *ch);
 int is_rideable(struct char_data *ch);
 int is_animal(struct char_data *ch);
