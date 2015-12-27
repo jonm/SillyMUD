@@ -197,4 +197,5 @@ int web_slinger(struct char_data *ch, const char *cmd, char *arg,
 
 int citizen(struct char_data *, const char *, char *, struct char_data *, int);
 
+struct char_data *find_mob_in_room_with_function(int room, mob_func *func);
 #endif

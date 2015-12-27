@@ -131,7 +131,7 @@ int gain_level(struct char_data *ch, int class) {
   return (FALSE);
 }
 
-struct char_data *find_mob_in_room_with_function(int room, int (*func) ()) {
+struct char_data *find_mob_in_room_with_function(int room, mob_func *func) {
   struct char_data *temp_char, *targ;
 
   targ = 0;
