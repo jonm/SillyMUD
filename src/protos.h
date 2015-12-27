@@ -970,7 +970,6 @@ int is_target_room_p(int room, void *tgt_room);
 int named_object_on_ground(int room, void *c_data);
 char *how_good(int percent);
 int gain_level(struct char_data *ch, int class);
-struct char_data *find_mob_in_room_with_function(int room, int (*func) ());
 
 
 /* From spec_procs2.c */
