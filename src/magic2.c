@@ -684,6 +684,10 @@ void spell_succor(byte UNUSED(level), struct char_data *ch,
   struct obj_data *o;
 
   o = read_object(3052, VIRTUAL);
+  if (!o) {
+    send_to_char("Game error loading object. File a bug.\n\r", ch);
+    return;
+  }
   obj_to_char(o, ch);
 
   o->obj_flags.cost = 0;

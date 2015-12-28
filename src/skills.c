@@ -1609,6 +1609,10 @@ void do_makepotion(struct char_data *ch, char *argument,
     return;
   }
   potion = read_object(BrewList[which_potion].object[5], VIRTUAL);
+  if (!potion) {
+    send_to_char("Game error loading object. File a bug.\n\r", ch);
+    return;
+  }
 
   /* is the caster high enough level to cast this? */
 
@@ -1677,6 +1681,10 @@ void do_makepotion(struct char_data *ch, char *argument,
   }
   else {
     potion = read_object(BrewList[which_potion].object[5], VIRTUAL);
+    if (!potion) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+      return;
+    }
     obj_to_room(potion, ch->in_room);
 
     act("$n carefully mixes some secret ingredients in a cauldron.",

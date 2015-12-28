@@ -2832,6 +2832,9 @@ void make_scrap(struct char_data *ch, struct obj_data *obj) {
     act("$p is reduced to nothing but scraps.", TRUE, ch, obj, 0, TO_ROOM);
 
     t = read_object(30, VIRTUAL);
+    if (!t) {
+      return;
+    }
 
     SPRINTF(buf, "Scraps from %s lie in a pile here.", obj->short_description);
 

@@ -2204,6 +2204,10 @@ void do_load(struct char_data *ch, char *argument,
     }
 
     obj = read_object(number, REAL);
+    if (!obj) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+      return;
+    }
     obj_to_char(obj, ch);
     act("$n gyrates $s hips wildly.", TRUE, ch, 0, 0, TO_ROOM);
     act("$n has created $p!", FALSE, ch, obj, 0, TO_ROOM);
@@ -2636,16 +2640,39 @@ void do_start(struct char_data *ch) {
    */
   if ((r_num = real_object(12)) >= 0) {
     obj = read_object(r_num, REAL);
-    obj_to_char(obj, ch);       /* bread   */
-    obj = read_object(r_num, REAL);
-    obj_to_char(obj, ch);       /* bread   */
+    if (!obj) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+    }
+    else {
+      obj_to_char(obj, ch);       /* bread   */
+    }
+    if (!obj) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+    }
+    else {
+      obj = read_object(r_num, REAL);
+    }
+    if (!obj) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+    }
+    else {
+      obj_to_char(obj, ch);       /* bread   */
+    }
   }
 
   if ((r_num = real_object(13)) >= 0) {
     obj = read_object(r_num, REAL);
+    if (!obj) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+      return;
+    }
     obj_to_char(obj, ch);       /* water   */
 
     obj = read_object(r_num, REAL);
+    if (!obj) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+      return;
+    }
     obj_to_char(obj, ch);       /* water   */
   }
 

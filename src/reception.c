@@ -198,6 +198,9 @@ void obj_store_to_char(struct char_data *ch, struct obj_file_u *st) {
     if (st->objects[i].item_number > -1 &&
         real_object(st->objects[i].item_number) > -1) {
       obj = read_object(st->objects[i].item_number, VIRTUAL);
+      if (!obj) {
+        continue;
+      }
       obj->obj_flags.value[0] = st->objects[i].value[0];
       obj->obj_flags.value[1] = st->objects[i].value[1];
       obj->obj_flags.value[2] = st->objects[i].value[2];
@@ -595,6 +598,9 @@ void count_limited_items(struct obj_file_u *st) {
        ** (all this just to find rent cost.)  *sigh*
        */
       obj = read_object(st->objects[i].item_number, VIRTUAL);
+      if (!obj) {
+        continue;
+      }
       cost_per_day = obj->obj_flags.cost_per_day;
       /*
        **  if the cost is > LIM_ITEM_COST_MIN, then mark before extractin
@@ -993,6 +999,9 @@ void obj_store_to_room(int room, struct obj_file_u *st) {
     if (st->objects[i].item_number > -1 &&
         real_object(st->objects[i].item_number) > -1) {
       obj = read_object(st->objects[i].item_number, VIRTUAL);
+      if (!obj) {
+        continue;
+      }
       obj->obj_flags.value[0] = st->objects[i].value[0];
       obj->obj_flags.value[1] = st->objects[i].value[1];
       obj->obj_flags.value[2] = st->objects[i].value[2];

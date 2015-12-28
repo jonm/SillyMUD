@@ -1447,6 +1447,10 @@ int repair_guy(struct char_data *ch, const char *cmd, char *arg, struct char_dat
 /* weapon repair.  expensive!   */
         cost = obj->obj_flags.cost;
         new = read_object(obj->item_number, REAL);
+        if (!new) {
+          send_to_char("Game error loading object. File a bug.\n\r", ch);
+          return FALSE;
+        }
         if (obj->obj_flags.value[2])
           cost /= obj->obj_flags.value[2];
 

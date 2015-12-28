@@ -975,6 +975,9 @@ int old_hag(struct char_data *UNUSED(ch), const char * UNUSED(cmd), char *UNUSED
     return (FALSE);
 
   obj = read_object(SCROLL_OBJ, VIRTUAL);
+  if (!obj) {
+    return FALSE;
+  }
   obj->obj_flags.type_flag = ITEM_NOTE;
   if (obj->action_description || *(obj->action_description))
     free(obj->action_description);

@@ -2098,6 +2098,9 @@ void reset_zone(int zone) {
       case 'P':                /* object to object */
         if (obj_index[ZCMD.arg1].number < ZCMD.arg2) {
           obj = read_object(ZCMD.arg1, REAL);
+          if (!obj) {
+            return;
+          }
           obj_to = get_obj_num(ZCMD.arg3);
           if (obj_to && obj) {
             obj_to_obj(obj, obj_to);
@@ -2113,7 +2116,7 @@ void reset_zone(int zone) {
 
       case 'G':                /* obj_to_char */
         if (obj_index[ZCMD.arg1].number < ZCMD.arg2 &&
-            (obj = read_object(ZCMD.arg1, REAL))) {
+            (obj = read_object(ZCMD.arg1, REAL)) && mob)  {
           obj_to_char(obj, mob);
           last_cmd = 1;
         }
@@ -2122,8 +2125,8 @@ void reset_zone(int zone) {
         break;
 
       case 'H':                /* hatred to char */
-
-        if (add_hatred(mob, ZCMD.arg1, ZCMD.arg2))
+        
+        if (mob && add_hatred(mob, ZCMD.arg1, ZCMD.arg2))
           last_cmd = 1;
         else
           last_cmd = 0;
@@ -2131,7 +2134,7 @@ void reset_zone(int zone) {
 
       case 'F':                /* fear to char */
 
-        if (add_fears(mob, ZCMD.arg1, ZCMD.arg2))
+        if (mob && add_fears(mob, ZCMD.arg1, ZCMD.arg2))
           last_cmd = 1;
         else
           last_cmd = 0;
@@ -2140,7 +2143,7 @@ void reset_zone(int zone) {
       case 'E':                /* object to equipment list */
         if (obj_index[ZCMD.arg1].number < ZCMD.arg2 &&
             (obj = read_object(ZCMD.arg1, REAL))) {
-          if (!mob->equipment[ZCMD.arg3]) {
+          if (mob && !mob->equipment[ZCMD.arg3]) {
             equip_char(mob, obj, ZCMD.arg3);
           }
           else {
@@ -3609,6 +3612,9 @@ void read_text_zone(FILE * fl) {
         i = real_object(i);
         if (obj_index[i].number < j) {
           obj = read_object(i, VIRTUAL);
+          if (!obj) {
+            return;
+          }
           obj_to = get_obj_num(k);
           if (obj_to && obj) {
             obj_to_obj(obj, obj_to);
