@@ -158,6 +158,10 @@ void spell_changestaff(byte UNUSED(level), struct char_data *ch,
   act("$p vanishes in a burst of flame!", FALSE, ch, s, 0, TO_CHAR);
 
   t = read_mobile(TREE, VIRTUAL);
+  if (!t) {
+    act("Game error! File a bug", FALSE, ch, s, 0, TO_CHAR);
+    return;
+  }
   char_to_room(t, ch->in_room);
   GET_EXP(t) = 0;
 
@@ -376,6 +380,10 @@ void spell_familiar(byte level, struct char_data *ch,
   else {
     f = read_mobile(BENGAL, VIRTUAL);
   }
+  if (!f) {
+    send_to_char("Game error while summoning. File a bug.\n\r", ch);
+    return;
+  }
   char_to_room(f, ch->in_room);
 
 
@@ -507,6 +515,11 @@ void spell_golem(byte level, struct char_data *ch,
   }
 
   gol = read_mobile(GOLEM, VIRTUAL);
+  if (!gol) {
+    send_to_char("Game error. File a bug.\n\r", ch);
+    return;
+  }
+             
   char_to_room(gol, ch->in_room);
 
   /* add up the armor values in the pieces */

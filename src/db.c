@@ -1250,7 +1250,7 @@ struct char_data *read_mobile(int nr, int type) {
   do {                                                  \
     if ((got) < expect) {                               \
       log_msgf("Bad stats for mob %s near pos %lld",    \
-               mob_index[nr].pos, ftell(mob_f));        \
+               mob->player.name, ftell(mob_f));         \
       return NULL;                                      \
     }                                                   \
   } while(0)
@@ -1842,8 +1842,9 @@ struct obj_data *read_object(int nr, int type) {
         break;
       }
 
-    if (found) {
-      obj->link = read_mobile(real_mobile(figurine[i].mob), REAL);
+    if (found &&
+        (obj->link =
+         read_mobile(real_mobile(figurine[i].mob), REAL))) {
       SET_BIT(obj->link->specials.act, ACT_FIGURINE);
       obj->link->link = obj;
       char_to_room(obj->link, 3);
@@ -1999,6 +2000,9 @@ void reset_zone(int zone) {
         if ((mob_index[ZCMD.arg1].number < ZCMD.arg2)
             && !check_kill_file(mob_index[ZCMD.arg1].virtual)) {
           mob = read_mobile(ZCMD.arg1, REAL);
+          if (!mob) {
+            continue;
+          }
           mob->specials.zone = zone;
           char_to_room(mob, ZCMD.arg3);
 
@@ -2019,6 +2023,9 @@ void reset_zone(int zone) {
         if ((mob_index[ZCMD.arg1].number < ZCMD.arg2)
             && !check_kill_file(mob_index[ZCMD.arg1].virtual)) {
           mob = read_mobile(ZCMD.arg1, REAL);
+          if (!mob) {
+            continue;
+          }
           mob->specials.zone = zone;
 
           if (GET_RACE(mob) > RACE_GNOME)
@@ -3516,6 +3523,9 @@ void read_text_zone(FILE * fl) {
         if ((mob_index[i].number < j)
             && !check_kill_file(mob_index[i].virtual)) {
           mob = read_mobile(i, REAL);
+          if (!mob) {
+            continue;
+          }
           char_to_room(mob, k);
 
           last_cmd = 1;
@@ -3530,6 +3540,9 @@ void read_text_zone(FILE * fl) {
         if ((mob_index[i].number < j)
             && !check_kill_file(mob_index[i].virtual)) {
           mob = read_mobile(i, REAL);
+          if (!mob) {
+            continue;
+          }
           if (master) {
             char_to_room(mob, master->in_room);
             /*

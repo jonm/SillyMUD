@@ -2259,9 +2259,12 @@ int replicant(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     return FALSE;
 
   if (GET_HIT(ch) < GET_MAX_HIT(ch)) {
+    mob = read_mobile(ch->nr, REAL);
+    if (!mob) {
+      return FALSE;
+    }
     act("Drops of $n's blood hit the ground, and spring up into another one!",
         TRUE, ch, 0, 0, TO_ROOM);
-    mob = read_mobile(ch->nr, REAL);
     char_to_room(mob, ch->in_room);
     act("Two undamaged opponents face you now.", TRUE, ch, 0, 0, TO_ROOM);
     GET_HIT(ch) = GET_MAX_HIT(ch);
@@ -3164,6 +3167,9 @@ int pet_shops(struct char_data *ch, const char *cmd, char *arg,
     GET_GOLD(ch) -= GET_EXP(pet) * 10;
 
     pet = read_mobile(pet->nr, REAL);
+    if (!pet) {
+      send_to_char("Game error. File a bug.\n\r", ch);
+    }
     GET_EXP(pet) = 0;
     SET_BIT(pet->specials.affected_by, AFF_CHARM);
 
@@ -5678,9 +5684,12 @@ int shaman(struct char_data *ch, const char *cmd, char *arg, struct char_data *m
             act("$n screams 'Golgar, I summon thee to aid thy servants!'",
                 FALSE, ch, 0, 0, TO_ROOM);
             if (number(0, 8) == 0) {
+              god = read_mobile(DEITY, VIRTUAL);
+              if (!god) {
+                return FALSE;
+              }
               act("There is a blinding flash of light!",
                   FALSE, ch, 0, 0, TO_ROOM);
-              god = read_mobile(DEITY, VIRTUAL);
               char_to_room(god, ch->in_room);
             }
           }
@@ -5807,10 +5816,16 @@ int keystone(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       for (i = START_ROOM; i < END_ROOM; ++i)
         if (number(0, 2) == 0) {
           ghost = read_mobile(GhostSoldier, VIRTUAL);
+          if (!ghost) {
+            return FALSE;
+          }
           char_to_room(ghost, i);
         }
         else if (number(0, 7) == 0) {
           ghost = read_mobile(GhostLieutenant, VIRTUAL);
+          if (!ghost) {
+            return FALSE;
+          }
           char_to_room(ghost, i);
         }
       for (t = character_list; t; t = t->next)
