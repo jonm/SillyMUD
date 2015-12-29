@@ -1248,7 +1248,7 @@ struct char_data *read_mobile(int nr, int type) {
 #endif
 #define VERIFY_COUNT(got, expect)                       \
   do {                                                  \
-    if ((got) < expect) {                               \
+    if ((got) < (expect)) {                             \
       log_msgf("Bad stats for mob %s near pos %lld",    \
                mob->player.name, ftell(mob_f));         \
       return NULL;                                      \
@@ -1759,7 +1759,7 @@ struct obj_data *read_object(int nr, int type) {
 #endif
 #define VERIFY_COUNT(got, expect)                       \
   do {                                                  \
-    if ((got) < expect) {                               \
+    if ((got) < (expect)) {                             \
       log_msgf("Bad stats for obj %s near pos %lld",    \
                obj->name, ftell(obj_f));                \
       return NULL;                                      \
