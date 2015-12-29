@@ -2136,7 +2136,7 @@ void do_load(struct char_data *ch, char *argument,
     }
     mob = read_mobile(number, REAL);
     if (!mob) {
-      send_to_char("Sorry, error loading mosnter. File a bug.\n\r", ch);
+      send_to_char("Sorry, error loading monster. File a bug.\n\r", ch);
       return;
     }
     char_to_room(mob, ch->in_room);
