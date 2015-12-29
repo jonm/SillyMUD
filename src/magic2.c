@@ -59,6 +59,10 @@ void spell_resurrection(byte UNUSED(level), struct char_data *ch,
       }
 
       victim = read_mobile(obj->char_vnum, VIRTUAL);
+      if (!victim) {
+        send_to_char("Error resurrecting. File a bug.\n\r", ch);
+        return;
+      }
       char_to_room(victim, ch->in_room);
       GET_GOLD(victim) = 0;
       GET_EXP(victim) = 0;
@@ -680,6 +684,10 @@ void spell_succor(byte UNUSED(level), struct char_data *ch,
   struct obj_data *o;
 
   o = read_object(3052, VIRTUAL);
+  if (!o) {
+    send_to_char("Game error loading object. File a bug.\n\r", ch);
+    return;
+  }
   obj_to_char(o, ch);
 
   o->obj_flags.cost = 0;
@@ -1411,6 +1419,10 @@ void spell_animate_dead(byte level, struct char_data *ch,
   }
 
   mob = read_mobile(r_num, VIRTUAL);
+  if (!mob) {
+    send_to_char("Game error. File a bug.\n\r", ch);
+    return;
+  }
   char_to_room(mob, ch->in_room);
 
   act("With mystic power, $n animates a corpse.", TRUE, ch, 0, 0, TO_ROOM);

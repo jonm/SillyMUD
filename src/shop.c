@@ -238,8 +238,13 @@ void shopping_buy(char *arg, struct char_data *ch,
     GET_GOLD(keeper) += (int)cost;
 
     /* Test if producing shop ! */
-    if (shop_producing(temp1, shop_nr))
+    if (shop_producing(temp1, shop_nr)) {
       temp1 = read_object(temp1->item_number, REAL);
+      if (!temp1) {
+        send_to_char("Game error loading object. File a bug.\n\r", ch);
+        return;
+      }
+    }
     else {
       obj_from_char(temp1);
       if (temp1 == NULL) {

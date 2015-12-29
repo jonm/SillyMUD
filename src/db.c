@@ -1206,7 +1206,6 @@ struct char_data *read_mobile(int nr, int type) {
   int i;
   long tmp, tmp2, tmp3, bc = 0;
   struct char_data *mob;
-  char buf[100];
   char letter;
 
   extern int mob_tick_count;
@@ -1215,11 +1214,15 @@ struct char_data *read_mobile(int nr, int type) {
   i = nr;
   if (type == VIRTUAL)
     if ((nr = real_mobile(nr)) < 0) {
-      SPRINTF(buf, "Mobile (V) %d does not exist in database.", i);
-      return (0);
+      log_msgf("Mobile (V) %d does not exist in database.", i);
+      return NULL;
     }
 
-  fseek(mob_f, mob_index[nr].pos, 0);
+  if (fseek(mob_f, mob_index[nr].pos, 0) < 0) {
+    log_msgf("Error seeking to mob #%d: (%d) %s", nr, errno,
+             strerror(errno));
+    return NULL;
+}
 
   CREATE(mob, struct char_data, 1);
   bc = sizeof(struct char_data);
@@ -1244,29 +1247,40 @@ struct char_data *read_mobile(int nr, int type) {
   mob->player.title = 0;
 
   /* *** Numeric data *** */
+#ifdef VERIFY_COUNT
+  #undef VERIFY_COUNT
+#endif
+#define VERIFY_COUNT(got, expect)                       \
+  do {                                                  \
+    if ((got) < (expect)) {                             \
+      log_msgf("Bad stats for mob %s near pos %lld",    \
+               mob->player.name, ftell(mob_f));         \
+      return NULL;                                      \
+    }                                                   \
+  } while(0)
 
   mob->mult_att = 1.0;
   mob->specials.spellfail = 101;
 
-  fscanf(mob_f, "%ld ", &tmp);
+  VERIFY_COUNT(fscanf(mob_f, "%ld ", &tmp), 1);
   mob->specials.act = tmp;
   SET_BIT(mob->specials.act, ACT_ISNPC);
 
-  fscanf(mob_f, " %ld ", &tmp);
+  VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
   mob->specials.affected_by = tmp;
 
-  fscanf(mob_f, " %ld ", &tmp);
+  VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
   mob->specials.alignment = tmp;
 
   mob->player.class = CLASS_WARRIOR;
 
-  fscanf(mob_f, " %c ", &letter);
+  VERIFY_COUNT(fscanf(mob_f, " %c ", &letter), 1);
 
   if (letter == 'S') {
 
     fscanf(mob_f, "\n");
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     GET_LEVEL(mob, WARRIOR_LEVEL_IND) = tmp;
 
 
@@ -1278,21 +1292,23 @@ struct char_data *read_mobile(int nr, int type) {
     mob->abilities.chr = 9 + number(1, (MAX(1, tmp / 5 - 1)));
 
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->points.hitroll = 20 - tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
 
     if (tmp > 10 || tmp < -10)
       tmp /= 10;
 
     mob->points.armor = 10 * tmp;
 
-    fscanf(mob_f, " %ldd%ld+%ld ", &tmp, &tmp2, &tmp3);
+    VERIFY_COUNT(fscanf(mob_f, " %ldd%ld+%ld ", &tmp, &tmp2, &tmp3),
+                 3);
     mob->points.max_hit = dice(tmp, tmp2) + tmp3;
     mob->points.hit = mob->points.max_hit;
 
-    fscanf(mob_f, " %ldd%ld+%ld \n", &tmp, &tmp2, &tmp3);
+    VERIFY_COUNT(fscanf(mob_f, " %ldd%ld+%ld \n", &tmp, &tmp2, &tmp3),
+                 3);
     mob->points.damroll = tmp3;
     mob->specials.damnodice = tmp;
     mob->specials.damsizedice = tmp2;
@@ -1304,13 +1320,13 @@ struct char_data *read_mobile(int nr, int type) {
     mob->points.move = 50;
     mob->points.max_move = 50;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     if (tmp == -1) {
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->points.gold = tmp;
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       GET_EXP(mob) = tmp;
-      fscanf(mob_f, " %ld \n", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld \n", &tmp), 1);
       GET_RACE(mob) = tmp;
       if (is_giant(mob))
         mob->abilities.str += number(1, 4);
@@ -1319,16 +1335,16 @@ struct char_data *read_mobile(int nr, int type) {
     }
     else {
       mob->points.gold = tmp;
-      fscanf(mob_f, " %ld \n", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld \n", &tmp), 1);
       GET_EXP(mob) = tmp;
     }
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->specials.position = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->specials.default_pos = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     if (tmp < 3) {
       mob->player.sex = tmp;
       mob->immune = 0;
@@ -1337,11 +1353,11 @@ struct char_data *read_mobile(int nr, int type) {
     }
     else if (tmp < 6) {
       mob->player.sex = (tmp - 3);
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->immune = tmp;
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->M_immune = tmp;
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->susc = tmp;
     }
     else {
@@ -1373,7 +1389,7 @@ struct char_data *read_mobile(int nr, int type) {
            (letter == 'L')) {
 
     if ((letter == 'A') || (letter == 'B') || (letter == 'L')) {
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->mult_att = (float)tmp;
       /*
        **  read in types:
@@ -1382,7 +1398,7 @@ struct char_data *read_mobile(int nr, int type) {
 
     fscanf(mob_f, "\n");
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     GET_LEVEL(mob, WARRIOR_LEVEL_IND) = tmp;
 
 
@@ -1395,16 +1411,17 @@ struct char_data *read_mobile(int nr, int type) {
 
 
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->points.hitroll = 20 - tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->points.armor = 10 * tmp;
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->points.max_hit = dice(GET_LEVEL(mob, WARRIOR_LEVEL_IND), 8) + tmp;
     mob->points.hit = mob->points.max_hit;
 
-    fscanf(mob_f, " %ldd%ld+%ld \n", &tmp, &tmp2, &tmp3);
+    VERIFY_COUNT(fscanf(mob_f, " %ldd%ld+%ld \n", &tmp, &tmp2, &tmp3),
+                 3);
     mob->points.damroll = tmp3;
     mob->specials.damnodice = tmp;
     mob->specials.damsizedice = tmp2;
@@ -1416,17 +1433,17 @@ struct char_data *read_mobile(int nr, int type) {
     mob->points.move = 50;
     mob->points.max_move = 50;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
 
     if (tmp == -1) {
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->points.gold = tmp;
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       if (tmp >= 0)
         GET_EXP(mob) = (determine_exp(mob, tmp) + mob->points.gold);
       else
         GET_EXP(mob) = -tmp;
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       GET_RACE(mob) = tmp;
       if (is_giant(mob))
         mob->abilities.str += number(1, 4);
@@ -1439,17 +1456,17 @@ struct char_data *read_mobile(int nr, int type) {
       /*
          this is where the new exp will come into play
        */
-      fscanf(mob_f, " %ld \n", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld \n", &tmp), 1);
       GET_EXP(mob) = (determine_exp(mob, tmp) + mob->points.gold);
     }
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->specials.position = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->specials.default_pos = tmp;
 
-    fscanf(mob_f, " %ld \n", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld \n", &tmp), 1);
     if (tmp < 3) {
       mob->player.sex = tmp;
       mob->immune = 0;
@@ -1458,11 +1475,11 @@ struct char_data *read_mobile(int nr, int type) {
     }
     else if (tmp < 6) {
       mob->player.sex = (tmp - 3);
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->immune = tmp;
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->M_immune = tmp;
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->susc = tmp;
     }
     else {
@@ -1513,78 +1530,78 @@ struct char_data *read_mobile(int nr, int type) {
 
     fscanf(mob_f, "\n");
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->abilities.str = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->abilities.intel = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->abilities.wis = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->abilities.dex = tmp;
 
-    fscanf(mob_f, " %ld \n", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld \n", &tmp), 1);
     mob->abilities.con = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
-    fscanf(mob_f, " %ld ", &tmp2);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp2), 1);
 
     mob->points.max_hit = number(tmp, tmp2);
     mob->points.hit = mob->points.max_hit;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->points.armor = 10 * tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->points.mana = tmp;
     mob->points.max_mana = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->points.move = tmp;
     mob->points.max_move = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->points.gold = tmp;
 
-    fscanf(mob_f, " %ld \n", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld \n", &tmp), 1);
     GET_EXP(mob) = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->specials.position = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->specials.default_pos = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->player.sex = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->player.class = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     GET_LEVEL(mob, WARRIOR_LEVEL_IND) = tmp;
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->player.time.birth = time(0);
     mob->player.time.played = 0;
     mob->player.time.logon = time(0);
 
-    fscanf(mob_f, " %ld ", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
     mob->player.weight = tmp;
 
-    fscanf(mob_f, " %ld \n", &tmp);
+    VERIFY_COUNT(fscanf(mob_f, " %ld \n", &tmp), 1);
     mob->player.height = tmp;
 
     for (i = 0; i < 3; i++) {
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       GET_COND(mob, i) = tmp;
     }
     fscanf(mob_f, " \n ");
 
     for (i = 0; i < 5; i++) {
-      fscanf(mob_f, " %ld ", &tmp);
+      VERIFY_COUNT(fscanf(mob_f, " %ld ", &tmp), 1);
       mob->specials.apply_saving_throw[i] = tmp;
     }
 
@@ -1695,7 +1712,7 @@ struct obj_data *read_object(int nr, int type) {
   struct obj_data *obj;
   int tmp, i;
   long bc;
-  char chk[50], buf[100];
+  char chk[50];
   struct extra_descr_data *new_descr;
 
   extern long obj_count;
@@ -1706,11 +1723,15 @@ struct obj_data *read_object(int nr, int type) {
     nr = real_object(nr);
   }
   if (nr < 0 || nr > top_of_objt) {
-    SPRINTF(buf, "Object (V) %d does not exist in database.", i);
-    return (0);
+    log_msgf("Object (V) %d does not exist in database.", i);
+    return NULL;
   }
 
-  fseek(obj_f, obj_index[nr].pos, 0);
+  if (fseek(obj_f, obj_index[nr].pos, 0) < 0) {
+    log_msgf("Error seeking to object #%d: (%d) %s", nr, errno,
+             strerror(errno));
+    return NULL;
+  }
 
   CREATE(obj, struct obj_data, 1);
   bc = sizeof(struct obj_data);
@@ -1737,26 +1758,37 @@ struct obj_data *read_object(int nr, int type) {
   }
 
   /* *** numeric data *** */
+#ifdef VERIFY_COUNT
+  #undef VERIFY_COUNT
+#endif
+#define VERIFY_COUNT(got, expect)                       \
+  do {                                                  \
+    if ((got) < (expect)) {                             \
+      log_msgf("Bad stats for obj %s near pos %lld",    \
+               obj->name, ftell(obj_f));                \
+      return NULL;                                      \
+    }                                                   \
+  } while(0)
 
-  fscanf(obj_f, " %d ", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
   obj->obj_flags.type_flag = tmp;
-  fscanf(obj_f, " %d ", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
   obj->obj_flags.extra_flags = tmp;
-  fscanf(obj_f, " %d ", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
   obj->obj_flags.wear_flags = tmp;
-  fscanf(obj_f, " %d ", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
   obj->obj_flags.value[0] = tmp;
-  fscanf(obj_f, " %d ", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
   obj->obj_flags.value[1] = tmp;
-  fscanf(obj_f, " %d ", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
   obj->obj_flags.value[2] = tmp;
-  fscanf(obj_f, " %d ", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
   obj->obj_flags.value[3] = tmp;
-  fscanf(obj_f, " %d ", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
   obj->obj_flags.weight = tmp;
-  fscanf(obj_f, " %d \n", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d \n", &tmp), 1);
   obj->obj_flags.cost = tmp;
-  fscanf(obj_f, " %d \n", &tmp);
+  VERIFY_COUNT(fscanf(obj_f, " %d \n", &tmp), 1);
   obj->obj_flags.cost_per_day = tmp;
 
   /* *** extra descriptions *** */
@@ -1778,11 +1810,11 @@ struct obj_data *read_object(int nr, int type) {
   }
 
   for (i = 0; (i < MAX_OBJ_AFFECT) && (*chk == 'A'); i++) {
-    fscanf(obj_f, " %d ", &tmp);
+    VERIFY_COUNT(fscanf(obj_f, " %d ", &tmp), 1);
     obj->affected[i].location = tmp;
-    fscanf(obj_f, " %d \n", &tmp);
+    VERIFY_COUNT(fscanf(obj_f, " %d \n", &tmp), 1);
     obj->affected[i].modifier = tmp;
-    fscanf(obj_f, " %s \n", chk);
+    VERIFY_COUNT(fscanf(obj_f, " %s \n", chk), 1);
   }
 
   for (; (i < MAX_OBJ_AFFECT); i++) {
@@ -1814,8 +1846,9 @@ struct obj_data *read_object(int nr, int type) {
         break;
       }
 
-    if (found) {
-      obj->link = read_mobile(real_mobile(figurine[i].mob), REAL);
+    if (found &&
+        (obj->link =
+         read_mobile(real_mobile(figurine[i].mob), REAL))) {
       SET_BIT(obj->link->specials.act, ACT_FIGURINE);
       obj->link->link = obj;
       char_to_room(obj->link, 3);
@@ -1971,6 +2004,9 @@ void reset_zone(int zone) {
         if ((mob_index[ZCMD.arg1].number < ZCMD.arg2)
             && !check_kill_file(mob_index[ZCMD.arg1].virtual)) {
           mob = read_mobile(ZCMD.arg1, REAL);
+          if (!mob) {
+            continue;
+          }
           mob->specials.zone = zone;
           char_to_room(mob, ZCMD.arg3);
 
@@ -1991,6 +2027,9 @@ void reset_zone(int zone) {
         if ((mob_index[ZCMD.arg1].number < ZCMD.arg2)
             && !check_kill_file(mob_index[ZCMD.arg1].virtual)) {
           mob = read_mobile(ZCMD.arg1, REAL);
+          if (!mob) {
+            continue;
+          }
           mob->specials.zone = zone;
 
           if (GET_RACE(mob) > RACE_GNOME)
@@ -2063,6 +2102,9 @@ void reset_zone(int zone) {
       case 'P':                /* object to object */
         if (obj_index[ZCMD.arg1].number < ZCMD.arg2) {
           obj = read_object(ZCMD.arg1, REAL);
+          if (!obj) {
+            return;
+          }
           obj_to = get_obj_num(ZCMD.arg3);
           if (obj_to && obj) {
             obj_to_obj(obj, obj_to);
@@ -2078,7 +2120,7 @@ void reset_zone(int zone) {
 
       case 'G':                /* obj_to_char */
         if (obj_index[ZCMD.arg1].number < ZCMD.arg2 &&
-            (obj = read_object(ZCMD.arg1, REAL))) {
+            (obj = read_object(ZCMD.arg1, REAL)) && mob)  {
           obj_to_char(obj, mob);
           last_cmd = 1;
         }
@@ -2087,8 +2129,8 @@ void reset_zone(int zone) {
         break;
 
       case 'H':                /* hatred to char */
-
-        if (add_hatred(mob, ZCMD.arg1, ZCMD.arg2))
+        
+        if (mob && add_hatred(mob, ZCMD.arg1, ZCMD.arg2))
           last_cmd = 1;
         else
           last_cmd = 0;
@@ -2096,7 +2138,7 @@ void reset_zone(int zone) {
 
       case 'F':                /* fear to char */
 
-        if (add_fears(mob, ZCMD.arg1, ZCMD.arg2))
+        if (mob && add_fears(mob, ZCMD.arg1, ZCMD.arg2))
           last_cmd = 1;
         else
           last_cmd = 0;
@@ -2105,7 +2147,7 @@ void reset_zone(int zone) {
       case 'E':                /* object to equipment list */
         if (obj_index[ZCMD.arg1].number < ZCMD.arg2 &&
             (obj = read_object(ZCMD.arg1, REAL))) {
-          if (!mob->equipment[ZCMD.arg3]) {
+          if (mob && !mob->equipment[ZCMD.arg3]) {
             equip_char(mob, obj, ZCMD.arg3);
           }
           else {
@@ -3488,6 +3530,9 @@ void read_text_zone(FILE * fl) {
         if ((mob_index[i].number < j)
             && !check_kill_file(mob_index[i].virtual)) {
           mob = read_mobile(i, REAL);
+          if (!mob) {
+            continue;
+          }
           char_to_room(mob, k);
 
           last_cmd = 1;
@@ -3502,6 +3547,9 @@ void read_text_zone(FILE * fl) {
         if ((mob_index[i].number < j)
             && !check_kill_file(mob_index[i].virtual)) {
           mob = read_mobile(i, REAL);
+          if (!mob) {
+            continue;
+          }
           if (master) {
             char_to_room(mob, master->in_room);
             /*
@@ -3568,6 +3616,9 @@ void read_text_zone(FILE * fl) {
         i = real_object(i);
         if (obj_index[i].number < j) {
           obj = read_object(i, VIRTUAL);
+          if (!obj) {
+            return;
+          }
           obj_to = get_obj_num(k);
           if (obj_to && obj) {
             obj_to_obj(obj, obj_to);

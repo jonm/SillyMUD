@@ -2135,6 +2135,10 @@ void do_load(struct char_data *ch, char *argument,
       return;
     }
     mob = read_mobile(number, REAL);
+    if (!mob) {
+      send_to_char("Sorry, error loading monster. File a bug.\n\r", ch);
+      return;
+    }
     char_to_room(mob, ch->in_room);
 
     act("$n makes a quaint, magical gesture with one hand.", TRUE, ch,
@@ -2200,6 +2204,10 @@ void do_load(struct char_data *ch, char *argument,
     }
 
     obj = read_object(number, REAL);
+    if (!obj) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+      return;
+    }
     obj_to_char(obj, ch);
     act("$n gyrates $s hips wildly.", TRUE, ch, 0, 0, TO_ROOM);
     act("$n has created $p!", FALSE, ch, obj, 0, TO_ROOM);
@@ -2606,11 +2614,28 @@ void roll_abilities(struct char_data *ch) {
 }
 
 
-
-void do_start(struct char_data *ch) {
-  int r_num;
+void load_obj_for_char(int obj_vnum, struct char_data *ch, int quantity) {
   struct obj_data *obj;
 
+  int obj_rnum = real_object(obj_vnum);
+  if (obj_rnum < 0) {
+    log_msgf("Couldn't find virtual obj %d", obj_vnum);
+    send_to_char("Game error loading object. File a bug.\n\r", ch);
+    return;
+  }
+
+  for (int i = 0; i < quantity; i++) {
+    obj = read_object(obj_rnum, REAL);
+    if (!obj) {
+      send_to_char("Game error loading object. File a bug.\n\r", ch);
+      return;
+    }
+    obj_to_char(obj, ch);
+  }
+}
+
+
+void do_start(struct char_data *ch) {
   send_to_char("Welcome to SillyMud.  Enjoy the game...\n\r", ch);
   ch->specials.start_room = NOWHERE;
 
@@ -2630,20 +2655,8 @@ void do_start(struct char_data *ch) {
   /* 
      outfit char with valueless items
    */
-  if ((r_num = real_object(12)) >= 0) {
-    obj = read_object(r_num, REAL);
-    obj_to_char(obj, ch);       /* bread   */
-    obj = read_object(r_num, REAL);
-    obj_to_char(obj, ch);       /* bread   */
-  }
-
-  if ((r_num = real_object(13)) >= 0) {
-    obj = read_object(r_num, REAL);
-    obj_to_char(obj, ch);       /* water   */
-
-    obj = read_object(r_num, REAL);
-    obj_to_char(obj, ch);       /* water   */
-  }
+  load_obj_for_char(12, ch, 2);
+  load_obj_for_char(13, ch, 2);
 
   if (has_class(ch, CLASS_CLERIC) || has_class(ch, CLASS_MAGIC_USER)) {
     ch->skills[SKILL_READ_MAGIC].learned = 95;

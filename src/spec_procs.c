@@ -757,6 +757,9 @@ int andy_wilcox(struct char_data *ch, const char *cmd, char *arg,
     }
 
     temp2 = read_object(scan->contains, VIRTUAL);
+    if (!temp2) {
+      return FALSE;
+    }
     cost = (temp2 ? (scan->howman * temp2->obj_flags.cost) : 0)
       + temp1->obj_flags.cost;
     cost *= 9;
@@ -772,8 +775,14 @@ int andy_wilcox(struct char_data *ch, const char *cmd, char *arg,
         return TRUE;
       }
       temp1 = read_object(temp1->item_number, REAL);
+      if (!temp1) {
+        return FALSE;
+      }
       for (i = 0; i < scan->howman; i++) {
         temp2 = read_object(scan->contains, VIRTUAL);
+        if (!temp2) {
+          return FALSE;
+        }
         obj_to_obj(temp2, temp1);
       }
       obj_to_char(temp1, ch);
@@ -796,6 +805,9 @@ int andy_wilcox(struct char_data *ch, const char *cmd, char *arg,
     act("$n says 'We have", FALSE, andy, NULL, ch, TO_VICT);
     for (scan = sold_here; scan->container >= 0; scan++) {
       temp1 = read_object(scan->container, VIRTUAL);
+      if (!temp1) {
+        return FALSE;
+      }
       temp2 = scan->contains ? read_object(scan->contains, VIRTUAL) : NULL;
       cost = (temp2 ? (scan->howman * temp2->obj_flags.cost) : 0)
         + temp1->obj_flags.cost;
@@ -2259,9 +2271,12 @@ int replicant(struct char_data *ch, const char *cmd, char *UNUSED(arg),
     return FALSE;
 
   if (GET_HIT(ch) < GET_MAX_HIT(ch)) {
+    mob = read_mobile(ch->nr, REAL);
+    if (!mob) {
+      return FALSE;
+    }
     act("Drops of $n's blood hit the ground, and spring up into another one!",
         TRUE, ch, 0, 0, TO_ROOM);
-    mob = read_mobile(ch->nr, REAL);
     char_to_room(mob, ch->in_room);
     act("Two undamaged opponents face you now.", TRUE, ch, 0, 0, TO_ROOM);
     GET_HIT(ch) = GET_MAX_HIT(ch);
@@ -3164,6 +3179,9 @@ int pet_shops(struct char_data *ch, const char *cmd, char *arg,
     GET_GOLD(ch) -= GET_EXP(pet) * 10;
 
     pet = read_mobile(pet->nr, REAL);
+    if (!pet) {
+      send_to_char("Game error. File a bug.\n\r", ch);
+    }
     GET_EXP(pet) = 0;
     SET_BIT(pet->specials.affected_by, AFF_CHARM);
 
@@ -3443,6 +3461,10 @@ int pray_for_items(struct char_data *ch, const char *cmd, char *arg,
               FALSE, ch, 0, 0, TO_CHAR);
         }
         obj = read_object(tmp_obj->item_number, REAL);
+        if (!obj) {
+          send_to_char("Game error loading object. File a bug.\n\r", ch);
+          return 0;
+        }
         obj_to_room(obj, ch->in_room);
         act("$p slowly fades into existence.", FALSE, ch, obj, 0, TO_ROOM);
         act("$p slowly fades into existence.", FALSE, ch, obj, 0, TO_CHAR);
@@ -3501,6 +3523,9 @@ int chalice(struct char_data *ch, const char *cmd, char *arg) {
     if (chalice == get_obj_in_list_num(achl, ch->carrying)) {
       extract_obj(chalice);
       chalice = read_object(chl, VIRTUAL);
+      if (!chalice) {
+        return 0;
+      }
       obj_to_char(chalice, ch);
     }
     return (1);
@@ -3513,6 +3538,9 @@ int chalice(struct char_data *ch, const char *cmd, char *arg) {
     if (!str_cmp(buf1, "chalice") && !str_cmp(buf2, "altar")) {
       extract_obj(chalice);
       chalice = read_object(achl, VIRTUAL);
+      if (!chalice) {
+        return 0;
+      }
       obj_to_room(chalice, ch->in_room);
       send_to_char("Ok.\n\r", ch);
     }
@@ -3975,10 +4003,16 @@ int delivery_beast(struct char_data *ch, const char *cmd, char *UNUSED(arg),
   else if (time_info.hours < 2) {
     if (!number(0, 1)) {
       o = read_object(3012, VIRTUAL);
+      if (!o) {
+        return FALSE;
+      }
       obj_to_char(o, ch);
     }
     else {
       o = read_object(3013, VIRTUAL);
+      if (!o) {
+        return FALSE;
+      }
       obj_to_char(o, ch);
     }
   }
@@ -5051,6 +5085,10 @@ int nodrop(struct char_data *ch, const char *cmd, char *arg,
           FALSE, ch, obj, 0, TO_CHAR);
       act("$n drops $p, and it shatters!", FALSE, ch, obj, 0, TO_ROOM);
       i = read_object(30, VIRTUAL);
+      if (!i) {
+        send_to_char("Game error. File a bug\r\n.", ch);
+        return FALSE;
+      }
       SPRINTF(buf, "Scraps from %s lie in a pile here.",
               obj->short_description);
       i->description = (char *)strdup(buf);
@@ -5387,6 +5425,10 @@ int lattimore(struct char_data *ch, const char *cmd, char *arg,
               act("$n crawls under the large table.",
                   FALSE, ch, 0, 0, TO_ROOM);
               obj = read_object(PostKey, VIRTUAL);
+              if (!obj) {
+                send_to_char("Game error loading object. File a bug.\n\r", ch);
+                return FALSE;
+              }
               if ((IS_CARRYING_N(t) + 1) < CAN_CARRY_N(t)) {
                 act("$N emerges with $p, and gives it to you.",
                     FALSE, t, obj, ch, TO_CHAR);
@@ -5678,9 +5720,12 @@ int shaman(struct char_data *ch, const char *cmd, char *arg, struct char_data *m
             act("$n screams 'Golgar, I summon thee to aid thy servants!'",
                 FALSE, ch, 0, 0, TO_ROOM);
             if (number(0, 8) == 0) {
+              god = read_mobile(DEITY, VIRTUAL);
+              if (!god) {
+                return FALSE;
+              }
               act("There is a blinding flash of light!",
                   FALSE, ch, 0, 0, TO_ROOM);
-              god = read_mobile(DEITY, VIRTUAL);
               char_to_room(god, ch->in_room);
             }
           }
@@ -5807,10 +5852,16 @@ int keystone(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       for (i = START_ROOM; i < END_ROOM; ++i)
         if (number(0, 2) == 0) {
           ghost = read_mobile(GhostSoldier, VIRTUAL);
+          if (!ghost) {
+            return FALSE;
+          }
           char_to_room(ghost, i);
         }
         else if (number(0, 7) == 0) {
           ghost = read_mobile(GhostLieutenant, VIRTUAL);
+          if (!ghost) {
+            return FALSE;
+          }
           char_to_room(ghost, i);
         }
       for (t = character_list; t; t = t->next)
