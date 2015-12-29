@@ -1,3 +1,107 @@
+;; Object file
+;;
+;; Obj format:
+;;
+;; --------------------------------------------------
+;; | #<obj number>                                  |
+;; | <name>~                                        |
+;; | <short description>~                           |
+;; | <description>~                                 |
+;; | <action description>~                          |
+;; | <type flags> <extra flags> <wear flags>        |
+;; | <value 0> <value 1> <value 2> <value 3>        |
+;; | <weight> <cost> <cost per day>                 |
+;; | [Special attributes]                           |
+;; --------------------------------------------------
+;;
+;; Special Attributes start with a single letter. There may be zero or more:
+;;
+;; Modifies character abilities:
+;; --------------------------------------
+;; | A                                  |
+;; | [<aff location> <aff modifier>]    |
+;; --------------------------------------
+;;
+;; Extra descriptions:
+;; --------------------------------------
+;; | E                                  |
+;; | <keyword> <description>            |
+;; --------------------------------------
+;;
+;; Field Descriptions:
+;; -------------------
+;; type flags: See ITEM_* in structs.h
+;; extra flags: See ITEM_* in structs.h
+;; wear flags: See ITEM_* in structs.h
+;;    (yes the prefixes are the same, pay attention to the comments)
+;; values 0-3: context dependent meaning (based on 'type flags').
+;; aff location: see APPLY_* in structs.h
+;;
+;; A non-exhasutive list of value meanings:
+;;   type = ITEM_AUDIO
+;;    value0 determines how often the item makes noise (see Sound.c)
+;;   type = ITEM_TRAP
+;;    value0: Trap effect type
+;;    value1: Trap damage type
+;;    value2: Trap level
+;;    value3: Trap charges
+;;   type = ITEM_ARMOR
+;;    value0: hit points
+;;    value1: max hitpoints
+;;   type = ITEM_DRINKCON
+;;    value0: max fullness/3
+;;    value1: fullness
+;;    value2: contents type flags
+;;    value3: container flags (DRINK_*)
+;;   type = ITEM_CONTAINER
+;;    value0: max contained weight
+;;    value1: CONT_* flags
+;;    value2: is_corpse flag
+;;   type = ITEM_NOTE
+;;    value0: language
+;;   type = ITEM_KEY
+;;    value0: type
+;;   type = ITEM_WEAPON
+;;    value0: tohit 
+;;    value1: damage dice
+;;    value2: damage die size
+;;    value3: damage type
+;;   type = ITEM_FIREWEAPON
+;;    value0: type
+;;    value1: min weight
+;;    value2: tohit 
+;;    value3: damage
+;;   type = ITEM_MISSILE
+;;     value0: tohit
+;;     value1: todam
+;;     value3: type
+;;   type = ITEM_ARMOR
+;;    value0: AC value
+;;    value1: full strength
+;;   type = ITEM_MONEY
+;;    value0: num coins
+;;   type = ITEM_FOOD
+;;    value0: amount left
+;;    value3: poison flag
+;;   type = ITEM_LIGHT
+;;    value0: color
+;;    value1: type
+;;    value2: hours left
+;;    value3: works underwater flag
+;;   type = ITEM_POTION
+;;    values0-3: spells
+;;   type = ITEM_SCROLL
+;;    values0-3: spells
+;;   type = ITEM_WAND
+;;    value0: level
+;;    value2: charges
+;;    value3: spell
+;;   type = ITEM_STAFF
+;;    value0: level
+;;    value2: charges
+;;    value3: spell
+;;
+
 #1
 helm leather~
 a leather training helm~

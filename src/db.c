@@ -692,6 +692,10 @@ struct _index_data *generate_indices(FILE * fl, int *top) {
 
   for (;;) {
     if (fgets(buf, sizeof(buf), fl)) {
+      if (*buf == ';') {
+        continue;
+      }
+
       if (*buf == '#') {
         if (!i) {               /* first cell */
           CREATE(index, struct _index_data, bc);
