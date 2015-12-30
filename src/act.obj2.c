@@ -604,27 +604,27 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword) {
       send_to_char("You are forbidden to do that.\n\r", ch);
       return;
     }
-  }
 
-  if (IS_SET(obj_object->obj_flags.extra_flags, ITEM_ANTI_MEN)) {
-    if (GET_SEX(ch) != SEX_FEMALE) {
-      send_to_char("Only women can do that.\n\r", ch);
-      return;
+    if (IS_SET(obj_object->obj_flags.extra_flags, ITEM_ANTI_MEN)) {
+      if (GET_SEX(ch) != SEX_FEMALE) {
+	send_to_char("Only women can do that.\n\r", ch);
+	return;
+      }
     }
-  }
 
-  if (IS_SET(obj_object->obj_flags.extra_flags, ITEM_ANTI_WOMEN)) {
-    if (GET_SEX(ch) != SEX_MALE) {
-      send_to_char("Only men can do that.\n\r", ch);
-      return;
+    if (IS_SET(obj_object->obj_flags.extra_flags, ITEM_ANTI_WOMEN)) {
+      if (GET_SEX(ch) != SEX_MALE) {
+	send_to_char("Only men can do that.\n\r", ch);
+	return;
+      }
     }
-  }
 
-  if (IS_PC(ch)) {
-    if (IS_SET(obj_object->obj_flags.extra_flags, ITEM_METAL)) {
-      if (only_class(ch, CLASS_DRUID)) {
-        send_to_char("You can not use metal.\n\r", ch);
-        return;
+    if (IS_PC(ch)) {
+      if (IS_SET(obj_object->obj_flags.extra_flags, ITEM_METAL)) {
+	if (only_class(ch, CLASS_DRUID)) {
+	  send_to_char("You can not use metal.\n\r", ch);
+	  return;
+	}
       }
     }
   }
