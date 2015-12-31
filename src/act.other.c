@@ -381,7 +381,7 @@ void do_hide(struct char_data *ch, char *UNUSED(argument),
              const char * UNUSED(cmd)) {
   byte percent;
 
-  send_to_char("you attempt to hide yourself.\n\r", ch);
+  send_to_char("You attempt to hide yourself.\n\r", ch);
 
   if (IS_AFFECTED(ch, AFF_HIDE))
     REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
@@ -392,7 +392,7 @@ void do_hide(struct char_data *ch, char *UNUSED(argument),
   }
 
   if (MOUNTED(ch)) {
-    send_to_char("Yeah... right... while mounted\n\r", ch);
+    send_to_char("Yeah... right... while mounted...\n\r", ch);
     return;
   }
 
