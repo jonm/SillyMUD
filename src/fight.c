@@ -1975,9 +1975,6 @@ void hit_victim(struct char_data *ch, struct char_data *v, int dam,
     int tmp;
 
     tmp = get_backstab_mult(ch, v);
-    log_msgf("BS multiplier for %dth level char is %d.",
-             get_max_level(ch),
-             tmp);
     dam *= tmp;
     dead = (*dam_func) (ch, v, dam, type);
 
