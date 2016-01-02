@@ -1802,7 +1802,7 @@ void do_split(struct char_data *ch, char *arg,
           if (f->follower != ch) {
             SPRINTF(buf, "$N gives you %d gold", share);
             act(buf, 0, f->follower, 0, ch, TO_CHAR);
-            send_to_charf(ch, "You give $N %d gold", share);
+            SPRINTF(buf, "You give $N %d gold", share);
             act(buf, 0, ch, 0, f->follower, TO_CHAR);
           }
           else {
