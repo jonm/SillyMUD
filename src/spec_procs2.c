@@ -1266,8 +1266,8 @@ int teacher(struct char_data *ch, const char *cmd, char *arg,
 
     if (ch->skills[number].learned >= 95) {
       send_to_char("'You are now a master of this art.'\n\r", ch);
-      return (TRUE);
     }
+    return (TRUE);
   }
   return (FALSE);
 }
