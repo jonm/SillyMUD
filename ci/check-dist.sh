@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=`git describe`
+VERSION=`git describe --match 'v*' | sed -e 's/^v//'`
 
 set -e
 
