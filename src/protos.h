@@ -406,25 +406,6 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
                  struct char_data **tar_ch, struct obj_data **tar_obj);
 void add_affects(struct char_data *ch, struct obj_data *o);
 
-
-/* From hash.c */
-
-void init_hash_table(struct hash_header *ht, int rec_size, int table_size);
-void init_world(struct room_data *room_db[]);
-void destroy_hash_table(struct hash_header *ht, void (*gman) ());
-void _hash_enter(struct hash_header *ht, int key, void *data);
-struct room_data *room_find(struct room_data *room_db[], int key);
-void *hash_find(struct hash_header *ht, int key);
-int room_enter(struct room_data *rb[], int key, struct room_data *rm);
-int hash_enter(struct hash_header *ht, int key, void *data);
-struct room_data *room_find_or_create(struct room_data *rb[], int key);
-void *hash_find_or_create(struct hash_header *ht, int key);
-int room_remove(struct room_data *rb[], int key);
-void *hash_remove(struct hash_header *ht, int key);
-void room_iterate(struct room_data *rb[], void (*func) (), void *cdata);
-void hash_iterate(struct hash_header *ht, void (*func) (), void *cdata);
-
-
 /* From interpreter.c */
 
 void commando(int number, int min_pos, void (*pointer) (), int min_level);
