@@ -19,6 +19,7 @@
 #include "db.h"
 #include "fight.h"
 #include "mobact.h"
+#include "rooms.h"
 
 extern struct char_data *character_list;
 #if HASH

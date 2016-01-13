@@ -21,13 +21,6 @@ void init_hash_table(struct hash_header *ht, int rec_size, int table_size) {
   ht->klistlen = 0;
 }
 
-void init_world(struct room_data *room_db[]) {
-
-  bzero(room_db, sizeof(struct room_data *) * WORLD_SIZE);      /* zero out the world */
-
-}
-
-
 void destroy_hash_table(struct hash_header *ht, void (*gman) ()) {
   int i;
   struct hash_link *scan, *temp;
@@ -42,7 +35,6 @@ void destroy_hash_table(struct hash_header *ht, void (*gman) ()) {
   free(ht->buckets);
   free(ht->keylist);
 }
-
 
 void _hash_enter(struct hash_header *ht, int key, void *data) { /* precondition: there is no entry for <key> yet */
   struct hash_link *temp;
@@ -67,10 +59,6 @@ void _hash_enter(struct hash_header *ht, int key, void *data) { /* precondition:
   ht->klistlen++;
 }
 
-struct room_data *room_find(struct room_data *room_db[], int key) {
-  return ((key < WORLD_SIZE && key > -1) ? room_db[key] : 0);
-}
-
 void *hash_find(struct hash_header *ht, int key) {
   struct hash_link *scan;
 
@@ -80,18 +68,6 @@ void *hash_find(struct hash_header *ht, int key) {
     scan = scan->next;
 
   return scan ? scan->data : NULL;
-}
-
-int room_enter(struct room_data *rb[], int key, struct room_data *rm) {
-  struct room_data *temp;
-
-  temp = room_find(rb, key);
-  if (temp)
-    return (0);
-
-  rb[key] = rm;
-  return (1);
-
 }
 
 int hash_enter(struct hash_header *ht, int key, void *data) {
@@ -104,20 +80,6 @@ int hash_enter(struct hash_header *ht, int key, void *data) {
   return 1;
 }
 
-struct room_data *room_find_or_create(struct room_data *rb[], int key) {
-  struct room_data *rv;
-
-  rv = room_find(rb, key);
-  if (rv)
-    return rv;
-
-  rv = (struct room_data *)malloc(sizeof(struct room_data));
-
-  rb[key] = rv;
-
-  return rv;
-}
-
 void *hash_find_or_create(struct hash_header *ht, int key) {
   void *rval;
 
@@ -128,19 +90,6 @@ void *hash_find_or_create(struct hash_header *ht, int key) {
   rval = (void *)malloc(ht->rec_size);
   _hash_enter(ht, key, rval);
   return rval;
-}
-
-int room_remove(struct room_data *rb[], int key) {
-
-  struct room_data *tmp;
-
-  tmp = room_find(rb, key);
-
-  if (tmp) {
-    rb[key] = 0;
-    free(tmp);
-  }
-  return (0);
 }
 
 void *hash_remove(struct hash_header *ht, int key) {
@@ -175,19 +124,6 @@ void *hash_remove(struct hash_header *ht, int key) {
 
   return NULL;
 }
-
-void room_iterate(struct room_data *rb[], void (*func) (), void *cdata) {
-  register int i;
-  for (i = 0; i < WORLD_SIZE; i++) {
-    struct room_data *temp;
-
-    temp = room_find(rb, i);
-    if (temp) {
-      (*func) (i, temp, cdata);
-    }
-  }
-}
-
 
 void hash_iterate(struct hash_header *ht, void (*func) (), void *cdata) {
   int i;

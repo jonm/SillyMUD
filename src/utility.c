@@ -22,7 +22,7 @@
 #include "act.other.h"
 #include "act.move.h"
 #include "db.h"
-
+#include "rooms.h"
 
 void vlog_lev_msgf(int level, const char *fmt, va_list args) {
   char buf[256];

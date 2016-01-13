@@ -21,6 +21,7 @@
 #include "act.info.h"
 #include "utility.h"
 #include "db.h"
+#include "rooms.h"
 
 /*   external vars  */
 
