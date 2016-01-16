@@ -557,10 +557,6 @@ int dir_track(struct char_data *ch, struct char_data *vict) {
 #define GO_OK_SMARTER  (!IS_SET(IS_DIR->exit_info,EX_LOCKED)\
 		 && (IS_DIR->to_room != NOWHERE))
 
-void donothing() {
-  return;
-}
-
 int find_path(int in_room, int (*predicate) (), void *c_data,
               int depth, int in_zone) {
   struct room_q *tmp_q, *q_head, *q_tail;
@@ -638,7 +634,7 @@ int find_path(int in_room, int (*predicate) (), void *c_data,
             /* return direction if first layer */
             if ((PTR_SZ_INT) hash_find(&x_room, tmp_room) == -1) {
               if (x_room.buckets) {     /* junk left over from a previous track */
-                destroy_hash_table(&x_room, donothing);
+                destroy_hash_table(&x_room);
               }
               return (i);
             }
@@ -647,7 +643,7 @@ int find_path(int in_room, int (*predicate) (), void *c_data,
 
               i = (PTR_SZ_INT) hash_find(&x_room, tmp_room);
               if (x_room.buckets) {     /* junk left over from a previous track */
-                destroy_hash_table(&x_room, donothing);
+                destroy_hash_table(&x_room);
               }
               return (-1 + i);
             }
@@ -663,7 +659,7 @@ int find_path(int in_room, int (*predicate) (), void *c_data,
   }
   /* couldn't find path */
   if (x_room.buckets) {         /* junk left over from a previous track */
-    destroy_hash_table(&x_room, donothing);
+    destroy_hash_table(&x_room);
   }
   return (-1);
 

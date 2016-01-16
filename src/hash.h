@@ -24,7 +24,7 @@ struct hash_header {
 };
 
 void init_hash_table(struct hash_header *ht, int rec_size, int table_size);
-void destroy_hash_table(struct hash_header *ht, void (*gman) ());
+void destroy_hash_table(struct hash_header *ht);
 void _hash_enter(struct hash_header *ht, int key, void *data);
 void *hash_find(struct hash_header *ht, int key);
 int hash_enter(struct hash_header *ht, int key, void *data);

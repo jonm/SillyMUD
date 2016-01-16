@@ -21,14 +21,13 @@ void init_hash_table(struct hash_header *ht, int rec_size, int table_size) {
   ht->klistlen = 0;
 }
 
-void destroy_hash_table(struct hash_header *ht, void (*gman) ()) {
+void destroy_hash_table(struct hash_header *ht) {
   int i;
   struct hash_link *scan, *temp;
 
   for (i = 0; i < ht->table_size; i++)
     for (scan = ht->buckets[i]; scan;) {
       temp = scan->next;
-      (*gman) (scan->data);
       free(scan);
       scan = temp;
     }
