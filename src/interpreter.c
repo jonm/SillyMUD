@@ -51,7 +51,7 @@ extern struct char_data *character_list;
 extern struct player_index_element *player_table;
 extern int top_of_p_table;
 #if HASH
-extern struct hash_header room_db;
+extern hash_table_t room_db;
 #else
 extern struct room_data *room_db;
 #endif

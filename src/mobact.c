@@ -23,7 +23,7 @@
 
 extern struct char_data *character_list;
 #if HASH
-extern struct hash_header room_db;
+extern hash_table_t room_db;
 #else
 extern struct room_data *room_db;
 #endif

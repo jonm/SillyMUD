@@ -23,13 +23,15 @@ struct hash_header {
   struct hash_link **buckets;
 };
 
-void init_hash_table(struct hash_header *ht, int rec_size, int table_size);
-void destroy_hash_table(struct hash_header *ht);
-void _hash_enter(struct hash_header *ht, int key, void *data);
-void *hash_find(struct hash_header *ht, int key);
-int hash_enter(struct hash_header *ht, int key, void *data);
-void *hash_find_or_create(struct hash_header *ht, int key);
-void *hash_remove(struct hash_header *ht, int key);
-void hash_iterate(struct hash_header *ht, void (*func) (), void *cdata);
+typedef struct hash_header hash_table_t;
+
+void init_hash_table(hash_table_t *ht, int rec_size, int table_size);
+void destroy_hash_table(hash_table_t *ht);
+void _hash_enter(hash_table_t *ht, int key, void *data);
+void *hash_find(hash_table_t *ht, int key);
+int hash_enter(hash_table_t *ht, int key, void *data);
+void *hash_find_or_create(hash_table_t *ht, int key);
+void *hash_remove(hash_table_t *ht, int key);
+void hash_iterate(hash_table_t *ht, void (*func) (), void *cdata);
 
 #endif

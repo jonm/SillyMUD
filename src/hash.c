@@ -13,7 +13,7 @@
 
 #define	HASH_KEY(ht,key)	( (((unsigned int)(key)) * 17) % (ht)->table_size )
 
-void init_hash_table(struct hash_header *ht, int rec_size, int table_size) {
+void init_hash_table(hash_table_t *ht, int rec_size, int table_size) {
   ht->rec_size = rec_size;
   ht->table_size = table_size;
   ht->buckets = (void *)calloc(sizeof(struct hash_link **), table_size);
@@ -21,7 +21,7 @@ void init_hash_table(struct hash_header *ht, int rec_size, int table_size) {
   ht->klistlen = 0;
 }
 
-void destroy_hash_table(struct hash_header *ht) {
+void destroy_hash_table(hash_table_t *ht) {
   int i;
   struct hash_link *scan, *temp;
 
@@ -35,7 +35,7 @@ void destroy_hash_table(struct hash_header *ht) {
   free(ht->keylist);
 }
 
-void _hash_enter(struct hash_header *ht, int key, void *data) { /* precondition: there is no entry for <key> yet */
+void _hash_enter(hash_table_t *ht, int key, void *data) { /* precondition: there is no entry for <key> yet */
   struct hash_link *temp;
   int i;
 
@@ -58,7 +58,7 @@ void _hash_enter(struct hash_header *ht, int key, void *data) { /* precondition:
   ht->klistlen++;
 }
 
-void *hash_find(struct hash_header *ht, int key) {
+void *hash_find(hash_table_t *ht, int key) {
   struct hash_link *scan;
 
   scan = ht->buckets[HASH_KEY(ht, key)];
@@ -69,7 +69,7 @@ void *hash_find(struct hash_header *ht, int key) {
   return scan ? scan->data : NULL;
 }
 
-int hash_enter(struct hash_header *ht, int key, void *data) {
+int hash_enter(hash_table_t *ht, int key, void *data) {
   void *temp;
   temp = hash_find(ht, key);
   if (temp)
@@ -79,7 +79,7 @@ int hash_enter(struct hash_header *ht, int key, void *data) {
   return 1;
 }
 
-void *hash_find_or_create(struct hash_header *ht, int key) {
+void *hash_find_or_create(hash_table_t *ht, int key) {
   void *rval;
 
   rval = hash_find(ht, key);
@@ -91,7 +91,7 @@ void *hash_find_or_create(struct hash_header *ht, int key) {
   return rval;
 }
 
-void *hash_remove(struct hash_header *ht, int key) {
+void *hash_remove(hash_table_t *ht, int key) {
   struct hash_link **scan;
 
   scan = ht->buckets + HASH_KEY(ht, key);
@@ -124,7 +124,7 @@ void *hash_remove(struct hash_header *ht, int key) {
   return NULL;
 }
 
-void hash_iterate(struct hash_header *ht, void (*func) (), void *cdata) {
+void hash_iterate(hash_table_t *ht, void (*func) (), void *cdata) {
   int i;
   for (i = 0; i < ht->klistlen; i++) {
     void *temp;

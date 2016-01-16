@@ -28,7 +28,7 @@
 extern struct zone_data *zone_table;
 extern int top_of_zone_table;
 #if HASH
-extern struct hash_header room_db;
+extern hash_table_t room_db;
 #else
 extern struct room_data *room_db[];
 #endif
@@ -2237,8 +2237,6 @@ void do_load(struct char_data *ch, char *argument,
                  "       load room start [end]\n\r", ch);
   }
 }
-
-
 
 void purge_one_room(int rnum, struct room_data *rp, int *range) {
   struct char_data *ch;

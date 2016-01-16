@@ -560,8 +560,7 @@ int dir_track(struct char_data *ch, struct char_data *vict) {
 int find_path(int in_room, int (*predicate) (), void *c_data,
               int depth, int in_zone) {
   struct room_q *tmp_q, *q_head, *q_tail;
-  struct hash_header x_room;
-/*  static struct hash_header	x_room; */
+  hash_table_t x_room;
   int i, tmp_room, count = 0, thru_doors;
   struct room_data *herep, *therep;
   struct room_data *startp;

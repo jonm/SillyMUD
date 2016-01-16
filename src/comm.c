@@ -43,7 +43,7 @@ extern char *sector_types[];
 
 /* extern struct char_data *character_list; */
 #if HASH
-extern struct hash_header room_db;      /* In db.c */
+extern hash_table_t room_db;      /* In db.c */
 #else
 extern struct room_data *room_db;       /* In db.c */
 #endif

@@ -28,7 +28,7 @@
 int top_of_scripts = 0;
 int top_of_world = 0;           /* ref to the top element of world */
 #if HASH
-struct hash_header room_db;
+hash_table_t room_db;
 #else
 struct room_data *room_db[WORLD_SIZE];
 #endif
