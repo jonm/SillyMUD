@@ -28,6 +28,7 @@ AC_CHECK_LIB(criterion,extmatch,[
 ])
 
 AC_SEARCH_LIBS([crypt],[crypt])
+AC_SEARCH_LIBS([apr_initialize],[apr-1])
 
 AH_TEMPLATE([IMPL_SECURITY],
         [Define as 1 to restrict each level 58+ god to one site or set of

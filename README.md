@@ -23,6 +23,12 @@ $ brew install autoconf
 $ brew install automake
 ```
 
+Finally, you'll also need the Apache Portable Runtime (APR):
+
+```
+$ brew install apr
+```
+
 # Building
 
 First you will have to initialize the build system via:
