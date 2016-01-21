@@ -27,7 +27,6 @@ typedef struct hash_header hash_table_t;
 
 void init_hash_table(hash_table_t *ht, int rec_size, int table_size);
 void destroy_hash_table(hash_table_t *ht);
-void _hash_enter(hash_table_t *ht, int key, void *data);
 void *hash_find(hash_table_t *ht, int key);
 int hash_enter(hash_table_t *ht, int key, void *data);
 void *hash_find_or_create(hash_table_t *ht, int key);
