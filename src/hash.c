@@ -124,7 +124,7 @@ void *hash_remove(hash_table_t *ht, int key) {
   return NULL;
 }
 
-void hash_iterate(hash_table_t *ht, void (*func) (), void *cdata) {
+void hash_iterate(hash_table_t *ht, hash_iterator_f f, void *cdata) {
   int i;
   for (i = 0; i < ht->klistlen; i++) {
     void *temp;
@@ -132,7 +132,7 @@ void hash_iterate(hash_table_t *ht, void (*func) (), void *cdata) {
 
     key = ht->keylist[i];
     temp = hash_find(ht, key);
-    (*func) (key, temp, cdata);
+    (*f) (key, temp, cdata);
     if (ht->keylist[i] != key)  /* They must have deleted this room */
       i--;                      /* Hit this slot again. */
   }
