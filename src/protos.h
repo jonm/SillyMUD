@@ -163,11 +163,11 @@ void boot_pose_messages();
 /* From act.wizard.c */
 
 void dsearch(char *string, char *tmp);
-void purge_one_room(int rnum, struct room_data *rp, int *range);
+void purge_one_room(int rnum, void *rp, void *range);
 void roll_abilities(struct char_data *ch);
 void print_room(int rnum, struct room_data *rp, struct string_block *sb);
-void print_death_room(int rnum, struct room_data *rp, struct string_block *sb);
-void print_private_room(int r, struct room_data *rp, struct string_block *sb);
+void print_death_room(int rnum, void *rp, void *sb);
+void print_private_room(int r, void *rp, void *sb);
 void create_one_room(int loc_nr);
 
 /* From board.c */

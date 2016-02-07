@@ -63,7 +63,7 @@ extern struct descriptor_data *descriptor_list;
 extern struct char_data *character_list;
 extern struct chr_app_type chr_apply[];
 #if HASH
-extern hash_table_t room_db;      /* In db.c */
+extern hash_table_t *room_db;      /* In db.c */
 #else
 extern struct room_data *room_db[];     /* In db.c */
 #endif
@@ -1257,7 +1257,11 @@ void room_load(struct char_data *ch, int start, int end) {
       if ((rp = real_roomp(vnum)) == 0) {       /* empty room */
         rp = (void *)malloc(sizeof(struct room_data));
         bzero(rp, sizeof(struct room_data));
+#ifdef HASH
+	hash_enter(room_db, vnum, rp);
+#else
         room_enter(room_db, vnum, rp);
+#endif
         send_to_char("+", ch);
       }
       else {

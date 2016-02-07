@@ -13,12 +13,14 @@
 
 #define	HASH_KEY(ht,key)	( (((unsigned int)(key)) * 17) % (ht)->table_size )
 
-void init_hash_table(hash_table_t *ht, int rec_size, int table_size) {
+hash_table_t *init_hash_table(int rec_size, int table_size) {
+  hash_table_t *ht = (hash_table_t *)malloc(sizeof(hash_table_t));
   ht->rec_size = rec_size;
   ht->table_size = table_size;
   ht->buckets = (void *)calloc(sizeof(struct hash_link **), table_size);
   ht->keylist = (void *)malloc(sizeof(ht->keylist) * (ht->klistsize = 128));
   ht->klistlen = 0;
+  return ht;
 }
 
 void destroy_hash_table(hash_table_t *ht) {
@@ -33,6 +35,7 @@ void destroy_hash_table(hash_table_t *ht) {
     }
   free(ht->buckets);
   free(ht->keylist);
+  free(ht);
 }
 
 void _hash_enter(hash_table_t *ht, int key, void *data) { /* precondition: there is no entry for <key> yet */

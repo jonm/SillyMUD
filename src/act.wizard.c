@@ -2238,7 +2238,9 @@ void do_load(struct char_data *ch, char *argument,
   }
 }
 
-void purge_one_room(int rnum, struct room_data *rp, int *range) {
+void purge_one_room(int rnum, void *val, void *cdata) {
+  struct room_data *rp = (struct room_data *)val;
+  int *range = (int *)cdata;
   struct char_data *ch;
   struct obj_data *obj;
   extern long room_count;
@@ -2283,6 +2285,10 @@ void do_purge(struct char_data *ch, char *argument,
               const char * UNUSED(cmd)) {
   struct char_data *vict, *next_v;
   struct obj_data *obj, *next_o;
+#ifndef HASH
+  int i;
+  struct room_data *rp;
+#endif
 
   char name[100];
 
@@ -2335,8 +2341,6 @@ void do_purge(struct char_data *ch, char *argument,
       argument = one_argument(argument, name);
       if (0 == str_cmp("room", name)) {
         int range[2];
-        register int i;
-        struct room_data *rp;
         if (get_max_level(ch) < IMPLEMENTOR) {
           send_to_char("I'm sorry, I can't let you do that.\n\r", ch);
           if (strcmp(GET_NAME(ch), "Haplo") == 0) {
@@ -3050,13 +3054,16 @@ void print_room(int rnum, struct room_data *rp, struct string_block *sb) {
   append_to_string_block(sb, buf);
 }
 
-void print_death_room(int rnum, struct room_data *rp, struct string_block *sb) {
+void print_death_room(int rnum, void *val, void *cdata) {
+  struct room_data *rp = (struct room_data *)val;
+  struct string_block *sb = (struct string_block *)cdata;
   if (rp && rp->room_flags & DEATH)
     print_room(rnum, rp, sb);
 }
 
-void print_private_room(int rnum, struct room_data *rp,
-                        struct string_block *sb) {
+void print_private_room(int rnum, void *val, void *cdata) {
+  struct room_data *rp = (struct room_data *)val;
+  struct string_block *sb = (struct string_block *)cdata;
   if (rp && rp->room_flags & PRIVATE)
     print_room(rnum, rp, sb);
 }
@@ -3068,8 +3075,9 @@ struct show_room_zone_struct {
   struct string_block *sb;
 };
 
-void show_room_zone(int rnum, struct room_data *rp,
-                    struct show_room_zone_struct *srzs) {
+void show_room_zone(int rnum, void *val, void *cdata) {
+  struct room_data *rp = (struct room_data *)val;
+  struct show_room_zone_struct *srzs = (struct show_room_zone_struct *)cdata;
   char buf[MAX_STRING_LENGTH];
 
   if (!rp || rp->number < srzs->bottom || rp->number > srzs->top)

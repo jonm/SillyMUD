@@ -28,7 +28,7 @@
 int top_of_scripts = 0;
 int top_of_world = 0;           /* ref to the top element of world */
 #if HASH
-hash_table_t room_db;
+hash_table_t *room_db;
 #else
 struct room_data *room_db[WORLD_SIZE];
 #endif
@@ -913,7 +913,7 @@ void boot_world() {
 
 
 #if HASH
-  init_hash_table(&room_db, sizeof(struct room_data), 2048);
+  room_db = init_hash_table(sizeof(struct room_data), 2048);
 #else
   init_world(room_db);
 #endif
@@ -954,7 +954,7 @@ void allocate_room(int room_number) {
   if (room_number > top_of_world)
     top_of_world = room_number;
 #if HASH
-  hash_find_or_create(&room_db, room_number);
+  hash_find_or_create(room_db, room_number);
 #else
   room_find_or_create(room_db, room_number);
 #endif
@@ -3113,7 +3113,7 @@ void init_char(struct char_data *ch) {
 */
 struct room_data *real_roomp(int virtual) {
 #if HASH
-  return hash_find(&room_db, virtual);
+  return hash_find(room_db, virtual);
 #else
   return ((virtual < WORLD_SIZE && virtual > -1) ? room_db[virtual] : 0);
 #endif
