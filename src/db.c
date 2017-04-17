@@ -18,6 +18,7 @@
 #include "protos.h"
 #include "db.h"
 #include "utility.h"
+#include "foo.h"
 
 #define NEW_ZONE_SYSTEM
 
