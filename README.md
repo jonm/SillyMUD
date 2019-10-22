@@ -48,8 +48,8 @@ either `configure --help` or see `INSTALL`.
 
 The major note is that the first player to log in will become an
 "Implementor" level god; after the first log in, that player will need
-to have an entry in the `security` directory. By default on most systems
-this is `/usr/local/var/sillymud/security`. See the `README` file in
+to have an entry in the [`security`](lib/security/) directory. By default on most systems
+this is `/usr/local/var/sillymud/security`. See the [`README`](lib/security/README) file in
 that directory for more details.
 
-
+Documentation for running the game are found in [`running.doc`](doc/running.doc).
