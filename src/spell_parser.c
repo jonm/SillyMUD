@@ -835,7 +835,7 @@ struct syllable syls[] = {
 
 void say_spell(struct char_data *ch, int si) {
   char buf[MAX_STRING_LENGTH], splwd[MAX_BUF_LENGTH];
-  char buf2[MAX_STRING_LENGTH];
+  char buf2[MAX_STRING_LENGTH * 2];
 
   int j, offs;
   struct char_data *temp_char;

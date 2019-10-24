@@ -2437,6 +2437,7 @@ void set_racial_stuff(struct char_data *mob) {
   case RACE_HORSE:
     mob->player.weight = 400;
     mob->player.height = 175;
+    break;
   case RACE_ORC:
   case RACE_HALFORC:
     mob->player.weight = 150;

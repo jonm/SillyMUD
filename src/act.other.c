@@ -76,7 +76,7 @@ void do_guard(struct char_data *ch, char *argument,
 
 void do_junk(struct char_data *ch, char *argument,
              const char * UNUSED(cmd)) {
-  char arg[100], buf[100], newarg[100];
+  char arg[100], buf[MAX_BUF_LENGTH], newarg[100];
   struct obj_data *tmp_object;
   int num, p, count, value = 0;
 
@@ -1857,7 +1857,7 @@ void do_gname(struct char_data *ch, char *arg,
 
 void do_donate(struct char_data *ch, char *argument,
                const char * UNUSED(cmd)) {
-  char arg[100], buf[100], newarg[100];
+  char arg[100], buf[MAX_BUF_LENGTH], newarg[100];
   struct obj_data *tmp_object;
   int num, p, count;
 

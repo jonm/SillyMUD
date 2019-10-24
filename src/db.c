@@ -3259,7 +3259,7 @@ void reboot_text(struct char_data *ch, char *UNUSED(arg),
 
 
 void init_scripts() {
-  char buf[255], buf2[255];
+  char buf[MAX_BUF_LENGTH * 2], buf2[255];
   FILE *f1, *f2;
   int i, count;
   struct char_data *mob;

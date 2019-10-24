@@ -669,7 +669,7 @@ int newstrlen(char *p) {
 
 void do_give(struct char_data *ch, char *argument,
              const char * UNUSED(cmd)) {
-  char obj_name[200], vict_name[80], buf[132];
+  char obj_name[200], vict_name[80], buf[MAX_BUF_LENGTH * 2];
   char arg[80], newarg[100];
   int amount, num, p, count;
   struct char_data *vict;

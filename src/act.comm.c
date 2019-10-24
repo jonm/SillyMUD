@@ -24,7 +24,7 @@ extern const char *ogre_speak[];
 
 void do_say(struct char_data *ch, char *argument,
             const char * UNUSED(cmd)) {
-  char buf[MAX_INPUT_LENGTH + 40], buf2[MAX_INPUT_LENGTH + 40];
+  char buf[MAX_INPUT_LENGTH * 2], buf2[MAX_INPUT_LENGTH + 40];
 
   if (apply_soundproof(ch))
     return;
@@ -63,7 +63,7 @@ void do_say(struct char_data *ch, char *argument,
 
 void do_shout(struct char_data *ch, char *argument,
               const char * UNUSED(cmd)) {
-  char buf1[MAX_INPUT_LENGTH + 40], buf2[MAX_INPUT_LENGTH + 40];
+  char buf1[MAX_INPUT_LENGTH * 2], buf2[MAX_INPUT_LENGTH + 40];
   struct descriptor_data *i;
   extern int Silence;
 
@@ -157,7 +157,7 @@ void do_tell(struct char_data *ch, char *argument,
              const char * UNUSED(cmd)) {
   struct char_data *vict;
   char name[100], message[MAX_INPUT_LENGTH + 20],
-    buf[MAX_INPUT_LENGTH + 60], buf2[MAX_INPUT_LENGTH + 60];
+    buf[MAX_INPUT_LENGTH * 2], buf2[MAX_INPUT_LENGTH + 60];
 
   if (apply_soundproof(ch))
     return;
@@ -223,7 +223,7 @@ void do_tell(struct char_data *ch, char *argument,
 void do_whisper(struct char_data *ch, char *argument,
                 const char * UNUSED(cmd)) {
   struct char_data *vict;
-  char name[100], message[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH];
+  char name[100], message[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH * 2];
 
   if (apply_soundproof(ch))
     return;
@@ -258,7 +258,7 @@ void do_whisper(struct char_data *ch, char *argument,
 void do_ask(struct char_data *ch, char *argument,
             const char * UNUSED(cmd)) {
   struct char_data *vict;
-  char name[100], message[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH];
+  char name[100], message[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH * 2];
 
   if (apply_soundproof(ch))
     return;
