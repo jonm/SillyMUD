@@ -2059,7 +2059,7 @@ void spell_sunray(byte level, struct char_data *ch,
 void spell_know_monster(byte level, struct char_data *ch,
                         struct char_data *victim,
                         struct obj_data *UNUSED(obj)) {
-  char buf[256], buf2[256];
+  char buf[MAX_BUF_LENGTH*2], buf2[256];
   int exp, lev, hits;
 
   extern char *pc_class_types[];

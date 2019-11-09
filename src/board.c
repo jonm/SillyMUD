@@ -437,8 +437,7 @@ int board_display_msg(struct char_data *ch, char *arg, int bnum) {
 
   SPRINTF(buffer, "Message %2d (%s): %-15s -- %s", tmessage, curr_msg->date,
           curr_msg->author, curr_msg->title);
-  SAPPENDF(buffer, "\n\r----------\n\r%s",
-           (curr_msg->text ? curr_msg->text : "(null)"));
+  SAPPENDF(buffer, "\n\r----------\n\r%s", curr_msg->text);
   page_string(ch->desc, buffer, 1);
   return (1);
 

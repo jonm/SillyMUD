@@ -27,7 +27,7 @@ void randomize_buf(void *buf, size_t nbytes) {
 Test(security, parse_cidr_empty_string_v4) {
   char arg[255];
   struct in_addr a, mask;
-  SPRINTF(arg, "");
+  memset(arg, '\0', sizeof(arg));
   cr_assert_not(parse_cidr(AF_INET, arg, &a, &mask));
 }
 
@@ -66,7 +66,7 @@ Test(security, parse_cidr_no_prefix_v4) {
 Test(security, parse_cidr_empty_string_v6) {
   char arg[255];
   struct in6_addr a, mask;
-  SPRINTF(arg, "");
+  memset(arg, '\0', sizeof(arg));
   cr_assert_not(parse_cidr(AF_INET6, arg, &a, &mask));
 }
 

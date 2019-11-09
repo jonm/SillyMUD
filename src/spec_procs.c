@@ -4284,6 +4284,7 @@ int new_thalos_mayor(struct char_data *ch, const char *cmd, char *UNUSED(arg),
       if (time_info.hours == 19) {
         ch->generic = NTMGOALNN;
       }
+      break;
     case NTMGOALNN:            /* north gate */  {
         if (ch->in_room != NTMNGATE) {
           int dir;

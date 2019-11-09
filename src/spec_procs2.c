@@ -35,7 +35,7 @@ extern struct weather_data weather_info;
 extern int top_of_world;
 extern struct int_app_type int_app[26];
 
-extern struct title_type titles[4][ABS_MAX_LVL];
+extern struct title_type titles[MAX_CLASS][ABS_MAX_LVL];
 extern char *dirs[];
 
 extern int gSeason;             /* what season is it ? */
@@ -442,7 +442,7 @@ void invert(char *arg1, char *arg2) {
 
 int jive_box(struct char_data *ch, const char *cmd, char *arg,
              struct obj_data *UNUSED(obj), int type) {
-  char buf[255], buf2[255], buf3[255], tmp[255];
+  char buf[255], buf2[255], buf3[MAX_BUF_LENGTH*4], tmp[255];
 
   if (type != PULSE_COMMAND)
     return (FALSE);
@@ -832,8 +832,8 @@ int magic_user(struct char_data *ch, const char *cmd, char *arg,
         act("$n utters the words 'slllrrrrrrpppp'.", 1, ch, 0, 0, TO_ROOM);
         cast_energy_drain(get_max_level(ch), ch, "", SPELL_TYPE_SPELL, vict,
                           0);
-        break;
       }
+      break;
     default:
       if (ch->attackers <= 2) {
         act("$n utters the words 'frag'.", 1, ch, 0, 0, TO_ROOM);
@@ -2263,6 +2263,7 @@ void say_hello(struct char_data *ch, struct char_data *t) {
       case SKY_CLOUDLESS:
         SPRINTF(buf, "Lovely weather we're having this %s, isn't it, %s.",
                 buf2, GET_NAME(t));
+        break;
       case SKY_CLOUDY:
         SPRINTF(buf, "Nice %s to go for a walk, %s.", buf2, GET_NAME(t));
         break;

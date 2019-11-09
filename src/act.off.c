@@ -306,7 +306,7 @@ void do_backstab(struct char_data *ch, char *argument,
 void do_order(struct char_data *ch, char *argument,
               const char * UNUSED(cmd)) {
   char name[100], message[256];
-  char buf[256];
+  char buf[MAX_BUF_LENGTH * 2];
   bool found = FALSE;
   int org_room;
   struct char_data *victim;

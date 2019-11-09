@@ -416,7 +416,7 @@ const byte saving_throws[MAX_CLASS][5][ABS_MAX_LVL] = {
 };
 
 
-void spello(int nr, byte beat, byte pos, byte mlev, byte clev, byte dlev,
+void spello(int nr, ubyte beat, byte pos, byte mlev, byte clev, byte dlev,
             ubyte mana, sh_int tar, void *func, sh_int sf) {
   skill_info[nr].spell_pointer = func;
   skill_info[nr].beats = beat;
@@ -835,7 +835,7 @@ struct syllable syls[] = {
 
 void say_spell(struct char_data *ch, int si) {
   char buf[MAX_STRING_LENGTH], splwd[MAX_BUF_LENGTH];
-  char buf2[MAX_STRING_LENGTH];
+  char buf2[MAX_STRING_LENGTH * 2];
 
   int j, offs;
   struct char_data *temp_char;

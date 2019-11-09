@@ -198,6 +198,7 @@ void cast_mana(byte level, struct char_data *ch, char *UNUSED(arg), int type,
          tar_ch; tar_ch = tar_ch->next_in_room)
       if (tar_ch != ch)
         spell_mana(level, ch, tar_ch, 0);
+    break;
   default:
     log_msg("Serious problem in 'mana'");
     break;
@@ -3220,6 +3221,7 @@ void cast_feeblemind(byte level, struct char_data *ch, char *UNUSED(arg),
   switch (type) {
   case SPELL_TYPE_POTION:
     spell_feeblemind(level, ch, ch, 0);
+    break;
   case SPELL_TYPE_SPELL:
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
@@ -3510,7 +3512,7 @@ void cast_entangle(byte level, struct char_data *ch, char *UNUSED(arg),
          tar_ch; tar_ch = tar_ch->next_in_room)
       if (!in_group(tar_ch, ch) && !IS_IMMORTAL(tar_ch))
         spell_entangle(level, ch, tar_ch, 0);
-
+    break;
   default:
     log_msg("serious screw-up in entangle.");
     break;
@@ -3533,7 +3535,7 @@ void cast_snare(byte level, struct char_data *ch, char *UNUSED(arg),
          tar_ch; tar_ch = tar_ch->next_in_room)
       if (!in_group(tar_ch, ch) && !IS_IMMORTAL(tar_ch))
         spell_snare(level, ch, tar_ch, 0);
-
+    break;
   default:
     log_msg("serious screw-up in snare.");
     break;
@@ -3573,6 +3575,7 @@ void cast_barkskin(byte level, struct char_data *ch, char *UNUSED(arg),
          tar_ch; tar_ch = tar_ch->next_in_room)
       if (!in_group(tar_ch, ch))
         spell_barkskin(level, ch, tar_ch, 0);
+    break;
   default:
     log_msg("serious screw-up in barkskin.");
     break;
@@ -3702,6 +3705,7 @@ void cast_silence(byte level, struct char_data *ch, char *UNUSED(arg),
   switch (type) {
   case SPELL_TYPE_POTION:
     spell_silence(level, ch, ch, 0);
+    break;
   case SPELL_TYPE_SPELL:
   case SPELL_TYPE_SCROLL:
   case SPELL_TYPE_WAND:
@@ -3714,6 +3718,7 @@ void cast_silence(byte level, struct char_data *ch, char *UNUSED(arg),
          tar_ch; tar_ch = tar_ch->next_in_room)
       if (!in_group(tar_ch, ch) && !IS_IMMORTAL(tar_ch))
         spell_silence(level, ch, tar_ch, 0);
+    break;
   default:
     log_msg("serious screw-up in silence.");
     break;
