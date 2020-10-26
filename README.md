@@ -5,6 +5,8 @@ A refactoring exercise based on SillyMUD, a derivative of DikuMUD.
 
 # Prerequisites
 
+## Mac OS
+
 You'll need to install the `criterion` C unit testing library:
 https://github.com/Snaipe/Criterion/
 
@@ -21,6 +23,22 @@ You'll also need the GNU autotools:
 ```
 $ brew install autoconf
 $ brew install automake
+```
+
+## Windows (WSL)
+
+Install `criterion` unit testing library:
+```
+$ wget https://github.com/Snaipe/Criterion/releases/download/v2.3.3/criterion-v2.3.3-linux-x86_64.tar.bz2
+$ tar jxvf criterion-v2.3.3-linux-x86_64.tar.bz2
+$ echo `pwd`/criterion-v2.3.3/lib > criterion.conf
+$ sudo mv criterion.conf /etc/ld.so.conf.d
+$ sudo ldconfig
+```
+
+Then install GNU autotools:
+```
+$ sudo apt-get install autoconf automake
 ```
 
 # Building
