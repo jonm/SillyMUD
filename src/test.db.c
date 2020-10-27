@@ -82,7 +82,6 @@ void setup_file_to_string(void) {
 }
 
 void teardown_file_to_string(void) {
-  perror("teardown");
   if (unlink(temp_file) != 0) {
     perror("unlink");
   }
@@ -113,7 +112,6 @@ Test(file_to_string, reads_contents, .init = setup_file_to_string,
 Test(file_to_string, returns_empty_string_if_cannot_open,
      .init = setup_file_to_string, .fini = teardown_file_to_string) {
   char buf[256];
-  FILE *fp;
   int result;
 
   result = file_to_string(temp_file, buf);
@@ -132,12 +130,36 @@ Test(file_to_string, will_not_read_a_file_thats_too_big,
     perror("fopen");
   }
   for(i=0; i<MAX_STRING_LENGTH+2; i++) {
-    fwrite(" ", sizeof(char), 1, fp);
+    fputc(' ', fp);
   }
-  fwrite("\n", sizeof(char), 1, fp);
+  fputc('\n', fp);
   fclose(fp);
 
   result = file_to_string(temp_file, buf);
   cr_assert(result == -1);
   cr_assert(strlen(buf) == 0);
+}
+
+Test(file_to_string, only_inserts_carriage_return_after_newline,
+     .init = setup_file_to_string, .fini = teardown_file_to_string) {
+  char buf[256];
+  FILE *fp;
+  int result;
+  int i;
+  int crs;
+
+  fp = fopen(temp_file, "w");
+  for(i=0; i<110; i++) {
+    fputc(' ', fp);
+  }
+  fputc('\n', fp);
+  fclose(fp);
+  
+  result = file_to_string(temp_file, buf);
+  cr_assert(result == 0);
+  crs = 0;
+  for(i=0; i<(int)strlen(buf); i++) {
+    if (buf[i] == '\r') crs++;
+  }
+  cr_assert(crs == 1);
 }

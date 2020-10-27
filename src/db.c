@@ -2775,8 +2775,10 @@ int file_to_string(char *name, char *buf) {
       }
 
       strcat(buf, tmp);
-      *(buf + strlen(buf) + 1) = '\0';
-      *(buf + strlen(buf)) = '\r';
+      if (buf[strlen(buf)-1] == '\n') {
+	*(buf + strlen(buf) + 1) = '\0';
+	*(buf + strlen(buf)) = '\r';
+      }
     }
   }
   while (!feof(fl));
