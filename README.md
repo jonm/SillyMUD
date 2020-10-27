@@ -41,6 +41,13 @@ Then install GNU autotools:
 $ sudo apt-get install autoconf automake
 ```
 
+You will then need to add `CFLAGS` and `LDFLAGS` telling `configure`
+where to find the library, as in:
+```
+./configure CFLAGS="-I"`pwd`/criterion-v2.3.3/include \
+  LDFLAGS=-L`pwd`/criterion-v2.3.3/lib
+```
+
 # Building
 
 First you will have to initialize the build system via:
@@ -60,7 +67,9 @@ And then you can install the game via:
 ```$ make install```
 
 Note that there are lots of options available for `configure`; try
-either `configure --help` or see `INSTALL`.
+either `configure --help` or see `INSTALL`. In particular, you may
+want to consider adding `-Wall -Wextra -Werror` to `CFLAGS`, as this
+is the way the CI build runs.
 
 # Running the game
 
