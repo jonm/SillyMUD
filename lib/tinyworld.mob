@@ -4797,7 +4797,7 @@ There is a Druid of the 9th Circle praying here.
 A humaniod-like creature with a brownish looking face.
 ~
 66 32768 0 A 2
-11 15=5 0 8 2d6+4
+11 15 0 8 2d6+4
 -1 900 4 2
 8 8 4 2053 0 0
 #2112
@@ -7113,7 +7113,7 @@ This man looks like he could use a lot of rest.
 ~
 96 524288 -750 N
 8 12 3 24 2d6+1
--1 1v5 2 1
+-1 15 2 1
 8 8 1
 #3650
 sultan~
@@ -7286,7 +7286,7 @@ A mercenary stands here waiting for a job.
 You see an assassin down on his luck looking to be freelanced out.
 ~
 2 0 0 N
-5 15 8 1d4+2
+5 15 8 5 1d4+2
 -1 50 2 1 
 8 8 1
 #3665
@@ -7373,6 +7373,7 @@ A huge lizard like reptile with horns like a minotaur.
 96 0 0 B 3
 8 8 5 10 3d5+0
 -1 100 2 6
+8 8 1
 #3672
 dog death~
 the death dog~
@@ -7383,6 +7384,7 @@ A large two-headed hound barks at you vicously.
 96 0 0 A 2
 4 19 7 10 1d10+1
 -1 10 1 18
+8 8 1
 #3673
 lion spotted~
 the spotted lion~
@@ -9639,7 +9641,7 @@ The Raider Captain is a large, extremely fast quickling.
 barracks, and orders his troops to att0k you!
 ~
 34 0 -1000 A 4
-9 9 9 1d3+1
+9 9 9 9 1d3+1
 -1 65 4 35
 8 8 1
 #6206
@@ -10086,7 +10088,7 @@ You don't really want to look at a cockatrice, do you?  They are damn
 ugly and might make you sick to your stomach.
 ~
 98 0 0 A 1
-15 1 2 1d8+2
+15 1 2 75 1d8+2
 -1 0 0 18
 6 6 1
 #6619
@@ -11978,7 +11980,7 @@ some inhuman torture. Scars cover his body and he has a strange, confused look
 in his eyes. He is frothing from the mouth and muttering something to himself.
 ~
 33 0 -380 A 2 
-12 10 424 1d3+4
+12 10 4 24 1d3+4
 -1 300 3 3
 8 8 4 0 3138 0
 #9207
@@ -13555,7 +13557,7 @@ penetrate stone!
 DAMN those claws look sharp!
 ~
 66 2 0 A 1
-20 0 4 1d4+8
+20 0 4 8 1d4+8
 -1 200 3 16
 8 8 5 64 0 0
 #13757
@@ -16672,7 +16674,7 @@ all living creatures.
 33 0 -1000 N
 21 0 3 0 2d6+2
 -1 600 2 29
-8 8 0 3840 0
+8 8 3 0 3840 0
 #16716
 skeletal warrior~
 the skeletal warrior~
@@ -16910,7 +16912,7 @@ features, and small hands with long digits of razor sharpness.
 32 0 -1000 A 3
 12 5 1 36 2d6+0
 -1 30 6 28
-8 8 1 3840 0
+8 8 1 1 3840 0
 #16736
 priestess~
 the priestess of Odin~
@@ -19163,6 +19165,8 @@ wanderer man~
 a wanderer~
 a wanderer is here exploring the city
 ~
+This guy seems to just be wandering around exploring himself.
+~
 132 0 100 N
 6 17 7 12 1d4+2
 -1 200 0 1
@@ -19194,6 +19198,7 @@ ready to demonstrate it to you.
 8 8 4 15 2160 0
 #21366
 thief gm guildmaster~
+The theif guildmaster~
 the thief guildmaster is standing here.
 ~
 If looks could kill, well even if they couldn't, you know your guildmaster
@@ -19203,7 +19208,7 @@ barely notice her move about the room.
 3 0 1000 A 2
 61 1 -10 96 3d5+4
 -1 8000 0 1
-8 8 5 15 2160
+8 8 5 15 2160 0
 #21367
 warrior gm guildmaster~
 the warrior guildmaster~
@@ -20309,6 +20314,7 @@ A zombie stands here, trying to get away from the crowded Jamboree.
 ~
 It looks drunk.  Quite wasted.
 ~
+82 0 0 A 1
 2 19 9 0 1d5+0
 -1 5 0 10
 8 8 3 32 768 0
@@ -21438,6 +21444,7 @@ A gatling goblin is here!  Duck!
 2 0 -351 A 8
 30 10 0 100 1d1+1
 -1 0 4 30
+8 8 0
 #25025
 acid blob~
 An acid blob~
