@@ -25,7 +25,7 @@ $ brew install autoconf
 $ brew install automake
 ```
 
-## Windows (WSL)
+## Windows (WSL) and GNU/Linux
 
 Install `criterion` unit testing library:
 ```
