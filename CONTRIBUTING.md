@@ -3,8 +3,8 @@
 While VerySillyMUD is a hobby project, it is still important to keep all the
 i's dotted and t's crossed. Pull requests (PRs) are definitely welcome, but
 before we can merge them, we need contributors to sign the
-[Contributor License
-Agreement](https://www.clahub.com/agreements/jonm/SillyMUD) (CLA). This
+Contributor License
+Agreement (CLA). This
 agreement is nearly identical to the CLA the [Apache Software
 Foundation](https://www.apache.org/) uses, and primarily ensures that
 we can incorporate your contributions into the project and continue
