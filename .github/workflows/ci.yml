@@ -33,4 +33,4 @@ jobs:
     - name: make check
       run: make check
     - name: make distcheck
-      run: make distcheck
+      run: CFLAGS="-I"`pwd`/criterion-v2.3.3/include CPPFLAGS="-I"`pwd`/criterion-v2.3.3/include LDFLAGS=-L`pwd`/criterion-v2.3.3/lib make distcheck
