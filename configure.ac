@@ -20,7 +20,7 @@ AC_CHECK_HEADERS([criterion/criterion.h],[],[
   AC_MSG_WARN(unit tests will not be runnable without Criterion library)
   AC_MSG_WARN(See https://github.com/Snaipe/Criterion/)
 ])
-AC_CHECK_LIB(criterion,extmatch,[
+AC_CHECK_LIB(criterion,cr_log,[
   true
 ],[
   AC_MSG_WARN(unit tests will not be runnable without Criterion library)
