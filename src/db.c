@@ -3344,9 +3344,6 @@ void init_scripts() {
             (struct foo_data *)realloc(script_data[top_of_scripts].script,
                                        sizeof(struct foo_data) * (count + 1));
         }
-        log_msgf("top_of_scripts %d\n", top_of_scripts);
-        log_msgf("count %d\n", count);
-        log_msgf("buf2: %s\n", buf2);
         script_data[top_of_scripts].script[count].line =
           (char *)malloc(sizeof(char) * (strlen(buf) + 1));
 
