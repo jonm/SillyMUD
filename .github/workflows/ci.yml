@@ -24,6 +24,7 @@ jobs:
       run: |
         aclocal
         autoconf
+        autoheader
         automake --add-missing
     - name: configure
       run: CFLAGS="-I"`pwd`/criterion-v2.3.3/include CPPFLAGS="-I"`pwd`/criterion-v2.3.3/include LDFLAGS=-L`pwd`/criterion-v2.3.3/lib ./configure
