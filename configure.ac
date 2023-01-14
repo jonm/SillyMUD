@@ -154,5 +154,6 @@ AC_CONFIG_FILES([
   src/Makefile
   lib/Makefile
   lib/security/Makefile
+  lib/scripts/Makefile
 ])
 AC_OUTPUT
