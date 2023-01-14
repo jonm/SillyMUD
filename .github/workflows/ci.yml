@@ -1,0 +1,36 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: install Criterion library
+      run: |
+        wget https://github.com/Snaipe/Criterion/releases/download/v2.3.3/criterion-v2.3.3-linux-x86_64.tar.bz2
+        tar jxvf criterion-v2.3.3-linux-x86_64.tar.bz2
+        echo `pwd`/criterion-v2.3.3/lib > criterion.conf
+        sudo mv criterion.conf /etc/ld.so.conf.d
+        sudo ldconfig
+    - name: generate autoconf/automake files
+      run: |
+        aclocal
+        autoconf
+        autoheader
+        automake --add-missing
+    - name: configure
+      run: CFLAGS="-I"`pwd`/criterion-v2.3.3/include CPPFLAGS="-I"`pwd`/criterion-v2.3.3/include LDFLAGS=-L`pwd`/criterion-v2.3.3/lib ./configure
+    - name: make
+      run: make
+    - name: make check
+      run: make check
+    - name: make distcheck
+      run: CFLAGS="-I"`pwd`/criterion-v2.3.3/include CPPFLAGS="-I"`pwd`/criterion-v2.3.3/include LDFLAGS=-L`pwd`/criterion-v2.3.3/lib make distcheck

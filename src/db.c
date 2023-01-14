@@ -86,6 +86,9 @@ extern struct descriptor_data *descriptor_list;
 /* internal function */
 int verify_mob(struct char_data *ch);
 
+struct reset_q_type reset_q;
+struct scripts *script_data;
+struct script_com *comp;
 
 /*************************************************************************
 *  routines for booting the system                                       *

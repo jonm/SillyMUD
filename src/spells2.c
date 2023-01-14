@@ -24,7 +24,7 @@ extern char *dirs[];
 extern int movement_loss[];
 extern struct weather_data weather_info;
 extern struct time_info_data time_info;
-struct PolyType DruidList[17];
+extern struct PolyType DruidList[17];
 /* Extern procedures */
 
 void die(struct char_data *ch);
