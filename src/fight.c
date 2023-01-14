@@ -29,7 +29,7 @@ struct char_data *combat_list = 0;      /* head of l-list of fighting chars    *
 struct char_data *missile_list = 0;     /* head of l-list of fighting chars    */
 struct char_data *combat_next_dude = 0; /* Next dude global trick           */
 struct char_data *missile_next_dude = 0;        /* Next dude global trick           */
-struct zone_data *zone_table;   /* table of reset data             */
+extern struct zone_data *zone_table;   /* table of reset data             */
 
 char PeacefulWorks = 1;         /* set in @set */
 char DestroyedItems;            /* set in make_scraps */
