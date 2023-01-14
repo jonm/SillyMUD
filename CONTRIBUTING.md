@@ -1,16 +1,9 @@
 # Contributing to VerySillyMUD
 
-While VerySillyMUD is a hobby project, it is still important to keep all the
-i's dotted and t's crossed. Pull requests (PRs) are definitely welcome, but
-before we can merge them, we need contributors to sign the
-Contributor License
-Agreement (CLA). This
-agreement is nearly identical to the CLA the [Apache Software
-Foundation](https://www.apache.org/) uses, and primarily ensures that
-we can incorporate your contributions into the project and continue
-distributing it--which, after all, we assume was the intent in your
-making a pull request anyway! The agreement can be signed online after
-you authenticate with your GitHub account.
+Contributions to this repository can be made under the
+[GitHub Terms of Service](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#6-contributions-under-repository-license),
+i.e. that you license your contributions under same license the project
+uses ("inbound = outbound").
 
 The rest of this file describes general expectations for
 contributions, offered in a spirit of saving everyone a bunch of hassle.
