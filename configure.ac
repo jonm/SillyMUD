@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AC_INIT([sillymud], m4_esyscmd_s(git describe --match 'v*' | sed -e 's/^v//'), [], [], [https://github.com/jonm/SillyMUD])
+AC_INIT([sillymud], m4_esyscmd_s(git describe --tags --always | sed -e 's/^v//'), [], [], [https://github.com/jonm/SillyMUD])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
