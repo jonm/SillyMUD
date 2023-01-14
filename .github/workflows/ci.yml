@@ -20,6 +20,8 @@ jobs:
         echo `pwd`/criterion-v2.3.3/lib > criterion.conf
         sudo mv criterion.conf /etc/ld.so.conf.d
         sudo ldconfig
+    - name: generate autoconf/automake files
+      run: autoreconf --install
     - name: configure
       run: CFLAGS="-I"`pwd`/criterion-v2.3.3/include CPPFLAGS="-I"`pwd`/criterion-v2.3.3/include LDFLAGS=-L`pwd`/criterion-v2.3.3/lib ./configure
     - name: make
