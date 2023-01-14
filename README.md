@@ -45,6 +45,7 @@ You will then need to add `CFLAGS` and `LDFLAGS` telling `configure`
 where to find the library, as in:
 ```
 ./configure CFLAGS="-I"`pwd`/criterion-v2.3.3/include \
+  CPPFLAGS="-I"`pwd`/criterion-v2.3.3/include \
   LDFLAGS=-L`pwd`/criterion-v2.3.3/lib
 ```
 
